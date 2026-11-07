@@ -2,44 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "prototipo-detalle",
-      "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "prototipo-detalle/serve.mjs"
-      ],
-      "port": 5178
-    },
-    {
       "name": "visor",
       "runtimeExecutable": "node",
       "runtimeArgs": [
         "motor/serve.mjs"
       ],
       "port": 5180
-    },
-    {
-      "name": "convertir-depto4",
-      "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "motor/convertir-avif.mjs",
-        "Departamento4"
-      ],
-      "env": {
-        "PORT": "5181"
-      },
-      "port": 5181
-    },
-    {
-      "name": "convertir-depto2",
-      "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "motor/convertir-avif.mjs",
-        "fotosDepartamento2"
-      ],
-      "env": {
-        "PORT": "5182"
-      },
-      "port": 5182
     },
     {
       "name": "sitio",

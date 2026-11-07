@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "Departamento con vista a la terminal",
-  "photos": "/fotosDepartamento1-png/",
+  "photos": "/fotos/depto1/",
   "note": "Modelo aproximado a partir de las 15 fotos del anuncio (3 son del edificio y no se modelan). Medidas estimadas tomando la cama queen (1,60 × 2,00 m) y los ventanales como referencia; unos 40 m² útiles más el balcón. La ropa de cama y la mesa cambian entre fotos: se tomó la ropa de cama de la foto 1951a4d6 y la mesa de vidrio de 5be50c18.",
   "about": "Departamento de un dormitorio con balcón al frente. Dormitorio con cama queen y placard, living con sillón y TV, comedor para cuatro, cocina integrada con horno y baño con ducha. Ventanales al balcón en el living y en el dormitorio.",
   "estimated": [

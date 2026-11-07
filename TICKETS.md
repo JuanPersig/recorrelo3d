@@ -178,7 +178,7 @@ permiso antes de publicar).
 - "Edificio que tapa la vista general del depto 2": **no se reproduce**. Fue un error del análisis: la hoja recortaba
   el centro de una captura apaisada y lo que parecía un edificio pegado era el propio edificio del depto (5 pisos
   hacia abajo). No se tocó el entorno.
-- Depto 2 con fotos: `fotosDepartamento2-png/` (conversor nuevo `convertir-depto2` en launch.json, puerto 5182);
+- Depto 2 con fotos: `fotos/depto2/` (conversor nuevo `convertir-depto2` en launch.json, puerto 5182);
   las cuatro vistas interiores llevan `photo` y su proporción; poses nuevas elegidas comparando candidatos contra
   cada foto (hojas en `capturas/analisis-depto2-fotos/` y `capturas/t04/`).
 - Motor: `"photoAspect"` por vista, para departamentos con fotos de proporciones distintas (el depto 2 tiene 16:9,
@@ -294,7 +294,7 @@ cambios de distribución ni avisos nuevos (los cambios de imagen de esta tanda s
 **Notas:** el control de parámetros corre con node, no en el visor.
 
 **Prueba de la skill (2026-11-03): departamento nuevo en San Nicolás** (pedido del usuario, en lugar del depto 3).
-Fotos `departamentosannicolas/` (11 AVIF) → `departamentosannicolas-png/`; anuncio de Airbnb 1567028994240400628 ("Dpto.
+Fotos `departamentosannicolas/` (11 AVIF) → `fotos/sannicolas/`; anuncio de Airbnb 1567028994240400628 ("Dpto.
 Lavalle", 1 dormitorio con cama queen, futón en el living, 1 baño, sin m²). Resultado: `departamentos/sannicolas/`
 (4 ambientes, ~33 m², 12 vistas, 10 con foto), `dist/sannicolas/`, `entregas/sannicolas/` (24 imágenes, links y un
 video de 73 s) y hojas en `capturas/sannicolas/v1…v4`.
@@ -1048,7 +1048,7 @@ publicados de arriba dice qué versión tiene cada uno; con T-17, pasan al hosti
 ## Informe: departamento 5, Departamento demo (2026-11-04)
 
 Entrega completa pedida por el usuario "como para un cliente que paga". Fotos `departamento5/` (29 AVIF) →
-`departamento5-png/` (ffmpeg, nombres sin ñ: `bano1`…); anuncio de Airbnb 1597929013724539655 (
+`fotos/depto5/` (ffmpeg, nombres sin ñ: `bano1`…); anuncio de Airbnb 1597929013724539655 (
 estudio, 2 camas, 1 baño, hasta 2 huéspedes, sin m²); Street View solo como referencia (fachada al
 noroeste, ~319°, calle angosta con plátanos, edificios de 8–11 pisos enfrente). Resultado: `departamentos/depto5/`
 (3 ambientes, ~28 m² más el balcón, 22 vistas, 20 con foto), `dist/depto5/` y `entregas/depto5/` (ver T-19).

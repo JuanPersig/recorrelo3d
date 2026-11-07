@@ -16,8 +16,8 @@ detalles que suman), sin inventar ambientes, ventanas ni metros. Todo lo visible
 
 Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
 
-1. **Inventario de fotos.** Fotos en una carpeta local (`<Carpeta>/`). Si son `.avif`, convertirlas a PNG en
-   `<Carpeta>-png/` con ffmpeg (`ffmpeg -i foto.avif foto.png`; nombres sin ñ ni espacios, porque son los ids de las
+1. **Inventario de fotos.** Las originales van en `fotos/<id>/original/` y las PNG que usan las vistas en
+   `fotos/<id>/`. Si son `.avif`, convertirlas con ffmpeg (`ffmpeg -i foto.avif foto.png`; nombres sin ñ ni espacios, porque son los ids de las
    vistas) o con `motor/convertir-avif.mjs` si no hay ffmpeg. Anotar por
    foto: ambiente, qué muebles y aberturas se ven, desde dónde y hacia dónde mira la cámara. Las fotos de amenities del
    edificio se descartan sin listarlas.
@@ -48,7 +48,7 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
    *Hecho cuando* `warnings` está vacío (sin superposiciones, nada dentro de paredes, 60 cm de circulación, puertas que
    abren, nada fuera de su ambiente) y el catálogo dice "parámetros bien". Un aviso que pide cambiar la distribución se
    consulta con el usuario en lugar de taparlo.
-6. **Comparar con las fotos.** `motor/comparar.html?scene=/departamentos/<id>/scene.json&fotos=/<Carpeta-png>/&capturar=<id>`
+6. **Comparar con las fotos.** `motor/comparar.html?scene=/departamentos/<id>/scene.json&fotos=/fotos/<id>/&capturar=<id>`
    guarda una hoja por vista (día | foto | noche) en `capturas/<id>/`; leer las hojas. Corregir encuadre (`pos`,
    `target`, `fov`), distribución, materiales y objetos hasta que cada vista se reconozca como su foto. Comparar a
    tamaño real: las miniaturas recortadas engañan. Las fotos de celular son gran angular: `fov` entre 62 y 72, la

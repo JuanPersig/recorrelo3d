@@ -1,13 +1,14 @@
 // Convierte las fotos .avif de una carpeta a .png (el navegador las decodifica y este servidor guarda el resultado).
-// Uso: node motor/convertir-avif.mjs fotosDepartamento1   → abrir http://localhost:5179 en el navegador
-// Resultado: <carpeta>-png/ con un .png por foto. Las originales no se tocan.
+// Uso: node motor/convertir-avif.mjs fotos/<id>/original   → abrir http://localhost:5179 en el navegador
+// Resultado: un .png por foto en la carpeta de arriba (fotos/<id>/; si la carpeta no se llama "original", en <carpeta>-png/).
+// Las originales no se tocan.
 import http from 'node:http';
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { join, basename, resolve } from 'node:path';
 
 const dir = process.argv[2];
 if (!dir) { console.error('Uso: node motor/convertir-avif.mjs <carpeta>'); process.exit(1); }
-const SRC = resolve(dir), OUT = SRC + '-png', port = Number(process.env.PORT) || 5179;
+const SRC = resolve(dir), OUT = basename(SRC) === 'original' ? resolve(SRC, '..') : SRC + '-png', port = Number(process.env.PORT) || 5179;
 
 const page = `<!doctype html><meta charset="utf-8"><body><pre id="log"></pre><script>
 (async () => {
