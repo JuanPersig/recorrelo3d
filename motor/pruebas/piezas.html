@@ -1,0 +1,34 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Piezas sueltas</title>
+<style>
+/* Herramienta de desarrollo (T-26): arma cada componente con sus valores por defecto, cada estilo y cada combinación
+   de parámetros usada en los departamentos, y lista las piezas que no tocan a ninguna otra ni a su apoyo. */
+:root{ --bg:#eceef0; --ink:#1d2430; --muted:#5b6573; --ok:#2f7a4b; --bad:#a3322a; font-family:system-ui,"Segoe UI",sans-serif }
+body{ margin:0; background:var(--bg); color:var(--ink); padding:12px 14px 40px }
+h1{ font-size:18px; margin:0 0 4px } p{ margin:4px 0; color:var(--muted); font-size:13px }
+table{ border-collapse:collapse; font-size:13px } td,th{ padding:3px 8px; border-bottom:1px solid #d6dade; text-align:left; vertical-align:top }
+.ok{ color:var(--ok) } .bad{ color:var(--bad) }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<h1>Piezas sueltas o flotando</h1>
+<p id="estado">Armando…</p>
+<div id="out"></div>
+<script type="module">
+// pruebas/piezas.html[?tipo=chair] · resultado también en window.__piezas
+import { revisarPiezas } from './piezas.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+const r = window.__piezas = await revisarPiezas({ tipo: q.get('tipo') });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+$('estado').innerHTML = (r.filas.length ? `<span class="bad">${r.filas.length} de ${r.total} variantes con piezas sueltas</span>`
+  : `<span class="ok">${r.total} variantes de ${r.componentes} componentes, ninguna pieza suelta</span>`)
+  + ` · silla rota a propósito: ${r.detectaRota ? '<span class="ok">avisa</span>' : '<span class="bad">no avisa</span>'}`;
+$('out').innerHTML = `<table><tr><th>Componente</th><th>Variante</th><th>Piezas sueltas (centro y tamaño en m, distancia a la más cercana)</th></tr>${r.filas.map(f => `<tr><td>${esc(f.tipo)}</td><td>${esc(f.variante)}</td><td>${f.sueltas.map(l => l.error ? `error: ${esc(l.error)}` : `${l.pieces}${l.apart ? ' separada(s) del resto' : ' flotando'} en [${l.center.join(', ')}] · ${l.size.join(' × ')} · ${l.gap == null ? 'sin vecinas' : (l.gap * 1000).toFixed(0) + ' mm'}`).join('<br>')}</td></tr>`).join('')}</table>`;
+document.title = r.filas.length || !r.detectaRota ? `piezas: ${r.filas.length} con problemas` : 'piezas: ok';
+</script>

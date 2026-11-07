@@ -1,0 +1,31 @@
+{
+ "fecha": "2026-11-04T00:16:16.573Z",
+ "texturas": [
+  {
+   "kind": "floor",
+   "level": 0,
+   "room": "Living, comedor y cocina",
+   "texture": "tex/piso-0-living.jpg",
+   "textureSize": 1.2,
+   "vista": "sillon",
+   "pxPorMetro": 285,
+   "aceptada": false,
+   "fallas": [
+    "las juntas no coinciden (-0.1)"
+   ]
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 32,
+   "texture": "tex/azulejos-0-32.jpg",
+   "textureSize": 0.6,
+   "vista": "bano",
+   "pxPorMetro": 567,
+   "aceptada": false,
+   "fallas": [
+    "las juntas no coinciden (-0.28)"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+  "departamento": "Dúplex frente al lago en Bariloche",
+  "link": null,
+  "vistas": {
+    "Vista general": "?vista=general",
+    "Living": "?vista=living",
+    "Escalera y ventanal": "?vista=escalera",
+    "Comedor y cocina": "?vista=comedor",
+    "Hacia el lago": "?vista=ventanal",
+    "Cocina": "?vista=cocina",
+    "Dormitorio principal": "?vista=principal",
+    "Dos camas": "?vista=dos-camas",
+    "Tercer dormitorio": "?vista=tercero",
+    "Altillo": "?vista=altillo",
+    "Baño con hidromasaje": "?vista=hidro",
+    "Planta baja": "?vista=planta",
+    "Planta alta": "?vista=planta-alta"
+  }
+}

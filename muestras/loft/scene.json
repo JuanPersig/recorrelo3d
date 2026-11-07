@@ -1,0 +1,575 @@
+{
+  "version": 1,
+  "name": "Loft con vigas de hormigón",
+  "photos": "/muestras/pexels-png/",
+  "note": "Muestra para la landing (2026-11-05): un ambiente armado a partir de una foto de Pexels (loft con vigas de hormigón a la vista, cocina al fondo y mesa de madera). Medidas estimadas a ojo.",
+  "orientation": "z crece desde la pared de la cocina (z = 0) hacia la cámara; x crece desde la pared izquierda (puerta, x = 0) hacia la derecha (columna y ventana, x = 5).",
+  "units": "m",
+  "height": 2.75,
+  "viewAspect": 0.5625,
+  "wallColor": "#f3f1ec",
+  "baseboard": "#7a4e30",
+  "ceiling": "#f5f4f1",
+  "rooms": [
+    {
+      "id": "loft",
+      "name": "Living comedor y cocina",
+      "rect": {
+        "x": [
+          0,
+          5
+        ],
+        "z": [
+          0,
+          6.8
+        ]
+      },
+      "floor": {
+        "kind": "planks",
+        "color": "#6f4a32",
+        "size": 1.2,
+        "gloss": 0.3
+      }
+    }
+  ],
+  "walls": [
+    {
+      "from": [
+        -0.075,
+        -0.075
+      ],
+      "to": [
+        5.075,
+        -0.075
+      ],
+      "thickness": 0.15
+    },
+    {
+      "from": [
+        5.075,
+        -0.075
+      ],
+      "to": [
+        5.075,
+        6.875
+      ],
+      "thickness": 0.15,
+      "openings": [
+        {
+          "kind": "sliding-window",
+          "at": 4.6,
+          "width": 2.2,
+          "height": 2.1,
+          "sill": 0.08,
+          "panels": 2,
+          "frame": "#2b2c2e"
+        }
+      ]
+    },
+    {
+      "from": [
+        -0.075,
+        6.875
+      ],
+      "to": [
+        5.075,
+        6.875
+      ],
+      "thickness": 0.15
+    },
+    {
+      "from": [
+        -0.075,
+        -0.075
+      ],
+      "to": [
+        -0.075,
+        6.875
+      ],
+      "thickness": 0.15,
+      "openings": [
+        {
+          "kind": "door",
+          "at": 1.25,
+          "width": 0.85,
+          "height": 2.1,
+          "hinge": "end",
+          "open": 0,
+          "material": "lacquer",
+          "color": "#f4f3f0"
+        }
+      ]
+    }
+  ],
+  "structure": [
+    {
+      "kind": "beam",
+      "x": [
+        0,
+        5
+      ],
+      "z": [
+        2.4,
+        2.75
+      ],
+      "y": [
+        2.32,
+        2.75
+      ],
+      "finish": "concrete",
+      "color": "#9e9c96"
+    },
+    {
+      "kind": "beam",
+      "x": [
+        0,
+        5
+      ],
+      "z": [
+        5,
+        5.35
+      ],
+      "y": [
+        2.32,
+        2.75
+      ],
+      "finish": "concrete",
+      "color": "#9e9c96"
+    },
+    {
+      "kind": "beam",
+      "x": [
+        2.35,
+        2.7
+      ],
+      "z": [
+        0,
+        6.8
+      ],
+      "y": [
+        2.28,
+        2.75
+      ],
+      "finish": "concrete",
+      "color": "#9e9c96"
+    },
+    {
+      "kind": "beam",
+      "x": [
+        0,
+        5
+      ],
+      "z": [
+        0,
+        0.28
+      ],
+      "y": [
+        2.38,
+        2.75
+      ],
+      "finish": "concrete",
+      "color": "#9e9c96"
+    },
+    {
+      "kind": "column",
+      "x": [
+        3.75,
+        4.1
+      ],
+      "z": [
+        2.4,
+        2.75
+      ],
+      "y": [
+        0,
+        2.32
+      ],
+      "finish": "concrete",
+      "color": "#9e9c96"
+    }
+  ],
+  "items": [
+    {
+      "type": "fridge",
+      "at": [
+        0.85,
+        0.36
+      ],
+      "params": {
+        "width": 0.75,
+        "height": 1.85,
+        "depth": 0.65,
+        "color": "#c8cacc",
+        "doors": 2
+      }
+    },
+    {
+      "type": "kitchen-base",
+      "at": [
+        2.25,
+        0.3
+      ],
+      "params": {
+        "width": 2,
+        "depth": 0.6,
+        "height": 0.9,
+        "color": "#f3f3f1",
+        "top": "#e9e6e0",
+        "handles": true,
+        "modules": [
+          {
+            "w": 0.6,
+            "kind": "drawers",
+            "count": 3
+          },
+          {
+            "w": 0.8,
+            "kind": "doors",
+            "count": 2
+          },
+          {
+            "w": 0.6,
+            "kind": "doors",
+            "count": 1
+          }
+        ],
+        "sink": {
+          "x": 0.15,
+          "w": 0.6,
+          "d": 0.42
+        },
+        "backsplash": {
+          "color": "#e7e5e1",
+          "height": 0.62
+        }
+      }
+    },
+    {
+      "type": "kitchen-wall",
+      "at": [
+        2.25,
+        0.165
+      ],
+      "params": {
+        "width": 2,
+        "depth": 0.33,
+        "y0": 1.55,
+        "height": 0.7,
+        "color": "#f4f4f2",
+        "modules": [
+          {
+            "w": 1,
+            "kind": "doors",
+            "count": 2
+          },
+          {
+            "w": 1,
+            "kind": "doors",
+            "count": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "appliance",
+      "at": [
+        1.65,
+        0.32
+      ],
+      "y": 0.9,
+      "params": {
+        "kind": "coffee-maker",
+        "color": "#1d1d1e"
+      }
+    },
+    {
+      "type": "kitchen-base",
+      "at": [
+        2.3,
+        1.75
+      ],
+      "rotation": 180,
+      "params": {
+        "width": 1.8,
+        "depth": 0.6,
+        "height": 0.9,
+        "color": "#f2f1ee",
+        "top": "#8c8d8b",
+        "handles": true,
+        "modules": [
+          {
+            "w": 0.6,
+            "kind": "drawers",
+            "count": 3
+          },
+          {
+            "w": 0.6,
+            "kind": "doors",
+            "count": 2
+          },
+          {
+            "w": 0.6,
+            "kind": "drawers",
+            "count": 3
+          }
+        ],
+        "bar": {
+          "height": 1,
+          "depth": 0.3,
+          "top": "#8c8d8b",
+          "panel": "#9a9b98"
+        }
+      }
+    },
+    {
+      "type": "bar-stool",
+      "at": [
+        2,
+        2.45
+      ],
+      "rotation": 180,
+      "params": {
+        "seatHeight": 0.66,
+        "color": "#232324"
+      }
+    },
+    {
+      "type": "bar-stool",
+      "at": [
+        2.7,
+        2.45
+      ],
+      "rotation": 180,
+      "params": {
+        "seatHeight": 0.66,
+        "color": "#232324"
+      }
+    },
+    {
+      "type": "dining-table",
+      "at": [
+        2.3,
+        4.75
+      ],
+      "rotation": 96,
+      "params": {
+        "shape": "plank",
+        "length": 2.2,
+        "width": 0.82,
+        "height": 0.76,
+        "color": "#dcaa6c"
+      }
+    },
+    {
+      "type": "chair",
+      "at": [
+        1.66,
+        5.15
+      ],
+      "rotation": 90,
+      "params": {
+        "color": "#2a2a2b",
+        "legs": "#1c1c1d",
+        "quilted": false
+      }
+    },
+    {
+      "type": "chair",
+      "at": [
+        1.7,
+        4.15
+      ],
+      "rotation": 90,
+      "params": {
+        "color": "#2a2a2b",
+        "legs": "#1c1c1d",
+        "quilted": false
+      }
+    },
+    {
+      "type": "chair",
+      "at": [
+        2.92,
+        4.3
+      ],
+      "rotation": -90,
+      "params": {
+        "color": "#2a2a2b",
+        "legs": "#1c1c1d",
+        "quilted": false
+      }
+    },
+    {
+      "type": "tabletop-decor",
+      "at": [
+        2.3,
+        4.1
+      ],
+      "y": 0.76,
+      "decor": true,
+      "params": {
+        "items": [
+          "bowl"
+        ],
+        "bowl": "#e0743a"
+      }
+    },
+    {
+      "type": "side-table",
+      "at": [
+        0.35,
+        3.8
+      ],
+      "params": {
+        "style": "wood",
+        "diameter": 0.32,
+        "height": 0.34,
+        "wood": "#c79a62",
+        "color": "#d8c7ae"
+      }
+    },
+    {
+      "type": "plant",
+      "at": [
+        0.35,
+        3.8
+      ],
+      "y": 0.34,
+      "decor": true,
+      "params": {
+        "seed": 4,
+        "height": 0.62,
+        "pot": "#b9774a"
+      }
+    },
+    {
+      "type": "wall-art",
+      "at": [
+        4.45,
+        0
+      ],
+      "y": 1.45,
+      "params": {
+        "width": 0.62,
+        "height": 0.5,
+        "style": "abstract",
+        "palette": [
+          "#d9d6cf",
+          "#7d8389",
+          "#c9c2b5",
+          "#f1eee8"
+        ],
+        "frameColor": "#f2f1ee"
+      }
+    },
+    {
+      "type": "downlight",
+      "at": [
+        1.2,
+        1.3
+      ],
+      "params": {
+        "day": true
+      }
+    },
+    {
+      "type": "downlight",
+      "at": [
+        3.6,
+        1.3
+      ],
+      "params": {
+        "day": true
+      }
+    },
+    {
+      "type": "downlight",
+      "at": [
+        1.2,
+        3.8
+      ],
+      "params": {
+        "day": true
+      }
+    },
+    {
+      "type": "downlight",
+      "at": [
+        3.6,
+        3.8
+      ],
+      "params": {
+        "day": true
+      }
+    },
+    {
+      "type": "downlight",
+      "at": [
+        1.2,
+        6.1
+      ],
+      "params": {
+        "day": true
+      }
+    },
+    {
+      "type": "downlight",
+      "at": [
+        3.6,
+        6.1
+      ],
+      "params": {
+        "day": true
+      }
+    },
+    {
+      "type": "rug",
+      "at": [
+        2.3,
+        4.75
+      ],
+      "y": 0.76,
+      "rotation": 6,
+      "decor": true,
+      "params": {
+        "width": 0.36,
+        "depth": 2.6,
+        "colors": [
+          "#1f1f20",
+          "#f1efe9"
+        ],
+        "stripes": 34
+      }
+    }
+  ],
+  "exterior": {
+    "floorsBelow": 3,
+    "facade": "#e4ded4",
+    "city": {
+      "seed": 9,
+      "street": 12,
+      "floors": [
+        3,
+        6
+      ]
+    }
+  },
+  "views": {
+    "foto": {
+      "name": "Loft",
+      "pos": [
+        0.75,
+        1.34,
+        6.6
+      ],
+      "target": [
+        2.2,
+        1,
+        0.6
+      ],
+      "fov": 86,
+      "photo": "loft",
+      "photoAspect": 0.5625
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+ "fecha": "2026-11-04T00:43:49.828Z",
+ "dudas": [
+  "Medidas generales: el anuncio no trae plano ni m²",
+  "Ubicación de los dormitorios y baños de planta baja respecto del living: ninguna foto los muestra juntos",
+  "Pasillo, recibidor y puerta de entrada: no aparecen en las fotos",
+  "Altillo: largo del dormitorio, posición del baño con hidromasaje y pendiente del techo",
+  "Espacio cerrado sobre el arranque de la escalera, en el altillo",
+  "Hueco de la escalera y baranda: no se ven completos en las fotos",
+  "Ropa de cama del tercer dormitorio y del altillo: tomada de fotos parecidas"
+ ],
+ "ambientes": [
+  "Dormitorio de dos camas",
+  "Dormitorio principal",
+  "Baño en suite",
+  "Living, comedor y cocina",
+  "Pasillo",
+  "Tercer dormitorio",
+  "Baño",
+  "Recibidor",
+  "Dormitorio del altillo",
+  "Baño con hidromasaje",
+  "Depósito"
+ ]
+}

@@ -1,0 +1,421 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Departamento en 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;650&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Visor a pantalla completa: ficha compacta arriba a la izquierda (la descripción se abre con "Más información") y una
+   sola píldora abajo para recorrer las vistas (anterior · lista · siguiente) y pasar a la noche. */
+:root{
+  --bg:#e4e8eb; --panel:rgba(250,251,252,.88); --ink:#1d2430; --muted:#5b6573;
+  --line:rgba(29,36,48,.12); --accent:#2d3a52; --accent-ink:#f4f6fa; --chip:rgba(29,36,48,.06); --warn:#9a5b13;
+  --font:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151a21; --panel:rgba(24,30,38,.88); --ink:#e9edf2; --muted:#9aa5b3;
+    --line:rgba(233,237,242,.14); --accent:#c9d5ea; --accent-ink:#141a24; --chip:rgba(233,237,242,.08); --warn:#e7b26a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151a21; --panel:rgba(24,30,38,.88); --ink:#e9edf2; --muted:#9aa5b3;
+  --line:rgba(233,237,242,.14); --accent:#c9d5ea; --accent-ink:#141a24; --chip:rgba(233,237,242,.08); --warn:#e7b26a; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);overflow:hidden;-webkit-font-smoothing:antialiased}
+#app{position:relative;width:100%;height:100%;overflow:hidden}
+#stage{position:absolute;inset:0}
+#stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.glass{background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line)}
+svg{display:block;flex:none}
+
+/* ficha: cerrada ocupa título y una línea; abierta muestra la descripción y el aviso de modelo aproximado */
+.head{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));left:calc(14px + env(safe-area-inset-left,0px));
+  width:min(360px,calc(100% - 28px));border-radius:16px;padding:11px 14px 10px;display:grid;gap:5px;
+  max-height:calc(100% - 120px);overflow:auto}
+.head:has(details:not([open])){width:auto;max-width:min(360px,calc(100% - 28px))}
+.head h1{margin:0;font-size:16px;line-height:1.25;font-weight:650;letter-spacing:-.01em;text-wrap:balance}
+.head p{margin:0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+details{font-size:13px;line-height:1.45}
+summary{cursor:pointer;color:var(--muted);font-weight:500;list-style:none;display:inline-flex;align-items:center;gap:4px;border-radius:6px}
+summary::-webkit-details-marker{display:none}
+summary svg{transition:transform .2s}
+details[open] summary svg{transform:rotate(90deg)}
+summary:hover{color:var(--ink)}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details ul{margin:6px 0 0;padding-left:18px;color:var(--muted)}
+.head details p{margin-top:7px}
+.head details p.fine{font-size:12.5px;opacity:.85}
+#est.dev summary{color:var(--warn)}
+.brand{margin:0;font-size:12.5px;color:var(--muted)}
+.brand a{color:var(--ink);font-weight:500;text-decoration:none;border-bottom:1px solid var(--accent)}
+.stats{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.link{font:inherit;font-size:13px;font-weight:500;color:var(--ink);background:var(--chip);border:0;border-radius:10px;padding:5px 10px;cursor:pointer;justify-self:start}
+.link:hover{background:var(--line)}
+
+/* abajo: la ayuda (desplegable) y la píldora con el modo, la noche y "?" */
+.bars{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:8px;
+  pointer-events:none;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.nav{pointer-events:auto;display:flex;align-items:center;gap:2px;border-radius:999px;padding:4px;max-width:100%}
+.nav button{font:inherit;color:var(--ink);background:transparent;border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.nav button:hover{background:var(--chip)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ico{width:38px;height:38px;border-radius:999px}
+/* selector de modo: "Vista general" (desde arriba) o "Recorrido" (adentro) */
+.mode{display:flex;gap:2px;background:var(--chip);border-radius:999px;padding:3px}
+.nav .mode button{height:34px;padding:0 15px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap}
+.nav .mode button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+.night{gap:6px;width:auto;padding:0 12px 0 10px;font-size:14px;font-weight:500}
+.night[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.nav .night[aria-pressed="true"]:hover{background:var(--accent)}
+/* guía de la primera visita (T-42): el gesto dibujado sobre la escena y un globo sobre la flecha "siguiente"; se va
+   apenas la persona hace lo que se le muestra */
+.coach{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:12px;
+  pointer-events:none;transition:opacity .35s;width:max-content;max-width:calc(100% - 32px)}
+.coach[data-off]{opacity:0}
+.coach .hand{width:132px;height:52px;position:relative}
+.coach .dot{position:absolute;top:6px;left:50%;width:40px;height:40px;margin-left:-20px;border-radius:50%;
+  background:rgba(255,255,255,.9);box-shadow:0 0 0 7px rgba(255,255,255,.3),0 4px 16px rgba(0,0,0,.28);animation:swipe 2.4s ease-in-out infinite}
+.coach .trail{position:absolute;top:25px;left:12px;right:12px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent)}
+@keyframes swipe{0%,100%{transform:translateX(-40px)}50%{transform:translateX(40px)}}
+/* caminar en celular: un toque sobre el piso (más abajo en la pantalla) */
+.coach[data-kind="tap"]{top:66%}
+.coach .tap{width:80px;height:80px;position:relative}
+.coach .tap .dot{top:20px;animation:tap 1.8s ease-in-out infinite}
+.coach .ring{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.95);animation:ring 1.8s ease-out infinite;opacity:0}
+@keyframes tap{0%,30%,100%{transform:scale(1)}12%{transform:scale(.78)}}
+@keyframes ring{0%,10%{transform:scale(.7);opacity:0}14%{opacity:1}70%,100%{transform:scale(2);opacity:0}}
+/* caminar en la PC: las teclas W A S D, que se van presionando */
+.coach .keys{display:grid;grid-template-columns:repeat(3,36px);grid-template-rows:36px 36px;gap:6px}
+.coach .key{border-radius:9px;background:rgba(255,255,255,.94);color:#1d2430;font:650 15px var(--font);display:grid;place-items:center;
+  box-shadow:0 3px 0 rgba(29,36,48,.35),0 6px 16px rgba(0,0,0,.22);animation:press 3.2s ease-in-out infinite}
+.coach .k-w{grid-column:2;grid-row:1}
+.coach .k-a{grid-column:1;grid-row:2;animation-delay:.8s}
+.coach .k-s{grid-column:2;grid-row:2;animation-delay:1.6s}
+.coach .k-d{grid-column:3;grid-row:2;animation-delay:2.4s}
+@keyframes press{0%,22%,100%{transform:none;box-shadow:0 3px 0 rgba(29,36,48,.35),0 6px 16px rgba(0,0,0,.22)}
+  6%,16%{transform:translateY(3px);box-shadow:0 0 0 rgba(29,36,48,.35),0 3px 8px rgba(0,0,0,.2);background:#dfe6f2}}
+/* acercar: dos dedos que se separan (celular) o la rueda del mouse (PC) */
+.coach .pinch{width:110px;height:100px;position:relative}
+.coach .pinch .dot{top:34px;width:32px;height:32px;margin-left:-16px}
+.coach .pinch .f1{animation:pinch1 2.2s ease-in-out infinite}
+.coach .pinch .f2{animation:pinch2 2.2s ease-in-out infinite}
+@keyframes pinch1{0%,15%,100%{transform:translate(-9px,9px)}55%,75%{transform:translate(-30px,30px)}}
+@keyframes pinch2{0%,15%,100%{transform:translate(9px,-9px)}55%,75%{transform:translate(30px,-30px)}}
+.coach .mouse{width:36px;height:56px;border:2.5px solid rgba(255,255,255,.95);border-radius:18px;position:relative;
+  background:rgba(29,36,48,.55);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.coach .mouse::before{content:"";position:absolute;left:0;right:0;top:24px;height:2px;background:rgba(255,255,255,.5)}
+.coach .wheel{position:absolute;left:50%;top:7px;width:6px;height:12px;margin-left:-3px;border-radius:3px;background:#fff;animation:wheel 1.3s ease-in-out infinite}
+@keyframes wheel{0%{transform:translateY(5px);opacity:0}25%{opacity:1}70%{transform:translateY(-3px);opacity:1}100%{transform:translateY(-5px);opacity:0}}
+.coach .msg{font-size:15px;font-weight:600;text-align:center;border-radius:14px;padding:9px 16px;line-height:1.35}
+.coach .msg small{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:2px}
+.nav{position:relative}
+.tip{position:absolute;bottom:calc(100% + 12px);white-space:nowrap;background:var(--accent);color:var(--accent-ink);
+  font-size:13.5px;font-weight:600;padding:8px 13px;border-radius:12px;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.18);
+  transition:opacity .3s}
+.tip[data-off]{opacity:0}
+.tip::after{content:"";position:absolute;top:100%;left:var(--arrow,50%);margin-left:-7px;border:7px solid transparent;border-top-color:var(--accent)}
+.nav .pulse{animation:pulse 1.6s ease-out infinite;background:var(--chip)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 12px color-mix(in srgb,var(--accent) 0%,transparent)}}
+/* ayuda: se abre con "?" en la píldora */
+.card{pointer-events:auto;width:min(330px,100%);border-radius:16px;padding:14px 16px;display:grid;gap:11px;font-size:13.5px;line-height:1.4}
+.card h2{margin:0;font-size:14.5px;font-weight:650}
+.card dl{margin:0;display:grid;gap:9px}
+.card dt{font-weight:600}
+.card dd{margin:1px 0 0;color:var(--muted)}
+.help{font-size:15px;font-weight:650}
+.help[aria-expanded="true"]{background:var(--chip)}
+@media (prefers-reduced-motion: reduce){ .coach .dot,.coach .ring,.coach .key,.coach .wheel,.nav .pulse{animation:none} .coach .ring{opacity:1} }
+.drawer{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px));
+  width:min(420px,calc(100% - 28px));max-height:calc(100% - 140px);border-radius:16px;display:grid;grid-template-rows:auto 1fr;overflow:hidden}
+.drawer header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px 8px 15px;font-weight:650;font-size:14px}
+.drawer pre{margin:0;padding:0 15px 14px;overflow:auto;font-family:var(--mono);font-size:11.5px;line-height:1.5;color:var(--ink);min-width:0}
+.err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--muted)}
+@media (max-width:560px){
+  .head{padding:9px 12px}
+  .head h1{font-size:15px}
+  .head .note,.stats{display:none}
+  .night .label{display:none}
+  .night{width:38px;padding:0}
+  .nav .mode button{padding:0 12px;font-size:13.5px}
+  .ico{width:36px}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+
+<div id="app">
+  <div id="stage"></div>
+  <div class="head glass">
+    <h1 id="name">Cargando…</h1>
+    <p class="note" id="note" hidden></p>
+    <details id="est"><summary><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="estSum">Más información</span></summary><div id="estBody"></div></details>
+    <div class="stats" id="stats" aria-live="off" hidden></div>
+    <button class="link" id="tJson" aria-expanded="false" hidden>Ver scene.json</button>
+    <p class="brand" id="brand" hidden></p>
+  </div>
+  <div class="drawer glass" id="drawer" hidden>
+    <header><span>scene.json</span><button class="link" id="closeJson">Cerrar</button></header>
+    <pre id="json"></pre>
+  </div>
+  <div class="coach" id="coach" data-off aria-live="polite">
+    <div class="hand" id="artSwipe" aria-hidden="true"><div class="trail"></div><div class="dot"></div></div>
+    <div class="tap" id="artTap" aria-hidden="true" hidden><span class="ring"></span><span class="dot"></span></div>
+    <div class="pinch" id="artPinch" aria-hidden="true" hidden><span class="dot f1"></span><span class="dot f2"></span></div>
+    <div class="mouse" id="artWheel" aria-hidden="true" hidden><span class="wheel"></span></div>
+    <div class="keys" id="artKeys" aria-hidden="true" hidden><span class="key k-w">W</span><span class="key k-a">A</span><span class="key k-s">S</span><span class="key k-d">D</span></div>
+    <div class="msg glass" id="coachMsg"></div>
+  </div>
+  <div class="bars">
+    <div class="card glass" id="card" role="dialog" aria-label="Cómo recorrer el departamento" hidden></div>
+    <nav class="nav glass" aria-label="Controles del recorrido">
+      <div class="mode" id="modes" role="group" aria-label="Modo de vista">
+        <button type="button" id="mGeneral" aria-pressed="true">Vista general</button>
+        <button type="button" id="mTour" aria-pressed="false">Recorrido</button>
+      </div>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="ico night" id="night" aria-pressed="false" title="De noche"><svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true"><path d="M14.6 11.2A6.2 6.2 0 0 1 6.8 3.4a6.2 6.2 0 1 0 7.8 7.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="label">De noche</span></button>
+      <button class="ico help" id="help" aria-expanded="false" aria-controls="card" aria-label="Cómo recorrer" title="Cómo recorrer">?</button>
+      <span class="tip" id="tip" data-off aria-hidden="true"></span>
+    </nav>
+  </div>
+  <div class="err" id="err" hidden></div>
+</div>
+
+<script type="module">
+import { start } from './engine.js';
+const $ = id => document.getElementById(id);
+const fail = msg => { $('err').textContent = msg; $('err').hidden = false; };
+
+// local: visor.html?scene=/departamentos/depto2/scene.json · publicado: scene.json junto a la página
+// El huésped ve el título y, al abrir "Más información", el texto "about" y el aviso de modelo aproximado; con &dev
+// (o ?dev) aparecen la nota interna, la lista de estimados, las estadísticas y el scene.json, para trabajar.
+const params = new URLSearchParams(location.search), dev = params.has('dev');
+const src = params.get('scene') ?? './scene.json';
+let scene;
+try { scene = await (await fetch(src)).json(); }
+catch (e) { fail('No se pudo leer scene.json. Abrí el visor con el servidor local (node motor/serve.mjs).'); throw e; }
+
+document.title = scene.name ?? document.title;
+$('name').textContent = scene.name ?? 'Departamento';
+const el = (tag, text, className = '') => Object.assign(document.createElement(tag), { textContent: text, className });
+if (dev) {
+  $('note').textContent = scene.note ?? ''; $('note').hidden = !scene.note;
+  $('estSum').textContent = 'Estimado sin foto';
+  $('estBody').replaceChildren(el('ul'));
+  $('estBody').firstChild.replaceChildren(...(scene.estimated ?? []).map(t => el('li', t)));
+  $('est').hidden = !scene.estimated?.length; $('est').classList.add('dev');
+  $('json').textContent = JSON.stringify(scene, null, 2);
+  $('stats').hidden = $('tJson').hidden = false;
+} else {
+  $('estBody').replaceChildren(...(scene.about ? [el('p', scene.about)] : []),
+    el('p', scene.disclaimer ?? 'Modelo 3D hecho a partir de las fotos del anuncio. Las medidas son aproximadas y lo que no se ve en las fotos está representado de forma simple.', 'fine'));
+}
+
+// marca blanca: "brand": { "name", "url"?, "color"? } muestra quién presenta el departamento y usa su color en los
+// botones elegidos (con el texto claro u oscuro según el color)
+if (scene.brand?.name) {
+  const b = scene.brand, a = b.url ? Object.assign(el('a', b.name), { href: b.url, target: '_blank', rel: 'noopener' }) : el('strong', b.name);
+  $('brand').replaceChildren('Presentado por ', a); $('brand').hidden = false;
+}
+if (/^#[0-9a-f]{6}$/i.test(scene.brand?.color ?? '')) {
+  const c = scene.brand.color, [r, g, bl] = [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16) / 255);
+  const ink = 0.2126 * r + 0.7152 * g + 0.0722 * bl > 0.55 ? '#141a24' : '#f4f6fa';
+  document.documentElement.style.setProperty('--accent', c); document.documentElement.style.setProperty('--accent-ink', ink);
+}
+
+// link directo a una vista: ?vista=<clave> (o #<clave>) y &noche. Al cambiar de vista se actualiza el #, así el link
+// de la barra de direcciones lleva a lo que se está viendo.
+// Sin botones de techo, maqueta ni decoración (pedido del usuario, 2026-11-04): el techo sale solo en las vistas
+// desde arriba ("cut") y la decoración va siempre.
+const keys = Object.keys(scene.views), asked = params.get('vista') ?? decodeURIComponent(location.hash.slice(1));
+const first = keys.includes(asked) ? asked : keys[0];
+const state = { view: first, cut: scene.views[first].cut, night: params.has('noche'), decor: true, pose: null };
+const remember = key => { try { history.replaceState(null, '', `#${encodeURIComponent(key)}`); } catch {} };
+let api = null;
+
+// Dos modos (pedido del usuario, 2026-11-05): "Vista general" (la maqueta desde arriba: la primera vista "cut") y
+// "Recorrido" (adentro, caminando: arranca en la primera vista de adentro con foto). Con ‹ › y 22 vistas la gente no
+// encontraba cómo entrar al departamento. Un link a una vista (?vista= o #) sigue funcionando y fija dónde arranca el
+// recorrido; las herramientas siguen usando todas las vistas del scene
+const generalKey = keys.find(k => scene.views[k].cut) ?? null;
+const tourKey = !scene.views[first].cut ? first
+  : keys.find(k => !scene.views[k].cut && scene.views[k].photo) ?? keys.find(k => !scene.views[k].cut) ?? null;
+function goTo(key) {
+  const v = scene.views[key];
+  state.view = key; state.cut = v.cut; api.setCut(v.cut); api.go(key); sync(); guideView(); remember(key);
+}
+function setTour(on) {
+  const k = on ? tourKey : generalKey;
+  if (k && !!scene.views[state.view].cut === on) goTo(k); else sync();
+}
+$('mGeneral').addEventListener('click', () => setTour(false));
+$('mTour').addEventListener('click', () => setTour(true));
+// tocar fuera cierra la ayuda
+addEventListener('pointerdown', e => {
+  if (!$('card').hidden && !$('card').contains(e.target) && !$('help').contains(e.target)) openCard(false);
+});
+
+$('night').addEventListener('click', () => { state.night = !state.night; api.setNight(state.night); sync(); });
+
+// Ayuda: "?" abre una tarjeta con los gestos (los de pantalla táctil o los de mouse y teclado)
+const touchUI = matchMedia('(pointer: coarse)').matches;
+const HELP = touchUI ? [
+  ['Vista general y Recorrido', 'Abajo elegís el modo: «Vista general» muestra la maqueta desde arriba y «Recorrido» te lleva adentro del departamento.'],
+  ['Vista general', 'Arrastrá con un dedo para girar, pellizcá para acercar y usá dos dedos para mover.'],
+  ['Recorrido', 'Arrastrá para mirar alrededor y tocá el piso para caminar hasta ahí. Pellizcá para acercar.'],
+  ['De noche', 'La luna prende las luces del departamento.'],
+] : [
+  ['Vista general y Recorrido', 'Abajo elegís el modo: «Vista general» muestra la maqueta desde arriba y «Recorrido» te lleva adentro del departamento.'],
+  ['Vista general', 'Arrastrá para girar, usá la rueda para acercar y el clic derecho para mover.'],
+  ['Recorrido', 'Arrastrá para mirar alrededor. Caminá con WASD o las flechas, o con doble clic en el piso.'],
+  ['De noche', 'Prende las luces del departamento.'],
+];
+const dl = el('dl');
+for (const [t, d] of HELP) dl.append(el('dt', t), el('dd', d));
+$('card').replaceChildren(el('h2', 'Cómo recorrer'), dl);
+function openCard(v) {
+  $('card').hidden = !v; $('help').setAttribute('aria-expanded', String(v));
+  if (v) finish();
+}
+$('help').addEventListener('click', () => openCard($('card').hidden));
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('card').hidden) { openCard(false); $('help').focus(); } });
+
+// Primera visita (T-42): se enseña con el gesto, en el momento en que hace falta, y cada paso se va cuando la persona
+// lo hace (no por tiempo). 1) desde arriba: "Arrastrá para girar"; 2) el botón "Recorrido" late: "Tocá «Recorrido» para entrar al departamento";
+// 3) en la primera vista de adentro: "Arrastrá para mirar alrededor"; 4) después, cómo caminar: en celular un toque
+// sobre el piso, en la PC las teclas W A S D (se va recién cuando la persona camina). Aparece cada vez que se abre el
+// recorrido (pedido del usuario, 2026-11-04: antes se recordaba y había que agregar ?ayuda para volver a verla); como
+// cada paso se va con el gesto, a quien ya sabe le dura un instante
+let guide = 'girar', coachT = 0;   // girar → acercar → flecha → mirar → (acercar) → caminar → listo
+// el paso de acercar va una sola vez: después de girar la maqueta o, si se entró directo a una vista de adentro,
+// después de mirar alrededor. Si la persona ya acercó por su cuenta, se saltea
+let zoomed = false;
+const inside = () => !scene.views[state.view].cut;
+const ARTS = { swipe: 'artSwipe', tap: 'artTap', keys: 'artKeys', pinch: 'artPinch', wheel: 'artWheel' };
+function showCoach(main, sub, art = 'swipe') {
+  for (const [k, id] of Object.entries(ARTS)) $(id).hidden = k !== art;
+  $('coach').dataset.kind = art;
+  $('coachMsg').replaceChildren(main, ...(sub ? [el('small', sub)] : [])); delete $('coach').dataset.off;
+}
+const hideCoach = () => { $('coach').dataset.off = ''; };
+function showTip(text) {
+  const tip = $('tip'), nx = $('mTour'); tip.textContent = text; delete tip.dataset.off; nx.classList.add('pulse');
+  // centrado sobre el botón "Recorrido", sin salirse de la pantalla; la punta del globo sigue apuntando al botón
+  const nav = nx.closest('nav').getBoundingClientRect(), b = nx.getBoundingClientRect(), w = tip.offsetWidth;
+  const cx = b.left + b.width / 2, left = Math.max(8, Math.min(innerWidth - 8 - w, cx - w / 2));
+  tip.style.left = `${left - nav.left}px`; tip.style.setProperty('--arrow', `${cx - left}px`);
+}
+const hideTip = () => { $('tip').dataset.off = ''; $('mTour').classList.remove('pulse'); };
+function finish() { clearTimeout(coachT); guide = 'listo'; hideCoach(); hideTip(); }
+const showZoom = () => touchUI
+  ? showCoach('Pellizcá con dos dedos para acercar', 'Separalos para acercar y juntalos para alejar', 'pinch')
+  : showCoach('Usá la rueda para acercar', 'Hacia adelante acerca y hacia atrás aleja', 'wheel');
+function guideStep() {
+  clearTimeout(coachT);
+  if ((guide === 'girar' || guide === 'flecha') && inside()) guide = 'mirar';
+  if (guide === 'girar') showCoach('Arrastrá para girar', touchUI ? 'Con un dedo' : null);
+  else if (guide === 'acercar') { hideTip(); showZoom(); }
+  else if (guide === 'flecha') showTip(touchUI ? 'Tocá «Recorrido» para entrar al departamento' : 'Hacé clic en «Recorrido» para entrar al departamento');
+  else {
+    hideTip();
+    if (!inside()) hideCoach();
+    else if (guide === 'mirar') showCoach('Arrastrá para mirar alrededor', touchUI ? 'Con un dedo' : null);
+    else if (touchUI) showCoach('Tocá el piso para caminar', 'Vas hasta donde tocaste', 'tap');
+    else showCoach('Caminá con W A S D', 'o con las flechas · doble clic en el piso para ir directo', 'keys');
+  }
+}
+// el paso de caminar termina cuando la cámara de verdad se movió (un toque en una pared no camina)
+function walkedSince(pose) {
+  const p = api?.getPose().p;
+  return p && Math.hypot(p[0] - pose[0], p[2] - pose[2]) > 0.15;
+}
+// al cambiar de vista se esconde y vuelve a mostrarse al llegar (el vuelo dura ~1 s). Usar las flechas o la lista ya
+// es haber aprendido el paso de la flecha
+function guideView() {
+  if (guide === 'listo') return;
+  hideCoach(); hideTip();
+  if (guide === 'flecha') guide = 'mirar';
+  coachT = setTimeout(guideStep, 1250);
+}
+// lo que hace la persona sobre la escena: arrastrar, tocar, doble clic, la rueda, pellizcar o las teclas de caminar
+const nextStep = (g, ms) => { hideCoach(); guide = g; clearTimeout(coachT); coachT = setTimeout(guideStep, ms); };
+function acted(how) {
+  const zoom = how === 'wheel' || how === 'pinch';
+  if (zoom && guide === 'acercar') { zoomed = true; return nextStep(inside() ? 'caminar' : 'flecha', 800); }
+  if (zoom) zoomed = true;
+  if (guide === 'girar' && how === 'drag' && !inside()) nextStep(zoomed ? 'flecha' : 'acercar', 700);
+  else if (!inside()) return;
+  else if (guide === 'mirar' && how === 'drag') nextStep(zoomed ? 'caminar' : 'acercar', 900);
+  // si ya camina sin que se lo digan, no hace falta seguir
+  else if (guide !== 'listo' && (how === 'key' || how === 'dbl')) finish();
+  else if (guide !== 'listo' && how === 'tap' && touchUI) {
+    const from = api.getPose().p;
+    setTimeout(() => { if (guide !== 'listo' && walkedSince(from)) finish(); }, 900);
+  }
+}
+// un dedo que se mueve es arrastrar; dos que se acercan o se alejan, pellizcar
+let press = null, pinch0 = 0;
+const fingers = new Map();
+const spread = () => { const [p, q] = [...fingers.values()]; return Math.hypot(p.x - q.x, p.y - q.y); };
+$('stage').addEventListener('pointerdown', e => {
+  fingers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  press = fingers.size === 1 ? { x: e.clientX, y: e.clientY, moved: false } : null;
+  if (fingers.size === 2) pinch0 = spread();
+}, true);
+$('stage').addEventListener('pointermove', e => {
+  const p = fingers.get(e.pointerId); if (p) { p.x = e.clientX; p.y = e.clientY; }
+  if (fingers.size === 2 && pinch0 && Math.abs(spread() - pinch0) > 30) { pinch0 = 0; acted('pinch'); }
+  else if (fingers.size === 1 && press && !press.moved && Math.hypot(e.clientX - press.x, e.clientY - press.y) > 12) { press.moved = true; acted('drag'); }
+}, true);
+const lift = e => {
+  fingers.delete(e.pointerId);
+  if (e.type === 'pointerup' && press && !press.moved && !fingers.size) acted('tap');
+  if (!fingers.size) press = null;
+};
+$('stage').addEventListener('pointerup', lift, true);
+$('stage').addEventListener('pointercancel', lift, true);
+$('stage').addEventListener('wheel', () => acted('wheel'), { capture: true, passive: true });
+$('stage').addEventListener('dblclick', () => acted('dbl'), true);
+addEventListener('keydown', e => { if (/^(Arrow|Key[WASD]$)/.test(e.code) && !/INPUT|TEXTAREA/.test(document.activeElement?.tagName)) acted('key'); });
+function sync() {
+  const inTour = !scene.views[state.view].cut;
+  $('mGeneral').setAttribute('aria-pressed', String(!inTour)); $('mTour').setAttribute('aria-pressed', String(inTour));
+  $('night').setAttribute('aria-pressed', String(state.night));
+  $('night').setAttribute('aria-label', 'De noche');
+}
+// sin vista desde arriba o sin vista de adentro no hay modos para elegir
+if (!generalKey || !tourKey) { $('modes').hidden = true; document.querySelector('.sep').hidden = true; if (guide === 'flecha') guide = 'mirar'; }
+
+async function boot() {
+  try { api = await start($('stage'), { scene, state, wideViews: true, base: new URL('.', new URL(src, location.href)).href }); window.__viewer = api; }
+  catch (e) { console.error(e); fail('Este navegador no pudo iniciar el visor 3D.'); return; }
+  sync();
+}
+
+const openJson = v => { $('drawer').hidden = !v; $('tJson').setAttribute('aria-expanded', String(v)); };
+$('tJson').addEventListener('click', () => openJson($('drawer').hidden));
+$('closeJson').addEventListener('click', () => openJson(false));
+if (dev) setInterval(() => {
+  if (!api) return;
+  const s = api.stats();
+  $('stats').textContent = `${s.meshes} mallas · ${(s.tris / 1000).toFixed(1)} k triángulos · ${s.fps} fps · calidad ${s.quality}`;
+}, 500);
+
+sync();
+await boot();
+if (guide !== 'listo') coachT = setTimeout(guideStep, 900);
+</script>

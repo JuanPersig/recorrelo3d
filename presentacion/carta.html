@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recorrelo 3D · presentación</title>
+<!--
+  Carta de presentación para anfitriones e inmobiliarias (A6 apaisada, 148 × 105 mm, como la tarjeta de bienvenida).
+  El QR lleva a un recorrido de muestra: qr-demo.png y portada-demo.jpg salen de entregas/<depto>/ (qr.png y
+  portada.jpg). Para cambiar la muestra, copiar esos dos archivos de otro depto. La línea de contacto va vacía hasta
+  que el usuario elija cómo lo contactan (completar el <p class="contacto">).
+-->
+<style>
+:root{ --accent:#2f5d50; --ink:#1f2328; --muted:#4b525a }
+*{ box-sizing:border-box }
+@page{ size:148mm 105mm; margin:0 }
+body{ margin:0; background:#e9e6df; color:var(--ink); font:16px/1.45 system-ui,"Segoe UI",Roboto,sans-serif;
+  min-height:100vh; display:grid; place-items:center; padding:16px }
+.noprint{ position:fixed; top:10px; left:12px; font-size:.9rem } .noprint a{ color:var(--accent) }
+.card{ width:min(100%,600px); aspect-ratio:148/105; background:#fff; border-radius:14px; overflow:hidden;
+  display:grid; grid-template-columns:1fr 1.15fr; box-shadow:0 10px 30px rgba(0,0,0,.12) }
+.ph{ position:relative; background:#ddd url('portada-demo.jpg') center/cover no-repeat }
+.ph span{ position:absolute; left:10px; bottom:10px; background:rgba(255,255,255,.88); color:var(--ink);
+  font-size:.66rem; font-weight:600; padding:.2em .6em; border-radius:999px }
+.tx{ padding:16px 18px 14px; display:flex; flex-direction:column; gap:8px }
+.marca{ font:700 .78rem system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent) }
+h1{ font-size:1.12rem; line-height:1.2; margin:0 }
+ul{ margin:0; padding-left:1.05em; font-size:.76rem; color:var(--muted) } li{ margin:.12em 0 }
+.qr{ display:flex; align-items:center; gap:10px; margin-top:auto }
+.qr img{ width:84px; height:84px; display:block }
+.qr p{ margin:0; font-size:.74rem; color:var(--muted) } .qr b{ color:var(--ink); display:block; font-size:.82rem }
+.contacto{ margin:0; font-size:.68rem; color:var(--muted) } .contacto:empty{ display:none }
+@media print{ body{ background:#fff; padding:0; display:block } .card{ box-shadow:none; border-radius:0; width:148mm; height:105mm } .noprint{ display:none } }
+@media (max-width:460px){ .card{ grid-template-columns:1fr; aspect-ratio:auto } .ph{ min-height:200px } }
+</style>
+</head>
+<body>
+<p class="noprint"><a href="#" onclick="print();return false">Imprimir o guardar PDF</a></p>
+<div class="card">
+  <div class="ph" role="img" aria-label="Living de un departamento recorrido en 3D"><span>Captura del recorrido 3D</span></div>
+  <div class="tx">
+    <div class="marca">Recorrelo 3D</div>
+    <h1>Que tus huéspedes recorran el departamento antes de llegar</h1>
+    <ul>
+      <li>Recorrido 3D desde el celular, de día y de noche, sin instalar nada.</li>
+      <li>Videos listos para Reels, historias y tu publicación.</li>
+      <li>Tarjeta de bienvenida con QR para dejar en el departamento.</li>
+    </ul>
+    <div class="qr">
+      <img src="qr-demo.png" alt="Código QR de un recorrido de muestra">
+      <p><b>Escaneá y probalo</b>Un departamento real, armado a partir de sus fotos.</p>
+    </div>
+    <p class="contacto"></p>
+  </div>
+</div>
+</body>
+</html>

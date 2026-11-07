@@ -1,0 +1,36 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Departamento demo · recorrido 3D</title><style>
+:root{ --bg:#f6f4ef; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e4e0d8; --accent:#2f5d50; --soft:#ece8df }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#17191c; --card:#202327; --ink:#eceae6; --muted:#a3a8ae; --line:#33373c; --soft:#2a2d31 } }
+*{ box-sizing:border-box } html{ -webkit-text-size-adjust:100% }
+body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,"Segoe UI",Roboto,sans-serif }
+a{ color:var(--accent) } img{ max-width:100%; display:block }
+.wrap{ max-width:1080px; margin:0 auto; padding:0 16px }
+h1,h2,h3{ line-height:1.2; margin:0 0 .4em } h2{ font-size:1.35rem; margin-top:0 } .muted{ color:var(--muted) }
+section{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin:16px 0 }
+.btn{ display:inline-flex; align-items:center; gap:.4em; background:var(--accent); color:#fff; text-decoration:none; border:0; border-radius:10px; padding:.65em 1em; font:600 .95rem system-ui,sans-serif; cursor:pointer }
+.btn.alt{ background:var(--soft); color:var(--ink) } .row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+.tag{ display:inline-block; font-size:.78rem; background:var(--soft); color:var(--muted); border-radius:999px; padding:.15em .6em }
+
+header.hero{ background:linear-gradient(160deg,var(--accent),#1d2a27); color:#fff; padding:36px 0 30px }
+header.hero .wrap{ display:flex; flex-direction:column; gap:10px } header.hero .tag{ align-self:flex-start } header.hero p{ margin:0; opacity:.9; max-width:62ch }
+header.hero .btn{ background:#fff; color:#1d2a27 } header.hero .btn.alt{ background:rgba(255,255,255,.16); color:#fff }
+.share{ display:grid; gap:16px; grid-template-columns:1fr 200px; align-items:center }
+.qr{ background:#fff; padding:12px; border-radius:12px; border:1px solid var(--line); text-align:center; color:#1f2328 } .qr img{ width:170px; margin:0 auto }
+.note{ background:var(--soft); border-radius:12px; padding:10px 12px; font-size:.92rem }
+@media (max-width:720px){ .share{ grid-template-columns:1fr } .qr{ justify-self:center } section{ padding:16px } header.hero{ padding:28px 0 22px } }
+</style></head><body>
+<header class="hero"><div class="wrap">
+  <span class="tag" style="background:rgba(255,255,255,.18);color:#fff">Recorrido 3D</span>
+  <h1>Departamento demo</h1>
+  <p>Studio amplio y muy luminoso. Piso de parquet en espiga, living con sillón y mesa ratona frente al ventanal, mesa redonda para dos con sillas de madera, cocina separada con arco y barra con banquetas, zona de dormir detrás de un divisor de vidrio esmerilado con cama de una plaza y mesa de luz, y baño completo con bidet. Balcón a una calle arbolada, aire acondicionado y wifi.</p>
+  <div class="row"><a class="btn" href="https://recorrelo3d.pages.dev/departamento-prueba/">Abrir el recorrido 3D</a><a class="btn alt" href="tarjeta.html">Tarjeta con QR</a></div>
+</div></header>
+<main class="wrap">
+<section><h2>Tarjeta de bienvenida</h2><div class="share"><div>
+  <p class="muted">Imprimila y dejala en la mesa o la heladera: el huésped escanea el QR y recorre el departamento en 3D desde el celular.</p>
+  <div class="row"><a class="btn" href="tarjeta.html">Abrir la tarjeta para imprimir</a><a class="btn alt" href="qr.png" download>Bajar el QR</a></div>
+  
+</div><div class="qr"><img src="qr.png" alt="Código QR del recorrido"><div style="font-size:.85rem;margin-top:6px">Recorrido 3D</div></div></div></section>
+<p class="muted" style="text-align:center;font-size:.85rem;margin:24px 0">El recorrido es una representación aproximada hecha a partir de las fotos del departamento.</p>
+</main></body></html>

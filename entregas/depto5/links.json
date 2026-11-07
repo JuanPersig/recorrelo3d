@@ -1,0 +1,28 @@
+{
+  "departamento": "Departamento demo",
+  "link": "https://recorrelo3d.pages.dev/departamento-prueba/",
+  "vistas": {
+    "Vista general": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=general",
+    "Living y ventanal": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living1",
+    "Sillón y barra": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living2",
+    "Comedor y balcón": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living3",
+    "Sillón": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living4",
+    "Desde la barra": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living5",
+    "Living hacia la entrada": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living6",
+    "Barra y ventanal": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=living8",
+    "Mesa para dos": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=comedor",
+    "Cocina": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=cocina1",
+    "Cocina por el arco": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=cocina2",
+    "Arco y banquetas": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=cocina5",
+    "Desde la entrada": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=dormitorio1",
+    "Cama": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=dormitorio3",
+    "Zona de dormir": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=dormitorio4",
+    "Baño": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=bano1",
+    "Vanitory": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=bano2",
+    "Recibidor": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=entrada",
+    "Consola y espejo": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=consola",
+    "Pasillo de entrada": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=pasillo",
+    "Vista al balcón": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=balcon",
+    "Planta": "https://recorrelo3d.pages.dev/departamento-prueba/?vista=planta"
+  }
+}

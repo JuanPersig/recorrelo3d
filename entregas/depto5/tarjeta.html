@@ -1,0 +1,25 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Departamento demo · tarjeta de bienvenida</title><style>
+:root{ --bg:#f6f4ef; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e4e0d8; --accent:#2f5d50; --soft:#ece8df }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#17191c; --card:#202327; --ink:#eceae6; --muted:#a3a8ae; --line:#33373c; --soft:#2a2d31 } }
+*{ box-sizing:border-box } html{ -webkit-text-size-adjust:100% }
+body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,"Segoe UI",Roboto,sans-serif }
+a{ color:var(--accent) } img{ max-width:100%; display:block }
+.wrap{ max-width:1080px; margin:0 auto; padding:0 16px }
+h1,h2,h3{ line-height:1.2; margin:0 0 .4em } h2{ font-size:1.35rem; margin-top:0 } .muted{ color:var(--muted) }
+section{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin:16px 0 }
+.btn{ display:inline-flex; align-items:center; gap:.4em; background:var(--accent); color:#fff; text-decoration:none; border:0; border-radius:10px; padding:.65em 1em; font:600 .95rem system-ui,sans-serif; cursor:pointer }
+.btn.alt{ background:var(--soft); color:var(--ink) } .row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+.tag{ display:inline-block; font-size:.78rem; background:var(--soft); color:var(--muted); border-radius:999px; padding:.15em .6em }
+
+@page{ size:148mm 105mm; margin:0 } body{ background:#e9e6df; display:grid; place-items:center; min-height:100vh; padding:16px }
+.card{ width:min(100%,560px); aspect-ratio:148/105; background:#fff; color:#1f2328; border-radius:14px; overflow:hidden; display:grid; grid-template-columns:1.1fr 1fr; box-shadow:0 10px 30px rgba(0,0,0,.12) }
+.card .ph{ background:#ddd center/cover no-repeat } .card .tx{ padding:18px; display:flex; flex-direction:column; justify-content:space-between }
+.card h1{ font-size:1.05rem; margin:0 } .card p{ font-size:.82rem; margin:.4em 0; color:#4b525a } .card img{ width:44%; max-width:130px }
+.noprint{ position:fixed; top:10px; left:12px; font-size:.9rem } @media print{ body{ background:#fff; padding:0 } .card{ box-shadow:none; border-radius:0; width:148mm } .noprint{ display:none } }
+@media (max-width:420px){ .card{ grid-template-columns:1fr; aspect-ratio:auto } .card .ph{ min-height:160px } }
+</style></head><body><p class="noprint"><a href="index.html">← Volver</a> · <a href="#" onclick="print();return false">Imprimir</a></p>
+<div class="card"><div class="ph" style="background-image:url('portada.jpg')"></div><div class="tx">
+<div><h1>¡Bienvenido!</h1><p>Escaneá el código y recorré el departamento en 3D: dónde está cada cosa, de día y de noche.</p></div>
+<img src="qr.png" alt="Código QR del recorrido">
+<p style="font-size:.72rem">Departamento demo</p></div></div></body></html>

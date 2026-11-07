@@ -1,0 +1,149 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plano del departamento</title>
+<style>
+/* Herramienta de producción (T-09): dibuja el plano 2D desde el scene.json y lo guarda como entregable. */
+:root{ --bg:#eceef0; --ink:#1d2430; --muted:#5b6573; font-family:system-ui,"Segoe UI",sans-serif }
+body{ margin:0; background:var(--bg); color:var(--ink); padding:12px 14px 40px }
+h1{ font-size:18px; margin:0 0 4px } p,li{ font-size:13px; color:var(--muted) }
+#plano svg{ max-width:100%; height:auto; background:#fff; border-radius:6px }
+#stage{ position:fixed; left:-10000px; top:0; width:320px; height:240px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<h1>Plano del departamento</h1>
+<p id="estado">Armando…</p>
+<div id="plano"></div>
+<h2 style="font-size:15px">Para confirmar con el dueño</h2>
+<ul id="dudas"></ul>
+<div id="stage"></div>
+<script type="module">
+// plano.html?depto=<id>[&escala=70][&muebles=0]
+// Planta de cada nivel: paredes con sus vanos, puertas con el barrido de la hoja, ventanas, nombre y medidas aproximadas
+// de cada ambiente, muebles en silueta (la huella real de cada componente), balcones y la escalera; la calle o el
+// balcón señalados del lado de la fachada y la marca ("brand") si la hay. Guarda capturas/<id>/plano.svg, plano.png y
+// plano.json (con la lista de dudas: lo estimado sin foto, para confirmar la distribución con el dueño). Es una
+// herramienta de trabajo, no va en la entrega (que es el recorrido 3D y la tarjeta).
+import { start } from './engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('depto');
+const S = Number(q.get('escala') ?? 70), FURN = q.get('muebles') !== '0';
+const scene = await fetch(`/departamentos/${id}/scene.json`).then(r => r.json());
+const k0 = Object.keys(scene.views)[0];
+const api = await start($('stage'), { scene, state: { view: k0, cut: true, night: false, decor: true }, device: 'desktop' });
+const plan = api.plan(); api.destroy();
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const num = v => v.toFixed(2).replace('.', ',').replace(/,?0+$/, '');
+// recta de una pared alineada (como en engine.js)
+const wallLine = w => { const alongX = Math.abs(w.from[1] - w.to[1]) < 1e-6, fa = alongX ? w.from[0] : w.from[1], ta = alongX ? w.to[0] : w.to[1];
+  return { alongX, t: w.thickness ?? 0.15, c: alongX ? w.from[1] : w.from[0], a0: Math.min(fa, ta), a1: Math.max(fa, ta), start: o => (fa <= ta ? fa + o.at : fa - o.at - o.width) }; };
+const pad = 1.4, GAP = 1.2;
+// caja de cada nivel y su corrimiento horizontal en la lámina
+let ox = 0;
+const boxes = plan.levels.map(L => {
+  const xs = [], zs = [];
+  for (const w of L.walls) { xs.push(w.from[0], w.to[0]); zs.push(w.from[1], w.to[1]); }
+  if (L === plan.levels[0]) for (const b of plan.balconies) { xs.push(...b.x); zs.push(...b.z); }
+  const b = { x0: Math.min(...xs) - 0.2, x1: Math.max(...xs) + 0.2, z0: Math.min(...zs) - 0.2, z1: Math.max(...zs) + 0.2 };
+  b.ox = ox; ox += (b.x1 - b.x0) + GAP; return b;
+});
+const W = (ox - GAP + 2 * pad) * S, Hm = Math.max(...boxes.map(b => b.z1 - b.z0)) + 2 * pad + 0.9, H = Hm * S;
+const P = (b, x, z) => [((x - b.x0) + b.ox + pad) * S, ((z - b.z0) + pad + 0.6) * S];
+const out = [];
+out.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(0)} ${H.toFixed(0)}" width="${W.toFixed(0)}" height="${H.toFixed(0)}" font-family="system-ui, 'Segoe UI', sans-serif">`,
+  `<rect width="100%" height="100%" fill="#ffffff"/>`,
+  `<text x="${pad * S}" y="${0.55 * S}" font-size="${0.32 * S}" font-weight="600" fill="#1d2430">${esc(scene.name ?? 'Departamento')}</text>`,
+  `<text x="${pad * S}" y="${0.95 * S}" font-size="${0.2 * S}" fill="#5b6573">Plano aproximado · medidas en metros${scene.brand?.name ? ` · ${esc(scene.brand.name)}` : ''}</text>`);
+const rectPath = pts => 'M' + pts.map(p => p.map(v => v.toFixed(1)).join(',')).join(' L') + ' Z';
+plan.levels.forEach((L, li) => {
+  const b = boxes[li], R = (x0, x1, z0, z1, attrs) => { const [a, c] = P(b, x0, z0), [d, e] = P(b, x1, z1); out.push(`<rect x="${a.toFixed(1)}" y="${c.toFixed(1)}" width="${(d - a).toFixed(1)}" height="${(e - c).toFixed(1)}" ${attrs}/>`); };
+  if (plan.levels.length > 1) { const [tx, ty] = P(b, b.x0, b.z0); out.push(`<text x="${tx.toFixed(1)}" y="${(ty - 0.25 * S).toFixed(1)}" font-size="${0.22 * S}" font-weight="600" fill="#1d2430">${esc(li ? (L.name ?? `Nivel ${li}`) : 'Planta baja')}</text>`); }
+  if (!li) for (const bb of plan.balconies) R(bb.x[0], bb.x[1], bb.z[0], bb.z[1], 'fill="#eef1f3" stroke="#9aa3ab" stroke-width="1.5" stroke-dasharray="6 4"');
+  for (const r of L.rooms) R(r.rect.x[0], r.rect.x[1], r.rect.z[0], r.rect.z[1], 'fill="#f7f4ee"');
+  for (const v of L.voids) R(v.x[0], v.x[1], v.z[0], v.z[1], 'fill="#ffffff" stroke="#9aa3ab" stroke-dasharray="4 3"');
+  // muebles: silueta gris (las alfombras con línea punteada); no van los de techo ni lo colgado de la pared
+  if (FURN) for (const it of L.items) {
+    if (it.mount === 'ceiling' || it.mount === 'wall' || it.mount === 'window' || it.type === 'table-setting' || it.type === 'tabletop-decor') continue;
+    const pts = it.poly.map(([x, z]) => P(b, x, z)), rug = it.type === 'rug' || it.type === 'bath-mat';
+    out.push(`<path d="${rectPath(pts)}" fill="${rug ? 'none' : '#dfe3e7'}" stroke="#8b949c" stroke-width="${rug ? 1 : 1.2}"${rug ? ' stroke-dasharray="3 3"' : ''}/>`);
+    if (it.type === 'stair') { // peldaños
+      const [p0, p1, p2, p3] = pts; for (let k = 1; k < 12; k++) { const t = k / 12, a = [p0[0] + (p3[0] - p0[0]) * t, p0[1] + (p3[1] - p0[1]) * t], c = [p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]; out.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${c[0].toFixed(1)}" y2="${c[1].toFixed(1)}" stroke="#8b949c" stroke-width="0.8"/>`); }
+    }
+  }
+  // paredes: tramos macizos entre vanos; puertas con su barrido; ventanas con doble línea
+  for (const w of L.walls) {
+    const Lw = wallLine(w), ops = (w.openings ?? []).map(o => ({ o, s: Lw.start(o) })).sort((p, q) => p.s - q.s);
+    const seg = (s0, s1) => { if (s1 - s0 < 0.005) return; Lw.alongX ? R(s0, s1, Lw.c - Lw.t / 2, Lw.c + Lw.t / 2, 'fill="#2b3038"') : R(Lw.c - Lw.t / 2, Lw.c + Lw.t / 2, s0, s1, 'fill="#2b3038"'); };
+    // media pared de más en la punta que toca otra pared perpendicular: así las esquinas quedan llenas sin asomar
+    const meets = a => L.walls.some(o => { if (o === w) return false; const Lo = wallLine(o); return Lo.alongX !== Lw.alongX && Math.abs(Lo.c - a) < 0.01 && Lw.c >= Lo.a0 - 0.01 && Lw.c <= Lo.a1 + 0.01; });
+    let cur = Lw.a0 - (meets(Lw.a0) ? Lw.t / 2 : 0);
+    for (const { o, s } of ops) {
+      seg(cur, s); cur = Math.max(cur, s + o.width);
+      if (o.kind === 'arch') {   // arco o pase con barra: el antepecho en línea punteada (se ve de un lado al otro)
+        const [a, c] = Lw.alongX ? [P(b, s, Lw.c - Lw.t / 2), P(b, s + o.width, Lw.c + Lw.t / 2)] : [P(b, Lw.c - Lw.t / 2, s), P(b, Lw.c + Lw.t / 2, s + o.width)];
+        out.push(`<rect x="${Math.min(a[0], c[0]).toFixed(1)}" y="${Math.min(a[1], c[1]).toFixed(1)}" width="${Math.abs(c[0] - a[0]).toFixed(1)}" height="${Math.abs(c[1] - a[1]).toFixed(1)}" fill="#f7f4ee" stroke="#2b3038" stroke-width="1" stroke-dasharray="4 3"/>`);
+      } else if (o.kind === 'sliding-window' || (o.sill ?? 0) > 0.05) {   // ventana: marco fino con doble línea
+        const [a, c] = Lw.alongX ? [P(b, s, Lw.c - Lw.t / 2), P(b, s + o.width, Lw.c + Lw.t / 2)] : [P(b, Lw.c - Lw.t / 2, s), P(b, Lw.c + Lw.t / 2, s + o.width)];
+        out.push(`<rect x="${Math.min(a[0], c[0]).toFixed(1)}" y="${Math.min(a[1], c[1]).toFixed(1)}" width="${Math.abs(c[0] - a[0]).toFixed(1)}" height="${Math.abs(c[1] - a[1]).toFixed(1)}" fill="#ffffff" stroke="#2b3038" stroke-width="1.2"/>`);
+        const m0 = Lw.alongX ? P(b, s, Lw.c) : P(b, Lw.c, s), m1 = Lw.alongX ? P(b, s + o.width, Lw.c) : P(b, Lw.c, s + o.width);
+        out.push(`<line x1="${m0[0].toFixed(1)}" y1="${m0[1].toFixed(1)}" x2="${m1[0].toFixed(1)}" y2="${m1[1].toFixed(1)}" stroke="#4d8fbf" stroke-width="2"/>`);
+      } else if (o.kind === 'door') {   // puerta: hoja abierta a 90° y el arco del barrido, del lado del ambiente
+        const room = s + o.width / 2, probe = sg => L.rooms.some(r => { const x = Lw.alongX ? room : Lw.c + sg * (Lw.t / 2 + 0.3), z = Lw.alongX ? Lw.c + sg * (Lw.t / 2 + 0.3) : room; return x > r.rect.x[0] && x < r.rect.x[1] && z > r.rect.z[0] && z < r.rect.z[1]; });
+        const n = o.side ?? (probe(1) ? 1 : -1), atEnd = o.hinge === 'end', hingeA = atEnd ? s + o.width : s, freeA = atEnd ? s : s + o.width, face = Lw.c + n * Lw.t / 2;
+        const H0 = Lw.alongX ? P(b, hingeA, face) : P(b, face, hingeA), F0 = Lw.alongX ? P(b, freeA, face) : P(b, face, freeA);
+        const T0 = Lw.alongX ? P(b, hingeA, face + n * o.width) : P(b, face + n * o.width, hingeA);
+        out.push(`<line x1="${H0[0].toFixed(1)}" y1="${H0[1].toFixed(1)}" x2="${T0[0].toFixed(1)}" y2="${T0[1].toFixed(1)}" stroke="#2b3038" stroke-width="2"/>`);
+        const cross = (T0[0] - H0[0]) * (F0[1] - H0[1]) - (T0[1] - H0[1]) * (F0[0] - H0[0]);
+        out.push(`<path d="M${T0[0].toFixed(1)},${T0[1].toFixed(1)} A${(o.width * S).toFixed(1)},${(o.width * S).toFixed(1)} 0 0 ${cross > 0 ? 1 : 0} ${F0[0].toFixed(1)},${F0[1].toFixed(1)}" fill="none" stroke="#8b949c" stroke-width="1" stroke-dasharray="4 3"/>`);
+      }
+    }
+    seg(cur, Lw.a1 + (meets(Lw.a1) ? Lw.t / 2 : 0));
+  }
+  // nombres y medidas: en el rectángulo más grande de cada ambiente; con varios rectángulos, la superficie aproximada
+  const byName = new Map(); for (const r of L.rooms) { if (r.closed) continue; const l = byName.get(r.name) ?? []; l.push(r); byName.set(r.name, l); }
+  for (const [name, rs] of byName) {
+    const big = rs.reduce((a, r) => ((r.rect.x[1] - r.rect.x[0]) * (r.rect.z[1] - r.rect.z[0]) > (a.rect.x[1] - a.rect.x[0]) * (a.rect.z[1] - a.rect.z[0]) ? r : a));
+    const w = big.rect.x[1] - big.rect.x[0], d = big.rect.z[1] - big.rect.z[0], area = rs.reduce((s, r) => s + (r.rect.x[1] - r.rect.x[0]) * (r.rect.z[1] - r.rect.z[0]), 0);
+    const [cx, cy] = P(b, (big.rect.x[0] + big.rect.x[1]) / 2, (big.rect.z[0] + big.rect.z[1]) / 2), fs = Math.max(10, Math.min(0.2 * S, (w * S) / Math.max(6, name.length) * 1.6));
+    const dims = rs.length > 1 ? `≈ ${Math.round(area)} m²` : `${num(w)} × ${num(d)} m`;
+    out.push(`<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(1)}" font-weight="600" fill="#1d2430" stroke="#ffffff" stroke-width="3" paint-order="stroke">${esc(name)}</text>`,
+      `<text x="${cx.toFixed(1)}" y="${(cy + fs * 1.15).toFixed(1)}" text-anchor="middle" font-size="${(fs * 0.8).toFixed(1)}" fill="#5b6573" stroke="#ffffff" stroke-width="3" paint-order="stroke">${dims}</text>`);
+  }
+});
+// del lado de la fachada: hacia la calle, el lago o el balcón
+{
+  const b = boxes[0], f = plan.facing, label = scene.exterior?.landscape === 'lake' ? 'Vista al lago' : scene.exterior?.city ? 'Calle' : plan.balconies.length ? 'Balcón' : 'Frente';
+  const mid = { '-z': [(b.x0 + b.x1) / 2, b.z0 - 0.45], '+z': [(b.x0 + b.x1) / 2, b.z1 + 0.6], '-x': [b.x0 - 0.6, (b.z0 + b.z1) / 2], '+x': [b.x1 + 0.6, (b.z0 + b.z1) / 2] }[f] ?? [(b.x0 + b.x1) / 2, b.z0 - 0.45];
+  const [x, y] = P(b, ...mid);
+  out.push(`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="${0.2 * S}" fill="#4d8fbf" font-weight="600">${label} ${{ '-z': '↑', '+z': '↓', '-x': '←', '+x': '→' }[f] ?? '↑'}</text>`);
+}
+// norte: con "exterior.bearing" (rumbo hacia donde mira la fachada, 0 = norte) la flecha apunta al norte geográfico
+if (Number.isFinite(scene.exterior?.bearing)) {
+  const fa = { '-z': 0, '+x': 90, '+z': 180, '-x': 270 }[plan.facing] ?? 0, ang = (fa - scene.exterior.bearing) * Math.PI / 180;
+  const cx = W - pad * S * 0.6, cy = 0.75 * S, R = 0.32 * S, tip = [cx + Math.sin(ang) * R, cy - Math.cos(ang) * R], tail = [cx - Math.sin(ang) * R * 0.7, cy + Math.cos(ang) * R * 0.7];
+  const side = k => [cx + Math.cos(ang) * R * 0.28 * k, cy + Math.sin(ang) * R * 0.28 * k];
+  out.push(`<circle cx="${cx}" cy="${cy}" r="${R * 1.15}" fill="none" stroke="#c9ced3" stroke-width="1"/>`,
+    `<path d="M${tip.map(v => v.toFixed(1))} L${side(1).map(v => v.toFixed(1))} L${tail.map(v => v.toFixed(1))} L${side(-1).map(v => v.toFixed(1))} Z" fill="#1d2430"/>`,
+    `<text x="${(cx + Math.sin(ang) * R * 1.55).toFixed(1)}" y="${(cy - Math.cos(ang) * R * 1.55 + 0.07 * S).toFixed(1)}" text-anchor="middle" font-size="${0.2 * S}" font-weight="700" fill="#1d2430">N</text>`);
+}
+// escala gráfica de 1 m
+{ const x = pad * S, y = H - 0.35 * S; out.push(`<line x1="${x}" y1="${y}" x2="${x + S}" y2="${y}" stroke="#1d2430" stroke-width="2"/><line x1="${x}" y1="${y - 5}" x2="${x}" y2="${y + 5}" stroke="#1d2430" stroke-width="2"/><line x1="${x + S}" y1="${y - 5}" x2="${x + S}" y2="${y + 5}" stroke="#1d2430" stroke-width="2"/><text x="${x + S + 8}" y="${y + 5}" font-size="${0.18 * S}" fill="#5b6573">1 m · medidas aproximadas, a partir de las fotos</text>`); }
+out.push('</svg>');
+const svg = out.join('\n');
+$('plano').innerHTML = svg;
+// SVG, PNG (rasterizado del mismo SVG) y JSON con las dudas para el dueño
+await fetch(`/capturas/${id}/plano.svg`, { method: 'POST', body: svg });
+const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
+const c = Object.assign(document.createElement('canvas'), { width: Math.round(W * 2), height: Math.round(H * 2) }); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+const png = c.toDataURL('image/png');
+await fetch(`/capturas/${id}/plano.png`, { method: 'POST', body: Uint8Array.from(atob(png.split(',')[1]), ch => ch.charCodeAt(0)) });
+const dudas = scene.estimated ?? [];
+await fetch(`/capturas/${id}/plano.json`, { method: 'POST', body: JSON.stringify({ fecha: new Date().toISOString(), dudas, ambientes: [...new Set(plan.levels.flatMap(L => L.rooms.map(r => r.name)))] }, null, 1) });
+$('dudas').innerHTML = dudas.length ? dudas.map(d => `<li>${esc(d)}</li>`).join('') : '<li>Nada estimado: todo sale de las fotos.</li>';
+$('estado').textContent = `Guardado en capturas/${id}/plano.svg, plano.png y plano.json.`;
+window.__plano = { svg: svg.length, dudas: dudas.length }; document.title = 'plano: listo';
+</script>

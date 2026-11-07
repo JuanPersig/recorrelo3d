@@ -1,0 +1,55 @@
+{
+ "fecha": "2026-11-04T00:24:06.004Z",
+ "telas": [
+  {
+   "type": "chair",
+   "color": "#a9a9a7",
+   "texture": "tex/tela-chair-a9a9a7.jpg",
+   "vista": "cocina",
+   "px": 90,
+   "dibujo": 0.75,
+   "repeticion": 0.61,
+   "aceptada": false
+  },
+  {
+   "type": "sofa",
+   "color": "#867e76",
+   "texture": "tex/tela-sofa-867e76.jpg",
+   "vista": "ventana",
+   "px": 254,
+   "dibujo": 0.78,
+   "repeticion": 0.7,
+   "aceptada": true
+  },
+  {
+   "type": "bed",
+   "color": "#ebe7df",
+   "texture": "tex/tela-bed-ebe7df.jpg",
+   "vista": "ventana",
+   "px": 107,
+   "dibujo": 0.54,
+   "repeticion": 0.43,
+   "aceptada": true
+  },
+  {
+   "type": "shower-curtain",
+   "color": "#e4e4e2",
+   "texture": "tex/tela-shower-curtain-e4e4e2.jpg",
+   "vista": "bano",
+   "px": 292,
+   "dibujo": 0.43,
+   "repeticion": 0.57,
+   "aceptada": true
+  },
+  {
+   "type": "bath-mat",
+   "color": "#f2f1ee",
+   "texture": "tex/tela-bath-mat-f2f1ee.jpg",
+   "vista": "bano",
+   "px": 113,
+   "dibujo": 0.27,
+   "repeticion": 0.43,
+   "aceptada": true
+  }
+ ]
+}

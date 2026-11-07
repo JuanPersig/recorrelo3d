@@ -1,0 +1,364 @@
+{
+ "fecha": "2026-11-03T23:56:15.593Z",
+ "depto": "depto1",
+ "puntaje": 13,
+ "umbral": 8,
+ "propuestas": [
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 33,
+   "type": "wall-tiles",
+   "at": [
+    1.235,
+    3.7
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 33,
+     "at": [
+      1.235,
+      3.7
+     ]
+    },
+    {
+     "level": 0,
+     "item": 37,
+     "at": [
+      1.65,
+      3.832
+     ]
+    }
+   ],
+   "de": "#8f8d89",
+   "a": "#bba4a2",
+   "dE": 13.2,
+   "px": 70263,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 4.2,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 0,
+   "type": "bed",
+   "at": [
+    1,
+    1.6
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 0,
+     "at": [
+      1,
+      1.6
+     ]
+    }
+   ],
+   "de": "#2f3034",
+   "a": "#404248",
+   "dE": 8,
+   "px": 128277,
+   "vistas": [
+    "dormitorio",
+    "cama"
+   ],
+   "dispersion": 0,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 0,
+   "type": "bed",
+   "at": [
+    1,
+    1.6
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 0,
+     "at": [
+      1,
+      1.6
+     ]
+    }
+   ],
+   "de": "#5a6370",
+   "a": "#5a6f8b",
+   "dE": 10.6,
+   "px": 41038,
+   "vistas": [
+    "dormitorio",
+    "cama"
+   ],
+   "dispersion": 6.3,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 1,
+   "type": "folded-towels",
+   "at": [
+    1.7,
+    1.8
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 1,
+     "at": [
+      1.7,
+      1.8
+     ]
+    }
+   ],
+   "de": "#efe5cf",
+   "a": "#c2c2be",
+   "dE": 16.3,
+   "px": 12476,
+   "vistas": [
+    "dormitorio",
+    "cama"
+   ],
+   "dispersion": 2.7,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 24,
+   "type": "wall-tiles",
+   "at": [
+    5.35,
+    6.1
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 24,
+     "at": [
+      5.35,
+      6.1
+     ]
+    }
+   ],
+   "de": "#e6dccb",
+   "a": "#ebebeb",
+   "dE": 10.8,
+   "px": 27783,
+   "vistas": [
+    "cocina"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 0,
+   "type": "bed",
+   "at": [
+    1,
+    1.6
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 0,
+     "at": [
+      1,
+      1.6
+     ]
+    }
+   ],
+   "de": "#77716a",
+   "a": "#9e958a",
+   "dE": 14.3,
+   "px": 7092,
+   "vistas": [
+    "dormitorio",
+    "cama"
+   ],
+   "dispersion": 0,
+   "confiable": true
+  },
+  {
+   "kind": "door",
+   "level": 0,
+   "wall": 6,
+   "opening": 0,
+   "items": [],
+   "de": "#c47a35",
+   "a": "#c58e46",
+   "dE": 11.2,
+   "px": 7896,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 41,
+   "type": "vanity",
+   "at": [
+    1.09,
+    3.924
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 41,
+     "at": [
+      1.09,
+      3.924
+     ]
+    }
+   ],
+   "de": "#f7f7f5",
+   "a": "#f4e8f4",
+   "dE": 9.3,
+   "px": 10289,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 0,
+   "type": "bed",
+   "at": [
+    1,
+    1.6
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 0,
+     "at": [
+      1,
+      1.6
+     ]
+    }
+   ],
+   "de": "#3d3a37",
+   "a": "#534e4a",
+   "dE": 9,
+   "px": 9204,
+   "vistas": [
+    "dormitorio",
+    "cama"
+   ],
+   "dispersion": 0,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 41,
+   "type": "vanity",
+   "at": [
+    1.09,
+    3.924
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 41,
+     "at": [
+      1.09,
+      3.924
+     ]
+    }
+   ],
+   "de": "#f3f3f1",
+   "a": "#f4e3e9",
+   "dE": 8.2,
+   "px": 8869,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 19,
+   "type": "table-setting",
+   "at": [
+    5.7,
+    3.6
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 19,
+     "at": [
+      5.7,
+      3.6
+     ]
+    },
+    {
+     "level": 0,
+     "item": 18,
+     "at": [
+      5.7,
+      2.9
+     ]
+    }
+   ],
+   "de": "#b49a76",
+   "a": "#a49782",
+   "dE": 10.2,
+   "px": 4395,
+   "vistas": [
+    "comedor"
+   ],
+   "dispersion": 22.9,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 43,
+   "type": "towel-bar",
+   "at": [
+    1.495,
+    3.714
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 43,
+     "at": [
+      1.495,
+      3.714
+     ]
+    }
+   ],
+   "de": "#d8d2c8",
+   "a": "#cebebf",
+   "dE": 9.1,
+   "px": 3509,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  }
+ ]
+}

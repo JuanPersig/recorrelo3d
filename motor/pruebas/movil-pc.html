@@ -1,0 +1,56 @@
+<meta charset="utf-8">
+<title>Celular contra PC</title>
+<!-- Dibuja la misma vista con el motor de escritorio, el de celular y el de celular sin oclusión (como era antes de
+     T-41), lado a lado, y guarda la hoja en capturas/movil-pc/<nombre>.jpg. ?scene=…&vista=…&noche.
+     sheet(nombre) guarda la hoja; grid() da la diferencia de luminancia celular − PC en una grilla de 9 × 16. -->
+<style>body{margin:0;background:#222;color:#eee;font:13px system-ui}#w{display:flex;gap:8px;padding:8px}.c{width:405px;height:720px;position:relative;flex:none}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<div id="w"><div class="c" id="desktop"></div><div class="c" id="mobile"></div><div class="c" id="old"></div></div>
+<pre id="out"></pre>
+<script type="module">
+import { start } from '../engine.js';
+const P = new URLSearchParams(location.search);
+const src = P.get('scene') ?? '/departamentos/depto5/scene.json';
+const scene = await (await fetch(src)).json();
+const vista = P.get('vista') ?? Object.keys(scene.views)[1];
+const state = { view: vista, cut: scene.views[vista].cut, night: P.has('noche'), decor: true, pose: null };
+const base = new URL('.', new URL(src, location.href)).href;
+const SIDES = [['desktop', { device: 'desktop' }], ['mobile', { device: 'mobile' }], ['old', { device: 'mobile', mobileAO: false }]];
+window.apis = {};
+for (const [id, opt] of SIDES) {
+  window.apis[id] = await start(document.getElementById(id), { scene, state: { ...state }, base, ...opt });
+  window.apis[id].resize();
+}
+await Promise.all(Object.values(window.apis).map(a => a.ready));
+const W = 405, H = 720;
+const shots = () => Promise.all(SIDES.map(([id]) => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = window.apis[id].capture(); })));
+window.setPose = p => Object.values(window.apis).forEach(a => a.setPose(p));
+window.setNight = v => Object.values(window.apis).forEach(a => a.setNight(v));
+window.sheet = async (name = vista) => {
+  const imgs = await shots();
+  const cv = Object.assign(document.createElement('canvas'), { width: W * 3 + 16, height: H }), g = cv.getContext('2d');
+  imgs.forEach((img, k) => g.drawImage(img, k * (W + 8), 0, W, H));
+  const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.88));
+  await fetch(`/capturas/movil-pc/${name}.jpg`, { method: 'POST', body: blob });
+  return name;
+};
+// diferencia media absoluta de luminancia contra la PC (0–255), y de rojo y azul (calidez)
+window.grid = async () => {
+  const imgs = await shots();
+  const cv = Object.assign(document.createElement('canvas'), { width: 9, height: 16 }), g = cv.getContext('2d', { willReadFrequently: true });
+  const px = imgs.map(im => { g.clearRect(0, 0, 9, 16); g.drawImage(im, 0, 0, 9, 16); return g.getImageData(0, 0, 9, 16).data; });
+  const L = (d, i) => 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2], n = 9 * 16, out = {};
+  SIDES.slice(1).forEach(([id], k) => {
+    const d = px[k + 1]; let s = 0, r = 0, b = 0;
+    for (let i = 0; i < d.length; i += 4) { s += Math.abs(L(d, i) - L(px[0], i)); r += d[i] - px[0][i]; b += d[i + 2] - px[0][i + 2]; }
+    out[id] = { dif: +(s / n).toFixed(1), rojo: +(r / n).toFixed(1), azul: +(b / n).toFixed(1) };
+  });
+  return out;
+};
+window.listo = true;
+</script>

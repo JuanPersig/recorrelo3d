@@ -1,0 +1,18 @@
+{
+ "fecha": "2026-11-04T00:16:04.095Z",
+ "texturas": [
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 27,
+   "texture": "tex/azulejos-0-27.jpg",
+   "textureSize": 0.6,
+   "vista": "ducha",
+   "pxPorMetro": 551,
+   "aceptada": false,
+   "fallas": [
+    "las juntas no coinciden (-0.08)"
+   ]
+  }
+ ]
+}

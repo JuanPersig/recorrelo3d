@@ -1,0 +1,120 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vista por las ventanas</title>
+<style>
+/* Herramienta de desarrollo (T-20): recorta de las fotos lo que se ve por cada ventana, para "exterior.fromPhotos". */
+:root{ --bg:#eceef0; --ink:#1d2430; --muted:#5b6573; font-family:system-ui,"Segoe UI",sans-serif }
+body{ margin:0; background:var(--bg); color:var(--ink); padding:12px 14px 40px }
+h1{ font-size:18px; margin:0 0 4px } p,li{ font-size:13px; color:var(--muted) }
+#stage{ position:fixed; left:-10000px; top:0 } img{ height:160px; border-radius:4px; margin:4px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<h1>Vista por las ventanas</h1>
+<p id="estado">Armando…</p>
+<ul id="out"></ul>
+<div id="stage"></div>
+<script type="module">
+// ventanas.html?depto=<id>[&lejos=1.5][&lado=1200]
+// Para cada ventana (corrediza) que sale en alguna foto: elige la vista donde se ve más grande, dibuja el mapa de
+// identificación de esa vista dos veces (con vidrios, para saber qué píxeles son el vidrio de esa ventana; sin vidrios y
+// con distancia, para saber qué hay detrás) y recorta de la foto el rectángulo del vidrio. Lo que en el modelo está
+// adentro o cerca (marcos, rejas, cortinas, baranda, balcón: menos de "lejos" metros detrás del vidrio) se borra y se
+// rellena con lo de alrededor, porque eso ya lo dibuja el 3D. Guarda departamentos/<id>/ventanas/<archivo>.jpg y
+// departamentos/<id>/ventanas.json; el motor lo usa con "exterior": { "fromPhotos": true }.
+import { start } from './engine.js';
+import { pixels, medir } from './parecido.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('depto');
+// solo fotos bien encuadradas (puntaje de parecido de T-21): si el modelo no calza, el recorte traería pared o muebles
+const FAR = Number(q.get('lejos') ?? 1.5), SIDE = Number(q.get('lado') ?? 1200), MAXP = Number(q.get('puntaje') ?? 16);
+const scene = await fetch(`/departamentos/${id}/scene.json`).then(r => r.json());
+scene.exterior = { ...scene.exterior, fromPhotos: false };   // se mide sin los fondos de foto
+// &vistas=a,b: solo esas vistas como fuente (cuando la que tiene la ventana más grande no calza con su foto)
+const only = q.get('vistas')?.split(',');
+const keys = Object.keys(scene.views).filter(k => scene.views[k].photo && (!only || only.includes(k)));
+const api = window.__viewer = await start($('stage'), { scene, state: { view: keys[0], cut: false, night: false, decor: true }, device: 'desktop' });
+const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+const byWin = new Map(), skipped = new Map();   // "nivel|pared|abertura" → mejor vista; puntaje de cada vista
+for (const k of keys) {
+  const v = scene.views[k], A = v.photoAspect ?? scene.viewAspect ?? 0.75, W = A >= 1 ? SIDE : Math.round(SIDE * A), H = Math.round(W / A);
+  Object.assign($('stage').style, { width: `${W}px`, height: `${H}px` }); api.resize(); api.setCut(false); api.go(k, true);
+  const A1 = api.idMap({ depth: true }), B = api.idMap({ depth: true, hideGlass: true });
+  const photo = pixels(await load(`${scene.photos}${v.photo}.png`), A1.width, A1.height);
+  const score = medir(A1, pixels(await load(api.capture('image/png')), A1.width, A1.height), photo).puntaje;
+  skipped.set(k, score);
+  if (score > MAXP) continue;
+  const count = new Map();
+  for (let i = 0; i < A1.ids.length; i++) { const t = A1.table[A1.ids[i]]; if (t?.glass && t.kind === 'sliding-window') { const key = `${t.level}|${t.wall}|${t.opening}`; count.set(key, (count.get(key) ?? 0) + 1); } }
+  for (const [key, n] of count) if (n > (byWin.get(key)?.n ?? 1500)) byWin.set(key, { n, k, A1, B, W, H, photo });
+}
+// relleno de los huecos: pirámide (se promedia hacia abajo lo válido y se vuelve a subir llenando lo que falta)
+function fill(img, ok, w, h) {
+  const levels = [{ w, h, c: Float32Array.from({ length: w * h * 3 }, (_, i) => ok[(i / 3) | 0] ? img[((i / 3) | 0) * 4 + (i % 3)] : 0), a: Float32Array.from(ok) }];
+  while (levels.at(-1).w > 1 || levels.at(-1).h > 1) {
+    const L = levels.at(-1), nw = Math.max(1, Math.ceil(L.w / 2)), nh = Math.max(1, Math.ceil(L.h / 2)), c = new Float32Array(nw * nh * 3), a = new Float32Array(nw * nh);
+    for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) { const s = y * L.w + x, d = (y >> 1) * nw + (x >> 1); a[d] += L.a[s]; for (let k = 0; k < 3; k++) c[d * 3 + k] += L.c[s * 3 + k]; }
+    levels.push({ w: nw, h: nh, c, a });
+  }
+  for (const L of levels) for (let i = 0; i < L.w * L.h; i++) if (L.a[i] > 0) { for (let k = 0; k < 3; k++) L.c[i * 3 + k] /= L.a[i]; L.a[i] = 1; }
+  for (let l = levels.length - 2; l >= 0; l--) {
+    const L = levels[l], U = levels[l + 1];
+    for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) { const i = y * L.w + x; if (L.a[i]) continue; const j = (y >> 1) * U.w + (x >> 1); for (let k = 0; k < 3; k++) L.c[i * 3 + k] = U.c[j * 3 + k]; L.a[i] = 1; }
+  }
+  const out = new Uint8ClampedArray(w * h * 4);
+  for (let i = 0; i < w * h; i++) { for (let k = 0; k < 3; k++) out[i * 4 + k] = levels[0].c[i * 3 + k]; out[i * 4 + 3] = 255; }
+  return out;
+}
+const ventanas = [], lines = [];
+// a qué distancia va el panel de cada ventana: lo que el 3D dibuja antes (el balcón) se borra de la foto; lo de más
+// allá queda en la foto
+const dist = new Map(api.windowInfo().map(w => [`${w.level}|${w.wall}|${w.opening}`, w.distance]));
+for (const [key, best] of byWin) {
+  const [level, wall, opening] = key.split('|').map(Number), { A1, B, W, H, k, photo } = best, v = scene.views[k];
+  let x0 = A1.width, y0 = A1.height, x1 = -1, y1 = -1;
+  const isWin = i => { const t = A1.table[A1.ids[i]]; return t?.glass && t.kind === 'sliding-window' && `${t.level}|${t.wall}|${t.opening}` === key; };
+  for (let y = 0; y < A1.height; y++) for (let x = 0; x < A1.width; x++) if (isWin(y * A1.width + x)) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  const cw = x1 - x0 + 1, ch = y1 - y0 + 1, ok = new Uint8Array(cw * ch), img = new Uint8ClampedArray(cw * ch * 4);
+  let valid = 0;
+  for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) {
+    const i = (y0 + y) * A1.width + x0 + x, j = y * cw + x, behind = B.table[B.ids[i]];
+    // se ve afuera y lejos: en el modelo, sin vidrios, ahí hay exterior (o cielo) a más de FAR metros detrás del vidrio
+    // la reja de la ventana se deja: el motor saca la 3D y queda la de la foto, con su dibujo real
+    const far = isWin(i) && (!B.ids[i] || behind?.part === 'grille' || (behind?.kind === 'exterior' && (B.depth[i] === 0 || B.depth[i] > A1.depth[i] + (dist.get(key) ?? FAR) - 0.05)));
+    ok[j] = far ? 1 : 0; valid += ok[j];
+    for (let c = 0; c < 4; c++) img[j * 4 + c] = photo.data[i * 4 + c];
+  }
+  // un recorte chico, estirado sobre toda la ventana, queda lavado y borroso: mejor el entorno generado
+  if (valid < 0.12 * cw * ch || valid < 1500 || cw < 150 || ch < 150) { lines.push(`${key}: casi todo tapado en la foto ${v.photo}, queda el entorno generado`); continue; }
+  // borde de 2 px adentro de lo válido: el encuadre no calza al píxel y ahí suele quedar el marco
+  const ok2 = Uint8Array.from(ok, (o, j) => { if (!o) return 0; const x = j % cw, y = (j / cw) | 0; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= cw || yy >= ch || !ok[yy * cw + xx]) return 0; } return 1; });
+  // lo de adentro que tapa la ventana (sillas, flores, cortinas) se borra con un margen grande: en la foto casi nunca cae
+  // justo donde está en el modelo, y lo que queda se ve como un fantasma pegado al vidrio
+  const inner = new Uint8Array(cw * ch);
+  for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) {
+    const i = (y0 + y) * A1.width + x0 + x, t = B.table[B.ids[i]];
+    if (isWin(i) && B.ids[i] && t?.kind !== 'exterior' && t?.part !== 'grille' && t?.kind !== 'sliding-window') inner[y * cw + x] = 1;
+  }
+  const R = 6 + Math.round(Math.max(cw, ch) * 0.03), dil = new Uint8Array(cw * ch), tmp = new Uint8Array(cw * ch);
+  for (let y = 0; y < ch; y++) { let last = -1e9; for (let x = 0; x < cw; x++) { if (inner[y * cw + x]) last = x; tmp[y * cw + x] = x - last <= R ? 1 : 0; } last = 1e9; for (let x = cw - 1; x >= 0; x--) { if (inner[y * cw + x]) last = x; if (last - x <= R) tmp[y * cw + x] = 1; } }
+  for (let x = 0; x < cw; x++) { let last = -1e9; for (let y = 0; y < ch; y++) { if (tmp[y * cw + x]) last = y; dil[y * cw + x] = y - last <= R ? 1 : 0; } last = 1e9; for (let y = ch - 1; y >= 0; y--) { if (tmp[y * cw + x]) last = y; if (last - y <= R) dil[y * cw + x] = 1; } }
+  for (let j = 0; j < cw * ch; j++) if (dil[j]) ok2[j] = 0;
+  const filled = fill(img, ok2, cw, ch);
+  const c = Object.assign(document.createElement('canvas'), { width: cw, height: ch }); c.getContext('2d').putImageData(new ImageData(filled, cw, ch), 0, 0);
+  const file = `ventanas/${k}-${level}-${wall}-${opening}.jpg`, url = c.toDataURL('image/jpeg', 0.86);
+  await fetch(`/departamentos/${id}/${file}`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) });
+  // recorte en coordenadas de la foto, con v hacia arriba (como la pantalla de la cámara)
+  ventanas.push({ level, wall, opening, view: k, img: file, crop: [x0 / A1.width, 1 - (y1 + 1) / A1.height, (x1 + 1) / A1.width, 1 - y0 / A1.height].map(x => +x.toFixed(5)),
+    viewProj: B.viewProj.map(x => +x.toPrecision(7)), visible: +(valid / (cw * ch)).toFixed(2) });
+  lines.push(`<img src="/departamentos/${id}/${file}?${Date.now()}" alt=""> ${key} desde "${v.name}": ${cw}×${ch} px, ${Math.round(valid / (cw * ch) * 100)} % se ve afuera, ${Math.round(url.length * 0.75 / 1024)} KB`);
+}
+api.destroy();
+await fetch(`/departamentos/${id}/ventanas.json`, { method: 'POST', body: JSON.stringify({ fecha: new Date().toISOString(), distance: 6, ventanas }, null, 1) });
+$('estado').textContent = `${ventanas.length} ventanas con vista desde las fotos (de ${byWin.size} que salen en fotos bien encuadradas). Puntaje por vista: ${[...skipped].map(([k, s]) => `${k} ${s}${s > MAXP ? ' (no se usa)' : ''}`).join(', ')}`;
+$('out').innerHTML = lines.map(l => `<li>${l}</li>`).join('');
+window.__ventanas = { ventanas: ventanas.length, lines }; document.title = 'ventanas: listo';
+</script>

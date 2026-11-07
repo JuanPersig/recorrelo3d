@@ -1,0 +1,102 @@
+# Catálogo de componentes
+
+Generado con `node motor/catalogo.mjs` desde `motor/components.js`: no editar a mano. Cada mueble del scene.json es
+`{ "type", "at": [x, z], "y"?, "rotation"?, "params"?, "decor"? }`. Los parámetros salen del código: los que no
+muestran valor por defecto son opcionales y sin valor fijo, o se calculan a partir de otros.
+
+Columnas: **monta** dónde va (en "Pared", detrás tiene que haber pared o viga); **estorba** si cuenta para caminar y
+para la circulación de 60 cm; **se usa** si necesita lugar para pararse al lado; **encastra** con qué tipos se puede
+superponer a propósito (`*` = cualquiera). Cualquier mueble acepta además `textures`: { "<color>": "tex/<archivo>.jpg" },
+la imagen que lleva la pieza de ese color (estampados tomados de las fotos).
+
+## Piso
+
+| Tipo | Qué es | Parámetros | Estorba | Se usa | Encastra |
+|---|---|---|---|---|---|
+| `bed` | cama con base, colchón, sábana, acolchado ("duvetStyle": "puffer"), manta ("throw"), respaldo opcional ("headboard") y almohadas/almohadones ("pillows"); la cabecera va en -Z. Con "headboard" el respaldo queda 10 cm detrás de la cabecera: contra una pared, la cama va a length / 2 + 0,1 de ella | `width` = 1.6, `length` = 2.0, `baseHeight` = 0.32, `mattressHeight` = 0.23, `sheetColor` = '#f7f6f2', `duvetStyle`, `duvetColor` = '#5b6470' / '#2c3850', `frameColor` = '#f3f1ec', `duvetCover` = 0.62, `duvetDrop` = 0.34, `duvetPuff` = 0.03, `throw`, `throw.drop` = 0.3, `throw.cover` = 0.3, `throw.color` = '#2e2f33', `throw.pattern`, `headboard`, `pillows` = [] | sí | sí | — |
+| `nightstand` | mesa de luz con cajón y patas (madera o "material": "lacquer") | `width` = 0.4, `depth` = 0.38, `height` = 0.6, `color` = '#c49862', `material` | sí | — | — |
+| `wardrobe` | placard de piso a techo con puertas corredizas ("style": "sliding") o de abrir, en laca o madera; el fondo en -Z | `width` = 1.9, `height` = 2.45, `depth` = 0.6, `material`, `color` = '#cfae86' / '#f3f1ec', `style` = 'sliding', `doors` = 2 | sí | sí | — |
+| `rug` | alfombra rayada con flecos ("colors": lista de colores de las rayas) | `width` = 0.8, `depth` = 1.4, `colors` = ['#c9553a'], `stripes` = 24 | no | — | * |
+| `plant` | planta en maceta de cerámica; "style": "tree" (arbolito de interior: tronco y copa de hojas) o "succulent" (suculenta chica en maceta baja, para mesas y estantes) | `seed` = 11, `height` = (p.style === 'tree' ? 1.6 : p.style === 'succulent' ? 0.1…, `style`, `pot` = '#cfc6ba' / '#d9d4cc' | sí | — | — |
+| `sofa` | sillón recto de tela con brazos, almohadones de asiento por plaza ("seats") y almohadones sueltos ("cushions"); el respaldo en -Z. "style": "futon" = futón: estructura de madera a la vista ("wood") y un colchón doblado en asiento y respaldo | `style`, `cushions` = [], `length` = 2.0, `depth` = 0.95, `seats` = 2, `color` = '#6e6c69', `height` = 0.92, `headrests`, `wood` = '#c9925a' | sí | sí | — |
+| `dining-table` | mesa de comedor: de vidrio rectangular (por defecto, patas negras o "legs": "chrome") u ovalada de madera ("shape": "oval"); "mats": individuales | `length` = 1.4, `width` = 0.8, `height` = 0.75, `shape`, `color` = '#f3f2ef' / '#d2a26a', `base` = '#1b1b1b' / '#d4d7da', `glass` = '#b5cdc6', `legs`, `mats` = 0 | sí | sí | — |
+| `chair` | silla con casco tapizado en capitoné (o liso) y patas metálicas abiertas; "style": "wood" (madera y asiento de cuero) o "tube" (caño cromado, asiento redondo tapizado y respaldo de varillas) | `style`, `wood` = '#c8925e', `color` = '#b8783f' / '#d9d3c7' / '#2b2b2b' / '#9a9a9a', `seatHeight` = 0.46, `legs` = '#c3c6ca' / '#1d1d1d', `quilted` | sí | — | dining-table, side-table |
+| `side-table` | mesa auxiliar redonda: metálica o de madera con tapa de cerámica ("style": "wood") | `style`, `diameter` = 0.45, `height` = 0.5, `wood` = '#c8925e', `color` = '#efece6' / '#2b2b2b' | sí | — | — |
+| `cube-shelf` | estante de cubos abiertos ("cols" × "rows") | `cols` = 2, `rows` = 2, `cell` = 0.35, `depth` = 0.35, `color` = '#f4f4f2' | sí | — | fridge |
+| `floor-mirror` | espejo de pie apoyado contra la pared (la base adelante, la parte de arriba hacia -Z) | `width` = 0.42, `height` = 1.55 | sí | — | — |
+| `fridge` | heladera con freezer arriba, de acero | `width` = 0.6, `height` = 1.75, `depth` = 0.65, `finish`, `color` = '#f4f3ef' / '#c4c7cb', `doors` | sí | sí | kitchen-base |
+| `kitchen-base` | bajo mesada: zócalo, cuerpo, frentes por módulo, perfil gola, mesada con bacha y salpicadero | `width` = 1.5, `depth` = 0.6, `height` = 0.9, `color` = '#f4f4f2', `topStyle`, `top` = '#2b2c2e' / '#f1efea', `sink`, `modules` = [{ w, kind: 'doors', count: 2 }], `handles`, `bar`, `backsplash`, `backsplash.color` = '#cfcfcd', `backsplash.height` = 0.6 | sí | sí | — |
+| `bathtub` | bañera enlozada con grifería; "jets": hidromasaje, "apron": frente revestido | `length` = 1.5, `width` = 0.7, `height` = 0.55, `jets`, `apron` | sí | sí | — |
+| `toilet` | inodoro con mochila (fondo en -Z) y tapa cerrada | `cistern` | sí | sí | — |
+| `bidet` | bidet de cerámica con grifería (fondo en -Z) | — | sí | sí | — |
+| `vanity` | vanitory colgado: mueble con puerta y mesada con bacha integrada; opcional, toallero de aro con toalla. "style": "basin" = solo la bacha de loza colgada de la pared, con su sifón a la vista (sin mueble) | `style`, `width` = 0.5, `depth` = 0.42, `y0` = (basin ? 0.72 : 0.45), `material`, `color` = '#a8784c', `drawers`, `doors` = 1, `handles`, `towel`, `towelColor` = '#c9b79c' | sí | sí | — |
+| `bath-mat` | alfombra de baño de toalla | `width` = 0.8, `depth` = 0.5, `color` = '#f2f1ee' | no | — | * |
+| `bubble-sofa` | sofá curvo de bouclé: respaldo y brazos continuos hechos de gajos verticales (cápsulas que se solapan), base con gajos al frente y almohadón de asiento. Las piezas se cruzan en superficies curvas: no hay caras coplanares. | `length` = 1.75, `depth` = 0.92, `color` = '#efebe3', `seatHeight` = 0.42, `height` = 0.8, `armHeight` = 0.62, `throw`, `throw.x` = 0, `throw.drop` = 0.22, `throw.width` = 1.1, `throw.colors` = ['#dedbd4', '#8e939a'], `throw.stripes` = 14, `cushions` = [] | sí | sí | — |
+| `range` | cocina a gas de pie con horno: cuerpo enlozado, 4 hornallas con dos parrillas, tablero de perillas y puerta con visor | `width` = 0.55, `depth` = 0.58, `height` = 0.86, `color` = '#f3f3f1' | sí | sí | — |
+| `shower` | receptáculo de ducha con grifería de pared (el fondo en -Z es la pared): 3 llaves con pico y flor de lluvia con brazo | `width` = 0.8, `depth` = 0.8, `headHeight` = 2.0, `valvesX` = 0, `tray` = '#f7f7f5', `cladding` | sí | sí | — |
+| `stair` | escalera recta abierta: arranca en +Z (frente) y sube hacia -Z; peldaños de madera sin alzada y una zanca de chapa del lado libre ("open": -1 = lado -X, 1 = lado +X; el otro lado va contra la pared) | `width` = 0.85, `rise` = 2.85, `run` = 3.6, `steps` = 16, `tread` = '#c9a172', `stringer` = '#1f2023', `open` = 1 | no | — | * |
+| `railing` | baranda recta a lo largo de X local (fondo en z = 0): "bars" (parantes y caños negros) o "glass" | `length` = 1.2, `height` = 0.95, `color` = '#1f2023', `style` | sí | — | — |
+| `armchair` | sillón individual tapizado en pana, con estructura de madera a la vista | `color` = '#d48a52', `wood` = '#c58f5c' | sí | sí | — |
+| `pouf` | puf cilíndrico tapizado en pana | `diameter` = 0.48, `height` = 0.42, `color` = '#c9774a' | sí | — | — |
+| `coffee-table` | mesa ratona de madera con tapa de esquinas redondeadas y patas abiertas; "runner": camino de tela encima | `style`, `length` = 0.9 / 1.1, `width` = 0.42 / 0.55, `height` = 0.45 / 0.42, `color` = '#7f8a86' / '#c8925e', `legs` = '#b9bcbe', `runner` | sí | — | — |
+| `sideboard` | aparador de madera sobre patas, con puertas acanaladas | `width` = 1.4, `depth` = 0.42, `height` = 0.72, `color` = '#d3a46d', `doors` = 3, `top` | sí | sí | — |
+| `glass-screen` | mampara de vidrio templado a lo largo de X local (fondo en z = 0), con perfil inferior y tirador | `width` = 0.9, `height` = 2.0, `handle` | no | — | — |
+| `floor-lamp` | lámpara de pie con pantalla de tela: de noche la pantalla brilla y da una luz cálida baja. "style": "arc" (arco que cuelga una campana hacia +Z) o "tripod" (tres patas de madera) | `height` = 1.55, `color` = '#1e1f21', `style`, `reach` = 1.1, `base` = '#e9e6e0', `shade` = '#2a2b2d' / '#efe6d6', `intensity` = 6 / 4.5, `wood` = '#b8875a' | sí | — | — |
+| `floor-fan` | ventilador de pie: base redonda, caño, motor y aspas dentro de una jaula de alambre que mira hacia +Z | `height` = 1.25, `diameter` = 0.42, `color` = '#f2f2f0', `cage` = '#d9dadb', `blades` = '#e8eaec' | sí | — | — |
+| `bunk-bed` | cucheta: dos camas de una plaza superpuestas con parantes, barandas arriba y escalera en el lado largo (+Z). El largo va en X; "ladder" (1 o -1) elige de qué punta va la escalera | `length` = 1.9, `width` = 0.9, `height` = 1.6, `material`, `color` = '#f2f0eb' / '#d2ad7e', `sheetColor` = '#f4f2ee', `duvetColor` = '#5b6e86', `ladder` = 1 | sí | sí | — |
+| `desk` | escritorio de cuatro patas o de paneles laterales ("style": "panels"), con cajonera opcional ("drawers": 1 o -1, el lado) | `width` = 1.2, `depth` = 0.6, `height` = 0.75, `material`, `color` = '#f2f0eb' / '#c9a172', `style`, `legs` = '#2a2b2d', `drawers` | sí | sí | chair |
+| `bookshelf` | biblioteca o estantería de pie: costados, estantes y fondo; "books" llena los estantes de libros apoyados | `width` = 0.8, `height` = 1.8, `depth` = 0.3, `shelves` = 4, `seed` = 7, `material`, `color` = '#f2f0eb' / '#c9a172', `bookColors` = ['#7a3b2e', '#2f4a5f', '#c9b79c', '#3d5a40', '#b8743f', '…, `books` | sí | sí | — |
+| `room-divider` | divisor de ambientes: vidrio esmerilado en un bastidor de perfiles ("cols" × "rows" paños), de pie, a lo largo de X local (el centro de la huella en el origen). Los paños entran en los perfiles; montantes y travesaños se cruzan metidos unos en otros, sin caras en el mismo plano | `width` = 1.2, `height` = 2.25, `cols` = 2, `rows` = 3, `frame` = '#f1efe9', `glass` = '#e9ecea', `opacity` = 0.62 | sí | — | — |
+| `bench` | banco rústico de madera maciza: tabla gruesa sobre cuatro patas abiertas en A en cada punta, con un travesaño entre ellas; a lo largo de X | `length` = 1.2, `depth` = 0.28, `height` = 0.45, `color` = '#9a7e62' | sí | — | — |
+| `console-table` | consola de recibidor: bastidor de caño cuadrado laqueado, tapa de mármol ("top") y un estante abajo; el fondo en -Z | `width` = 0.8, `depth` = 0.3, `height` = 0.82, `color` = '#f2f1ed', `top`, `shelf` = 0.26 | sí | — | — |
+| `bar-stool` | banqueta alta de barra: asiento de madera en forma de escudo (recto atrás, redondeado adelante, apenas ahuecado), cuatro patas abiertas y travesaños para apoyar los pies | `seatHeight` = 0.66, `color` = '#d9b98c' | sí | — | kitchen-base |
+
+## Pared
+
+| Tipo | Qué es | Parámetros | Estorba | Se usa | Encastra |
+|---|---|---|---|---|---|
+| `wall-art` | cuadro: con marco negro y paspartú, o sin marco (lienzo montado en bastidor) | `width` = 0.7, `height` = 0.5, `style` = 'abstract', `palette` = ['#c9553a', '#2c3850', '#d8b98a', '#efe9df'], `texture`, `frame`, `frameColor` | no | — | — |
+| `tv` | tele o monitor (diagonal en pulgadas); en la pared con el fondo en z = 0, o con pie | `size` = 43, `stand`, `picture` | no | — | cube-shelf |
+| `ac-split` | equipo de aire acondicionado split de pared (fondo en z = 0) | `width` = 0.8 | sí | — | — |
+| `round-mirror` | espejo redondo de pared con aro metálico o de madera ("frame"); fondo en z = 0 | `diameter` = 0.6, `frame`, `ring` = '#1d1d1d' | no | — | — |
+| `kitchen-wall` | alacenas: módulos con puertas o un nicho abierto con estante (para el horno eléctrico). Ojo: el origen está en el centro de su profundidad ("depth"), no en el fondo: contra una pared van a depth / 2 de ella | `width` = 1.5, `depth` = 0.33, `y0` = 1.5, `height` = 0.75, `material`, `color` = '#d6b48a' / '#f4f4f2', `modules` = [{ w, kind: 'doors', count: 2 }] | no | — | kitchen-base, fridge |
+| `wall-dispensers` | dispensers de pared en acero ("count"), para jabón y shampoo de la ducha | `count` = 3 | sí | — | — |
+| `vent-grille` | rejilla de ventilación de pared (fondo en z = 0): marco, fondo oscuro y lamas | `width` = 0.2, `height` = 0.24, `color` = '#f1f1ef' | no | — | — |
+| `water-heater` | calefón a gas colgado (fondo en z = 0): gabinete, visor y perilla, conducto de humos hasta el techo y conexiones abajo | `width` = 0.36, `height` = 0.66, `depth` = 0.24, `flue` = 0.5 | no | — | — |
+| `wall-tiles` | revestimiento cerámico sobre una pared (fondo en z = 0): placas de "tile" [ancho, alto] con junta, empezando en la esquina de abajo a la izquierda. 14 mm de espesor para tapar el zócalo de 12 mm sin compartir su cara. | `width` = 1, `height` = 0.6, `thickness` = 0.014, `tile` = [0.6, 0.3], `color` = '#e3dccf', `texture`, `textureSize` = 2 | no | — | — |
+| `capsule-mirror` | espejo sin marco con forma de cápsula (puntas semicirculares arriba y abajo); fondo en z = 0, base en y = 0 | `width` = 0.45, `height` = 0.8 | no | — | — |
+| `towel-bar` | toallero de barra con una toalla colgada; fondo en z = 0, la barra a la altura del item | `width` = 0.4, `towel`, `towelColor` = '#d8d2c8' | no | — | — |
+| `paneling` | revestimiento de tablas verticales sobre una pared (fondo en z = 0): "boards" machihembrado pintado o "slats" listones | `width` = 1, `height` = 2.5, `style`, `thickness` = (slats ? 0.03 : 0.015), `color` = (slats ? '#d8b68a' : '#b9b6b0') / '#d8b68a', `cap` | no | — | — |
+| `sconce` | aplique de pared para lectura (fondo en z = 0) | `color` = '#1d1d1f', `intensity` = 1.2 | no | — | — |
+| `bath-mirror` | espejo rectangular de esquinas redondeadas con barra de luz arriba (baños); fondo en z = 0, base en y = 0 | `width` = 0.6, `height` = 0.8, `radius` = 0.06, `light` | no | — | — |
+| `wall-desk` | escritorio rebatible de pared, cerrado: tablero de madera colgado y un estante angosto arriba sobre ménsulas negras (fondo en z = 0; "y0" es la altura del borde de abajo del tablero) | `width` = 0.8, `height` = 0.5, `y0` = 1.1, `color` = '#c9a06a' | no | — | — |
+
+## Techo
+
+| Tipo | Qué es | Parámetros | Estorba | Se usa | Encastra |
+|---|---|---|---|---|---|
+| `ceiling-light` | plafón de spots: en fila sobre una regleta, o 4 en cuadrado ("layout": "square") con una sola luz al centro | `bulbs` = 2, `color` = '#1f2123', `layout`, `intensity` = 30 / 13, `style` | no | — | — |
+| `downlight` | spot embutido en el cielorraso | `intensity` = 12, `day`, `dayIntensity` = 6 | no | — | * |
+| `ribbon-pendant` | colgante de cinta ondulada (LED): una cinta negra que se retuerce, colgada de dos cables desde una florería | `drop` = 0.55, `color` = '#1e1f21', `intensity` = 18 | no | — | — |
+| `pendant` | lámpara colgante: "dome" (plato blanco) o "lantern" (farol de papel con aro negro) | `drop` = 0.8, `color` = '#f6f4ef', `style`, `size` = 0.22 / 0.5, `intensity` = 14 | no | — | — |
+| `chandelier` | araña de caireles rectangular: placa cromada contra el techo y una cortina de cuentas de cristal que cuelgan en hileras, más largas al centro. Las cuentas son instancias (miles cuestan como una sola malla): cromadas, que reflejan el entorno, y una de cada tres que brilla de noche. "day": prendida también de día (con "dayIntensity") | `width` = 0.9, `depth` = 0.55, `drop` = 0.5, `intensity` = 9, `day`, `dayIntensity` = 4 | no | — | — |
+| `track-light` | riel de spots a lo largo de X local, colgado del techo | `length` = 1.5, `spots` = 3, `color` = '#1d1d1f', `tilt` = 0.35, `intensity` = 8 | no | — | — |
+| `panel-light` | plafón LED cuadrado de superficie (balcones, pasillos) | `size` = 0.22, `color` = '#f2f2f0', `intensity` = 8 | no | — | — |
+
+## Encima de otro mueble
+
+| Tipo | Qué es | Parámetros | Estorba | Se usa | Encastra |
+|---|---|---|---|---|---|
+| `folded-towels` | toallas dobladas apiladas ("count"), para apoyar sobre la cama o un mueble | `color` = '#e8dcc6', `count` = 2 | no | — | bed |
+| `table-lamp` | velador de cerámica con pantalla de tela; de noche se prende | `base` = '#e9e4dc', `shade` = '#efe6d6', `intensity` = 3 | sí | — | nightstand |
+| `appliance` | electrodoméstico chico según "kind": microwave, toaster-oven, coffee-maker, kettle, cooktop o hood (campana) | `kind`, `color` = '#f3f3f1' | no | — | kitchen-base, fridge, kitchen-wall |
+| `shower-curtain` | barral con cortina de baño, a lo largo de X local; la cortina cubre de "from" a "to" medidos desde -X | `length` = 1.5, `rodHeight` = 2.0, `from` = 0, `to` = L, `height` = 1.8, `color` = '#e4e4e2', `return` | sí | — | bathtub, shower |
+| `led-strip` | tira LED (fondo arriba, en y = 0): se pega bajo una alacena o un estante; de noche ilumina hacia abajo | `width` = 1.5, `intensity` = 12 | no | — | kitchen-wall |
+| `table-setting` | mesa puesta para uno: individual redondo de yute, plato y copa (apoyado sobre la mesa con "y") | `matSize` = 0.18, `mat` = '#b49a76', `plate` = '#ece7df' | no | — | dining-table, chair |
+| `tabletop-decor` | objetos chicos para apoyar en una mesa, mesada o estante ("items": "vase", "books", "bowl", "candle", "plant", "bottle" (botella de vidrio, llena de "fill" si se da), "bottle-flowers" (botella con flores secas), en fila sobre X): cada uno apoya en y = 0 | `items` = ['vase', 'books', 'bowl'], `seed` = 3, `spacing` = 0.22, `vase` = '#d8cfc2', `bowl` = '#e9e4dc', `fill`, `flowers` = '#a8342c' / '#5b2f3a', `candle` = '#f1ece2', `pot` = '#cfc6ba' | no | — | * |
+
+## Frente a una ventana
+
+| Tipo | Qué es | Parámetros | Estorba | Se usa | Encastra |
+|---|---|---|---|---|---|
+| `curtains` | dos paños de cortina recogidos a los lados del ventanal, en un barral | `width` = 2.8, `panelWidth` = 0.45, `height` = 2.45, `sheer`, `color` = '#faf8f3' / '#e7e2d8' | no | — | * |

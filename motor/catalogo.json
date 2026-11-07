@@ -1,0 +1,860 @@
+{
+ "bed": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "1.6",
+   "length": "2.0",
+   "baseHeight": "0.32",
+   "mattressHeight": "0.23",
+   "sheetColor": "'#f7f6f2'",
+   "duvetColor": "'#5b6470' / '#2c3850'",
+   "frameColor": "'#f3f1ec'",
+   "duvetCover": "0.62",
+   "duvetDrop": "0.34",
+   "duvetPuff": "0.03",
+   "throw.drop": "0.3",
+   "throw.cover": "0.3",
+   "throw.color": "'#2e2f33'",
+   "pillows": "[]"
+  }
+ },
+ "folded-towels": {
+  "mount": "on",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "bed"
+  ],
+  "params": {
+   "color": "'#e8dcc6'",
+   "count": "2"
+  }
+ },
+ "nightstand": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.4",
+   "depth": "0.38",
+   "height": "0.6",
+   "color": "'#c49862'"
+  }
+ },
+ "table-lamp": {
+  "mount": "on",
+  "solid": true,
+  "use": false,
+  "nests": [
+   "nightstand"
+  ],
+  "params": {
+   "base": "'#e9e4dc'",
+   "shade": "'#efe6d6'",
+   "intensity": "3"
+  }
+ },
+ "wardrobe": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "1.9",
+   "height": "2.45",
+   "depth": "0.6",
+   "color": "'#cfae86' / '#f3f1ec'",
+   "style": "'sliding'",
+   "doors": "2"
+  }
+ },
+ "rug": {
+  "mount": "floor",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "*"
+  ],
+  "params": {
+   "width": "0.8",
+   "depth": "1.4",
+   "colors": "['#c9553a']",
+   "stripes": "24"
+  }
+ },
+ "ceiling-light": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "bulbs": "2",
+   "color": "'#1f2123'",
+   "intensity": "30 / 13"
+  }
+ },
+ "downlight": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "*"
+  ],
+  "params": {
+   "intensity": "12",
+   "dayIntensity": "6"
+  }
+ },
+ "plant": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "seed": "11",
+   "height": "(p.style === 'tree' ? 1.6 : p.style === 'succulent' ? 0.1…",
+   "pot": "'#cfc6ba' / '#d9d4cc'"
+  }
+ },
+ "wall-art": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.7",
+   "height": "0.5",
+   "style": "'abstract'",
+   "palette": "['#c9553a', '#2c3850', '#d8b98a', '#efe9df']"
+  }
+ },
+ "sofa": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "cushions": "[]",
+   "length": "2.0",
+   "depth": "0.95",
+   "seats": "2",
+   "color": "'#6e6c69'",
+   "height": "0.92",
+   "wood": "'#c9925a'"
+  }
+ },
+ "dining-table": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "length": "1.4",
+   "width": "0.8",
+   "height": "0.75",
+   "color": "'#f3f2ef' / '#d2a26a'",
+   "base": "'#1b1b1b' / '#d4d7da'",
+   "glass": "'#b5cdc6'",
+   "mats": "0"
+  }
+ },
+ "chair": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [
+   "dining-table",
+   "side-table"
+  ],
+  "params": {
+   "wood": "'#c8925e'",
+   "color": "'#b8783f' / '#d9d3c7' / '#2b2b2b' / '#9a9a9a'",
+   "seatHeight": "0.46",
+   "legs": "'#c3c6ca' / '#1d1d1d'"
+  }
+ },
+ "side-table": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "diameter": "0.45",
+   "height": "0.5",
+   "wood": "'#c8925e'",
+   "color": "'#efece6' / '#2b2b2b'"
+  }
+ },
+ "cube-shelf": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [
+   "fridge"
+  ],
+  "params": {
+   "cols": "2",
+   "rows": "2",
+   "cell": "0.35",
+   "depth": "0.35",
+   "color": "'#f4f4f2'"
+  }
+ },
+ "tv": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "cube-shelf"
+  ],
+  "params": {
+   "size": "43"
+  }
+ },
+ "ac-split": {
+  "mount": "wall",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.8"
+  }
+ },
+ "curtains": {
+  "mount": "window",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "*"
+  ],
+  "params": {
+   "width": "2.8",
+   "panelWidth": "0.45",
+   "height": "2.45",
+   "color": "'#faf8f3' / '#e7e2d8'"
+  }
+ },
+ "round-mirror": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "diameter": "0.6",
+   "ring": "'#1d1d1d'"
+  }
+ },
+ "floor-mirror": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.42",
+   "height": "1.55"
+  }
+ },
+ "fridge": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [
+   "kitchen-base"
+  ],
+  "params": {
+   "width": "0.6",
+   "height": "1.75",
+   "depth": "0.65",
+   "color": "'#f4f3ef' / '#c4c7cb'"
+  }
+ },
+ "appliance": {
+  "mount": "on",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "kitchen-base",
+   "fridge",
+   "kitchen-wall"
+  ],
+  "params": {
+   "color": "'#f3f3f1'"
+  }
+ },
+ "kitchen-base": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "1.5",
+   "depth": "0.6",
+   "height": "0.9",
+   "color": "'#f4f4f2'",
+   "top": "'#2b2c2e' / '#f1efea'",
+   "modules": "[{ w, kind: 'doors', count: 2 }]",
+   "backsplash.color": "'#cfcfcd'",
+   "backsplash.height": "0.6"
+  }
+ },
+ "kitchen-wall": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "kitchen-base",
+   "fridge"
+  ],
+  "params": {
+   "width": "1.5",
+   "depth": "0.33",
+   "y0": "1.5",
+   "height": "0.75",
+   "color": "'#d6b48a' / '#f4f4f2'",
+   "modules": "[{ w, kind: 'doors', count: 2 }]"
+  }
+ },
+ "bathtub": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "length": "1.5",
+   "width": "0.7",
+   "height": "0.55"
+  }
+ },
+ "shower-curtain": {
+  "mount": "on",
+  "solid": true,
+  "use": false,
+  "nests": [
+   "bathtub",
+   "shower"
+  ],
+  "params": {
+   "length": "1.5",
+   "rodHeight": "2.0",
+   "from": "0",
+   "to": "L",
+   "height": "1.8",
+   "color": "'#e4e4e2'"
+  }
+ },
+ "toilet": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {}
+ },
+ "bidet": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {}
+ },
+ "vanity": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "0.5",
+   "depth": "0.42",
+   "y0": "(basin ? 0.72 : 0.45)",
+   "color": "'#a8784c'",
+   "doors": "1",
+   "towelColor": "'#c9b79c'"
+  }
+ },
+ "wall-dispensers": {
+  "mount": "wall",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "count": "3"
+  }
+ },
+ "bath-mat": {
+  "mount": "floor",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "*"
+  ],
+  "params": {
+   "width": "0.8",
+   "depth": "0.5",
+   "color": "'#f2f1ee'"
+  }
+ },
+ "bubble-sofa": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "length": "1.75",
+   "depth": "0.92",
+   "color": "'#efebe3'",
+   "seatHeight": "0.42",
+   "height": "0.8",
+   "armHeight": "0.62",
+   "throw.x": "0",
+   "throw.drop": "0.22",
+   "throw.width": "1.1",
+   "throw.colors": "['#dedbd4', '#8e939a']",
+   "throw.stripes": "14",
+   "cushions": "[]"
+  }
+ },
+ "ribbon-pendant": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "drop": "0.55",
+   "color": "'#1e1f21'",
+   "intensity": "18"
+  }
+ },
+ "vent-grille": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.2",
+   "height": "0.24",
+   "color": "'#f1f1ef'"
+  }
+ },
+ "range": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "0.55",
+   "depth": "0.58",
+   "height": "0.86",
+   "color": "'#f3f3f1'"
+  }
+ },
+ "water-heater": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.36",
+   "height": "0.66",
+   "depth": "0.24",
+   "flue": "0.5"
+  }
+ },
+ "wall-tiles": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "1",
+   "height": "0.6",
+   "thickness": "0.014",
+   "tile": "[0.6, 0.3]",
+   "color": "'#e3dccf'",
+   "textureSize": "2"
+  }
+ },
+ "shower": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "0.8",
+   "depth": "0.8",
+   "headHeight": "2.0",
+   "valvesX": "0",
+   "tray": "'#f7f7f5'"
+  }
+ },
+ "capsule-mirror": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.45",
+   "height": "0.8"
+  }
+ },
+ "towel-bar": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.4",
+   "towelColor": "'#d8d2c8'"
+  }
+ },
+ "stair": {
+  "mount": "floor",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "*"
+  ],
+  "params": {
+   "width": "0.85",
+   "rise": "2.85",
+   "run": "3.6",
+   "steps": "16",
+   "tread": "'#c9a172'",
+   "stringer": "'#1f2023'",
+   "open": "1"
+  }
+ },
+ "railing": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "length": "1.2",
+   "height": "0.95",
+   "color": "'#1f2023'"
+  }
+ },
+ "paneling": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "1",
+   "height": "2.5",
+   "thickness": "(slats ? 0.03 : 0.015)",
+   "color": "(slats ? '#d8b68a' : '#b9b6b0') / '#d8b68a'"
+  }
+ },
+ "armchair": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "color": "'#d48a52'",
+   "wood": "'#c58f5c'"
+  }
+ },
+ "pouf": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "diameter": "0.48",
+   "height": "0.42",
+   "color": "'#c9774a'"
+  }
+ },
+ "coffee-table": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "length": "0.9 / 1.1",
+   "width": "0.42 / 0.55",
+   "height": "0.45 / 0.42",
+   "color": "'#7f8a86' / '#c8925e'",
+   "legs": "'#b9bcbe'"
+  }
+ },
+ "sideboard": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "1.4",
+   "depth": "0.42",
+   "height": "0.72",
+   "color": "'#d3a46d'",
+   "doors": "3"
+  }
+ },
+ "pendant": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "drop": "0.8",
+   "color": "'#f6f4ef'",
+   "size": "0.22 / 0.5",
+   "intensity": "14"
+  }
+ },
+ "chandelier": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.9",
+   "depth": "0.55",
+   "drop": "0.5",
+   "intensity": "9",
+   "dayIntensity": "4"
+  }
+ },
+ "track-light": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "length": "1.5",
+   "spots": "3",
+   "color": "'#1d1d1f'",
+   "tilt": "0.35",
+   "intensity": "8"
+  }
+ },
+ "sconce": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "color": "'#1d1d1f'",
+   "intensity": "1.2"
+  }
+ },
+ "bath-mirror": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.6",
+   "height": "0.8",
+   "radius": "0.06"
+  }
+ },
+ "glass-screen": {
+  "mount": "floor",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.9",
+   "height": "2.0"
+  }
+ },
+ "panel-light": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "size": "0.22",
+   "color": "'#f2f2f0'",
+   "intensity": "8"
+  }
+ },
+ "led-strip": {
+  "mount": "on",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "kitchen-wall"
+  ],
+  "params": {
+   "width": "1.5",
+   "intensity": "12"
+  }
+ },
+ "floor-lamp": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "height": "1.55",
+   "color": "'#1e1f21'",
+   "reach": "1.1",
+   "base": "'#e9e6e0'",
+   "shade": "'#2a2b2d' / '#efe6d6'",
+   "intensity": "6 / 4.5",
+   "wood": "'#b8875a'"
+  }
+ },
+ "table-setting": {
+  "mount": "on",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "dining-table",
+   "chair"
+  ],
+  "params": {
+   "matSize": "0.18",
+   "mat": "'#b49a76'",
+   "plate": "'#ece7df'"
+  }
+ },
+ "wall-desk": {
+  "mount": "wall",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.8",
+   "height": "0.5",
+   "y0": "1.1",
+   "color": "'#c9a06a'"
+  }
+ },
+ "floor-fan": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "height": "1.25",
+   "diameter": "0.42",
+   "color": "'#f2f2f0'",
+   "cage": "'#d9dadb'",
+   "blades": "'#e8eaec'"
+  }
+ },
+ "bunk-bed": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "length": "1.9",
+   "width": "0.9",
+   "height": "1.6",
+   "color": "'#f2f0eb' / '#d2ad7e'",
+   "sheetColor": "'#f4f2ee'",
+   "duvetColor": "'#5b6e86'",
+   "ladder": "1"
+  }
+ },
+ "desk": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [
+   "chair"
+  ],
+  "params": {
+   "width": "1.2",
+   "depth": "0.6",
+   "height": "0.75",
+   "color": "'#f2f0eb' / '#c9a172'",
+   "legs": "'#2a2b2d'"
+  }
+ },
+ "bookshelf": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "0.8",
+   "height": "1.8",
+   "depth": "0.3",
+   "shelves": "4",
+   "seed": "7",
+   "color": "'#f2f0eb' / '#c9a172'",
+   "bookColors": "['#7a3b2e', '#2f4a5f', '#c9b79c', '#3d5a40', '#b8743f', '…"
+  }
+ },
+ "tabletop-decor": {
+  "mount": "on",
+  "solid": false,
+  "use": false,
+  "nests": [
+   "*"
+  ],
+  "params": {
+   "items": "['vase', 'books', 'bowl']",
+   "seed": "3",
+   "spacing": "0.22",
+   "vase": "'#d8cfc2'",
+   "bowl": "'#e9e4dc'",
+   "flowers": "'#a8342c' / '#5b2f3a'",
+   "candle": "'#f1ece2'",
+   "pot": "'#cfc6ba'"
+  }
+ },
+ "room-divider": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "1.2",
+   "height": "2.25",
+   "cols": "2",
+   "rows": "3",
+   "frame": "'#f1efe9'",
+   "glass": "'#e9ecea'",
+   "opacity": "0.62"
+  }
+ },
+ "bench": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "length": "1.2",
+   "depth": "0.28",
+   "height": "0.45",
+   "color": "'#9a7e62'"
+  }
+ },
+ "console-table": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [],
+  "params": {
+   "width": "0.8",
+   "depth": "0.3",
+   "height": "0.82",
+   "color": "'#f2f1ed'",
+   "shelf": "0.26"
+  }
+ },
+ "bar-stool": {
+  "mount": "floor",
+  "solid": true,
+  "use": false,
+  "nests": [
+   "kitchen-base"
+  ],
+  "params": {
+   "seatHeight": "0.66",
+   "color": "'#d9b98c'"
+  }
+ }
+}

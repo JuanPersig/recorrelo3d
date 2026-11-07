@@ -1,0 +1,15 @@
+{
+ "fecha": "2026-11-04T14:11:45.425Z",
+ "dudas": [
+  "Medidas generales: el anuncio no dice los metros (estudio de unos 3,2 × 5,8 m, cocina de 1,7 × 4,3 m y baño de 1,85 × 2,0 m)",
+  "Baño: se entra desde el vestíbulo de la cocina; la posición exacta y el lado de la ducha están estimados",
+  "Cocina: el largo y lo que hay entre la heladera y la puerta del baño",
+  "Balcón: el largo (se modeló corrido frente al living y la cocina) y el ancho de 1,1 m",
+  "Segunda cama: el anuncio dice 2 camas; se supone que el sillón es cama (no hay foto abierto)"
+ ],
+ "ambientes": [
+  "Living, comedor y dormitorio",
+  "Cocina",
+  "Baño"
+ ]
+}

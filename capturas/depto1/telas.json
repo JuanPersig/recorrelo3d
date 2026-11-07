@@ -1,0 +1,25 @@
+{
+ "fecha": "2026-11-04T00:23:58.457Z",
+ "telas": [
+  {
+   "type": "chair",
+   "color": "#2a2a2a",
+   "texture": "tex/tela-chair-2a2a2a.jpg",
+   "vista": "living",
+   "px": 145,
+   "dibujo": 0.13,
+   "repeticion": 0.49,
+   "aceptada": true
+  },
+  {
+   "type": "bed",
+   "color": "#5a6f8b",
+   "texture": "tex/tela-bed-5a6f8b.jpg",
+   "vista": "cama",
+   "px": 153,
+   "dibujo": 0.24,
+   "repeticion": 0.37,
+   "aceptada": true
+  }
+ ]
+}

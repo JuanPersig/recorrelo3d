@@ -1,0 +1,31 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Departamento demo · dónde usar cada cosa</title><style>
+:root{ --bg:#f6f4ef; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e4e0d8; --accent:#2f5d50; --soft:#ece8df }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#17191c; --card:#202327; --ink:#eceae6; --muted:#a3a8ae; --line:#33373c; --soft:#2a2d31 } }
+*{ box-sizing:border-box } html{ -webkit-text-size-adjust:100% }
+body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,"Segoe UI",Roboto,sans-serif }
+a{ color:var(--accent) } img,video{ max-width:100%; display:block }
+.wrap{ max-width:1080px; margin:0 auto; padding:0 16px }
+h1,h2,h3{ line-height:1.2; margin:0 0 .4em } h2{ font-size:1.35rem; margin-top:0 } .muted{ color:var(--muted) }
+section{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin:16px 0 }
+.btn{ display:inline-flex; align-items:center; gap:.4em; background:var(--accent); color:#fff; text-decoration:none; border:0; border-radius:10px; padding:.65em 1em; font:600 .95rem system-ui,sans-serif; cursor:pointer }
+.btn.alt{ background:var(--soft); color:var(--ink) } .row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+.tag{ display:inline-block; font-size:.78rem; background:var(--soft); color:var(--muted); border-radius:999px; padding:.15em .6em }
+
+@page{ size:A4; margin:14mm } body{ background:#fff; color:#1f2328 } .wrap{ max-width:760px; padding:24px 16px }
+h1{ font-size:1.6rem } .g{ display:grid; grid-template-columns:1fr 1fr; gap:12px } .c{ border:1px solid #e4e0d8; border-radius:12px; padding:12px 14px; break-inside:avoid }
+.c h3{ font-size:1.02rem; color:var(--accent) } .c ul{ margin:.3em 0 0; padding-left:1.1em } .c li{ margin:.15em 0 }
+@media (max-width:640px){ .g{ grid-template-columns:1fr } } @media print{ .noprint{ display:none } }
+</style></head><body><div class="wrap">
+<p class="noprint"><a href="index.html">← Volver a la entrega</a> · <a href="#" onclick="print();return false">Imprimir o guardar PDF</a></p>
+<h1>Dónde usar cada cosa</h1><p class="muted">Departamento demo</p>
+<div class="g">
+<div class="c"><h3>Airbnb</h3><ul><li>Subí 4–6 de las <b>imágenes del anuncio</b> al final de la galería, después de las fotos reales.</li><li>Sumá el <b>plano</b> como una foto más: casi nadie lo tiene y ayuda a decidir.</li><li>Airbnb no deja poner links: en la descripción, ofrecé el recorrido "por mensaje".</li></ul></div>
+<div class="c"><h3>Mensajes a huéspedes</h3><ul><li>Antes de reservar: mandá el <b>link del recorrido</b> o la <b>versión liviana del video</b>.</li><li>Antes de llegar: el link de la <b>entrada</b> o de la cocina para que ubiquen todo.</li><li>Texto listo en "Mensaje a huéspedes".</li></ul></div>
+<div class="c"><h3>Instagram y estados</h3><ul><li>Reel o historia: el <b>video vertical</b> (9:16).</li><li>Posteo: 3–5 imágenes en carrusel, con una de noche al final.</li><li>Link del recorrido en la bio o en una historia con link.</li></ul></div>
+<div class="c"><h3>Tarjeta de bienvenida</h3><ul><li>Imprimí la <b>tarjeta con el QR</b> y dejala en la mesa o la heladera.</li><li>El huésped escanea y recorre el departamento desde el celular.</li><li>También sirve en la puerta de un local o en una inmobiliaria.</li></ul></div>
+<div class="c"><h3>Web, YouTube o pantalla</h3><ul><li><b>Video horizontal</b> (16:9) en alta calidad.</li><li>El recorrido 3D se puede insertar en una web con el link.</li></ul></div>
+<div class="c"><h3>Qué archivo es cada cosa</h3><ul><li><b>anuncio/</b>: imágenes elegidas.</li><li><b>recorrido*.mp4</b>: videos (los "livianos" pesan poco).</li><li><b>plano.png / .svg</b>, <b>qr.png</b>, <b>textos.txt</b>.</li></ul></div>
+</div>
+<p class="muted" style="font-size:.85rem;margin-top:14px">Representación aproximada hecha a partir de las fotos. Link y QR de prueba hasta publicar el recorrido.</p>
+</div></body></html>

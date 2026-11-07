@@ -1,0 +1,122 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Encuadre automático</title>
+<style>
+/* Herramienta de desarrollo (T-27): ajusta la cámara de cada vista con foto para que el modelo calce con la foto. */
+:root{ --bg:#eceef0; --ink:#1d2430; --muted:#5b6573; font-family:system-ui,"Segoe UI",sans-serif }
+body{ margin:0; background:var(--bg); color:var(--ink); padding:12px 14px 40px }
+h1{ font-size:18px; margin:0 0 4px } p,li{ font-size:13px; color:var(--muted) }
+#stage{ position:fixed; left:-10000px; top:0 }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<h1>Encuadre automático</h1>
+<p id="estado">Armando…</p>
+<ul id="out"></ul>
+<div id="stage"></div>
+<script type="module">
+// encuadre.html?depto=<id>[&vistas=a,b][&perturbar=1][&lado=320]
+// Para cada vista con foto busca la cámara (posición, giro, inclinación y campo de visión) que hace coincidir los bordes
+// del mapa de identificación (T-21: dónde cambia de objeto el modelo) con los bordes de la foto. Puntaje: qué tan fuerte
+// es el borde de la foto donde el modelo tiene un borde, más qué tan cerca de un borde del modelo caen los bordes fuertes
+// de la foto (los de paredes, piso, techo y aberturas pesan el doble que los de muebles). Búsqueda local por
+// coordenadas con pasos que se achican, dentro de límites razonables (altura 1–1,7 m, fov 50–85).
+// Con &perturbar=1 primero corre la cámara (15 cm, 4°, 3° de fov) para probar que vuelve.
+// Guarda capturas/<id>/encuadre.json; se aplica con: node motor/encuadre.mjs <id> --aplicar
+import { start } from './engine.js';
+import { pixels, mapaSobreFoto } from './parecido.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('depto');
+const SIDE = Number(q.get('lado') ?? 320), PERT = q.get('perturbar') === '1';
+const scene = await fetch(`/departamentos/${id}/scene.json`).then(r => r.json());
+const keys = (q.get('vistas')?.split(',') ?? Object.keys(scene.views)).filter(k => scene.views[k]?.photo);
+const api = window.__viewer = await start($('stage'), { scene, state: { view: keys[0], cut: false, night: false, decor: true }, device: 'desktop' });
+const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+const STRUCT = new Set(['wall', 'floor', 'ceiling', 'door', 'sliding-window', 'passage', 'baseboard', 'structure', 'slab']);
+const D2R = Math.PI / 180;
+
+// bordes de la foto: Sobel de la luminancia, normalizado al percentil 95 y suavizado (tolera 2–3 px de error)
+function photoEdges(img) {
+  const { width: w, height: h, data } = img, L = new Float32Array(w * h), E = new Float32Array(w * h);
+  for (let i = 0; i < w * h; i++) L[i] = 0.3 * data[i * 4] + 0.59 * data[i * 4 + 1] + 0.11 * data[i * 4 + 2];
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+    const i = y * w + x, gx = L[i - w + 1] + 2 * L[i + 1] + L[i + w + 1] - L[i - w - 1] - 2 * L[i - 1] - L[i + w - 1], gy = L[i + w - 1] + 2 * L[i + w] + L[i + w + 1] - L[i - w - 1] - 2 * L[i - w] - L[i - w + 1];
+    E[i] = Math.hypot(gx, gy);
+  }
+  const s = [...E].sort((a, b) => a - b), p95 = s[Math.floor(s.length * 0.95)] || 1;
+  for (let i = 0; i < E.length; i++) E[i] = Math.min(1, E[i] / p95);
+  return { soft: blur(E, w, h, 2), strong: E.map(v => (v > 0.6 ? 1 : 0)), w, h };
+}
+function blur(A, w, h, r) {
+  let a = Float32Array.from(A);
+  for (const hz of [true, false]) {
+    const b = new Float32Array(w * h);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { let s = 0, n = 0; for (let d = -r; d <= r; d++) { const xx = hz ? x + d : x, yy = hz ? y : y + d; if (xx >= 0 && yy >= 0 && xx < w && yy < h) { s += a[yy * w + xx]; n++; } } b[y * w + x] = s / n; }
+    a = b;
+  }
+  return a;
+}
+// puntaje de una cámara: dibuja el mapa y compara bordes
+function score(pose, P) {
+  api.setPose(pose);
+  const map = api.idMap(), { width: w, height: h, ids, table } = map, B = new Float32Array(w * h), wt = new Float32Array(w * h);
+  for (let y = 0; y < h - 1; y++) for (let x = 0; x < w - 1; x++) {
+    const i = y * w + x;
+    for (const j of [i + 1, i + w]) if (ids[j] !== ids[i]) {
+      const a = table[ids[i]], b = table[ids[j]], st = STRUCT.has(a?.kind) && STRUCT.has(b?.kind) ? 2 : 1;
+      B[i] = 1; wt[i] = Math.max(wt[i], st);
+    }
+  }
+  let s1 = 0, n1 = 0; for (let i = 0; i < w * h; i++) if (B[i]) { s1 += P.soft[i] * wt[i]; n1 += wt[i]; }
+  const Bs = blur(B, w, h, 2); let s2 = 0, n2 = 0; for (let i = 0; i < w * h; i++) if (P.strong[i]) { s2 += Math.min(1, Bs[i] * 2.5); n2++; }
+  return (n1 ? s1 / n1 : 0) + (n2 ? s2 / n2 : 0);
+}
+// cámara ⇄ parámetros: posición, rumbo y cabeceo (grados), fov
+const toParams = v => { const d = v.target.map((t, i) => t - v.pos[i]), yaw = Math.atan2(-d[0], -d[2]) / D2R, pitch = Math.atan2(d[1], Math.hypot(d[0], d[2])) / D2R; return [...v.pos, yaw, pitch, v.fov]; };
+const toPose = (x, fit) => { const [px, py, pz, yaw, pitch, fov] = x, c = Math.cos(pitch * D2R); return { p: [px, py, pz], t: [px - Math.sin(yaw * D2R) * c * 2, py + Math.sin(pitch * D2R) * 2, pz - Math.cos(yaw * D2R) * c * 2], f: fov, fit, mode: 'walk' }; };
+// la altura se limita sobre el piso del nivel de la vista (en el altillo, el piso está a 2,8 m)
+const floorY = v => (v.level ? (scene.levels?.[v.level - 1]?.y ?? (scene.height ?? 2.6) + 0.25) : 0);
+let LIM = null;
+const clampX = x => x.map((v, i) => Math.min(LIM[i][1], Math.max(LIM[i][0], v)));
+const out = [], lines = [];
+for (const k of keys) {
+  const v = scene.views[k], A = v.photoAspect ?? scene.viewAspect ?? 0.75, W = A >= 1 ? Math.round(SIDE * 4 / 3) : SIDE, H = Math.round(W / A);
+  Object.assign($('stage').style, { width: `${W}px`, height: `${H}px` }); api.resize(); api.setCut(false); api.go(k, true);
+  const photoImg = await load(`${scene.photos}${v.photo}.png`), cw = api._debug.renderer.domElement.width, ch = api._debug.renderer.domElement.height;
+  const fit = A, P = photoEdges(pixels(photoImg, cw, ch));
+  const fy = floorY(v); LIM = [[-Infinity, Infinity], [fy + 1.0, fy + 1.7], [-Infinity, Infinity], [-Infinity, Infinity], [-35, 35], [50, 85]];
+  const x0 = toParams(v), start0 = PERT ? [x0[0] + 0.15, x0[1], x0[2] - 0.1, x0[3] + 4, x0[4] - 2, x0[5] + 3] : x0;
+  let x = clampX(start0), best = score(toPose(x, fit), P);
+  const s0 = score(toPose(x0, fit), P);
+  const steps = [0.04, 0.04, 0.04, 1, 1, 1.5];
+  for (let level = 0; level < 4; level++) {
+    let improved = true, it = 0;
+    while (improved && it++ < 12) {
+      improved = false;
+      for (let d = 0; d < 6; d++) for (const sg of [1, -1]) {
+        const y = [...x]; y[d] += sg * steps[d] * (level === 0 ? 3 : level === 1 ? 1.5 : level === 2 ? 0.7 : 0.35); const yc = clampX(y), s = score(toPose(yc, fit), P);
+        if (s > best + 1e-4) { best = s; x = yc; improved = true; }
+      }
+    }
+  }
+  const r = x.map(v => +v.toFixed(3)), pose = toPose(r, fit);
+  // lámina de control: la foto con los bordes del modelo, con la cámara de antes (izquierda) y la ajustada (derecha)
+  const big = pixels(photoImg, cw, ch), sheet = document.createElement('canvas'); sheet.width = cw * 2 + 6; sheet.height = ch;
+  for (const [i, xx] of [x0, r].entries()) { api.setPose(toPose(xx, fit)); sheet.getContext('2d').drawImage(mapaSobreFoto(api.idMap(), big), 0, 0, cw, ch, i * (cw + 6), 0, cw, ch); }
+  const url = sheet.toDataURL('image/jpeg', 0.85);
+  await fetch(`/capturas/t27/${id}-${k}${PERT ? '-prueba' : ''}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), c => c.charCodeAt(0)) });
+  const moved = Math.hypot(r[0] - x0[0], r[1] - x0[1], r[2] - x0[2]), turned = Math.hypot(r[3] - x0[3], r[4] - x0[4]);
+  out.push({ vista: k, antes: { pos: v.pos, target: v.target, fov: v.fov, puntaje: +s0.toFixed(3) }, despues: { pos: pose.p.map(v => +v.toFixed(3)), target: pose.t.map(v => +v.toFixed(3)), fov: +r[5].toFixed(1), puntaje: +best.toFixed(3) },
+    mueve: +moved.toFixed(3), gira: +turned.toFixed(2), dfov: +(r[5] - x0[5]).toFixed(1), perturbada: PERT });
+  lines.push(`${v.name}: puntaje ${s0.toFixed(3)} → ${best.toFixed(3)}; respecto de la cámara actual: ${Math.round(moved * 100)} cm, ${turned.toFixed(1)}°, fov ${(r[5] - x0[5]).toFixed(1)}°`);
+}
+api.destroy();
+await fetch(`/capturas/${id}/encuadre${PERT ? '-prueba' : ''}.json`, { method: 'POST', body: JSON.stringify({ fecha: new Date().toISOString(), vistas: out }, null, 1) });
+$('estado').textContent = `${out.length} vistas ajustadas${PERT ? ' (partiendo de cámaras corridas a propósito)' : ''}.`;
+$('out').innerHTML = lines.map(l => `<li>${l}</li>`).join('');
+window.__encuadre = { out, lines }; document.title = 'encuadre: listo';
+</script>

@@ -1,0 +1,58 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Componente de cerca</title>
+<style>
+/* Herramienta de desarrollo: un componente solo en un cuarto de prueba, visto de cerca desde tres lados (T-25, T-26). */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:480px; height:480px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/cerca.html?items=<json>&capturar=<carpeta>/<nombre>
+// "items": lista de muebles como en el scene.json ([{ "type": "chair", "params": { "style": "tube" } }, …]); se ubican en
+// fila sobre el eje X, contra la pared del fondo (z = 0) si son de pared. Guarda una hoja con tres vistas (frente,
+// tres cuartos y de cerca desde abajo) en /capturas/<carpeta>/<nombre>.jpg.
+// &motor=/dist/<depto>/ usa otra copia del motor (la publicada), para armar el antes y después
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), base = q.get('motor') ?? '/motor/';
+const { start } = await import(base + 'engine.js'), { META } = await import(base + 'components.js');
+const list = JSON.parse(q.get('items') ?? '[{"type":"chair"}]');
+const gapX = Number(q.get('sep') ?? 1.2), W = Math.max(3, list.length * gapX + 1);
+const items = list.map((it, i) => {
+  const x = -((list.length - 1) * gapX) / 2 + i * gapX, mount = META[it.type]?.mount;
+  return { at: [x, mount === 'wall' || mount === 'window' ? -1.5 : -0.6], ...it };
+});
+const scene = {
+  name: 'prueba', height: 2.6, wallColor: '#f2f0eb',
+  rooms: [{ name: 'Prueba', rect: { x: [-W / 2, W / 2], z: [-1.5, 2.5] }, floor: { kind: 'planks', color: '#c9a77c' } }],
+  walls: [{ from: [-W / 2, -1.5], to: [W / 2, -1.5] }, { from: [-W / 2, 2.5], to: [W / 2, 2.5] }, { from: [-W / 2, -1.5], to: [-W / 2, 2.5] }, { from: [W / 2, -1.5], to: [W / 2, 2.5] }],
+  items, exterior: {},
+  views: {
+    frente: { name: 'Frente', pos: [0, 1.2, 1.8], target: [0, 0.6, -0.8], fov: 55 },
+    lado: { name: 'Tres cuartos', pos: [Math.min(W / 2 - 0.4, 1.9), 1.5, 1.2], target: [0, 0.5, -0.8], fov: 55 },
+    cerca: { name: 'De cerca', pos: [0.5, 0.35, 0.5], target: [0, 0.45, -0.8], fov: 60 },
+  },
+};
+if (q.get('vistas')) Object.assign(scene.views, JSON.parse(q.get('vistas')));
+const api = window.__viewer = await start($('stage'), { scene, state: { view: 'frente', cut: false, night: q.get('noche') === '1', decor: true }, device: 'desktop' });
+// (el motor publicado no conoce "device": con el panel oculto se cree celular; sirve igual para ver la geometría)
+const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+const shots = [];
+for (const k of Object.keys(scene.views)) { api.go(k, true); shots.push([scene.views[k].name, await load(api.capture())]); }
+const c = Object.assign(document.createElement('canvas'), { width: shots.length * 488, height: 520 }), g = c.getContext('2d');
+g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+shots.forEach(([name, img], i) => { g.drawImage(img, i * 488, 40, 480, 480); g.fillStyle = '#1d2430'; g.font = '600 18px system-ui'; g.fillText(name, i * 488 + 6, 26); });
+$('estado').textContent = `${api.warnings.length} avisos: ${api.warnings.join(' | ')}`;
+if (q.get('capturar')) {
+  const url = c.toDataURL('image/jpeg', 0.9), bytes = Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0));
+  await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: bytes });
+}
+document.title = 'cerca: listo';
+</script>

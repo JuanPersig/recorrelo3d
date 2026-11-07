@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<title>Vistas abiertas</title>
+<!-- Compara cada vista de adentro con su fov de foto y con wideViews (el zoom más abierto, como arranca el visor).
+     ?scene=…&vistas=a,b,c → capturas/abierto/<pantalla>-<vista>.jpg (fila de arriba: antes · abajo: abierto). -->
+<style>body{margin:0;background:#222}.c{position:absolute;left:0;top:0}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<div class="c" id="box"></div>
+<script type="module">
+import { start } from '../engine.js';
+const P = new URLSearchParams(location.search);
+const src = P.get('scene') ?? '/departamentos/depto5/scene.json';
+const scene = await (await fetch(src)).json();
+const vistas = (P.get('vistas') ?? 'living1,cocina1,bano1').split(',');
+const base = new URL('.', new URL(src, location.href)).href;
+const load = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+const out = [];
+for (const [name, w, h, device] of [['pc', 640, 360, 'desktop'], ['celular', 300, 650, 'mobile']]) {
+  const box = document.getElementById('box'); box.style.width = w + 'px'; box.style.height = h + 'px';
+  const shots = {};
+  for (const wide of [false, true]) {
+    const api = await start(box, { scene, state: { view: vistas[0], cut: false, night: false, decor: true, pose: null }, base, device, wideViews: wide });
+    api.resize(); await api.ready;
+    for (const v of vistas) { api.go(v, true); shots[v + wide] = await load(api.capture()); }
+    api.destroy();
+  }
+  for (const v of vistas) {
+    const portrait = h > w, cv = Object.assign(document.createElement('canvas'), portrait ? { width: w * 2 + 8, height: h } : { width: w, height: h * 2 + 8 }), g = cv.getContext('2d');
+    g.fillStyle = '#222'; g.fillRect(0, 0, cv.width, cv.height);
+    g.drawImage(shots[v + false], 0, 0, w, h); g.drawImage(shots[v + true], portrait ? w + 8 : 0, portrait ? 0 : h + 8, w, h);
+    const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.88));
+    await fetch(`/capturas/abierto/${name}-${v}.jpg`, { method: 'POST', body: blob }); out.push(`${name}-${v}`);
+  }
+}
+window.listo = out;
+</script>

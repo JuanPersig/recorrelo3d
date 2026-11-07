@@ -1,0 +1,15 @@
+{
+  "departamento": "Departamento con vista a la terminal",
+  "link": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p",
+  "vistas": {
+    "Vista general": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=general",
+    "Living al balcón": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=living",
+    "Sillón y ventanal": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=sillon",
+    "Comedor": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=comedor",
+    "Cocina": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=cocina",
+    "Dormitorio": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=dormitorio",
+    "Cama y placard": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=cama",
+    "Baño": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=bano",
+    "Planta": "https://claude.ai/artifact/Bn4bhHWN2WRZZLqPHx6N3p?vista=planta"
+  }
+}

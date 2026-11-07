@@ -1,0 +1,75 @@
+{
+ "fecha": "2026-11-04T00:24:17.632Z",
+ "telas": [
+  {
+   "type": "sofa",
+   "color": "#ca9756",
+   "texture": "tex/tela-sofa-ca9756.jpg",
+   "vista": "living",
+   "px": 120,
+   "dibujo": 0.25,
+   "repeticion": 0.34,
+   "aceptada": true
+  },
+  {
+   "type": "sofa",
+   "color": "#8e9da9",
+   "texture": "tex/tela-sofa-8e9da9.jpg",
+   "vista": "comedor",
+   "px": 153,
+   "dibujo": 0.37,
+   "repeticion": 0.31,
+   "aceptada": true
+  },
+  {
+   "type": "sofa",
+   "color": "#e7e1d4",
+   "texture": "tex/tela-sofa-e7e1d4.jpg",
+   "vista": "living",
+   "px": 157,
+   "dibujo": 0.46,
+   "repeticion": 0.46,
+   "aceptada": true
+  },
+  {
+   "type": "coffee-table",
+   "color": "#aa9783",
+   "texture": "tex/tela-coffee-table-aa9783.jpg",
+   "vista": "living",
+   "px": 97,
+   "dibujo": 0.15,
+   "repeticion": 0.48,
+   "aceptada": true
+  },
+  {
+   "type": "curtains",
+   "color": "#f1efe9",
+   "texture": "tex/tela-curtains-f1efe9.jpg",
+   "vista": "escalera",
+   "px": 77,
+   "dibujo": 0.3,
+   "repeticion": 0.82,
+   "aceptada": false
+  },
+  {
+   "type": "bed",
+   "color": "#d9d0c3",
+   "texture": "tex/tela-bed-d9d0c3.jpg",
+   "vista": "altillo",
+   "px": 140,
+   "dibujo": 0.38,
+   "repeticion": 0.43,
+   "aceptada": true
+  },
+  {
+   "type": "armchair",
+   "color": "#d48a52",
+   "texture": "tex/tela-armchair-d48a52.jpg",
+   "vista": "altillo",
+   "px": 152,
+   "dibujo": 0.17,
+   "repeticion": 0.75,
+   "aceptada": true
+  }
+ ]
+}

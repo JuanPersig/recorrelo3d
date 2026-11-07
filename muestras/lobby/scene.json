@@ -1,0 +1,452 @@
+{
+  "version": 1,
+  "name": "Living con araña de cristal",
+  "photos": "/muestras/pexels-png/",
+  "note": "Muestra para la landing (2026-11-05): un ambiente armado a partir de una foto de Pexels (living amplio con araña de caireles, sillón gris y revestimiento de madera). Medidas estimadas a ojo.",
+  "orientation": "z crece desde la pared del fondo (z = 0) hacia la cámara; x crece de izquierda (revestimiento de madera, x = 0) a derecha (x = 7).",
+  "units": "m",
+  "height": 3,
+  "viewAspect": 0.5625,
+  "wallColor": "#efebe4",
+  "baseboard": "#e6e0d6",
+  "ceiling": "#f6f5f2",
+  "rooms": [
+    {
+      "id": "living",
+      "name": "Living",
+      "rect": {
+        "x": [
+          0,
+          7
+        ],
+        "z": [
+          0,
+          8
+        ]
+      },
+      "floor": {
+        "kind": "tile",
+        "color": "#dccbb0",
+        "tile": 0.8,
+        "gloss": 0.45
+      }
+    }
+  ],
+  "walls": [
+    {
+      "from": [
+        -0.075,
+        -0.075
+      ],
+      "to": [
+        7.075,
+        -0.075
+      ],
+      "thickness": 0.15
+    },
+    {
+      "from": [
+        7.075,
+        -0.075
+      ],
+      "to": [
+        7.075,
+        8.075
+      ],
+      "thickness": 0.15,
+      "openings": [
+        {
+          "kind": "sliding-window",
+          "at": 5.4,
+          "width": 2.2,
+          "height": 2.4,
+          "sill": 0.05,
+          "panels": 2,
+          "frame": "#2b2c2e"
+        }
+      ]
+    },
+    {
+      "from": [
+        -0.075,
+        8.075
+      ],
+      "to": [
+        7.075,
+        8.075
+      ],
+      "thickness": 0.15
+    },
+    {
+      "from": [
+        -0.075,
+        -0.075
+      ],
+      "to": [
+        -0.075,
+        8.075
+      ],
+      "thickness": 0.15
+    }
+  ],
+  "structure": [
+    {
+      "kind": "beam",
+      "x": [
+        0,
+        7
+      ],
+      "z": [
+        0,
+        1.7
+      ],
+      "y": [
+        2.62,
+        3
+      ]
+    }
+  ],
+  "items": [
+    {
+      "type": "paneling",
+      "at": [
+        0,
+        3.4
+      ],
+      "rotation": 90,
+      "params": {
+        "width": 3.6,
+        "height": 2.62,
+        "style": "slats",
+        "color": "#7a4e32"
+      }
+    },
+    {
+      "type": "wardrobe",
+      "at": [
+        1.35,
+        0.3
+      ],
+      "params": {
+        "width": 1.9,
+        "height": 2.2,
+        "depth": 0.5,
+        "material": "wood",
+        "color": "#8a5a3a",
+        "style": "doors",
+        "doors": 6
+      }
+    },
+    {
+      "type": "plant",
+      "at": [
+        0.7,
+        1.3
+      ],
+      "params": {
+        "style": "tree",
+        "seed": 3,
+        "height": 1.7,
+        "pot": "#d9d1c5"
+      }
+    },
+    {
+      "type": "plant",
+      "at": [
+        3.95,
+        0.45
+      ],
+      "params": {
+        "style": "tree",
+        "seed": 8,
+        "height": 1.6,
+        "pot": "#e2dcd2"
+      }
+    },
+    {
+      "type": "floor-lamp",
+      "at": [
+        4.65,
+        0.4
+      ],
+      "params": {
+        "height": 1.5,
+        "color": "#c8a26a",
+        "shade": "#efe6d6"
+      }
+    },
+    {
+      "type": "sofa",
+      "at": [
+        3.3,
+        3.05
+      ],
+      "params": {
+        "length": 2.45,
+        "depth": 0.95,
+        "seats": 3,
+        "height": 0.86,
+        "color": "#cfd0d1",
+        "cushions": [
+          "#1e1e1f",
+          "#1e1e1f"
+        ]
+      }
+    },
+    {
+      "type": "coffee-table",
+      "at": [
+        3.75,
+        5.35
+      ],
+      "params": {
+        "length": 0.9,
+        "width": 0.8,
+        "height": 0.34,
+        "color": "#cfcac2",
+        "legs": "#a77b52"
+      }
+    },
+    {
+      "type": "tabletop-decor",
+      "at": [
+        3.7,
+        5.35
+      ],
+      "y": 0.34,
+      "decor": true,
+      "params": {
+        "items": [
+          "vase",
+          "vase",
+          "plant"
+        ],
+        "vase": "#a67c55",
+        "spacing": 0.24,
+        "seed": 5
+      }
+    },
+    {
+      "type": "side-table",
+      "at": [
+        2.85,
+        5.55
+      ],
+      "params": {
+        "style": "wood",
+        "diameter": 0.5,
+        "height": 0.48,
+        "wood": "#c9a06a",
+        "color": "#2a2a2a"
+      }
+    },
+    {
+      "type": "side-table",
+      "at": [
+        3.05,
+        5
+      ],
+      "params": {
+        "style": "wood",
+        "diameter": 0.42,
+        "height": 0.42,
+        "wood": "#c9a06a",
+        "color": "#2a2a2a"
+      }
+    },
+    {
+      "type": "tabletop-decor",
+      "at": [
+        2.85,
+        5.55
+      ],
+      "y": 0.48,
+      "decor": true,
+      "params": {
+        "items": [
+          "books",
+          "bowl"
+        ],
+        "bowl": "#2a2a2b",
+        "seed": 2
+      }
+    },
+    {
+      "type": "side-table",
+      "at": [
+        0.55,
+        3
+      ],
+      "params": {
+        "style": "wood",
+        "diameter": 0.4,
+        "height": 0.55,
+        "wood": "#c98a4a",
+        "color": "#e9e2d6"
+      }
+    },
+    {
+      "type": "plant",
+      "at": [
+        0.55,
+        3
+      ],
+      "y": 0.55,
+      "decor": true,
+      "params": {
+        "seed": 9,
+        "height": 0.9,
+        "pot": "#cfc6ba"
+      }
+    },
+    {
+      "type": "armchair",
+      "at": [
+        5.25,
+        1.75
+      ],
+      "rotation": 200,
+      "params": {
+        "color": "#efe3cf",
+        "wood": "#b98a5a"
+      }
+    },
+    {
+      "type": "armchair",
+      "at": [
+        6.25,
+        1.75
+      ],
+      "rotation": 160,
+      "params": {
+        "color": "#efe3cf",
+        "wood": "#b98a5a"
+      }
+    },
+    {
+      "type": "side-table",
+      "at": [
+        5.75,
+        1.15
+      ],
+      "params": {
+        "diameter": 0.4,
+        "height": 0.5,
+        "color": "#efece6"
+      }
+    },
+    {
+      "type": "wall-art",
+      "at": [
+        5.5,
+        0
+      ],
+      "y": 1.55,
+      "params": {
+        "width": 0.55,
+        "height": 0.7,
+        "style": "abstract",
+        "palette": [
+          "#c98f7a",
+          "#e6c9b6",
+          "#8f6d63",
+          "#f2e8df"
+        ],
+        "frameColor": "#3a2e28"
+      }
+    },
+    {
+      "type": "wall-art",
+      "at": [
+        6.15,
+        0
+      ],
+      "y": 1.55,
+      "params": {
+        "width": 0.55,
+        "height": 0.7,
+        "style": "abstract",
+        "palette": [
+          "#d2a08b",
+          "#efd6c4",
+          "#9b7a6c",
+          "#f4ebe2"
+        ],
+        "frameColor": "#3a2e28"
+      }
+    },
+    {
+      "type": "armchair",
+      "at": [
+        6.55,
+        4.1
+      ],
+      "rotation": -100,
+      "params": {
+        "color": "#1f1f20",
+        "wood": "#a8784c"
+      }
+    },
+    {
+      "type": "chandelier",
+      "at": [
+        3.4,
+        4.9
+      ],
+      "params": {
+        "width": 1.05,
+        "depth": 0.6,
+        "drop": 0.55,
+        "day": true
+      }
+    },
+    {
+      "type": "rug",
+      "at": [
+        3.45,
+        6.95
+      ],
+      "decor": true,
+      "params": {
+        "width": 2.6,
+        "depth": 1.3,
+        "colors": [
+          "#b8906a",
+          "#a47a52",
+          "#c7a27a"
+        ],
+        "stripes": 5
+      }
+    }
+  ],
+  "exterior": {
+    "floorsBelow": 0,
+    "facade": "#e4ded4",
+    "city": {
+      "seed": 4,
+      "street": 14,
+      "floors": [
+        2,
+        4
+      ]
+    }
+  },
+  "views": {
+    "foto": {
+      "name": "Living",
+      "pos": [
+        3.55,
+        1.05,
+        7.6
+      ],
+      "target": [
+        3.4,
+        0.98,
+        0
+      ],
+      "fov": 80,
+      "photo": "lobby",
+      "photoAspect": 0.5625
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+ "fecha": "2026-11-04T00:43:43.135Z",
+ "dudas": [
+  "Medidas generales: no hay plano ni m² en el anuncio",
+  "Dormitorio a la izquierda del living mirando al balcón: se deduce de la foto tomada desde el balcón (01f63624); ninguna foto muestra los dos ambientes juntos",
+  "Pasillo, puerta de entrada, puerta del dormitorio y paso del pasillo al living: no aparecen en las fotos",
+  "Cocina al fondo del living: no hay foto que muestre cocina y living juntos; largo total de la mesada estimado",
+  "Heladera: no aparece en ninguna foto",
+  "Baño: tamaño, inodoro y lado hacia el que abre la puerta; no se ve si la ducha tiene mampara",
+  "Balcones: profundidad y unión entre el del dormitorio y el del living",
+  "Viga, pilares y persianas: medidas estimadas a partir de las fotos"
+ ],
+ "ambientes": [
+  "Dormitorio",
+  "Living, comedor y cocina",
+  "Pasillo de entrada",
+  "Baño"
+ ]
+}

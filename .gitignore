@@ -1,0 +1,7 @@
+# se regeneran con los scripts del motor
+dist/
+sitio/
+# copias comprimidas de capturas viejas
+archivo/
+*.mp4
+node_modules/

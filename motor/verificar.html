@@ -1,0 +1,154 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verificación de departamentos</title>
+<style>
+/* Herramienta de desarrollo: arma todos los departamentos y los compara con la línea base guardada. */
+:root{ --bg:#eceef0; --ink:#1d2430; --muted:#5b6573; --ok:#2f7a4b; --warn:#9a5b13; --bad:#a3322a; font-family:system-ui,"Segoe UI",sans-serif }
+body{ margin:0; background:var(--bg); color:var(--ink); padding:12px 14px 40px }
+h1{ font-size:18px; margin:0 0 4px } h2{ font-size:16px; margin:22px 0 6px }
+p{ margin:4px 0; color:var(--muted); font-size:13px }
+table{ border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums }
+td,th{ padding:4px 8px; border-bottom:1px solid #d6dade; text-align:left; vertical-align:top }
+.ok{ color:var(--ok) } .revisar{ color:var(--warn) } .error{ color:var(--bad) }
+ul{ margin:4px 0; padding-left:18px; font-size:13px }
+img{ display:block; height:120px; border-radius:4px }
+.pair{ display:flex; gap:4px }
+#stage{ position:fixed; left:-10000px; top:0 }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<h1>Verificación de departamentos</h1>
+<p id="estado">Armando…</p>
+<div id="out"></div>
+<div id="stage"></div>
+<script type="module">
+// verificar.html[?deptos=depto1,depto4][&base=1]
+// Arma cada departamento con el motor actual, junta sus advertencias y números de dibujo, saca una captura de día por
+// vista y compara todo con la línea base de capturas/verificacion/base/. Con &base=1 el resultado pasa a ser la línea
+// base (hacerlo solo después de revisar que esté bien). Resultado en capturas/verificacion/actual/resumen.json.
+import { start } from './engine.js';
+import { revisarPiezas } from './pruebas/piezas.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+const deptos = q.get('deptos')?.split(',') ?? await (await fetch('/api/deptos')).json();
+const BASE = q.get('base') === '1', DIFF = 2, TRIS = 0.15;   // umbrales: % de diferencia media de imagen, variación de triángulos
+const save = (path, body) => fetch(`/capturas/verificacion/${path}`, { method: 'POST', body });
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+const base = await fetch('/capturas/verificacion/base/resumen.json').then(r => (r.ok ? r.json() : null), () => null);
+
+// diferencia media entre dos imágenes (0–100 %), comparadas a baja resolución para no marcar el ruido de la AO
+function diff(a, b) {
+  const w = 96, h = Math.round(w * a.height / a.width), px = img => {
+    const c = Object.assign(document.createElement('canvas'), { width: w, height: h }), g = c.getContext('2d');
+    g.drawImage(img, 0, 0, w, h); return g.getImageData(0, 0, w, h).data;
+  };
+  const A = px(a), B = px(b); let s = 0;
+  for (let i = 0; i < A.length; i += 4) s += Math.abs(A[i] - B[i]) + Math.abs(A[i + 1] - B[i + 1]) + Math.abs(A[i + 2] - B[i + 2]);
+  return s / (w * h * 3 * 255) * 100;
+}
+
+const result = { fecha: new Date().toISOString(), deptos: {} };
+for (const id of deptos) {
+  $('estado').textContent = `Armando ${id}…`;
+  const r = result.deptos[id] = { estado: 'ok', problemas: [], vistas: {} };
+  const scene = await fetch(`/departamentos/${id}/scene.json`).then(x => x.json()).catch(() => null);
+  if (!scene) { r.estado = 'error'; r.problemas.push('no se pudo leer scene.json'); continue; }
+  const A = scene.viewAspect ?? 4 / 3, W = A >= 1 ? 480 : 360;
+  Object.assign($('stage').style, { width: `${W}px`, height: `${Math.round(W / A)}px` });
+  // lo que el motor avisa por consola (componentes o aberturas desconocidos) también cuenta como problema
+  const consola = [], warn = console.warn;
+  console.warn = (...a) => { const t = a.join(' '); if (!t.startsWith('scene.json:')) consola.push(t); warn(...a); };
+  const k0 = Object.keys(scene.views)[0], t0 = performance.now();
+  let api;
+  try { api = await start($('stage'), { scene, state: { view: k0, cut: !!scene.views[k0].cut, night: false, decor: true }, device: 'desktop', base: `/departamentos/${id}/` }); }
+  catch (e) { r.estado = 'error'; r.problemas.push(`el motor falló: ${e.message}`); continue; }
+  finally { console.warn = warn; }
+  r.armadoMs = Math.round(performance.now() - t0);
+  // mapa de circulación por nivel (vista desde arriba, x a la derecha, z hacia abajo): verde = se llega con 60 cm de
+  // paso desde la entrada, amarillo = libre pero sin llegada, gris = ocupado; el punto rojo es la partida
+  r.mapas = [];
+  for (const [li, m] of (api.warnings.maps ?? []).entries()) {
+    if (!m) continue;
+    const k = 4, c = Object.assign(document.createElement('canvas'), { width: m.nx * k, height: m.nz * k }), g = c.getContext('2d');
+    g.fillStyle = '#9aa0a6'; g.fillRect(0, 0, c.width, c.height);
+    for (let j = 0; j < m.nz; j++) for (let i = 0; i < m.nx; i++) {
+      const n = j * m.nx + i; if (!m.free[n]) continue;
+      g.fillStyle = m.seen[n] ? '#7cc48a' : '#f2d36b'; g.fillRect(i * k, j * k, k, k);
+    }
+    if (m.start) { g.fillStyle = '#d0342c'; g.beginPath(); g.arc((m.start[0] - m.x0) / m.cell * k, (m.start[1] - m.z0) / m.cell * k, 6, 0, 7); g.fill(); }
+    await save(`actual/${id}/circulacion-${li}.png`, await new Promise(res => c.toBlob(res, 'image/png')));
+    r.mapas.push(`/capturas/verificacion/actual/${id}/circulacion-${li}.png`);
+  }
+  const st = api.stats(), R = api._debug.renderer;
+  Object.assign(r, { mallas: st.meshes, triangulos: st.tris, advertencias: api.warnings, consola });
+  if (api.warnings.length) r.problemas.push(`${api.warnings.length} advertencias de distribución`);
+  if (consola.length) r.problemas.push(...consola);
+  const b = base?.deptos?.[id];
+  if (b && Math.abs(st.tris - b.triangulos) > b.triangulos * TRIS) r.problemas.push(`triángulos: ${b.triangulos} → ${st.tris}`);
+  for (const [k, v] of Object.entries(scene.views)) {
+    api.setCut(!!v.cut); api.go(k, true);
+    R.info.autoReset = false; R.info.reset();
+    const url = api.capture();
+    const vi = r.vistas[k] = { nombre: v.name, dibujos: R.info.render.calls, triangulos: R.info.render.triangles };
+    R.info.autoReset = true;
+    // primero se compara con la base anterior; recién después, con &base=1, se la reemplaza
+    const [now, old] = await Promise.all([load(url), load(`/capturas/verificacion/base/${id}/${k}.jpg?${Date.now()}`)]);
+    vi.cambio = old ? Math.round(diff(now, old) * 10) / 10 : null;
+    if (vi.cambio > DIFF) r.problemas.push(`la vista "${v.name}" cambió ${vi.cambio} %`);
+    const blob = await (await fetch(url)).blob();
+    await save(`actual/${id}/${k}.jpg`, blob);
+    if (BASE) await save(`base/${id}/${k}.jpg`, blob);
+  }
+  if (b) for (const k of Object.keys(b.vistas)) if (!r.vistas[k]) r.problemas.push(`falta la vista "${b.vistas[k].nombre}"`);
+  api.destroy();
+  if (r.estado === 'ok' && r.problemas.length) r.estado = 'revisar';
+}
+
+// prueba del validador: una escena con un error de cada tipo; cada advertencia esperada tiene que aparecer
+{
+  $('estado').textContent = 'Probando el validador…';
+  const t = await fetch('/motor/pruebas/validaciones.json').then(x => x.json());
+  Object.assign($('stage').style, { width: '480px', height: '360px' });
+  const warn = console.warn; console.warn = () => {};
+  let got = [];
+  try { const api = await start($('stage'), { scene: t.scene, state: { view: 'general', cut: true, night: false, decor: true }, device: 'desktop' }); got = [...api.warnings]; api.destroy(); }
+  catch (e) { got = [`el motor falló: ${e.message}`]; }
+  finally { console.warn = warn; }
+  result.validador = { faltan: t.expect.filter(e => !got.some(g => g.includes(e))), avisos: got };
+}
+
+// piezas sueltas (T-26): todos los componentes, sus estilos y lo que usan los departamentos
+$('estado').textContent = 'Revisando piezas sueltas…';
+result.piezas = await revisarPiezas();
+
+await save('actual/resumen.json', JSON.stringify(result, null, 2));
+if (BASE) await save('base/resumen.json', JSON.stringify(result, null, 2));
+
+// informe en pantalla
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const malos = Object.values(result.deptos).filter(r => r.estado !== 'ok').length + (result.validador.faltan.length ? 1 : 0) + (result.piezas.filas.length || !result.piezas.detectaRota ? 1 : 0);
+$('estado').textContent = (BASE ? 'Línea base guardada (lo de abajo compara contra la anterior). ' : base ? '' : 'Todavía no hay línea base: abrí con &base=1 para crearla. ')
+  + (malos ? `${malos} departamento(s) para revisar.` : base ? 'Todo igual a la línea base.' : '');
+$('out').innerHTML = Object.entries(result.deptos).map(([id, r]) => `
+  <h2>${esc(id)} · <span class="${r.estado}">${{ ok: 'sin cambios', revisar: 'revisar', error: 'error' }[r.estado]}</span></h2>
+  <p>${r.armadoMs ?? '–'} ms de armado · ${r.mallas ?? '–'} mallas · ${r.triangulos ? Math.round(r.triangulos / 1000) + ' k triángulos' : '–'}</p>
+  ${r.problemas.length ? `<ul>${r.problemas.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+  ${r.advertencias?.length ? `<ul>${r.advertencias.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+  ${r.mapas?.length ? `<p>Circulación (verde: se llega con 60 cm de paso · amarillo: libre sin llegada · gris: ocupado)</p><div class="pair">${r.mapas.map(s => `<img src="${s}?${Date.now()}" alt="mapa de circulación" style="height:auto;max-width:48%">`).join('')}</div>` : ''}
+  <table><tr><th>Vista</th><th>Dibujos</th><th>Triángulos</th><th>Cambio</th><th>Actual · base</th></tr>
+  ${Object.entries(r.vistas).map(([k, v]) => `<tr><td>${esc(v.nombre)}</td><td>${v.dibujos}</td><td>${Math.round(v.triangulos / 1000)} k</td>
+    <td class="${v.cambio > DIFF ? 'revisar' : 'ok'}">${v.cambio == null ? 'sin base' : v.cambio + ' %'}</td>
+    <td>${v.cambio > DIFF ? `<div class="pair"><img src="/capturas/verificacion/actual/${id}/${k}.jpg?${Date.now()}" alt="actual"><img src="/capturas/verificacion/base/${id}/${k}.jpg" alt="base"></div>` : ''}</td></tr>`).join('')}
+  </table>`).join('') + `
+  <h2>Validador · <span class="${result.validador.faltan.length ? 'error' : 'ok'}">${result.validador.faltan.length ? `${result.validador.faltan.length} avisos esperados que no aparecieron` : 'avisa todos los errores de la escena de prueba'}</span></h2>
+  ${result.validador.faltan.length ? `<ul>${result.validador.faltan.map(t => `<li>falta: ${esc(t)}</li>`).join('')}</ul>` : ''}
+  <details><summary>Lo que avisó (${result.validador.avisos.length})</summary><ul>${result.validador.avisos.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>
+  <h2>Piezas sueltas · <span class="${result.piezas.filas.length || !result.piezas.detectaRota ? 'error' : 'ok'}">${result.piezas.filas.length ? `${result.piezas.filas.length} variantes con piezas sueltas` : `${result.piezas.total} variantes de ${result.piezas.componentes} componentes sin piezas sueltas`}${result.piezas.detectaRota ? '' : ' · la silla rota a propósito no avisa'}</span></h2>
+  ${result.piezas.filas.length ? `<ul>${result.piezas.filas.map(f => `<li>${esc(f.tipo)} (${esc(f.variante)}): ${f.sueltas.length} grupo(s)</li>`).join('')}</ul><p>Detalle: <a href="pruebas/piezas.html">pruebas/piezas.html</a></p>` : ''}`;
+window.__verificacion = result;
+document.title = malos ? `verificación: ${malos} para revisar` : 'verificación: ok';
+</script>

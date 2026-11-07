@@ -1,0 +1,99 @@
+<title>Comparar vista y foto</title>
+<style>
+/* Herramienta de desarrollo: el render de una vista al lado de su foto, en el mismo formato 3:4 de celular. */
+:root{ --bg:#eceef0; --ink:#1d2430; --muted:#5b6573; font-family:system-ui,"Segoe UI",sans-serif }
+body{ margin:0; background:var(--bg); color:var(--ink) }
+header{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:8px 10px; font-size:13px }
+header button{ font:inherit; border:0; border-radius:8px; padding:5px 9px; background:#dde1e5; cursor:pointer }
+header button[aria-pressed="true"]{ background:#2d3a52; color:#fff }
+main{ display:flex; gap:8px; padding:0 10px 10px; align-items:flex-start }
+.box{ position:relative; width:min(calc(50vw - 14px), calc((100vh - 60px) * var(--a, .75))); aspect-ratio:var(--a, .75); background:#ccc }
+.box > *{ position:absolute; inset:0; width:100%; height:100% }
+.box img{ object-fit:cover }
+#over{ pointer-events:none; opacity:0 }
+.tag{ position:absolute; left:6px; top:6px; inset:auto; width:auto; height:auto; font-size:12px; background:rgba(0,0,0,.55); color:#fff; padding:2px 6px; border-radius:6px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<header id="bar"></header>
+<main>
+  <div class="box"><div id="stage"></div><img id="over" alt=""><span class="tag" id="t3d">3D</span></div>
+  <div class="box"><img id="photo" alt="Foto de referencia"><span class="tag" id="tph">foto</span></div>
+</main>
+<script type="module">
+// comparar.html?scene=/departamentos/depto1/scene.json[&fotos=/fotosDepartamento1-png/]&view=dormitorio[&night=1][&mix=0.5]
+// (sin &fotos usa "photos" del scene). &capturar=<carpeta>: hojas día | foto | noche. &medir=<carpeta>: mapa de
+// identificación y parecido por objeto (T-21), en <carpeta>/parecido.json y una lámina mapa-<vista>.jpg por vista.
+import { start } from './engine.js';
+import { medirVistas } from './parecido.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+const scene = await (await fetch(q.get('scene'))).json(), dir = q.get('fotos') ?? scene.photos ?? '';
+const aspectOf = v => v.photoAspect ?? scene.viewAspect ?? 0.75;   // proporción de la foto de la vista (o del departamento)
+const keys = Object.keys(scene.views).filter(k => scene.views[k].photo);
+const state = { view: q.get('view') ?? keys[0], cut: false, night: q.get('night') === '1', decor: q.get('decor') !== '0', pose: null };
+const api = await start($('stage'), { scene, state, device: q.get('device') ?? 'desktop', base: new URL('.', new URL(q.get('scene'), location.href)).pathname });
+window.__viewer = api;
+setInterval(() => api._debug.redraw(), 300);   // el visor dibuja solo cuando algo cambia; las capturas necesitan cuadros nuevos
+function show() {
+  const v = scene.views[state.view], src = v.photo ? `${dir}${v.photo}.png` : '';
+  document.documentElement.style.setProperty('--a', aspectOf(v));
+  // con el panel del navegador oculto la ventana mide 0 (vw = vh = 0): la caja toma un ancho fijo para que las capturas
+  // salgan a tamaño real y no de un lienzo de 300 × 150
+  for (const b of document.querySelectorAll('.box')) {
+    const hidden = innerWidth < 200;
+    b.style.width = hidden ? `${aspectOf(v) >= 1 ? 720 : 540}px` : ''; b.style.flexShrink = hidden ? '0' : '';   // sin achicarse en el flex de ancho 0
+  }
+  api.resize();
+  api.setCut(!!v.cut); api.go(state.view, true);
+  $('photo').src = $('over').src = src; $('tph').textContent = v.photo ?? 'sin foto';
+  $('t3d').textContent = `${v.name}${state.night ? ' · noche' : ''}`;
+  [...$('bar').querySelectorAll('[data-view]')].forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === state.view)));
+}
+for (const k of keys) {
+  const b = Object.assign(document.createElement('button'), { textContent: scene.views[k].name }); b.dataset.view = k;
+  b.onclick = () => { state.view = k; show(); }; $('bar').append(b);
+}
+const night = Object.assign(document.createElement('button'), { textContent: 'De noche' });
+night.onclick = () => { state.night = !state.night; api.setNight(state.night); night.setAttribute('aria-pressed', String(state.night)); show(); };
+night.setAttribute('aria-pressed', String(state.night));
+const mix = Object.assign(document.createElement('button'), { textContent: 'Superponer foto' });
+mix.onclick = () => { const o = $('over'); o.style.opacity = o.style.opacity === '0.5' ? '0' : '0.5'; mix.setAttribute('aria-pressed', String(o.style.opacity === '0.5')); };
+$('bar').append(night, mix);
+if (q.get('mix')) $('over').style.opacity = q.get('mix');
+show();
+
+// el lienzo pasado a bytes (toBlob puede colgarse con el panel del navegador oculto)
+function bytesOf(c, type = 'image/jpeg') { const u = c.toDataURL(type, 0.88); return Uint8Array.from(atob(u.split(',')[1]), ch => ch.charCodeAt(0)); }
+
+// &medir=<carpeta>: el mapa de identificación de cada vista con foto y el parecido por objeto (ver parecido.js)
+if (q.get('medir')) {
+  api.setNight(false);
+  const out = await medirVistas(api, scene, { dir, box: $('stage').parentElement, keys, guardar: q.get('medir') });
+  out.scene = q.get('scene');
+  await fetch(`/capturas/${q.get('medir')}/parecido.json`, { method: 'POST', body: JSON.stringify(out, null, 1) });
+  window.__parecido = out; show(); document.title = 'medida lista';
+}
+
+// &capturar=<carpeta>: arma una hoja por vista (día | foto | noche) y la guarda en /capturas/<carpeta>/ con serve.mjs
+if (q.get('capturar')) {
+  const frame = () => new Promise(r => setTimeout(r, 120));   // con el panel oculto no corre requestAnimationFrame
+  const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+  for (const k of keys) {
+    state.view = k; const v = scene.views[k], shots = [], A = aspectOf(v), W = A >= 1 ? 720 : 540, H = Math.round(W / A);
+    for (const n of [false, true]) { api.setNight(n); show(); await frame(); shots.push(await load(api.capture())); }
+    const photo = await load(`${dir}${v.photo}.png`), c = document.createElement('canvas'); c.width = 3 * W + 16; c.height = H + 40;
+    const g = c.getContext('2d'); g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+    [[shots[0], 'Render de día'], [photo, `Foto ${v.photo.slice(0, 8)}`], [shots[1], 'Render de noche']].forEach(([img, label], i) => {
+      const s = Math.max(W / img.width, H / img.height), w = img.width * s, h = img.height * s;
+      g.save(); g.beginPath(); g.rect(i * (W + 8), 40, W, H); g.clip(); g.drawImage(img, i * (W + 8) + (W - w) / 2, 40 + (H - h) / 2, w, h); g.restore();
+      g.fillStyle = '#1d2430'; g.font = '600 20px system-ui, sans-serif'; g.fillText(`${v.name} · ${label}`, i * (W + 8) + 6, 27);
+    });
+    await fetch(`/capturas/${q.get('capturar')}/${k}.jpg`, { method: 'POST', body: bytesOf(c) });
+  }
+  api.setNight(state.night = false); document.title = 'capturas listas';
+}
+</script>

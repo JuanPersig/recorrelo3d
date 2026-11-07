@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "name": "Monoambiente en Corrientes y Callao",
+  "photos": "/fotosDepartamento2-png/",
+  "note": "Modelo aproximado a partir de 6 fotos del anuncio. Medidas estimadas tomando la cama queen (1,60 × 2,00 m) como referencia; superficie cubierta cerca de 31 m².",
+  "about": "Monoambiente con balcón. Cama queen, sillón, mesa para cuatro, aire acondicionado, cocina integrada con anafe, microondas y horno eléctrico, y baño con bañera.",
+  "estimated": [
+    "Medidas generales: no hay plano ni m² en el anuncio",
+    "Pasillo de entrada y ubicación de la puerta del baño",
+    "Balcón: solo se ve de lejos en una foto"
+  ],
+  "orientation": "x crece de la pared de la cabecera de la cama (izquierda mirando a la ventana desde la cocina) hacia la pared del sillón; z crece desde la ventana hacia la entrada",
+  "units": "m",
+  "height": 2.6,
+  "wallColor": "#efeeeb",
+  "baseboard": "#efeeeb",
+  "rooms": [
+    { "id": "ambiente", "name": "Ambiente principal", "rect": { "x": [0, 3.8], "z": [0, 5.9] }, "floor": { "kind": "planks", "color": "#d3c8b6" } },
+    { "id": "cocina", "name": "Cocina", "rect": { "x": [0, 2.25], "z": [6.05, 6.7] }, "floor": { "kind": "planks", "color": "#d3c8b6" } },
+    { "id": "pasillo", "name": "Entrada", "rect": { "x": [2.4, 3.8], "z": [6.05, 8.45] }, "floor": { "kind": "planks", "color": "#bdbdba" } },
+    { "id": "bano", "name": "Baño", "rect": { "x": [0, 2.25], "z": [6.8, 8.45] }, "floor": { "kind": "tile", "color": "#b5bbbb", "tile": 0.6 } }
+  ],
+  "walls": [
+    { "from": [-0.15, -0.075], "to": [3.95, -0.075], "thickness": 0.15,
+      "openings": [ { "kind": "sliding-window", "at": 0.65, "width": 2.8, "height": 2.3, "sill": 0, "panels": 2, "frame": "#2e3033" } ] },
+    { "from": [-0.075, -0.15], "to": [-0.075, 8.6], "thickness": 0.15 },
+    { "from": [3.875, -0.15], "to": [3.875, 8.6], "thickness": 0.15 },
+    { "from": [0, 5.975], "to": [3.8, 5.975], "thickness": 0.15,
+      "openings": [
+        { "kind": "passage", "at": 0, "width": 2.25, "height": 2.35 },
+        { "kind": "passage", "at": 2.4, "width": 1.4, "height": 2.3 }
+      ] },
+    { "from": [2.325, 5.9], "to": [2.325, 8.6], "thickness": 0.15,
+      "openings": [ { "kind": "door", "at": 1.05, "width": 0.7, "height": 2.05, "hinge": "end", "open": 80, "color": "#f3f3f1", "material": "lacquer", "handle": "#c8ccd1" } ] },
+    { "from": [0, 6.75], "to": [2.25, 6.75], "thickness": 0.1 },
+    { "from": [-0.15, 8.525], "to": [3.95, 8.525], "thickness": 0.15,
+      "openings": [ { "kind": "door", "at": 2.8, "width": 0.9, "height": 2.1, "hinge": "start", "open": 0, "color": "#f4f4f2", "material": "lacquer", "handle": "#1d1d1d", "lock": "smart" } ] }
+  ],
+  "items": [
+    { "type": "bed", "at": [1.1, 1.6], "rotation": 90,
+      "params": {
+        "width": 1.6, "length": 2.0, "frameColor": "#e9e6df", "sheetColor": "#f6f5f1", "duvetColor": "#ebe7df", "duvetCover": 0.72,
+        "headboard": { "style": "tufted", "height": 1.25, "color": "#262b3a" },
+        "pillows": [
+          { "row": 0, "color": "#f4f2ee" }, { "row": 0, "color": "#f4f2ee" },
+          { "row": 1, "color": "#8f8d8a", "size": "cushion" }, { "row": 1, "color": "#d9d4cb", "size": "cushion" }
+        ] } },
+    { "type": "folded-towels", "at": [1.75, 1.65], "rotation": 84, "y": 0.59, "params": { "color": "#d9c8ad", "count": 2 } },
+    { "type": "nightstand", "at": [0.22, 0.45], "rotation": 90, "params": { "width": 0.42, "depth": 0.4, "height": 0.5, "color": "#3a332f" } },
+    { "type": "table-lamp", "at": [0.22, 0.45], "y": 0.5, "params": { "base": "#1f1f1f", "shade": "#2b2b2b" } },
+    { "type": "cube-shelf", "at": [0.18, 3.0], "rotation": 90, "params": { "cols": 2, "rows": 3, "cell": 0.33, "depth": 0.35, "color": "#f4f4f2" } },
+    { "type": "tv", "at": [0.15, 3.0], "rotation": 90, "y": 1.07, "params": { "size": 22, "stand": true } },
+    { "type": "wardrobe", "at": [0.225, 3.68], "rotation": 90, "params": { "width": 0.5, "depth": 0.45, "height": 1.15, "style": "hinged", "doors": 1, "color": "#50453f" } },
+    { "type": "dining-table", "at": [0.75, 4.75], "params": { "length": 1.4, "width": 0.8, "mats": 4 } },
+    { "type": "chair", "at": [0.4, 4.3], "params": { "color": "#a9a9a7" } },
+    { "type": "chair", "at": [1.1, 4.3], "params": { "color": "#a9a9a7" } },
+    { "type": "chair", "at": [0.4, 5.2], "rotation": 180, "params": { "color": "#a9a9a7" } },
+    { "type": "chair", "at": [1.1, 5.2], "rotation": 180, "params": { "color": "#a9a9a7" } },
+    { "type": "wall-art", "at": [0, 4.75], "y": 1.2, "rotation": 90, "params": { "width": 1.5, "height": 0.55, "style": "skyline", "frame": false } },
+    { "type": "sofa", "at": [3.32, 4.15], "rotation": -90, "params": { "length": 2.0, "depth": 0.95, "seats": 2, "color": "#867e76", "headrests": true } },
+    { "type": "round-mirror", "at": [3.8, 5.0], "y": 1.65, "rotation": -90, "params": { "diameter": 0.6 } },
+    { "type": "floor-mirror", "at": [3.6, 5.62], "rotation": -90, "params": { "width": 0.42, "height": 1.55 } },
+    { "type": "tv", "at": [3.8, 1.6], "y": 1.15, "rotation": -90, "params": { "size": 43 } },
+    { "type": "ac-split", "at": [3.0, 0], "y": 2.3 },
+    { "type": "curtains", "at": [1.9, 0], "params": { "width": 3.0, "panelWidth": 0.45, "height": 2.5, "color": "#e7e2d8" } },
+    { "type": "downlight", "at": [1.9, 1.6] },
+    { "type": "downlight", "at": [1.9, 4.4] },
+    { "type": "downlight", "at": [1.1, 6.4] },
+    { "type": "downlight", "at": [3.1, 7.25], "params": { "day": true } },
+    { "type": "downlight", "at": [1.1, 7.6], "params": { "day": true } },
+
+    { "type": "fridge", "at": [1.93, 6.375], "rotation": 180, "params": { "width": 0.62, "height": 1.75, "depth": 0.65 } },
+    { "type": "appliance", "at": [1.93, 6.45], "rotation": 180, "y": 1.75, "params": { "kind": "microwave" } },
+    { "type": "kitchen-base", "at": [0.8, 6.4], "rotation": 180,
+      "params": {
+        "width": 1.55, "depth": 0.6, "height": 0.9,
+        "modules": [ { "w": 1.05, "kind": "doors", "count": 2 }, { "w": 0.5, "kind": "drawers", "count": 3 } ],
+        "sink": { "x": -0.4, "w": 0.48, "d": 0.38 },
+        "backsplash": { "height": 0.6, "color": "#cfcfcd" } } },
+    { "type": "kitchen-wall", "at": [0.8, 6.535], "rotation": 180,
+      "params": { "width": 1.55, "depth": 0.33, "y0": 1.5, "height": 0.8, "modules": [ { "w": 1.05, "kind": "doors", "count": 2 }, { "w": 0.5, "kind": "open", "closedTop": 0.32 } ] } },
+    { "type": "appliance", "at": [0.28, 6.5], "rotation": 180, "y": 1.52, "params": { "kind": "toaster-oven" } },
+    { "type": "appliance", "at": [0.24, 6.42], "rotation": 180, "y": 0.9, "params": { "kind": "cooktop" } },
+    { "type": "appliance", "at": [0.6, 6.52], "rotation": 180, "y": 0.9, "params": { "kind": "coffee-maker" } },
+    { "type": "appliance", "at": [0.82, 6.48], "rotation": 180, "y": 0.9, "params": { "kind": "kettle" } },
+
+    { "type": "bathtub", "at": [0.35, 7.625], "rotation": 90, "params": { "length": 1.6, "width": 0.7, "height": 0.55 } },
+    { "type": "shower-curtain", "at": [0.63, 7.625], "rotation": -90, "params": { "length": 1.6, "rodHeight": 2.0, "from": 0, "to": 0.8, "height": 1.5, "color": "#e4e4e2" } },
+    { "type": "vanity", "at": [0.98, 7.01], "params": { "width": 0.5, "depth": 0.42, "y0": 0.45, "towel": true } },
+    { "type": "bidet", "at": [1.15, 8.2], "rotation": 180 },
+    { "type": "toilet", "at": [1.78, 8.18], "rotation": 180 },
+    { "type": "wall-dispensers", "at": [0, 7.4], "y": 1.45, "rotation": 90 },
+    { "type": "bath-mat", "at": [1.0, 7.75], "rotation": 90, "params": { "width": 0.8, "depth": 0.5 } },
+
+    { "type": "chair", "at": [1.5, -0.75], "rotation": 200, "params": { "color": "#2b2b2b", "quilted": false } },
+    { "type": "chair", "at": [2.7, -0.75], "rotation": 160, "params": { "color": "#2b2b2b", "quilted": false } },
+    { "type": "side-table", "at": [2.1, -0.7], "params": { "diameter": 0.45, "color": "#2b2b2b" } }
+  ],
+  "exterior": { "balcony": { "x": [-0.15, 3.95], "z": [-1.35, -0.15], "floor": "#8d8b87", "railing": { "kind": "glass", "height": 1.05, "color": "#2b2b2b" } },
+    "floorsBelow": 5
+  },
+  "lighting": { "sunFrom": [-3.5, 5.6, -10], "sunIntensity": 4.2 },
+  "views": {
+    "living":  { "name": "Hacia la cocina",  "pos": [2.9, 1.35, 2.0],  "target": [1.9, 1.05, 6.6], "fov": 55, "cut": false, "photo": "f621d51a-98ec-4dca-8de8-cf34fb7264ef", "photoAspect": 1.778 },
+    "ventana": { "name": "Hacia la ventana", "pos": [3.3, 1.5, 5.6],   "target": [1.45, 0.7, 0.8], "fov": 58, "cut": false, "photo": "5541300d-f494-4589-9715-23f41044e788", "photoAspect": 1.333 },
+    "cocina":  { "name": "Cocina",           "pos": [2.4, 1.75, 3.2],  "target": [0.05, 0.85, 6.0], "fov": 54, "cut": false, "photo": "fe4a8fdd-d739-43cb-8e21-ac33af533a38", "photoAspect": 1.778 },
+    "bano":    { "name": "Baño",             "pos": [2.6, 1.55, 7.3],  "target": [0.3, 0.75, 7.7], "fov": 80, "cut": false, "photo": "69a49eb8-ae06-4173-aa96-ec99226613f7", "photoAspect": 0.5625 },
+    "general": { "name": "Vista general",    "pos": [-4.9, 8.4, -4.8], "target": [1.9, 0.3, 4.2],  "fov": 45, "cut": true },
+    "planta":  { "name": "Planta",           "pos": [1.9, 12.8, 4.26], "target": [1.9, 0, 4.25],   "fov": 45, "cut": true }
+  }
+}

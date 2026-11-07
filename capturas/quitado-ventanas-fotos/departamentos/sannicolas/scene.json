@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "name": "Departamento a dos cuadras del Obelisco",
+  "photos": "/departamentosannicolas-png/",
+  "about": "Departamento de un dormitorio sobre la peatonal Lavalle, a dos cuadras del Obelisco. Living con futón que se convierte en cama y mesa de vidrio para cuatro, kitchenette con frigobar, anafe, horno eléctrico y pava, dormitorio con cama queen, placard y aire acondicionado, y baño con ducha. Ventanas a la ciudad, con el Obelisco a la vista.",
+  "note": "Modelo a partir de 10 fotos del anuncio de Airbnb 1567028994240400628 (la foto 'adicional' muestra el futón abierto como cama y no se usa como vista). Medidas estimadas con la cama queen (1,60 × 2,00 m) y el futón (1,90 m) como referencia; superficie cerca de 32 m².",
+  "estimated": [
+    "Medidas generales: el anuncio no dice los metros",
+    "Puerta de entrada: no hay foto; se ubicó en el pasillo, frente al baño",
+    "Pasillo: se ve solo en una foto, desde el living; el ancho (1,05 m) está estimado",
+    "Lado del dormitorio contrario a la ventana y lado del baño con la puerta"
+  ],
+  "orientation": "z crece desde la fachada (ventanas a la calle, en z = 0) hacia el interior; x crece desde la pared del futón (living) hacia la cabecera de la cama (dormitorio). En la foto living1 la cámara mira hacia -x: el futón al fondo, la ventana a la derecha y el mueble de TV a la izquierda.",
+  "units": "m",
+  "height": 2.6,
+  "viewAspect": 0.75,
+  "wallColor": "#efe8dc",
+  "baseboard": "#e8e0d3",
+  "rooms": [
+    { "id": "living", "name": "Living, comedor y cocina", "rect": { "x": [0, 4.2], "z": [0, 3.4] }, "floor": { "kind": "tile", "color": "#d6c9b6", "tile": 0.45, "gloss": 0.2 } },
+    { "id": "bano", "name": "Baño", "rect": { "x": [4.35, 6.0], "z": [0, 1.5] }, "floor": { "kind": "tile", "color": "#76736e", "tile": 0.3, "gloss": 0.25 } },
+    { "id": "pasillo", "name": "Pasillo", "rect": { "x": [4.35, 6.0], "z": [1.65, 2.7] }, "floor": { "kind": "tile", "color": "#d6c9b6", "tile": 0.45, "gloss": 0.2 } },
+    { "id": "dormitorio", "name": "Dormitorio", "rect": { "x": [6.15, 9.65], "z": [0, 3.4] }, "floor": { "kind": "tile", "color": "#d6c9b6", "tile": 0.45, "gloss": 0.2 } }
+  ],
+  "walls": [
+    { "from": [-0.075, -0.075], "to": [9.725, -0.075], "thickness": 0.15, "openings": [
+      { "kind": "sliding-window", "at": 1.025, "width": 1.4, "height": 2.05, "sill": 0.2, "panels": 2, "frame": "#f2f2f0", "shutter": 0.3, "grille": true },
+      { "kind": "sliding-window", "at": 3.735, "width": 0.46, "height": 1.15, "sill": 0.95, "panels": 1, "frame": "#f2f2f0" },
+      { "kind": "sliding-window", "at": 4.675, "width": 0.5, "height": 0.95, "sill": 1.2, "panels": 1, "frame": "#f2f2f0" },
+      { "kind": "sliding-window", "at": 7.125, "width": 1.5, "height": 2.05, "sill": 0.2, "panels": 2, "frame": "#f2f2f0", "shutter": 0.18, "grille": true }
+    ] },
+    { "from": [-0.075, -0.075], "to": [-0.075, 3.475], "thickness": 0.15 },
+    { "from": [-0.075, 3.475], "to": [4.275, 3.475], "thickness": 0.15 },
+    { "from": [4.275, -0.075], "to": [4.275, 3.475], "thickness": 0.15, "openings": [
+      { "kind": "passage", "at": 1.725, "width": 1.0, "height": 2.05 }
+    ] },
+    { "from": [4.275, 1.575], "to": [6.075, 1.575], "thickness": 0.15, "openings": [
+      { "kind": "door", "at": 0.295, "width": 0.65, "height": 2.0, "hinge": "end", "open": 70, "side": 1, "color": "#f1f0ec" }
+    ] },
+    { "from": [4.275, 2.775], "to": [6.075, 2.775], "thickness": 0.15, "openings": [
+      { "kind": "door", "at": 0.475, "width": 0.85, "height": 2.05, "hinge": "end", "open": 0, "color": "#f1f0ec" }
+    ] },
+    { "from": [6.075, -0.075], "to": [6.075, 3.475], "thickness": 0.15, "openings": [
+      { "kind": "door", "at": 1.825, "width": 0.75, "height": 2.05, "hinge": "end", "open": 80, "color": "#f1f0ec" }
+    ] },
+    { "from": [6.075, 3.475], "to": [9.725, 3.475], "thickness": 0.15 },
+    { "from": [9.725, -0.075], "to": [9.725, 3.475], "thickness": 0.15 }
+  ],
+  "structure": [
+    { "kind": "column", "x": [3.6, 4.2], "z": [1.45, 1.65] },
+    { "kind": "beam", "x": [3.6, 4.2], "z": [0, 1.45], "y": [2.3, 2.6] }
+  ],
+  "items": [
+    { "type": "sofa", "at": [0.46, 1.4], "rotation": 90, "params": { "style": "futon", "length": 1.9, "depth": 0.9, "color": "#343e4c", "wood": "#d2ab72",
+      "cushions": [{ "pattern": ["#2c5b8e", "#f3f5f7", "#86a6c8"] }, { "pattern": ["#2c5b8e", "#f3f5f7", "#86a6c8"] }] } },
+    { "type": "wall-desk", "at": [0, 1.4], "rotation": 90, "params": { "width": 0.75, "height": 0.5, "y0": 1.25, "color": "#e4c985" } },
+    { "type": "wall-art", "at": [0.45, 0], "y": 1.45, "params": { "width": 0.24, "height": 0.34, "palette": ["#1f8a9a", "#a87a4d", "#d8b98a", "#5b3b26"], "frameColor": "#a87a4d" } },
+    { "type": "wardrobe", "at": [0.32, 3.21], "rotation": 180, "params": { "width": 0.55, "height": 2.0, "depth": 0.38, "material": "wood", "color": "#c98f55", "style": "doors", "doors": 1 } },
+    { "type": "sideboard", "at": [1.37, 3.19], "rotation": 180, "params": { "width": 1.5, "depth": 0.42, "height": 0.55, "color": "#c98f55", "doors": 3 } },
+    { "type": "tv", "at": [1.0, 3.19], "y": 0.55, "rotation": 180, "params": { "size": 32, "stand": true } },
+    { "type": "dining-table", "at": [1.65, 0.85], "params": { "length": 1.2, "width": 0.75, "legs": "chrome", "glass": "#bcd3cf" } },
+    { "type": "tabletop-decor", "at": [1.62, 0.62], "y": 0.75, "decor": true, "params": { "items": ["bottle-flowers", "bottle"], "spacing": 0.09, "fill": "#5a2a26" } },
+    { "type": "chair", "at": [1.35, 1.42], "rotation": 180, "params": { "style": "tube", "color": "#d9d3c7" } },
+    { "type": "chair", "at": [1.95, 1.42], "rotation": 180, "params": { "style": "tube", "color": "#d9d3c7" } },
+    { "type": "chair", "at": [1.35, 0.29], "params": { "style": "tube", "color": "#d9d3c7" } },
+    { "type": "chair", "at": [1.95, 0.29], "params": { "style": "tube", "color": "#d9d3c7" } },
+    { "type": "pendant", "at": [1.9, 1.75], "params": { "drop": 0.55, "color": "#f3f3f1", "size": 0.3, "intensity": 36 } },
+
+    { "type": "kitchen-base", "at": [3.9, 0.725], "rotation": -90, "params": { "width": 1.45, "depth": 0.6, "height": 0.9, "color": "#1e1e20", "top": "#141416", "topStyle": "granite",
+      "modules": [{ "w": 0.5, "kind": "doors", "count": 1 }, { "w": 0.5, "kind": "open" }, { "w": 0.45, "kind": "drawers", "count": 3 }],
+      "sink": { "x": -0.42, "w": 0.4, "d": 0.36 }, "backsplash": { "color": "#eceae6", "height": 0.6 } } },
+    { "type": "fridge", "at": [3.89, 0.75], "rotation": -90, "params": { "width": 0.48, "height": 0.84, "depth": 0.55, "color": "#ece9e1" } },
+    { "type": "kitchen-wall", "at": [4.035, 0.725], "rotation": -90, "params": { "width": 1.45, "depth": 0.33, "y0": 1.5, "height": 0.42, "color": "#1e1e20",
+      "modules": [{ "w": 0.72, "kind": "doors", "count": 1 }, { "w": 0.73, "kind": "open", "closedTop": 0.001 }] } },
+    { "type": "kitchen-wall", "at": [4.035, 0.725], "rotation": -90, "params": { "width": 1.45, "depth": 0.33, "y0": 1.92, "height": 0.38, "color": "#1e1e20",
+      "modules": [{ "w": 0.72, "kind": "doors", "count": 1 }, { "w": 0.73, "kind": "doors", "count": 1 }] } },
+    { "type": "appliance", "at": [4.0, 1.085], "y": 1.52, "rotation": -90, "params": { "kind": "toaster-oven", "color": "#efede8" } },
+    { "type": "appliance", "at": [3.86, 1.0], "y": 0.9, "rotation": -90, "params": { "kind": "cooktop" } },
+    { "type": "appliance", "at": [3.82, 1.3], "y": 0.9, "rotation": -90, "params": { "kind": "kettle", "color": "#c42a22" } },
+
+    { "type": "toilet", "at": [4.85, 0.33] },
+    { "type": "shower", "at": [5.6, 0.4], "params": { "width": 0.8, "depth": 0.8, "headHeight": 2.05, "valvesX": 0 } },
+    { "type": "shower-curtain", "at": [5.2, 0.4], "rotation": 90, "params": { "length": 0.8, "rodHeight": 2.0, "height": 1.85, "color": "#e9e9e7" } },
+    { "type": "vanity", "at": [5.775, 1.15], "rotation": -90, "params": { "style": "basin", "width": 0.5, "depth": 0.42 } },
+    { "type": "round-mirror", "at": [5.986, 1.15], "y": 1.55, "rotation": -90, "params": { "diameter": 0.55 } },
+    { "type": "wall-tiles", "at": [5.175, 0], "params": { "width": 1.65, "height": 1.2, "tile": [0.3, 0.6], "color": "#9d9893" } },
+    { "type": "wall-tiles", "at": [5.55, 0], "y": 1.2, "params": { "width": 0.9, "height": 1.4, "tile": [0.3, 0.6], "color": "#9d9893" } },
+    { "type": "wall-tiles", "at": [4.475, 0], "y": 1.2, "params": { "width": 0.25, "height": 1.4, "tile": [0.3, 0.6], "color": "#9d9893" } },
+    { "type": "wall-tiles", "at": [6.0, 0.75], "rotation": -90, "params": { "width": 1.5, "height": 2.6, "tile": [0.3, 0.6], "color": "#9d9893" } },
+    { "type": "wall-tiles", "at": [4.35, 0.75], "rotation": 90, "params": { "width": 1.5, "height": 2.6, "tile": [0.3, 0.6], "color": "#9d9893" } },
+    { "type": "wall-tiles", "at": [5.575, 1.5], "rotation": 180, "params": { "width": 0.85, "height": 2.6, "tile": [0.3, 0.6], "color": "#9d9893" } },
+    { "type": "downlight", "at": [5.15, 2.1] },
+
+    { "type": "bed", "at": [8.55, 1.95], "rotation": -90, "params": { "textures": { "#4189ad": { "src": "tex/tela-bed-4189ad.jpg", "scale": 0.25 } }, "width": 1.6, "length": 2.0, "frameColor": "#f2f1ec", "sheetColor": "#f3f2ee", "duvetColor": "#efede6", "duvetCover": 0.9,
+      "throw": { "color": "#1f3f73", "cover": 0.32, "drop": 0.4 }, "headboard": { "style": "plain", "height": 1.15, "color": "#50453e" },
+      "pillows": [{ "row": 0, "color": "#f4f2ee" }, { "row": 0, "color": "#f4f2ee" }, { "row": 1, "color": "#4189ad", "size": "cushion" }, { "row": 1, "color": "#4189ad", "size": "cushion" }] } },
+    { "type": "folded-towels", "at": [7.85, 1.95], "y": 0.58, "rotation": -90, "params": { "color": "#dce9f6", "count": 2 }, "decor": true },
+    { "type": "nightstand", "at": [9.43, 0.8], "rotation": -90, "params": { "width": 0.45, "depth": 0.4, "height": 0.55, "color": "#c79a63" } },
+    { "type": "nightstand", "at": [9.43, 3.1], "rotation": -90, "params": { "width": 0.45, "depth": 0.4, "height": 0.55, "color": "#c79a63" } },
+    { "type": "table-lamp", "at": [9.45, 0.8], "y": 0.55, "params": { "shade": "#c8211d", "base": "#d9d9d9" }, "decor": true },
+    { "type": "table-lamp", "at": [9.45, 3.1], "y": 0.55, "params": { "shade": "#c8211d", "base": "#d9d9d9" }, "decor": true },
+    { "type": "ac-split", "at": [9.65, 1.95], "y": 2.12, "rotation": -90, "params": { "width": 0.85 } },
+    { "type": "wardrobe", "at": [6.45, 0.85], "rotation": 90, "params": { "width": 1.4, "height": 2.4, "depth": 0.6, "color": "#2b4259", "style": "doors", "doors": 2 } },
+    { "type": "pendant", "at": [7.9, 1.7], "params": { "drop": 0.5, "color": "#f3f3f1", "size": 0.3, "intensity": 18 } }
+  ],
+  "exterior": { "fromPhotos": true, "floorsBelow": 9, "facade": "#cfcac2", "city": { "seed": 21 } },
+  "lighting": { "sunFrom": [3, 5, -10] },
+  "views": {
+    "general": { "name": "Vista general", "pos": [4.8, 8.5, 9.5], "target": [4.8, 0, 1.6], "fov": 45, "cut": true },
+    "living1": { "name": "Living", "pos": [3.7, 1.45, 2.6], "target": [0, 1.0, 1.6], "fov": 55, "photo": "living1", "photoAspect": 1.333 },
+    "living2": { "name": "Futón y ventana", "pos": [3.3, 1.5, 2.9], "target": [0.2, 1.0, 0.5], "fov": 55, "photo": "living2", "photoAspect": 1.333 },
+    "comedor": { "name": "Mesa y vista", "pos": [1.9, 1.45, 2.7], "target": [1.5, 0.85, 0.15], "fov": 64, "photo": "comedor" },
+    "cocina": { "name": "Kitchenette", "pos": [1.55, 1.45, 1.0], "target": [4.2, 1.15, 1.15], "fov": 72, "photo": "cocinacompleta" },
+    "pasillo": { "name": "Pasillo", "pos": [4.0, 1.5, 2.55], "target": [9.65, 1.0, 2.0], "fov": 65, "photo": "dormitorio4" },
+    "dormitorio": { "name": "Dormitorio", "pos": [6.4, 1.5, 1.95], "target": [9.65, 1.0, 1.95], "fov": 72, "photo": "dormitorio" },
+    "ventana": { "name": "Ventana del dormitorio", "pos": [7.75, 1.05, 2.35], "target": [7.0, 1.0, 0], "fov": 64, "photo": "dormitorio2" },
+    "placard": { "name": "Placard y puerta", "pos": [9.35, 1.4, 0.75], "target": [6.1, 1.0, 2.3], "fov": 68, "photo": "dormitorio3" },
+    "bano": { "name": "Baño", "pos": [4.85, 1.55, 1.6], "target": [5.15, 1.1, 0], "fov": 72, "photo": "bano1" },
+    "ducha": { "name": "Ducha", "pos": [4.7, 1.6, 1.6], "target": [5.75, 0.9, 0.2], "fov": 72, "photo": "bano2" },
+    "planta": { "name": "Planta", "pos": [4.8, 13, 1.85], "target": [4.8, 0, 1.7], "fov": 45, "cut": true }
+  }
+}

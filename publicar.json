@@ -1,0 +1,14 @@
+{
+  "sitio": "https://recorrelo3d.pages.dev",
+  "deptos": {
+    "depto1": "depto1-jv6x",
+    "depto2": "depto2-ur8y",
+    "depto4": "bariloche-takp",
+    "sannicolas": "san-nicolas-pvxd",
+    "depto5": "departamento-prueba"
+  },
+  "redirecciones": {
+    "palermo-chico-q7q3": "departamento-prueba"
+  },
+  "landing": "../LANDING_PAGE_RECORRELO3D/dist"
+}
