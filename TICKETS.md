@@ -1397,3 +1397,12 @@ calzada) en vez de un disco que flotaba a la altura de la vereda, y los faroles 
 que los charcos no se pisen. La sombra al pie de los árboles también era un disco de borde duro (alphaMap leía una
 textura con transparencia): ahora es un degradé suave. Hoja: `capturas/entorno/faroles-final.jpg` (día | noche).
 verificar.html del depto 5: sin cambios (0,2 %).
+**Ajuste (2026-11-07, usuario: "ciertos bugs en los árboles, de noche y de día"):** tres causas. (1) Cuadrados oscuros
+en las copas: la pasada de normales de la oclusión ambiental (GTAOPass, en la PC) dibuja todo con un material propio
+que ignora la transparencia, y cada tarjeta de hojas contaba como un cuadrado entero; ahora las piezas con alphaTest
+(hojas, barandas de barrotes, silueta lejana) se ocultan solo en esa pasada (engine.js). (2) Manchas celestes con forma
+de hoja sobre las fachadas: las copas (radio ~3 m) se metían en balcones y paredes, y las hojas atrapadas detrás de las
+barandas de vidrio se veían así; ahora el tronco va a 60 cm del cordón y la copa se achata del lado de la fachada (poda
+de vereda, `CLEAR` 1,15 m). (3) Hojas de canto que reflejaban el entorno: material mate (Lambert), además más liviano.
+Hojas: `capturas/entorno/arboles.jpg` (antes del arreglo de copas), `arboles3.jpg` (después). verificar.html del depto 5:
+solo cambia la Planta (3 %, copas más angostas); línea base actualizada.

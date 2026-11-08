@@ -712,6 +712,17 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     gtao.blendIntensity = 0.85;
     gtao.updateGtaoMaterial({ radius: 0.3, distanceExponent: 1.4, thickness: 1, scale: 1.1, samples: mobile ? 8 : 24, distanceFallOff: 1 });
     gtao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: mobile ? 5 : 8, rings: mobile ? 2 : 3, samples: mobile ? 8 : 24 });
+    // La pasada de normales de la oclusión dibuja todo con un material propio que ignora la transparencia: las piezas
+    // recortadas por alphaTest (tarjetas de hojas de los árboles, barandas de barrotes, silueta lejana) contaban como
+    // cuadrados enteros y dejaban manchas cuadradas oscuras (2026-11-07, el usuario las vio en las copas). Se ocultan
+    // solo en esa pasada; en el cuadro se ven igual
+    const hideCutouts = gtao.overrideVisibility.bind(gtao);
+    let cutouts = null;
+    gtao.overrideVisibility = () => {
+      hideCutouts();
+      cutouts ??= (() => { const l = []; scene.traverse(o => { if (o.isMesh && [o.material].flat().some(m => m.alphaTest > 0)) l.push(o); }); return l; })();
+      for (const o of cutouts) o.visible = false;
+    };
     composer.addPass(gtao);
     composer.addPass(new OutputPass());
     // la AO se calcula sin antialiasing; SMAA al final alisa los bordes que deja dentados
