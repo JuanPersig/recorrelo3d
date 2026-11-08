@@ -200,7 +200,8 @@ Todo lo que costó resolver al modelar el primer depto grande. Leerlo antes de a
   ver una pose: `__viewer.setPose({ p, t, f, mode: 'orbit' })`, `__viewer.capture()` y POST a `/capturas/<id>/x.jpg`.
 - `javascript_tool` corta a los 45 s: esperar de a 40 s. `verificar.html` con dos deptos tarda ~80 s, `comparar.html`
   ~75 s, `hornear.html` 40–80 s. Con `&base=1`, esperar a que termine antes de commitear.
-- Cambios grandes de código: escribir el script en el scratchpad (`.cjs`) y correrlo con node; un `node -e` largo con
-  comillas invertidas dentro de un heredoc de bash falló.
+- Cambios grandes de código o de texto: escribir el script o el texto en el scratchpad y correrlo con node. **Nunca
+  comillas invertidas dentro de un `node -e "…"` con comillas dobles:** bash las ejecuta como comandos (el 2026-11-08 un
+  texto con nombres de comandos entre comillas invertidas llegó a lanzar `node motor/kit.mjs`).
 - Publicar: carpeta fija en `publicar.json`, `node motor/publicar.mjs`; revisar que `sitio/<carpeta>/` no tenga
   `/fotos/` (empaquetar saca fotos, nota, estimados y orientación). Anuncio ajeno: solo renders.

@@ -93,17 +93,46 @@ Pendiente (T-61): decidir el aviso del baño (1,50 m
 de ancho real: no entran 60 cm entre inodoro y lavatorio), colores con `colores.html`, puntaje de parecido, paredes por
 ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.md](prompt-depto-grande.md).
 
-## Pendientes
+## Próximos pasos (2026-11-08)
 
-1. **El usuario:** `git push` (hay commits locales sin subir) y subir `sitio/` a Cloudflare (ya armado: al subirlo
-   salen de la web los cuatro deptos borrados).
-2. **Texturas escaneadas** (ambientCG / Poly Haven, CC0): armar la lista exacta (nombre, origen, tamaño) para que el
-   usuario apruebe la descarga; entran por `motor/texturas/` como detalle en gris sobre el color medido de las fotos.
-   Hoy el dibujo de la veta y de las telas sigue siendo sintético.
-3. **"▶ Recorrer"** y **vista general con límites** (feedback de una administradora: "difícil de maniobrar para +40").
-4. `og:image` para `/departamento-prueba/`; three.js dentro del paquete (descarga: pedir permiso); dominio propio
-   (`recorrelo3d.com.ar`).
-5. Niveles de calidad por equipo (medidos en la precarga): solo si aparecen celulares lentos (el iPhone anda bien).
-6. Depto 6: terminar lo pendiente de T-61.
-7. Respaldo de la landing (no tiene git) y borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/` (340 MB, copia vieja).
-8. Landing: imagen de la sección "Cómo es el proceso". Comercial: seguir la planilla; mail de contacto propio.
+**Mañana, primero:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
+cargar (sospecha: el iframe del recorrido en vivo carga el motor en el mismo hilo) y en celular las tarjetas de "Las
+fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando con framer-motion).
+
+**El usuario:** `git push` cuando haya commits locales y subir `sitio/` a Cloudflare cuando haya cambios.
+
+### Motor
+1. **Depto 6 (T-61):** decidir el aviso de 60 cm del baño (medidas reales o artefactos más chicos); colores con
+   `colores.html` y puntaje de parecido (`comparar.html?…&medir=`); puerta del lavadero (abierta en el modelo, cerrada
+   en la foto); fotos del segundo dormitorio y del lavadero si el anuncio las tiene.
+2. **Paredes de color por ambiente:** hoy hay un solo `wallColor` (el dormitorio del depto 6 es más rosado que el
+   living). Hacerlo general: cada cara de pared toma el color del ambiente al que mira.
+3. **Veta de madera en paneles grandes** (alacenas, puertas, bibliotecas): se ve ondulada. Mejorar el dibujo o
+   resolverlo con las texturas escaneadas.
+4. **Texturas escaneadas** (ambientCG / Poly Haven, CC0): armar la lista exacta (nombre, origen, tamaño) para que el
+   usuario apruebe la descarga; entran por `motor/texturas/` como detalle en gris sobre el color medido.
+5. Correr `motor/generar-texturas.html` para pre-generar el mimbre (hoy se calcula al abrir).
+6. **Medir el depto 6 en el iPhone** (tiempo hasta la primera vista con la carga nueva, fluidez en el living y la
+   cocina, de noche). Niveles de calidad por equipo solo si hace falta.
+7. **"▶ Recorrer"** (recorrido automático) y vista general más fácil de manejar (feedback de una administradora:
+   "difícil de maniobrar para +40"); el límite de alejamiento ya está (T-62).
+8. Detalles que faltan del depto 6: perchero con abrigos en el pasillo, azulejos decorados de la cocina, potus colgante
+   junto a la biblioteca, plantas del balcón (hoy el balcón no admite muebles: hacerlo general).
+9. Paso de orientación en SKILL.md: `sunFrom` y `bearing` según la orientación del anuncio y el plano (la dirección
+   importa, el ángulo no tanto).
+
+### Marca
+1. Unificar el nombre: la landing dice "recorrelo3D" y la carta "Recorrelo 3D".
+2. `og:image` (vista previa al compartir) para cada recorrido publicado y para la landing.
+3. Dominio propio (`recorrelo3d.com.ar`) y mail de contacto propio; completar la línea de contacto de
+   `presentacion/carta.html`.
+4. Landing: imagen de la sección "Cómo es el proceso".
+
+### Producto
+1. Respaldo de la landing (no tiene git) antes de tocarla, y borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/`
+   (340 MB, copia vieja) con el OK del usuario.
+2. three.js dentro del paquete publicado (hoy viene de un CDN; descargarlo: pedir permiso).
+3. Depto 6: si se consigue el permiso del dueño, kit de entrega (tarjeta con QR: `exportar.html` y después
+   `node motor/kit.mjs depto6`); si no, sigue como prueba interna de rendimiento.
+4. Comercial: seguir la planilla de administradoras (`comercial/`) y definir cómo se pide un recorrido (formulario o
+   WhatsApp, precio, plazo).
