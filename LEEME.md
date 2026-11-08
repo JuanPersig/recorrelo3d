@@ -12,7 +12,7 @@ tanda; `git push` lo corre el usuario (el permiso automático frena la subida de
 | `motor/` | `engine.js` (escena, luz, posproceso, cámara), `components.js` (catálogo de piezas y materiales), `validate.js`, `visor.html` y herramientas (`verificar`, `hornear`, `generar-texturas`, `comparar`, `exportar`, `plano`, `colores`, `encuadre`, `telas`, `texturas`) |
 | `motor/texturas/` | texturas del motor pre-generadas (WebP + `indice.js`); se rehacen con `motor/generar-texturas.html` |
 | `motor/pruebas/` | páginas de prueba: `materiales.html` (laboratorio de materiales), `entorno.html`, `rebote.html`, `cerca.html` |
-| `departamentos/<id>/scene.json` | lo único que cambia por depto; hoy solo `depto5` (los otros cuatro se borraron el 2026-11-08: están en el historial de git) |
+| `departamentos/<id>/scene.json` | lo único que cambia por depto: `depto5` (demo) y `depto6` (depto grande, en curso; los otros cuatro se borraron el 2026-11-08: están en el historial de git) |
 | `fotos/<id>/` | PNG que usan las vistas; `fotos/<id>/original/` las originales |
 | `muestras/` | escenas de la rueda de la landing (fotos de Pexels), fuera de la verificación |
 | `capturas/` | hojas de comparación por depto, línea base de `verificar.html`, `entorno/` (pruebas del entorno), imágenes de la landing |
@@ -62,11 +62,14 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 - Pensar todo como mejora general del motor para cualquier depto; el demo es solo la prueba.
 - Comprobar sintaxis con `node --input-type=module --check < archivo` (`node --check` no detecta todo).
 
-## Próximo objetivo (2026-11-08)
+## Depto grande en curso (2026-11-08)
 
-Modelar un **departamento nuevo, más grande y cargado de objetos**, con calidad premium (detalle, luz, fidelidad), y
-resolver en el motor, de forma general, todo lo que haga falta. El prompt para arrancar está en
-[prompt-depto-grande.md](prompt-depto-grande.md): completar el id, el nombre y la carpeta de fotos.
+**depto6 "Dos dormitorios con balcón"** (anuncio ajeno de Rosario: solo renders, nunca sus fotos en algo público).
+Primera tanda hecha (T-60 motor, T-61 depto): 7 componentes nuevos y muchas variantes, unión de lo decorativo y por
+color (el depto 5 bajó de 400–660 a 220–480 dibujos por vista con la misma imagen), luz horneada. Depto 6: armado
+3,9 s, 390–715 dibujos por vista. Hojas en `capturas/depto6/`. Pendiente (T-61): decidir el aviso del baño (1,50 m
+de ancho real: no entran 60 cm entre inodoro y lavatorio), colores con `colores.html`, puntaje de parecido, paredes por
+ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.md](prompt-depto-grande.md).
 
 ## Pendientes
 
@@ -79,6 +82,6 @@ resolver en el motor, de forma general, todo lo que haga falta. El prompt para a
 4. `og:image` para `/departamento-prueba/`; three.js dentro del paquete (descarga: pedir permiso); dominio propio
    (`recorrelo3d.com.ar`).
 5. Niveles de calidad por equipo (medidos en la precarga): solo si aparecen celulares lentos (el iPhone anda bien).
-6. Un **depto nuevo** para probar la eficiencia del motor (los anteriores se borraron a propósito).
+6. Depto 6: terminar lo pendiente de T-61.
 7. Respaldo de la landing (no tiene git) y borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/` (340 MB, copia vieja).
 8. Landing: imagen de la sección "Cómo es el proceso". Comercial: seguir la planilla; mail de contacto propio.

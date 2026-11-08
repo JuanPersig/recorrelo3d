@@ -300,6 +300,17 @@ function idMaterial(depth = false) {
 
 // Une en una sola malla por material las piezas fijas de un grupo (paredes, muebles, aberturas): de más de mil
 // objetos quedan unos cientos de dibujos por cuadro. Lo que se prende, se apaga o se oculta queda aparte ("keep").
+// Además (2026-11-08), los materiales que son iguales salvo el color (laca, pintura, loza, madera de distintos tonos) se
+// unen en uno solo con el color en cada vértice: en un departamento cargado eran cientos de dibujos más. No entran los
+// que cambian solos (los que brillan de noche, vidrios, transparencias) ni los metales, que reflejan su ambiente con una
+// copia propia del material
+const tintKey = mat => {
+  if (!mat.isMeshStandardMaterial || mat.transparent || mat.metalness > 0 || mat.envMap || mat.emissiveMap || mat.vertexColors || mat.alphaTest > 0 || mat.clippingPlanes) return null;
+  if (mat.emissive && (mat.emissive.r || mat.emissive.g || mat.emissive.b)) return null;
+  if (Object.keys(mat.userData).some(k => k !== 'srcColor' && k !== 'jitter')) return null;
+  return ['tint', mat.type, mat.map?.uuid, mat.normalMap?.uuid, mat.roughnessMap?.uuid, mat.bumpMap?.uuid, mat.bumpScale, mat.normalScale?.x, mat.roughness, mat.side,
+    mat.sheen, mat.sheenRoughness, mat.sheenColor?.getHexString(), mat.clearcoat, mat.customProgramCacheKey()].join('|');
+};
 function mergeStatic(root, keep) {
   root.updateMatrixWorld(true);
   const inv = new THREE.Matrix4().copy(root.matrixWorld).invert(), buckets = new Map(), m = new THREE.Matrix4();
@@ -307,18 +318,24 @@ function mergeStatic(root, keep) {
     if (keep.has(o)) return;
     for (const c of [...o.children]) walk(c);
     if (!o.isMesh || o.isInstancedMesh || Array.isArray(o.material) || o.userData.keep || !o.visible) return;
-    const key = `${o.material.uuid}|${o.castShadow}|${o.receiveShadow}|${o.renderOrder}`;
+    const key = `${tintKey(o.material) ?? o.material.uuid}|${o.castShadow}|${o.receiveShadow}|${o.renderOrder}`;
     if (!buckets.has(key)) buckets.set(key, { mat: o.material, cast: o.castShadow, recv: o.receiveShadow, list: [] });
     buckets.get(key).list.push(o);
   };
   walk(root);
   for (const b of buckets.values()) {
     if (b.list.length < 2) continue;
+    const tinted = b.list.some(o => o.material !== b.mat), c = new THREE.Color();
     const geos = b.list.map(o => {
       let g = o.geometry.clone();
       for (const a of Object.keys(g.attributes)) if (!['position', 'normal', 'uv', 'oid'].includes(a)) g.deleteAttribute(a);
       if (!g.attributes.uv) g.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2));
       if (!g.attributes.oid) g.setAttribute('oid', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count), 1));
+      if (tinted) {   // el color del material de la pieza, en cada vértice (lineal, como lo usa el sombreado)
+        c.copy(o.material.color); const n = g.attributes.position.count, col = new Float32Array(n * 3);
+        for (let i = 0; i < n; i++) col.set([c.r, c.g, c.b], i * 3);
+        g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      }
       if (!g.index) g.setIndex([...Array(g.attributes.position.count).keys()]);
       g.morphAttributes = {}; g.clearGroups();
       m.multiplyMatrices(inv, o.matrixWorld); g.applyMatrix4(m);
@@ -327,7 +344,13 @@ function mergeStatic(root, keep) {
     });
     const merged = mergeGeometries(geos, false);
     if (!merged) continue;
-    const mesh = new THREE.Mesh(merged, b.mat); mesh.castShadow = b.cast; mesh.receiveShadow = b.recv;
+    let mat = b.mat;
+    if (tinted) {   // copia del material con el color en los vértices; conserva lo que el material le suma al sombreado
+      mat = b.mat.clone(); mat.vertexColors = true; mat.color.set(0xffffff);
+      mat.onBeforeCompile = b.mat.onBeforeCompile; mat.customProgramCacheKey = b.mat.customProgramCacheKey;
+      mat.userData = { ...b.mat.userData }; delete mat.userData.srcColor;
+    }
+    const mesh = new THREE.Mesh(merged, mat); mesh.castShadow = b.cast; mesh.receiveShadow = b.recv;
     root.add(mesh);
     for (const o of b.list) o.parent.remove(o);
     geos.forEach(g => g.dispose());
@@ -807,6 +830,16 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   const refining = () => acc && accN < REFINE;
 
   /* ---------- piezas fijas unidas por material (menos dibujos por cuadro) ---------- */
+  // Lo decorativo (2026-11-08) se muestra y se oculta todo junto: va a un grupo por nivel, que es el que se prende y apaga,
+  // y ahí se une por material como el resto (antes cada adorno era un dibujo aparte: en un depto cargado, cientos). Lo
+  // decorativo de techo queda aparte, porque se oculta con el techo. Se une después de los controles (ver mergeStatic abajo)
+  const decorRoots = levelInfo.map(l => { const r = new THREE.Group(); l.root.add(r); return r; });
+  for (const g of [...decor]) {
+    const li = levelInfo.findIndex(l => { for (let o = g.parent; o; o = o.parent) if (o === l.root) return true; return false; });
+    if (li < 0 || levelInfo[li].ceiling.includes(g) || ceilingParts.includes(g)) continue;
+    decorRoots[li].attach(g); decor.splice(decor.indexOf(g), 1);
+  }
+  decorRoots.forEach(r => { if (r.children.length) decor.push(r); });
   // lo que se oculta o se prende por separado queda aparte: techo y lámparas, decoración, cantos, pisos con reflejo
   const keep = new Set([...ceilingParts, ...decor, ...levelInfo.map(l => l.caps), ...floors, sky]);
   // obstáculos del recorrido: paredes, vigas y los muebles que estorban ("solid" en su ficha)
@@ -844,6 +877,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   });
   const idTable = assignIds(scene);   // antes de unir las piezas: cada vértice lleva el id de su objeto y material
   levelInfo.forEach(l => mergeStatic(l.root, keep));
+  decorRoots.forEach(r => mergeStatic(r, new Set([...ceilingParts, ...levelInfo.map(l => l.caps), ...floors, sky])));
   mergeStatic(outside, keep);
   renderer.shadowMap.needsUpdate = true;
 

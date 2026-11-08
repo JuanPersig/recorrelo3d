@@ -33,6 +33,8 @@ import { pixels, medir, interior } from './parecido.js';
 const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('depto');
 const SIDE = Number(q.get('lado') ?? 1600), MAXP = Number(q.get('puntaje') ?? 16), N = 512;
 const scene = await fetch(`/departamentos/${id}/scene.json`).then(r => r.json());
+// ambientes en L o en U ("rects"): un ambiente por rectángulo, como en el motor
+for (const L of [scene, ...(scene.levels ?? [])]) if (L.rooms) L.rooms = L.rooms.flatMap(r => (r.rects ? r.rects.map(rect => ({ ...r, rect, rects: undefined })) : [r]));
 const levels = [scene, ...(scene.levels ?? [])];
 const keys = Object.keys(scene.views).filter(k => scene.views[k].photo);
 const api = window.__viewer = await start($('stage'), { scene, state: { view: keys[0], cut: false, night: false, decor: true }, device: 'desktop', base: `/departamentos/${id}/` });

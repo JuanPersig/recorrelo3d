@@ -28,6 +28,8 @@ import { start } from './engine.js';
 const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('id') ?? 'depto5';
 const STEP = Number(q.get('paso') ?? 0.5), CUBE = 16;
 const spec = await (await fetch(`/departamentos/${id}/scene.json`)).json();
+// ambientes en L o en U ("rects"): un ambiente por rectángulo, como en el motor
+for (const L of [spec, ...(spec.levels ?? [])]) if (L.rooms) L.rooms = L.rooms.flatMap(r => (r.rects ? r.rects.map(rect => ({ ...r, rect, rects: undefined })) : [r]));
 const k0 = Object.keys(spec.views)[0];
 const api = await start($('stage'), { scene: spec, state: { view: k0, cut: false, night: false, decor: true }, device: 'desktop', refine: false, gi: false, base: `/departamentos/${id}/` });
 const { scene, renderer, walk } = api._debug;

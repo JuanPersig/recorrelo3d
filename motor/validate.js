@@ -16,7 +16,8 @@ const KEYS = {
   floor: S('kind', 'color', 'tile', 'size', 'gloss', 'texture', 'textureSize'),
   wall: S('from', 'to', 'thickness', 'openings'),
   opening: S('kind', 'at', 'width', 'height', 'sill', 'side', 'hinge', 'open', 'color', 'material', 'handle', 'lock',
-    'frame', 'panels', 'shutter', 'shutterBox', 'shutterColor', 'grille', 'grilleCell', 'counter'),   // counter: barra en el antepecho de un arco o pase
+    'frame', 'panels', 'shutter', 'shutterBox', 'shutterColor', 'grille', 'grilleCell', 'counter',
+    'glass', 'glassColor', 'rows', 'from', 'frosted', 'bars'),   // glass: puerta vidriada ("half", "slot"); frosted y bars: ventana esmerilada con travesaños   // counter: barra en el antepecho de un arco o pase
   item: S('type', 'at', 'y', 'rotation', 'params', 'decor'),
   structure: S('kind', 'x', 'y', 'z', 'color', 'finish'),   // finish: 'concrete' (hormigón a la vista)
   void: S('x', 'z'),
@@ -24,8 +25,8 @@ const KEYS = {
   lighting: S('sunFrom', 'sunColor', 'sunIntensity', 'ambient', 'environment', 'windowLight', 'exposure', 'sky', 'ground',
     'nightAmbient', 'nightExposure', 'warmth', 'lamps', 'bake', 'bounce'),   // bake: archivo de luz rebotada (motor/hornear.html); bounce: cuánto suma
   exterior: S('balcony', 'floorsBelow', 'facade', 'landscape', 'nature', 'city', 'fog', 'facing', 'bearing'),   // bearing: rumbo de la fachada en grados (0 = mira al norte), para el norte del plano
-  balcony: S('x', 'z', 'floor', 'covered', 'soffit', 'railing'),
-  railing: S('kind', 'height', 'color', 'sides', 'wall'),
+  balcony: S('x', 'z', 'floor', 'covered', 'soffit', 'railing', 'ends'),
+  railing: S('kind', 'height', 'color', 'sides', 'wall', 'handrail', 'net'),
   roof: S('kind', 'x', 'z', 'eave', 'ridge', 'thickness', 'overhang', 'ceiling', 'color', 'beams', 'skylightFrame', 'beamSpacing', 'skylights'),
   skylight: S('side', 'z', 'u'),
   nature: S('seed', 'lake', 'drop'),
@@ -35,7 +36,7 @@ const KEYS = {
 // valores con opciones cerradas
 const ONE_OF = {
   'floor.kind': ['tile', 'planks', 'herringbone', 'terrazzo'], 'structure.kind': ['beam', 'column'], 'exterior.landscape': ['lake', 'city'],
-  'railing.kind': ['bars', 'glass', 'parapet', 'balusters'], 'exterior.facing': ['-z', '+z', '-x', '+x'], 'roof.kind': ['gable'], 'opening.hinge': ['start', 'end'], 'opening.material': ['wood', 'lacquer'],
+  'railing.kind': ['bars', 'glass', 'parapet', 'balusters', 'panels'], 'exterior.facing': ['-z', '+z', '-x', '+x'], 'roof.kind': ['gable'], 'opening.hinge': ['start', 'end'], 'opening.material': ['wood', 'lacquer'],
 };
 
 function dist(a, b) {   // distancia de edición, para sugerir la clave más parecida

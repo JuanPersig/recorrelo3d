@@ -1505,3 +1505,51 @@ de pensar en el modelo actual"); "hacé lo necesario para mejorar el motor".
   otra copia del motor, `&piso=` cambia el piso).
 **Cómo se verificó:** `capturas/materiales/`; verificar.html del depto 5: < 1 % de cambio, sin avisos; base actualizada.
 **Límite:** el dibujo de la veta y de las telas sigue siendo sintético: lo resuelven las texturas escaneadas.
+
+## T-60 · Motor para deptos cargados: piezas nuevas, unión por color y herramientas con ambientes en L (hecho, 2026-11-08)
+
+**Pedido del usuario:** modelar un depto grande y cargado (depto 6) resolviendo en el motor, de forma general, todo lo
+que haga falta, con calidad premium y sin romper el demo.
+**Qué se hizo (general):**
+- Componentes nuevos, con su ficha en `META` y catálogo regenerado (74 componentes): `ladder-shelf` (estante escalera),
+  `wire-shelf` (estante de alambre cromado), `kitchen-cart` (carro de cocina con cajones y canastos), `medicine-cabinet`
+  (botiquín con espejo, nicho y repisa), `wall-shelf` (repisa flotante con cubos, especiero con luz o cubo abierto),
+  `washer` (lavarropas) y `laundry-sink` (pileta de lavar).
+- Variantes: `sofa` "daybed" (diván de madera con cajón, brazos de listones, respaldo capitoné con botones de verdad,
+  rulos y almohadones al crochet redondos o cuadrados); `chair` "panel" y "spindle" (torneada); `dining-table`
+  "trestle" (patas curvas de tabla), "plank" con patas de madera y tablas, y `tablecloth` (mantel liso o de hule con
+  estampado tropical) en cualquier mesa rectangular; `bookshelf` con puertas de tablero abajo (`cabinet`), copete
+  (`crown`) y escalonada (`style: "stepped"`); `vanity` "pedestal" y llaves de cruz (`taps: "cross"`); `toilet` con
+  válvula de descarga; `bathtub` con grifería de pared y ducha (`faucet`); `kitchen-base` de madera con perillas, mesada
+  de acero, doble bacha, canilla de pared y canto; `kitchen-wall` con perillas; `curtains` con barral de madera,
+  presillas, ruedo de color y tela a contraluz (`sheer`: número = opacidad); `ceiling-light` "dome" (plafón);
+  `floor-fan` "tower"; almohadones redondos y al crochet en la cama.
+- Objetos chicos en `tabletop-decor` (ahora aceptan objetos con color y lugar propio): olla, cacerola, escurridor,
+  frascos, canasto de mimbre, caja, portarretratos y potus con guías que caen.
+- Aberturas: puerta con media hoja vidriada o mirilla (`glass`), ventana esmerilada con travesaños (`frosted`, `bars`).
+  Balcón: baranda `panels` (paños y pasamanos de madera), red de protección (`net`) y tabiques en las puntas (`ends`).
+- Materiales: crochet, estampado tropical, mimbre, hojas de dos caras, acero cepillado (`brushed`; la heladera de acero
+  lo usa: con metal puro se veía casi negra).
+- Rendimiento: lo decorativo se une por material en un grupo por nivel (antes, un dibujo por adorno), y los
+  materiales iguales salvo el color se unen en uno con el color en los vértices (`mergeStatic`). Libros como cajas rectas.
+  Depto 5: de 400–660 a 220–480 dibujos por vista, misma imagen.
+- `hornear.html`, `plano.html` y `texturas.html` ahora entienden ambientes en L (`rects`).
+**Cómo se verificó:** `verificar.html?deptos=depto5,depto6`: depto 5 sin cambios (0,1–0,2 %), 243 variantes de 74
+componentes sin piezas sueltas; de cerca en `capturas/depto6/cerca-*.jpg`; `node motor/catalogo.mjs`: parámetros bien.
+Base actualizada.
+**Falta:** la textura de mimbre no está pre-generada (se calcula al abrir, 256 px): correr `generar-texturas.html`. La
+veta de madera en paneles grandes (alacenas, puertas) se ve ondulada: mejorar el dibujo o esperar las escaneadas.
+
+## T-61 · Depto 6 "Dos dormitorios con balcón" (en curso, 2026-11-08)
+
+**Fuente:** 11 fotos y el plano de un anuncio de Rosario (unidad 11-02, 63 m² + 7 de balcón, oeste, piso 11), en
+`fotos/depto6/` (originales en `original/`, incluido el plano). Anuncio ajeno sin permiso confirmado: solo renders.
+**Qué se hizo:** `departamentos/depto6/scene.json` con el plano medido (escala por el frente de 10,06 m): living-comedor
+al balcón corrido, pasillo de entrada con cielorraso bajo, cocina en galería con lavadero, distribuidor con baño entre
+los dos dormitorios (ambientes en L con el nicho del placard). Una vista por foto, más general y planta. Luz rebotada
+horneada (`gi.json`).
+**Cómo se verificó:** hojas en `capturas/depto6/` (día | foto | noche); armado 3,9 s; 390–715 dibujos por vista.
+**Pendiente:** el baño mide 1,50 m entre paredes: con artefactos de tamaño real quedan ~50 cm entre inodoro y lavatorio
+y el control de 60 cm avisa en bañera, inodoro y bidé (consultar al usuario). La puerta del lavadero está abierta
+(en la foto, cerrada) para que se pueda entrar. Segundo dormitorio y lavadero sin fotos (estimados). Colores con
+`colores.html` y puntaje de parecido sin correr todavía. Paredes de un solo color (el dormitorio de la foto es más rosado).

@@ -33,6 +33,8 @@ import { start } from './engine.js';
 const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('depto');
 const S = Number(q.get('escala') ?? 70), FURN = q.get('muebles') !== '0';
 const scene = await fetch(`/departamentos/${id}/scene.json`).then(r => r.json());
+// ambientes en L o en U ("rects"): un ambiente por rectángulo, como en el motor
+for (const L of [scene, ...(scene.levels ?? [])]) if (L.rooms) L.rooms = L.rooms.flatMap(r => (r.rects ? r.rects.map(rect => ({ ...r, rect, rects: undefined })) : [r]));
 const k0 = Object.keys(scene.views)[0];
 const api = await start($('stage'), { scene, state: { view: k0, cut: true, night: false, decor: true }, device: 'desktop' });
 const plan = api.plan(); api.destroy();
