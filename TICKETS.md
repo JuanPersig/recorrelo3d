@@ -1460,3 +1460,16 @@ ramas secas) y "bottle-flowers" pasan al generador (los deptos que los usan se v
 "dried-flowers" sale idéntico (verificar.html del depto 5: todo igual a la base). SKILL.md y CATALOGO.md actualizados.
 **Cómo se verificó:** `capturas/rebote/ramos.jpg` (las seis variantes de frente y de cerca; el eucalipto se corrigió:
 hojas chicas, alternadas y verde salvia en lugar de una paleta turquesa continua).
+
+## T-58 · Pantalla de carga del visor como la de la landing (hecho, 2026-11-07)
+
+**Pedido del usuario:** en el iPhone anda bien pero tarda un poco en cargar; quiere una pantalla de carga "más bonita,
+como la de la landing".
+**Qué se hizo (visor.html):** pantalla a pantalla completa con el mismo cuadrado verde que se redondea y gira
+(MorphingSquare de la landing, en CSS), el fondo de la landing, el nombre del departamento y "Cargando el recorrido…".
+Está en el HTML, así se ve desde el primer instante mientras baja three.js; se desvanece en medio segundo cuando el
+primer cuadro ya está dibujado (al menos 0,6 s en pantalla para que no parpadee). Modo oscuro propio; con `brand.color`
+en el scene el cuadrado toma el color de la marca; si el visor falla, se saca para que se lea el error.
+**Ojo:** otra sesión en paralelo había agregado una segunda pantalla de carga al mismo archivo; quedó una sola.
+**Cómo se verificó:** preview del visor (aparece de entrada, hay un solo `#loader` y se va sola) y captura a tamaño de
+celular en modo claro. `sitio/` rearmado.
