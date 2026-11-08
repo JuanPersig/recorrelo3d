@@ -456,7 +456,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       if (f.texture && images.has(f.texture)) return { mat: imageMat(mat, f.texture), size: f.textureSize ?? 1.2 };
       // espiga: "tile" es el ancho de la tablita (largo = 5 anchos); la textura repite cada 5·√2 anchos
       const size = kind === 'planks' ? (f.size ?? 1.2) : kind === 'herringbone' ? 5 * Math.SQRT2 * (f.tile ?? 0.07)
-        : kind === 'terrazzo' ? (f.size ?? 0.9) : 2 * (f.tile ?? 0.6);
+        : kind === 'terrazzo' ? (f.size ?? 0.9) : kind === 'grass' ? (f.size ?? 1) : 2 * (f.tile ?? 0.6);
       return { mat, size };
     };
 
@@ -465,10 +465,36 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     const e = extentsOf(Lv.walls);
     if (!li) tagO(blk(root, M.paint('#d9d5cd'), [e.x0, e.x1], [-0.2, -0.002], [e.z0, e.z1]), { kind: 'slab', level: li });
     const up = levels[li + 1], top = up ? (up.y ?? H + 0.25) - y0 - 0.003 : Hl + 0.12;
-    const ceilMat = M.paint(Lv.ceiling ?? rooms[0]?.ceiling ?? '#f7f6f3');
-    if (!Lv.roof) for (const [xs, zs] of subtractRects([e.x0, e.x1], [e.z0, e.z1], up?.voids ?? [])) {
+    // techo por ambiente (2026-11-08, casa con patio). "ceiling" de un ambiente: un color (el del cielorraso de todo el
+    // nivel, como antes); "open" = a cielo abierto (patios: no lleva cielorraso y entra el sol); { "kind": "boards" }
+    // = machimbre; { "kind": "sheet", "beams" } = chapa vista desde abajo con tirantes de madera (galerías, quinchos).
+    // Los dos últimos aceptan "height" (más bajo que el nivel) y "over" (rectángulos que techa, si no son los del
+    // ambiente: el alero de una galería que sigue por delante de la fachada). Lo que techa un ambiente se saca de la losa
+    // del nivel si es abierto o de chapa, así desde afuera no queda una losa flotando sobre un techo de chapa más bajo.
+    const roomCeil = r => (typeof r.ceiling === 'object' && r.ceiling) || null;
+    const ceilMat = M.paint(Lv.ceiling ?? rooms.find(r => typeof r.ceiling === 'string' && r.ceiling !== 'open')?.ceiling ?? '#f7f6f3');
+    // el machimbre va adentro, bajo la losa; lo abierto y la chapa (galerías, quinchos) quedan a la vista desde arriba
+    const ownCeil = rooms.flatMap(r => r.ceiling === 'open' ? [r.rect] : roomCeil(r)?.kind === 'sheet' ? (roomCeil(r).over ?? [r.rect]) : []);
+    if (!Lv.roof) for (const [xs, zs] of subtractRects([e.x0, e.x1], [e.z0, e.z1], [...(up?.voids ?? []), ...ownCeil])) {
       const m = tagO(blk(root, ceilMat, xs, [Hl, top], zs), { kind: 'ceiling', level: li });
       info.ceiling.push(m);
+    }
+    for (const r of rooms) {
+      const c = roomCeil(r); if (!c) continue;
+      const h = Math.min(c.height ?? Hl, Hl), sheet = c.kind === 'sheet';
+      const mat = sheet ? M.lacquer(c.color ?? '#c3c6c8') : M.boards(c.color ?? '#a8693a', 'boards');
+      for (const q of c.over ?? [r.rect]) {
+        const g = tagO(new THREE.Group(), { kind: 'ceiling', level: li }); root.add(g); info.ceiling.push(g);
+        blk(g, mat, q.x, [h, h + 0.04], q.z, 0, sheet ? 0.5 : 1.2);
+        if (!sheet || c.beams === false) continue;
+        // tirantes: cruzan el lado corto, uno cada "spacing" (0,9 m) a lo largo del lado largo, colgados bajo la chapa
+        const wood = M.wood(c.beams ?? '#6b3a26'), dx = q.x[1] - q.x[0], dz = q.z[1] - q.z[0], sp = c.spacing ?? 0.9;
+        const alongZ = dz <= dx, L0 = alongZ ? q.x[0] : q.z[0], L = alongZ ? dx : dz, n = Math.max(1, Math.round(L / sp));
+        for (let i = 0; i <= n; i++) {
+          const a = Math.min(Math.max(L0 + i * L / n, L0 + 0.03), L0 + L - 0.03);
+          alongZ ? blk(g, wood, [a - 0.03, a + 0.03], [h - 0.13, h - 0.001], q.z, 0.004) : blk(g, wood, q.x, [h - 0.13, h - 0.001], [a - 0.03, a + 0.03], 0.004);
+        }
+      }
     }
     let clip = null;
     if (Lv.roof) { const roof = gableRoof(Lv.roof, { M, y0, ceilMat }); root.add(tagO(roof.group, { kind: 'ceiling', level: li })); info.ceiling.push(roof.group); clip = roof.clip; skyLights.push(...roof.skylights); }

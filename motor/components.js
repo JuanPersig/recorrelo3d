@@ -215,6 +215,7 @@ function oakAt(x, y) {
   const ray = smooth(0.66, 0.74, vnoise(x / 32, y / 4, 16, 128)) * (0.5 + 0.5 * vnoise(x / 64, y / 64, 8, 8));
   return { tono: 1 - 0.13 * late - 0.06 * pore + 0.1 * ray, alto: 1 - 0.4 * late - 0.9 * pore + 0.15 * ray, poro: Math.max(0, pore - 0.6 * ray) };
 }
+const grassBlade = (x, y) => vnoise(x / 2 + 3 * vnoise(x / 8, y / 8, 64, 64), y / 4, 256, 128);
 const lazy = (k, f) => { GEN[k] = f; return () => T[k] || (T[k] = fileTex(k) ?? f()); };
 const TEX = {
   // madera de muebles (roble con radios, ver oakAt): relieve y brillo; el poro es más mate y los radios más lisos
@@ -293,6 +294,15 @@ const TEX = {
     const a = Math.sin((x / 256) * Math.PI * 2 * 16), b = Math.sin((y / 256) * Math.PI * 2 * 16 + (Math.floor(x / 16) % 2) * Math.PI);
     return gray(255 * (0.7 + 0.3 * Math.abs(a * b)) * (0.94 + 0.06 * hash(x >> 2, y >> 2)));
   }), true)),
+  // pasto (patios, jardines; 512 px = 1 m): hojitas de 1–2 mm en todas direcciones sobre matas de ~10 cm más oscuras
+  // y algún claro seco; el relieve sale de las mismas hojitas
+  grass: lazy('grass', () => toTex(canvasFrom(512, (x, y) => {
+    const blade = grassBlade(x, y), clump = vnoise(x / 64, y / 64, 8, 8);
+    const dry = smooth(0.72, 0.9, 0.5 * vnoise(x / 128 + 7, y / 128, 4, 4) + 0.5 * vnoise(x / 32, y / 32, 16, 16));
+    const v = (0.62 + 0.38 * blade) * (0.78 + 0.22 * clump);
+    return [255 * Math.min(1, v * (1 + 0.35 * dry)), 255 * v * (1 + 0.12 * dry), 255 * v * (1 - 0.25 * dry)];
+  }), true)),
+  grassN: lazy('grassN', () => normalTex(512, (x, y) => 0.7 * grassBlade(x, y) + 0.3 * vnoise(x / 64, y / 64, 8, 8), 2.5)),
   // mimbre: varillas que pasan una por arriba y otra por abajo (canastos); 16 × 16 cruces por repetición
   wicker: lazy('wicker', () => toTex(canvasFrom(256, (x, y) => {
     const u = x / 16, v = y / 16, cu = Math.floor(u), cv = Math.floor(v), over = (cu + cv) % 2;
@@ -584,9 +594,11 @@ export function makeMaterials(preset) {
         ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.herringbone(), roughness: 0.58 - 0.3 * gloss, roughnessMap: TEX.woodR(), normalMap: TEX.herringboneN(), normalScale: new THREE.Vector2(0.55, 0.55) })
         : kind === 'terrazzo'
         ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.terrazzo(), roughness: 0.35 - 0.2 * gloss })
+        : kind === 'grass'
+        ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.grass(), normalMap: TEX.grassN(), normalScale: new THREE.Vector2(0.9, 0.9), roughness: 0.95 })
         : new THREE.MeshStandardMaterial({ color: col(c), map: TEX.tile(), roughnessMap: TEX.tileRough(), roughness: 1 - 0.7 * gloss, bumpMap: TEX.tileBump(), bumpScale: 0.6 });
       if (gloss > 0) { m.userData.gloss = gloss; m.envMapIntensity = 1 - 0.6 * gloss; }
-      return macroTone(m, kind === 'tile' ? 0.025 : 0.05);
+      return macroTone(m, kind === 'tile' ? 0.025 : kind === 'grass' ? 0.14 : 0.05);
     }),
     granite: c => once('gran' + c, () => clay ? matte(c, 0.8) : jitter(new THREE.MeshStandardMaterial({ color: new THREE.Color(c).lerp(new THREE.Color('#ffffff'), 0.75), map: TEX.granite(), roughness: 0.18, normalMap: TEX.stoneN(), normalScale: new THREE.Vector2(0.12, 0.12) }))),
     marble: c => once('marb' + c, () => clay ? matte(c, 0.8) : jitter(new THREE.MeshStandardMaterial({ color: col(c), map: TEX.marble(), roughness: 0.15, normalMap: TEX.stoneN(), normalScale: new THREE.Vector2(0.08, 0.08) }))),
@@ -932,6 +944,57 @@ function rug(p, { M }) {
   fr.receiveShadow = true; g.add(fr);
   return g;
 }
+
+// ventilador de techo con luz (cuelga del cielorraso): florón, barral, motor, aspas de madera inclinadas y, abajo, el
+// kit de luz: "light": "globe" (globo opalino, por defecto), "dish" (plato chato) o "tulips" (tres tulipas). Brilla de noche
+function ceilingFan(p, { M, H }) {
+  const g = new THREE.Group(), R = (p.diameter ?? 1.07) / 2, n = p.blades ?? 4, drop = p.drop ?? 0.3, body = M.metal(p.color ?? '#3a3532', 0.45);
+  const wood = M.wood(p.bladeColor ?? '#5a3a26'), y1 = H - drop, y0 = y1 - 0.12;
+  cyl(g, body, 0, H - 0.07, H, 0, 0.07, 32);                                   // florón
+  cyl(g, body, 0, y1, H - 0.07, 0, 0.012, 12);                                 // barral
+  add(g, new THREE.LatheGeometry(v2([[0.001, y0], [0.07, y0], [0.105, y0 + 0.03], [0.11, y0 + 0.08], [0.06, y1], [0.001, y1]]), 40), body);
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2, arm = new THREE.Group(); arm.rotation.y = a; arm.position.y = y0 + 0.045; g.add(arm);
+    blk(arm, body, [0.08, 0.2], [-0.008, 0.008], [-0.018, 0.018], 0.004);         // brazo
+    const bl = new THREE.Group(); bl.rotation.x = 0.21; arm.add(bl);              // aspa con paso de ~12°
+    blk(bl, wood, [0.17, R], [-0.006, 0.006], [-0.065, 0.065], 0.01, 0.6);
+  }
+  const ly = y0 - 0.02, kind = p.light ?? 'globe';
+  cyl(g, body, 0, ly, y0, 0, 0.05, 24);
+  if (kind === 'tulips') for (let i = 0; i < 3; i++) {
+    const a = i * 2 * Math.PI / 3, x = Math.cos(a) * 0.09, z = Math.sin(a) * 0.09;
+    add(g, new THREE.LatheGeometry(v2([[0.012, 0], [0.05, -0.03], [0.065, -0.1], [0.06, -0.12]]), 24), M.shadeGlow(p.glass ?? '#f6efe0'), x, ly, z).castShadow = false;
+  } else if (kind === 'dish') add(g, new THREE.LatheGeometry(v2([[0.001, -0.04], [0.09, -0.035], [0.12, -0.01], [0.12, 0]]), 40), M.shadeGlow(p.glass ?? '#f4f2ec'), 0, ly, 0).castShadow = false;
+  else { const s = add(g, new THREE.SphereGeometry(0.085, 32, 20), M.shadeGlow(p.glass ?? '#f4f2ec'), 0, ly - 0.075, 0); s.castShadow = false; }
+  lampSpot(g, 0, ly - 0.18, 0, p.intensity ?? 16, 1.3, 7);
+  return g;
+}
+
+// parrilla de ladrillo contra la pared (fondo en z = 0): dos pilares, fogón de hormigón con la reja, dintel y campana que
+// se angosta hacia el conducto de chapa, que sale por el techo ("flue": cuánto sube por encima de la campana)
+function grill(p, { M }) {
+  const g = new THREE.Group(), W = p.width ?? 1.3, D = p.depth ?? 0.6, h = p.height ?? 1.45, top = p.hood ?? 2.3, pw = 0.14;
+  const brick = grillBrick(p.color), conc = M.concrete(p.hearth ?? '#8f8a84'), iron = M.metal('#2b2b2b', 0.6), dark = M.lacquer('#1c1a19');
+  for (const s of [-1, 1]) blk(g, brick, s < 0 ? [-W / 2, -W / 2 + pw] : [W / 2 - pw, W / 2], [0, h], [0, D], 0, 1);
+  blk(g, brick, [-W / 2 + pw, W / 2 - pw], [0, 0.8], [0, 0.12], 0, 1);           // fondo bajo
+  blk(g, conc, [-W / 2 + pw - 0.002, W / 2 - pw + 0.002], [0.8, 0.88], [0, D - 0.02]);       // fogón
+  blk(g, dark, [-W / 2 + pw, W / 2 - pw], [0.88, h], [0, 0.02]);                    // fondo tiznado
+  for (let x = -W / 2 + pw + 0.04; x < W / 2 - pw - 0.02; x += 0.035) blk(g, iron, [x - 0.004, x + 0.004], [1.02, 1.03], [0.06, D - 0.06]);
+  blk(g, iron, [-W / 2 + pw, W / 2 - pw], [1.0, 1.02], [0.05, 0.07]); blk(g, iron, [-W / 2 + pw, W / 2 - pw], [1.0, 1.02], [D - 0.07, D - 0.05]);
+  blk(g, brick, [-W / 2, W / 2], [h, h + 0.18], [0, D], 0, 1);                      // dintel
+  // campana: tres tramos que se angostan en ancho y en fondo hasta el conducto
+  const steps = 3, cw = 0.32, cd = 0.3;
+  for (let i = 0; i < steps; i++) {
+    const k = (i + 1) / (steps + 1), y0 = h + 0.18 + i * (top - h - 0.18) / steps, y1 = h + 0.18 + (i + 1) * (top - h - 0.18) / steps;
+    const w = W - (W - cw) * k, d = D - (D - cd) * k;
+    blk(g, brick, [-w / 2, w / 2], [y0 - 0.001, y1], [0, d], 0, 1);
+  }
+  cyl(g, M.metal('#a7a9aa', 0.5), 0, top, top + (p.flue ?? 1.0), cd / 2, 0.09, 24);   // conducto de chapa
+  cyl(g, M.metal('#a7a9aa', 0.5), 0, top + (p.flue ?? 1.0), top + (p.flue ?? 1.0) + 0.04, cd / 2, 0.16, 24, 0.1);  // sombrerete
+  return g;
+}
+let grillBrickMat = {};
+const grillBrick = c => grillBrickMat[c ?? 'x'] ??= new THREE.MeshStandardMaterial({ color: c ?? '#ffffff', map: brickTex(), roughness: 0.92 });
 
 // plafón de spots: en fila sobre una regleta, o 4 en cuadrado ("layout": "square") con una sola luz al centro
 function ceilingLight(p, { M, H }) {
@@ -3016,7 +3079,7 @@ export const COMPONENTS = {
   'fridge': fridge, 'appliance': appliance, 'kitchen-base': kitchenBase, 'kitchen-wall': kitchenWall,
   'bathtub': bathtub, 'shower-curtain': showerCurtain, 'toilet': toilet, 'bidet': bidet, 'vanity': vanity,
   'wall-dispensers': wallDispensers, 'bath-mat': bathMat,
-  'bubble-sofa': bubbleSofa, 'ribbon-pendant': ribbonPendant, 'vent-grille': ventGrille, 'range': range, 'water-heater': waterHeater,
+  'bubble-sofa': bubbleSofa, 'ribbon-pendant': ribbonPendant, 'vent-grille': ventGrille, 'range': range, 'water-heater': waterHeater, 'ceiling-fan': ceilingFan, 'grill': grill,
   'wall-tiles': wallTiles, 'shower': shower, 'capsule-mirror': capsuleMirror, 'towel-bar': towelBar,
   'stair': stair, 'railing': railing, 'paneling': paneling, 'armchair': armchair, 'pouf': pouf, 'coffee-table': coffeeTable,
   'sideboard': sideboard, 'pendant': pendant, 'chandelier': chandelier, 'track-light': trackLight, 'sconce': sconce, 'bath-mirror': bathMirror, 'glass-screen': glassScreen,
@@ -3179,9 +3242,9 @@ const FLAT = { solid: false };
 export const META = Object.fromEntries(Object.entries({
   'bed': ['floor', { use: true }], 'folded-towels': ['on', { ...FLAT, nests: ['bed'] }], 'nightstand': ['floor'],
   'table-lamp': ['on', { nests: ['nightstand'] }], 'wardrobe': ['floor', { use: true }], 'rug': ['floor', { ...FLAT, nests: ['*'] }],
-  'ceiling-light': ['ceiling'], 'downlight': ['ceiling', { nests: ['*'] }], 'plant': ['floor'], 'wall-art': ['wall', FLAT],
+  'ceiling-light': ['ceiling'], 'ceiling-fan': ['ceiling'], 'grill': ['floor', { use: true, fixed: ['back'] }], 'downlight': ['ceiling', { nests: ['*'] }], 'plant': ['floor'], 'wall-art': ['wall', FLAT],
   'sofa': ['floor', { use: true }], 'dining-table': ['floor', { use: true }], 'chair': ['floor', { nests: ['dining-table', 'side-table'] }],
-  'side-table': ['floor'], 'cube-shelf': ['floor', { nests: ['fridge'] }], 'tv': ['wall', { ...FLAT, nests: ['cube-shelf'] }], 'ac-split': ['wall'],
+  'side-table': ['floor'], 'cube-shelf': ['floor', { nests: ['fridge'] }], 'tv': ['wall', { ...FLAT, nests: ['cube-shelf', 'bookshelf'] }], 'ac-split': ['wall'],
   'curtains': ['window', { ...FLAT, nests: ['*'] }], 'round-mirror': ['wall', FLAT], 'floor-mirror': ['floor'],
   'fridge': ['floor', { use: true, nests: ['kitchen-base'] }], 'appliance': ['on', { ...FLAT, nests: ['kitchen-base', 'fridge', 'kitchen-wall', 'kitchen-cart'] }],
   'kitchen-base': ['floor', { use: true, fixed: ['back'] }], 'kitchen-wall': ['wall', { ...FLAT, nests: ['kitchen-base', 'fridge'] }],
@@ -3315,8 +3378,9 @@ export function exterior(spec, { M, ext, H }) {
     blk(g, fr, [xa, xb], [y + 2.15, y + 2.22], [zf - 0.08, zf]); blk(g, fr, [xa, xa + 0.05], [y, y + 2.15], [zf - 0.08, zf]); blk(g, fr, [xb - 0.05, xb], [y, y + 2.15], [zf - 0.08, zf]);
     blk(g, fr, [(xa + xb) / 2 - 0.03, (xa + xb) / 2 + 0.03], [y, y + 2.15], [zf - 0.07, zf - 0.01]);
   }
-  const baseY = -2.9 * ((spec.floorsBelow ?? 3) + 1);
-  blk(g, facade, [ext.x0, ext.x1], [baseY, -0.2], [ext.z0, ext.z1]);
+  // "floorsBelow": 0 = planta baja (casas): el suelo y la vereda quedan apenas debajo del piso, sin edificio abajo
+  const baseY = spec.floorsBelow === 0 ? -0.15 : -2.9 * ((spec.floorsBelow ?? 3) + 1);
+  if (baseY < -0.25) blk(g, facade, [ext.x0, ext.x1], [baseY, -0.2], [ext.z0, ext.z1]);
   const front = Math.min(ext.z0, ...balconies.map(b => b.z[0]));
   g.add(spec.landscape === 'lake' ? natureAround(spec.nature ?? {}, { M, ext, baseY, front }) : cityAround(spec.city ?? {}, { M, ext, baseY, front }));
   g.userData.ceiling = ceiling;
@@ -3537,7 +3601,8 @@ function cityAround(spec, { M, ext, baseY, front }) {
   ground.rotation.x = -Math.PI / 2; ground.position.set(cx, baseY - 0.01, cz); g.add(ground);
   const strip = (mat, z0, z1, y, len = 2 * FAR, uvm = 1) => { const m = blk(g, mat, [cx - len / 2, cx + len / 2], [baseY, baseY + y], [z0, z1], 0, uvm); return m; };
   const walkMat = std({ map: walkTex() }), asphalt = std({ map: asphaltTex(), roughness: 0.97 }), curb = M.paint('#b9b5ad');
-  strip(walkMat, zw + 0.15, ext.z1 + 30, 0.15, 2 * FAR, 2);                 // vereda propia (y debajo de los vecinos)
+  // vereda propia (y debajo de los vecinos); en planta baja termina en la línea de frente: adentro está el terreno
+  strip(walkMat, zw + 0.15, baseY > -0.25 ? front - 0.15 : ext.z1 + 30, 0.15, 2 * FAR, 2);
   strip(curb, zw, zw + 0.15, 0.16);
   strip(asphalt, zr, zw, 0.02, 2 * FAR, 4);
   strip(curb, zr - 0.15, zr, 0.16);

@@ -35,7 +35,7 @@ const KEYS = {
 };
 // valores con opciones cerradas
 const ONE_OF = {
-  'floor.kind': ['tile', 'planks', 'herringbone', 'terrazzo'], 'structure.kind': ['beam', 'column'], 'exterior.landscape': ['lake', 'city'],
+  'floor.kind': ['tile', 'planks', 'herringbone', 'terrazzo', 'grass'], 'structure.kind': ['beam', 'column'], 'exterior.landscape': ['lake', 'city'],
   'railing.kind': ['bars', 'glass', 'parapet', 'balusters', 'panels'], 'exterior.facing': ['-z', '+z', '-x', '+x'], 'roof.kind': ['gable'], 'opening.hinge': ['start', 'end'], 'opening.material': ['wood', 'lacquer'],
 };
 

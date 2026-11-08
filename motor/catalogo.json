@@ -474,6 +474,36 @@
    "flue": "0.5"
   }
  },
+ "ceiling-fan": {
+  "mount": "ceiling",
+  "solid": false,
+  "use": false,
+  "nests": [],
+  "params": {
+   "diameter": "1.07",
+   "blades": "4",
+   "drop": "0.3",
+   "color": "'#3a3532'",
+   "bladeColor": "'#5a3a26'",
+   "light": "'globe'",
+   "glass": "'#f6efe0' / '#f4f2ec'",
+   "intensity": "16"
+  }
+ },
+ "grill": {
+  "mount": "floor",
+  "solid": true,
+  "use": true,
+  "nests": [],
+  "params": {
+   "width": "1.3",
+   "depth": "0.6",
+   "height": "1.45",
+   "hood": "2.3",
+   "hearth": "'#8f8a84'",
+   "flue": "1.0"
+  }
+ },
  "wall-tiles": {
   "mount": "wall",
   "solid": false,
