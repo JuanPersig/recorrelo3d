@@ -73,6 +73,11 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
   (`&base=1` solo si el cambio es bueno).
 - La vista general no se aleja mucho más que su encuadre de arranque; la pantalla de carga tapa toda la precarga.
 - Si un rincón se ve en una sola foto y el objeto es ambiguo, pedir otra foto antes de inventar el mueble.
+- **El render es una abstracción precisa:** cada tramo de pared, cada abertura y cada mueble tiene que salir de una foto
+  o del plano. Las aberturas se ubican por lo que las rodea en la foto (esquinas, mesada, otra abertura), no solo por el
+  plano. Lo que no aparece en ninguna foto: solo el espacio del plano, vacío, y anotado en `estimated`.
+- **Cada modelo mejora sobre el anterior:** antes de entregar, repasar "Errores que no se repiten" en SKILL.md; cada error
+  nuevo que marque el usuario se agrega ahí.
 - Entrega = recorrido 3D + tarjeta con QR. **Sin videos** (se quitaron el 2026-11-07), sin imágenes sueltas ni plano,
   sin fotos reales en las ventanas.
 - Piezas sin caras compartidas ni flotando; 60 cm de circulación; `warnings` vacío. Nada que se prenda, apague o
@@ -95,7 +100,26 @@ ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.
 
 ## Próximos pasos (2026-11-08)
 
-**Mañana, primero:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
+**Mañana, primero: errores de fidelidad del depto 6** (marcados por el usuario el 2026-11-08; T-64). No son
+tolerables: el render es una abstracción precisa del departamento, no puede agrandarlo ni inventar cosas.
+1. **Cocina, pared del fondo (la del lavadero): hay un tramo de pared que no existe.** En el render (vista "Mesada")
+   quedó ~0,65 m de pared revestida entre el final de la mesada y la puerta del lavadero, con una ventana angosta
+   centrada encima y corrida 0,4 m de la esquina. En la foto `cocina3` (y `cocina2`): la ventana esmerilada empieza en
+   la esquina, justo arriba del final de la mesada, y la puerta del lavadero está pegada a la ventana; ventana y puerta
+   son un mismo juego de carpintería (marco oscuro, cuatro filas de vidrio esmerilado en cada una, la puerta vidriada en
+   su mitad de arriba). Entre la puerta y la pared sur queda solo el tramo corto del calefón. Corregir: medir en las dos
+   fotos el ancho de la ventana y de la puerta y su posición respecto de la esquina y de la mesada; ventana desde la
+   esquina norte, puerta inmediatamente al lado, sin pared entre las dos; la mesada llega a la pared de la ventana.
+   Volver a hornear y comparar `cocina`, `cocina2` y `cocina3` a tamaño real.
+2. **Lavadero: solo el espacio del plano.** No hay fotos: sacar el lavarropas, la pileta y su plafón, y revisar en el
+   plano si la ventana al patio existe (si no se ve, sacarla). Queda el ambiente vacío con sus paredes, piso y la puerta,
+   anotado en `estimated` como "sin fotos: solo el espacio del plano".
+3. **Mismo criterio en todo lo que no tiene foto** (consultar al usuario antes): el segundo dormitorio (cama, mesa de
+   luz, velador, cortinas y placard están estimados) y los frentes de los placards.
+4. Recorrer todas las hojas de `capturas/depto6/` con la lista de control de SKILL.md ("Errores que no se repiten") y
+   anotar cada diferencia de paredes, aberturas y muebles antes de dar el depto por bueno.
+
+**Después:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
 cargar (sospecha: el iframe del recorrido en vivo carga el motor en el mismo hilo) y en celular las tarjetas de "Las
 fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando con framer-motion).
 

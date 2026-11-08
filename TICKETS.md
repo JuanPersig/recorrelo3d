@@ -1585,3 +1585,18 @@ el visor saca la pantalla de carga cuando `api.ready` termina (tope de 25 s). La
 `opacity` (un cuadrado y un círculo que se funden mientras giran), que la anima la placa aunque la página esté ocupada.
 **Cómo se verificó:** visor del depto 6: listo a 1,7 s, la pantalla de carga sale a 4,8 s, sin errores en la consola;
 verificar.html: depto 5 sin cambios. Con el panel del navegador oculto no se puede ver la animación: probarlo en el sitio.
+
+## T-64 · Depto 6: pared inventada en la cocina y lavadero amueblado sin fotos (abierto, 2026-11-08)
+
+**Marcado por el usuario** (render de la vista "Mesada" al lado de la foto `cocina3`): "se agrega un pedazo de pared
+que no existe, agrandando dimensiones y mintiendo respecto a la realidad"; "se agrega el lavadero el cual no está
+confirmado, solo debería estar el espacio que indica el plano, pero sin lavarropa ni nada". "Estos errores no son
+tolerables ya que la función del render es realizar una abstracción precisa." "Por cada modelo generado, aprendé y
+mejorá: los resultados deben solo mejorar respecto a los anteriores."
+**Causa:** las aberturas de la pared del fondo de la cocina se ubicaron con el plano (ventana en x 2,0–2,8, puerta en
+x 1,15–1,95) sin medir su posición en las fotos; en la foto la ventana arranca en la esquina sobre la mesada y la
+puerta está pegada. La hoja de comparación lo mostraba y no se marcó. El lavadero se amuebló por suposición.
+**Qué hay que hacer:** ver LEEME.md, "Próximos pasos" → "Mañana, primero" (cocina, lavadero vacío, mismo criterio en
+lo que no tiene foto consultando al usuario, y repaso de todas las hojas con la lista de control).
+**Qué ya se hizo:** la lista de control "Errores que no se repiten" en SKILL.md y la regla de abstracción precisa en
+LEEME.md, para que no vuelva a pasar en ningún depto.

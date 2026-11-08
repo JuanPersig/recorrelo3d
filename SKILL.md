@@ -118,6 +118,34 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
 - Ejemplos completos: `departamentos/depto1` (dos ambientes, piso brillante), `depto2` (monoambiente, fotos de
   proporciones distintas) y `depto4` (dúplex con techo a dos aguas y lago).
 
+## Errores que no se repiten (lista de control antes de entregar)
+
+Cada error que marcó el usuario en un modelo entra acá con cómo evitarlo. Antes de dar un depto por bueno, recorrer la
+lista entera contra las hojas de comparación a tamaño real. Los modelos tienen que salir cada vez mejor que los
+anteriores: un error de esta lista que vuelve a aparecer es lo peor que puede pasar.
+
+1. **Plano espejado** (depto 2): orientar el plano contra la cámara de una foto concreta y escribirlo en `orientation`.
+2. **Mueble inventado desde una sola foto** (depto 6, 2026-11-08): un organizador sobre una mesita se modeló como un
+   estante escalera de piso y la mesita como una mesa rústica en el medio. Si un objeto grande se ve solo en un borde o
+   en una sola foto, buscarlo en todas o pedir otra foto antes de modelarlo.
+3. **Pared que no existe** (depto 6, cocina, 2026-11-08): la ventana y la puerta del lavadero se repartieron por la
+   pared según el plano y quedaron 0,65 m de pared entre la mesada y la puerta; en la foto la ventana arranca en la
+   esquina sobre la mesada y la puerta está pegada. Agrandaba el ambiente y mentía. Control: en cada foto, recorrer cada
+   pared de punta a punta y comparar con el render: dónde empieza y termina cada abertura respecto de la esquina, de la
+   mesada o del mueble más cercano, y si entre dos aberturas hay pared o no. El plano da las medidas generales; las
+   posiciones finas de puertas y ventanas salen de las fotos.
+4. **Artefactos en un ambiente sin fotos** (depto 6, lavadero, 2026-11-08): se agregaron lavarropas, pileta y ventana
+   sin que ninguna foto los mostrara. Un ambiente que no aparece en ninguna foto es solo el espacio del plano (paredes,
+   piso, puertas que se ven desde otro ambiente), vacío, y va en `estimated`. Nada de muebles "probables".
+5. **Comillas invertidas en `node -e "…"`** (2026-11-08): bash las ejecuta. Escribir el texto en un archivo aparte.
+
+Control mínimo por hoja (`comparar.html … &capturar=<id>`):
+- ¿Cada tramo de pared del render se ve en la foto (o en el plano, si la foto no lo muestra)?
+- ¿Cada abertura empieza y termina donde en la foto, respecto de la esquina y de los muebles?
+- ¿Cada mueble del render está en la foto, en su lugar, con su tamaño y su color?
+- ¿Hay algo en la foto que falte en el render?
+- Anotar en el ticket lo que no se pudo igualar; no dar por buena una hoja con una diferencia de paredes o aberturas.
+
 ## Lecciones de un depto cargado (depto 6, 2026-11-08)
 
 Todo lo que costó resolver al modelar el primer depto grande. Leerlo antes de arrancar el próximo.
