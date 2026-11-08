@@ -1559,3 +1559,15 @@ corrigió el rincón del living: no había estante escalera ni mesa rústica; es
 del mueble de la tele, con un organizador escalonado y un flexo encima y una banqueta torneada al lado. Motor: `chair`
 "stool" (banqueta) y en `tabletop-decor` "rack" (organizador escalonado con cosas) y "desk-lamp" (flexo que se prende
 de noche). Luz re-horneada; depto 5 sin cambios; base del depto 6 actualizada.
+
+## T-62 · Bruma medida desde el departamento y zoom hacia atrás limitado (hecho, 2026-11-08)
+
+**Pedido del usuario:** al alejarse mucho en la vista general aparecía un brillo raro en el piso y en los edificios
+del entorno; además, no dejar alejar la vista general mucho más que el encuadre de arranque.
+**Causa:** la bruma de distancia arrancaba a 30 m de la cámara (pensada para que no alcanzara nunca al interior). Con la
+cámara a 30–40 m, teñía el piso del depto y la cuadra de enfrente en franjas.
+**Qué se hizo (motor):** la bruma se mide desde el centro del departamento (en `draw`, así vale también para las
+capturas): de cerca es igual que antes y de lejos no tiñe nada. En las vistas desde arriba (`cut`), el alejamiento
+máximo es el encuadre de la vista × 1,15 (`ZOOM_OUT`); antes, 40 m.
+**Cómo se verificó:** captura desde 30 m (`capturas/depto6/lejos-dia.jpg`) sin franjas; verificar.html: depto 5 sin
+cambios. El límite de zoom se probó por código: con el panel oculto no corre la animación (probarlo con la rueda).

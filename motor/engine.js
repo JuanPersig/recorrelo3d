@@ -409,7 +409,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   const camera = new THREE.PerspectiveCamera(50, 1, 0.05, 900);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true; controls.dampingFactor = 0.08;
-  controls.minDistance = 0.2; controls.maxDistance = 40; controls.maxPolarAngle = Math.PI * 0.49;
+  controls.minDistance = 0.2; controls.maxDistance = 40;   // cada vista desde arriba lo baja a su encuadre (ver go) controls.maxPolarAngle = Math.PI * 0.49;
 
   const M = makeMaterials(preset);
   const H = spec.height ?? 2.6;
@@ -644,7 +644,10 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   sun.position.copy(center).add(new THREE.Vector3(...(lit.sunFrom ?? [9, 6, -11])));
   sun.target.position.copy(center); scene.add(sun, sun.target);
   sky.material.uniforms.uSun.value.subVectors(sun.position, center).normalize();
-  scene.fog = new THREE.Fog(DAY.fog.clone(), ...(spec.exterior?.fog ?? [30, 190]));   // bruma de distancia: solo alcanza al entorno, no al interior
+  // bruma de distancia: solo alcanza al entorno, no al interior. Se mide desde el departamento y no desde la cámara (ver
+  // el bucle): medida desde la cámara, al alejarse en la vista general teñía el piso y la cuadra de enfrente en franjas
+  const fog0 = spec.exterior?.fog ?? [30, 190];
+  scene.fog = new THREE.Fog(DAY.fog.clone(), ...fog0);
   // el encuadre de la sombra se ajusta al departamento; con un mapa grande el borde queda nítido cerca de los objetos
   // (patas, toallas) y el filtro suave lo alisa. Se recalcula solo cuando cambia algo, así que el tamaño casi no cuesta
   const reach = Math.hypot(ext.x1 - ext.x0, ext.z1 - ext.z0) / 2 + 0.6;
@@ -816,6 +819,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   }
   // un cuadro normal (descarta el pulido) o, con refine, uno más del pulido
   const draw = (refine = false) => {
+    if (scene.fog) { const d = camera.position.distanceTo(center); scene.fog.near = fog0[0] + d; scene.fog.far = fog0[1] + d; }   // bruma desde el departamento
     if (!refine) placeSun(0);
     if (refine && acc) {
       placeSun(accN);
@@ -932,6 +936,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   // Si las fotos de un departamento tienen proporciones distintas, cada vista puede llevar la suya en "photoAspect".
   // "fit" guarda la proporción de la foto de la vista actual (o null: el fov se usa tal cual).
   const refAspect = spec.viewAspect ?? null;
+  const ZOOM_OUT = 1.15;   // cuánto más que el encuadre de una vista desde arriba se puede alejar la cámara
   const FOV_MIN = 25, FOV_MAX = 100;   // lo que permite acercar y alejar adentro (antes del ajuste a la proporción de la foto)
   let baseFov = 50, fit = null;
   const fitted = (f, a) => {
@@ -1004,12 +1009,16 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let fly = null;
   function setPose(p, m = p.mode ?? mode) {
+    if (m === 'orbit') controls.maxDistance = Math.max(controls.maxDistance, new THREE.Vector3(...p.p).distanceTo(new THREE.Vector3(...p.t)));
     camera.position.fromArray(p.p); controls.target.fromArray(p.t); baseFov = p.f; fit = typeof p.fit === 'number' ? p.fit : (p.fit ? refAspect : null); applyFov();
     camera.lookAt(controls.target); fly = null; fovEase = null; setMode(m); if (m === 'orbit') controls.update();
   }
   function go(name, instant) {
     const v = spec.views[name], to = { p: v.pos, t: v.target, f: v.fov, fit: v.photo ? (v.photoAspect ?? refAspect) : null, mode: v.cut ? 'orbit' : 'walk' };
     if (to.mode === 'orbit' && !to.fit) Object.assign(to, fitAerial(v.pos, v.target, v.fov, v.level ?? 0));
+    // en las vistas desde arriba no se puede alejar mucho más que el encuadre de la vista (pedido del usuario, 2026-11-08:
+    // de lejos el entorno se ve como maqueta y no aporta)
+    if (to.mode === 'orbit') controls.maxDistance = new THREE.Vector3(...to.p).distanceTo(new THREE.Vector3(...to.t)) * ZOOM_OUT;
     // lo más abierto posible (pedido del usuario, 2026-11-04). Sin foto se ajusta igual que una vertical de celular: con
     // 100° de alto tal cual, en una pantalla apaisada se vería un ojo de pez
     if (wideViews && to.mode === 'walk') { to.f = FOV_MAX; to.fit ??= refAspect ?? 0.75; }
