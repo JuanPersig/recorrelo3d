@@ -1081,6 +1081,9 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   const lastView = new THREE.Matrix4(), lastProj = new THREE.Matrix4();
   const same = (a, b) => a.elements.every((x, i) => Math.abs(x - b.elements[i]) < 1e-5);
   function loop(now) {
+    // durante la precarga no se dibuja en pantalla: ahí se pasa por la noche, el techo y cada ambiente, y se veía
+    // (2026-11-08). El visor tapa el lienzo hasta que termina (ready)
+    if (preloading) { prev = now; raf = requestAnimationFrame(loop); return; }
     const dt = (now - prev) / 1000; prev = now;
     if (fly) {
       const k = Math.min(1, (now - fly.start) / fly.dur), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
@@ -1132,8 +1135,8 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   // en un celular varios segundos). Apenas se ve el primer cuadro, en segundo plano, se compilan todas las
   // combinaciones (día/noche × con/sin techo × nivel de cada vista) y después se dibuja cada una una vez sin mostrarla
   // (en la misma tarea se vuelve a dibujar el estado actual), para que el driver termine el trabajo.
-  let destroyed = false;
-  const ready = (async () => {
+  let destroyed = false, preloading = true;
+  const ready = (async () => { try {
     await new Promise(r => setTimeout(r, 300));
     if (destroyed) return;
     const combos = new Map();
@@ -1188,7 +1191,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       if (k.every((x, i) => x === now[i])) continue;
       apply(k); draw(); apply(now); draw();
     }
-  })();
+  } finally { preloading = false; touch(); } })();
 
   return {
     // resize: para quien cambia el tamaño del contenedor y necesita el cuadro ya (con el panel oculto el aviso de

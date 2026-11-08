@@ -1571,3 +1571,17 @@ capturas): de cerca es igual que antes y de lejos no tiñe nada. En las vistas d
 máximo es el encuadre de la vista × 1,15 (`ZOOM_OUT`); antes, 40 m.
 **Cómo se verificó:** captura desde 30 m (`capturas/depto6/lejos-dia.jpg`) sin franjas; verificar.html: depto 5 sin
 cambios. El límite de zoom se probó por código: con el panel oculto no corre la animación (probarlo con la rueda).
+
+## T-63 · La pantalla de carga tapa toda la precarga y no se traba (hecho, 2026-11-08)
+
+**Pedido del usuario:** la pantalla de carga se trababa y, al arrancar, el recorrido se veía con techo, después de
+noche y recién después en la vista general: no precargaba todo antes de mostrarlo.
+**Causa:** el visor sacaba la pantalla de carga apenas se armaba la escena, pero la precarga (compilar día/noche ×
+con/sin techo y fotografiar cada ambiente de día y de noche para los reflejos) seguía después y el bucle la dibujaba en
+pantalla. La animación del cuadrado redondeaba las esquinas con `border-radius`, que depende del hilo principal, ocupado
+armando el departamento.
+**Qué se hizo:** el motor no dibuja en pantalla mientras precarga (`preloading`; al terminar dibuja el estado actual);
+el visor saca la pantalla de carga cuando `api.ready` termina (tope de 25 s). La animación ahora es solo `transform` y
+`opacity` (un cuadrado y un círculo que se funden mientras giran), que la anima la placa aunque la página esté ocupada.
+**Cómo se verificó:** visor del depto 6: listo a 1,7 s, la pantalla de carga sale a 4,8 s, sin errores en la consola;
+verificar.html: depto 5 sin cambios. Con el panel del navegador oculto no se puede ver la animación: probarlo en el sitio.

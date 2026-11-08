@@ -150,15 +150,22 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 /* Pantalla de carga (2026-11-07, pedido del usuario: "como la de la landing"): el mismo cuadrado verde que se redondea y
    gira, sobre el fondo de la landing. Está en el HTML, así se ve desde el primer instante, mientras baja three.js y se
-   arma el departamento; se desvanece cuando el primer cuadro ya está dibujado */
+   arma el departamento; se desvanece cuando termina la precarga (todas las combinaciones compiladas y dibujadas) */
 #loader{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;
   background:#fbfbf9;color:#5a6460;font:500 14px/1.4 var(--font);transition:opacity .5s ease}
-#loader i{display:block;width:40px;height:40px;background:var(--loader,#2f5d50);animation:morph 2s ease-in-out infinite}
+/* solo transform y opacity: las anima la placa aunque la página esté ocupada armando el departamento (antes se
+   redondeaban las esquinas con border-radius y la animación se trababa) */
+#loader i{position:relative;display:block;width:40px;height:40px;animation:spin 2s ease-in-out infinite;will-change:transform}
+#loader i::before,#loader i::after{content:"";position:absolute;inset:0;background:var(--loader,#2f5d50);will-change:opacity}
+#loader i::before{border-radius:6%;animation:sq 2s ease-in-out infinite}
+#loader i::after{border-radius:50%;opacity:0;animation:ci 2s ease-in-out infinite}
 #loader .t{font-weight:650;color:#1f2a27;font-size:15px;min-height:1.4em;text-align:center;padding:0 24px}
 #loader.out{opacity:0;pointer-events:none}
-@keyframes morph{0%{border-radius:6%;transform:rotate(0)}50%{border-radius:50%;transform:rotate(180deg)}100%{border-radius:6%;transform:rotate(360deg)}}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #loader{background:#141917;color:#9aa8a3} :root:not([data-theme="light"]) #loader i{background:var(--loader,#5f9a87)} :root:not([data-theme="light"]) #loader .t{color:#e6ece9} }
-@media (prefers-reduced-motion: reduce){ #loader i{animation-duration:6s} }
+@keyframes spin{0%{transform:rotate(0)}50%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
+@keyframes sq{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes ci{0%,100%{opacity:0}50%{opacity:1}}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #loader{background:#141917;color:#9aa8a3} :root:not([data-theme="light"]) #loader i::before,:root:not([data-theme="light"]) #loader i::after{background:var(--loader,#5f9a87)} :root:not([data-theme="light"]) #loader .t{color:#e6ece9} }
+@media (prefers-reduced-motion: reduce){ #loader i,#loader i::before,#loader i::after{animation-duration:6s} }
 </style>
 
 <script type="importmap">
@@ -435,6 +442,9 @@ await boot();
 {
   const loader = $('loader');
   if (loader) {
+    // la pantalla de carga se va cuando terminó la precarga (todo compilado y dibujado una vez), no antes: si no, se
+    // veía pasar el techo y la noche. Con un tope por si algo queda colgado
+    await Promise.race([api?.ready, new Promise(r => setTimeout(r, 25000))]);
     await Promise.race([new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))), new Promise(r => setTimeout(r, 400))]);
     await new Promise(r => setTimeout(r, Math.max(0, 600 - (performance.now() - t0))));
     loader.classList.add('out'); setTimeout(() => loader.remove(), 550);
