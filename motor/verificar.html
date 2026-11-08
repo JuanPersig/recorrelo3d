@@ -64,7 +64,7 @@ for (const id of deptos) {
   console.warn = (...a) => { const t = a.join(' '); if (!t.startsWith('scene.json:')) consola.push(t); warn(...a); };
   const k0 = Object.keys(scene.views)[0], t0 = performance.now();
   let api;
-  try { api = await start($('stage'), { scene, state: { view: k0, cut: !!scene.views[k0].cut, night: false, decor: true }, device: 'desktop', base: `/departamentos/${id}/` }); }
+  try { api = await start($('stage'), { scene, state: { view: k0, cut: !!scene.views[k0].cut, night: false, decor: true }, device: 'desktop', base: `/departamentos/${id}/` }); await api.ready; }   // la precarga deja listos los reflejos de cada ambiente
   catch (e) { r.estado = 'error'; r.problemas.push(`el motor falló: ${e.message}`); continue; }
   finally { console.warn = warn; }
   r.armadoMs = Math.round(performance.now() - t0);

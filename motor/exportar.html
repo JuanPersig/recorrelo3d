@@ -34,6 +34,7 @@ const save = (name, dataUrl) => {   // de data URL a bytes sin toBlob (con el pa
 
 const keys = Object.keys(scene.views);
 const api = await start($('stage'), { scene, state: { view: keys[0], cut: !!scene.views[keys[0]].cut, night: false, decor: true, pose: null }, device: q.get('device') ?? 'desktop', base: new URL('.', new URL(q.get('scene'), location.href)).pathname });
+await api.ready;   // reflejos de cada ambiente
 const pr = api._debug.renderer.getPixelRatio();
 $('log').textContent = `${scene.name} · ${keys.length} vistas`;
 const files = [];

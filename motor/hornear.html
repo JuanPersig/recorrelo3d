@@ -1,0 +1,116 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hornear luz rebotada</title>
+<style>
+/* Herramienta de trabajo: mide la luz rebotada de un departamento y la guarda en departamentos/<id>/gi.json. */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:320px; height:320px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// hornear.html?id=<depto>[&paso=0.5]
+// Luz rebotada (2026-11-07). En una grilla de puntos (cada "paso" metros en planta, cada ~80 cm en altura) dentro del
+// departamento, renderiza un cubo chico (16 px por cara) con toda la luz ya prendida y lo resume en armónicos esféricos
+// de orden 1 (lo que ve hacia arriba, abajo y los costados). Los puntos que caen dentro de una pared o de un mueble, o
+// fuera de los ambientes y balcones, se rellenan con el promedio de sus vecinos. De día y de noche. Guarda
+// departamentos/<id>/gi.json (Float16 en base64) que el visor carga si el scene tiene "lighting": { "bake": "gi.json" }.
+// Volver a hornear cada vez que cambia la distribución, los muebles o la luz.
+import * as THREE from 'three';
+import { start } from './engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('id') ?? 'depto5';
+const STEP = Number(q.get('paso') ?? 0.5), CUBE = 16;
+const spec = await (await fetch(`/departamentos/${id}/scene.json`)).json();
+const k0 = Object.keys(spec.views)[0];
+const api = await start($('stage'), { scene: spec, state: { view: k0, cut: false, night: false, decor: true }, device: 'desktop', refine: false, gi: false, base: `/departamentos/${id}/` });
+const { scene, renderer, walk } = api._debug;
+
+// límites: ambientes de todos los niveles y balcones
+const H = spec.height ?? 2.6, levels = [spec, ...(spec.levels ?? [])];
+const rects = [];
+for (const L of levels) for (const r of L.rooms ?? []) rects.push({ x: r.rect.x, z: r.rect.z, y0: L.y ?? 0, y1: (L.y ?? 0) + (L.height ?? H) });
+for (const b of [spec.exterior?.balcony ?? []].flat()) rects.push({ x: b.x, z: b.z, y0: 0, y1: H });
+const lo = new THREE.Vector3(Math.min(...rects.map(r => r.x[0])), 0, Math.min(...rects.map(r => r.z[0])));
+const hi = new THREE.Vector3(Math.max(...rects.map(r => r.x[1])), Math.max(...rects.map(r => r.y1)), Math.max(...rects.map(r => r.z[1])));
+const n = [Math.ceil((hi.x - lo.x) / STEP) + 1, Math.max(3, Math.ceil(hi.y / 0.8) + 1), Math.ceil((hi.z - lo.z) / STEP) + 1];
+const step = [(hi.x - lo.x) / (n[0] - 1), (hi.y - 0.1 - 0.15) / (n[1] - 1), (hi.z - lo.z) / (n[2] - 1)];
+const min = [lo.x, 0.15, lo.z], N = n[0] * n[1] * n[2];
+const pos = i => { const ix = i % n[0], iy = Math.floor(i / n[0]) % n[1], iz = Math.floor(i / (n[0] * n[1])); return new THREE.Vector3(min[0] + ix * step[0], min[1] + iy * step[1], min[2] + iz * step[2]); };
+const inside = p => rects.some(r => p.x >= r.x[0] && p.x <= r.x[1] && p.z >= r.z[0] && p.z <= r.z[1] && p.y >= r.y0 && p.y <= r.y1)
+  && !walk.obstacles.some(b => b.containsPoint(p));
+const valid = Array.from({ length: N }, (_, i) => inside(pos(i)));
+
+// cubo y proyección a armónicos de orden 1 (mismo criterio de orientación y peso que LightProbeGenerator de three)
+const rt = new THREE.WebGLCubeRenderTarget(CUBE, { type: THREE.HalfFloatType });
+const cam = new THREE.CubeCamera(0.03, 60, rt); scene.add(cam);
+const buf = new Uint16Array(CUBE * CUBE * 4), half = THREE.DataUtils.fromHalfFloat, flip = -1, coord = new THREE.Vector3();
+function probe(p) {
+  cam.position.copy(p); cam.updateMatrixWorld(); cam.update(renderer, scene);
+  const sh = new Float64Array(12); let wsum = 0; const px = 2 / CUBE;
+  for (let f = 0; f < 6; f++) {
+    renderer.readRenderTargetPixels(rt, 0, 0, CUBE, CUBE, buf, f);
+    for (let i = 0; i < buf.length; i += 4) {
+      const pi = i / 4, col = (1 - (pi % CUBE + 0.5) * px) * flip, row = 1 - (Math.floor(pi / CUBE) + 0.5) * px;
+      switch (f) {
+        case 0: coord.set(-1 * flip, row, col * flip); break; case 1: coord.set(1 * flip, row, -col * flip); break;
+        case 2: coord.set(col, 1, -row); break; case 3: coord.set(col, -1, row); break;
+        case 4: coord.set(col, row, 1); break; case 5: coord.set(-col, row, -1); break;
+      }
+      const l2 = coord.lengthSq(), w = 4 / (Math.sqrt(l2) * l2); wsum += w; coord.normalize();
+      const basis = [0.282095, 0.488603 * coord.y, 0.488603 * coord.z, 0.488603 * coord.x];
+      const rgb = [half(buf[i]), half(buf[i + 1]), half(buf[i + 2])];
+      for (let c = 0; c < 3; c++) for (let j = 0; j < 4; j++) sh[c * 4 + j] += basis[j] * rgb[c] * w;
+    }
+  }
+  const k = 4 * Math.PI / wsum; return sh.map(v => v * k);
+}
+// rellena los puntos inválidos con el promedio de sus vecinos válidos, de afuera hacia adentro
+function fill(data) {
+  let ok = valid.slice(), left = ok.filter(v => !v).length;
+  while (left) {
+    const next = ok.slice(); let changed = 0;
+    for (let i = 0; i < N; i++) {
+      if (ok[i]) continue;
+      const ix = i % n[0], iy = Math.floor(i / n[0]) % n[1], iz = Math.floor(i / (n[0] * n[1])), acc = new Float64Array(12); let c = 0;
+      for (const [dx, dy, dz] of [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]]) {
+        const jx = ix + dx, jy = iy + dy, jz = iz + dz;
+        if (jx < 0 || jy < 0 || jz < 0 || jx >= n[0] || jy >= n[1] || jz >= n[2]) continue;
+        const j = jx + n[0] * (jy + n[1] * jz); if (!ok[j]) continue;
+        for (let t = 0; t < 12; t++) acc[t] += data[j * 12 + t]; c++;
+      }
+      if (c) { for (let t = 0; t < 12; t++) data[i * 12 + t] = acc[t] / c; next[i] = true; changed++; }
+    }
+    ok = next; left -= changed; if (!changed) break;
+  }
+}
+// tres texturas (r, g, b), cada punto con sus 4 coeficientes, en Float16 → base64
+const pack = data => Object.fromEntries(['r', 'g', 'b'].map((k, c) => {
+  const u = new Uint16Array(N * 4);
+  for (let i = 0; i < N; i++) for (let j = 0; j < 4; j++) u[i * 4 + j] = THREE.DataUtils.toHalfFloat(data[i * 12 + c * 4 + j]);
+  let s = ''; const bytes = new Uint8Array(u.buffer); for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return [k, btoa(s)];
+}));
+const out = { v: 1, min, step, n };
+const t0 = performance.now();
+for (const night of [false, true]) {
+  api.setNight(night); renderer.shadowMap.needsUpdate = true;
+  const data = new Float64Array(N * 12);
+  for (let i = 0; i < N; i++) {
+    if (valid[i]) data.set(probe(pos(i)), i * 12);
+    if (i % 40 === 0) { $('estado').textContent = `${night ? 'Noche' : 'Día'}: ${i} de ${N} puntos…`; await new Promise(r => setTimeout(r, 0)); }
+  }
+  fill(data);
+  out[night ? 'night' : 'day'] = pack(data);
+}
+const body = JSON.stringify(out);
+await fetch(`/departamentos/${id}/gi.json`, { method: 'POST', body });
+$('estado').textContent = `Listo: ${N} puntos (${n.join(' × ')}), ${valid.filter(Boolean).length} válidos, ${(body.length / 1024).toFixed(0)} KB, ${((performance.now() - t0) / 1000).toFixed(0)} s.`;
+document.title = 'hornear: listo';
+</script>

@@ -370,7 +370,7 @@ const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
 // "wideViews": true (el visor) hace que las vistas de adentro arranquen con el zoom más abierto que permite la rueda o el
 // pellizco (FOV_MAX), para que se vea lo más posible; las herramientas lo dejan apagado: ahí cada vista tiene el fov de su
 // foto. "mobileAO": false vuelve al celular sin oclusión ambiental, dibujando directo (para comparar en motor/pruebas/movil-pc.html)
-export async function start(container, { scene: spec, state, preset = 'premium', device = 'auto', base = null, mobileAO = true, wideViews = false, refine = true }) {
+export async function start(container, { scene: spec, state, preset = 'premium', device = 'auto', base = null, mobileAO = true, wideViews = false, refine = true, gi = true }) {
   const mobile = device === 'auto' ? matchMedia('(pointer: coarse)').matches || innerWidth < 500 : device === 'mobile';
   const direct = mobile && !mobileAO;
   // el antialiasing lo hace el posproceso (SMAA en escritorio, muestreo múltiple en celular); dibujando directo, el lienzo
@@ -689,7 +689,31 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   }
   // los metales y espejos reflejan el entorno con su propia intensidad: con la del ambiente (baja) se ven negros
   shiny.forEach(m => { m.envMap = envTex; m.userData.envBase = m.userData.envBoost ?? 0.55; });
+  // Reflejos reales (2026-11-07): cada metal o espejo de adentro refleja su propio ambiente en lugar del estudio genérico.
+  // Al cargar se le da a cada pieza metálica una copia del material por ambiente (antes de unir las piezas) y, en la
+  // precarga, se fotografía cada ambiente desde su centro a 1,4 m, de día y de noche (ver "ready")
+  const roomList = levels.flatMap((L, li) => (L.rooms ?? []).map(r => ({ r: r.rect, c: new THREE.Vector3((r.rect.x[0] + r.rect.x[1]) / 2, levelInfo[li].root.position.y + 1.4, (r.rect.z[0] + r.rect.z[1]) / 2), y0: levelInfo[li].root.position.y })));
+  const roomOf = p => {
+    let best = -1, bd = Infinity;
+    roomList.forEach((R, i) => { const dx = Math.max(R.r.x[0] - p.x, 0, p.x - R.r.x[1]), dz = Math.max(R.r.z[0] - p.z, 0, p.z - R.r.z[1]), d = Math.hypot(dx, dz) + Math.abs(p.y - R.c.y) * 0.1; if (d < bd) { bd = d; best = i; } });
+    return best;
+  };
+  const perRoom = new Map();
+  levelInfo.forEach(L => L.root.traverse(o => {
+    if (!o.isMesh || Array.isArray(o.material) || !shiny.has(o.material)) return;
+    const ri = roomOf(new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3())), key = o.material.uuid + '|' + ri;
+    if (!perRoom.has(key)) { const m = o.material.clone(); m.userData.room = ri; m.envMap = envTex; perRoom.set(key, m); }
+    o.material = perRoom.get(key);
+  }));
+  perRoom.forEach(m => shiny.add(m));
+  let roomEnvs = null;
   const refl = floorReflection(floors.filter(m => m.material.userData.gloss > 0), mobile);
+  // luz rebotada horneada (motor/hornear.html → "lighting.bake"): sin ella, el visor sigue como siempre
+  let GI = null;
+  if (gi && lit.bake && base) {
+    try { GI = bounceLight(scene, await (await fetch(new URL(lit.bake, new URL(base, location.href)))).json(), lit.bounce ?? BOUNCE); }
+    catch (e) { console.warn('luz rebotada: no se pudo leer ' + lit.bake, e); }
+  }
 
   /* ---------- posproceso: oclusión ambiental ---------- */
   // Celular (T-41, 2026-11-04): sin oclusión se veía lavado y plano al lado de la PC (rincones, uniones de pared y
@@ -775,6 +799,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       const src = composer.readBuffer, jx = halton(accN + 1, 2) - 0.5, jy = halton(accN + 1, 3) - 0.5;
       camera.setViewOffset(src.width, src.height, jx, jy, src.width, src.height);
     }
+    GI?.U.giViewInv.value.copy(camera.matrixWorld);
     refl?.render(renderer, scene, camera);
     if (composer) { composer.render(); present(refine); } else renderer.render(scene, camera);
     if (refine && acc) camera.clearViewOffset();
@@ -844,7 +869,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     nightOn = v;
     const S = v ? NIGHT : DAY;
     sun.intensity = v ? 0 : DAY.sun;
-    hemi.intensity = S.hemi; hemi.color.copy(S.sky); hemi.groundColor.copy(S.ground);
+    hemi.intensity = S.hemi * (GI ? GI_HEMI : 1); hemi.color.copy(S.sky); hemi.groundColor.copy(S.ground);
     scene.environmentIntensity = S.env;
     // en celular, de noche, las ventanas no iluminan: su luz es tenue y el spot que la reemplaza deja un punto azul
     // en los pisos brillantes
@@ -855,8 +880,11 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     sun.visible = !v;
     lamps.forEach(l => { l.intensity = v ? l.userData.night * LAMPS : (l.userData.day ?? 0); l.visible = l.intensity > 0; });
     shiny.forEach(m => { m.envMapIntensity = m.userData.envBase * (v ? 0.25 : 1); });
+    // con el ambiente fotografiado, de noche refleja lo que hay (las lámparas prendidas): no hace falta bajarlo tanto
+    if (roomEnvs) shiny.forEach(m => { if (m.userData.room >= 0) { m.envMap = roomEnvs[m.userData.room][v ? 1 : 0]; m.envMapIntensity = m.userData.envBase * (v ? 0.8 : 1); } });
     glowMats.forEach(m => { m.emissiveIntensity = m.userData.night[v ? 1 : 0]; });
     glassMats.forEach(m => { m.color.copy(m.userData.base).multiplyScalar(v ? 0.3 : 1); });
+    GI?.setNight(v);
     sky.material.uniforms.uNight.value = v ? 1 : 0;
     scene.fog.color.copy(S.fog); scene.background = S.fog;
     renderer.toneMappingExposure = S.exposure;
@@ -1076,6 +1104,22 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       for (const t of targets) { renderer.setRenderTarget(t); renderer.compile(scene, camera); }
     }
     renderer.setRenderTarget(null); apply(cur); dummy?.dispose();
+    // reflejos de cada ambiente (ver roomList): con techo y todos los niveles a la vista, de día y de noche. Del mismo
+    // tamaño que el entorno genérico (256), así cambiar de uno a otro no recompila los materiales
+    if (roomList.length && perRoom.size) {
+      const crt = new THREE.WebGLCubeRenderTarget(256, { type: THREE.HalfFloatType }), cc = new THREE.CubeCamera(0.05, 80, crt);
+      const envs = roomList.map(() => [null, null]), was = [nightOn, cutOn, viewLevel];
+      for (const n of [false, true]) {
+        apply([n, false, 0]);
+        for (let i = 0; i < roomList.length; i++) {
+          cc.position.copy(roomList[i].c); cc.updateMatrixWorld(); cc.update(renderer, scene);
+          envs[i][n ? 1 : 0] = pmrem.fromCubemap(crt.texture).texture;
+          await new Promise(r => setTimeout(r, 0));
+          if (destroyed) return;
+        }
+      }
+      crt.dispose(); roomEnvs = envs; apply(was);
+    }
     // se espera a que terminen (con compilación en paralelo no traba la página). No se usa compileAsync: si un material
     // se descarta mientras espera (varios visores seguidos, como en verificar.html), su sondeo se cae y no termina nunca
     const t0 = performance.now();
@@ -1166,6 +1210,56 @@ export async function start(container, { scene: spec, state, preset = 'premium',
 
 // Reflejo de los pisos pulidos: se dibuja el ambiente con una cámara espejada bajo el plano y = 0 (a media resolución,
 // con mipmaps para desenfocarlo según el brillo) y cada piso con "gloss" lo suma con Fresnel. Las juntas no reflejan.
+// Luz rebotada (2026-11-07): motor/hornear.html mide, en una grilla de puntos cada ~50 cm dentro del departamento, la
+// luz que llega de todos lados (con el sol, las ventanas y las lámparas ya prendidas) y la guarda como armónicos
+// esféricos de orden 1 (4 números por color), de día y de noche. Acá se cargan en tres texturas 3D (una por color) y cada
+// material la suma a su luz indirecta según la posición y la normal del píxel: la pared junto al piso de madera se
+// entibia, los rincones lejos de la ventana quedan más oscuros, el techo toma el color del piso. Fuera de la grilla no
+// suma nada (el entorno comparte materiales con el interior). Cuesta tres lecturas de textura por píxel.
+// la luz rebotada reemplaza parte del relleno parejo (la luz hemisférica): sumada encima, todo quedaba lavado
+const BOUNCE = 0.6, GI_HEMI = 0.5;
+function bounceLight(scene, data, strength) {
+  const [nx, ny, nz] = data.n, b64 = s => new Uint16Array(Uint8Array.from(atob(s), c => c.charCodeAt(0)).buffer);
+  const tex = set => ['r', 'g', 'b'].map(k => {
+    const t = new THREE.Data3DTexture(b64(set[k]), nx, ny, nz);
+    Object.assign(t, { type: THREE.HalfFloatType, format: THREE.RGBAFormat, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, unpackAlignment: 1, needsUpdate: true });
+    return t;
+  });
+  const day = tex(data.day), night = tex(data.night);
+  const size = new THREE.Vector3(...data.step).multiply(new THREE.Vector3(nx - 1, ny - 1, nz - 1));
+  const U = { giR: { value: day[0] }, giG: { value: day[1] }, giB: { value: day[2] }, giMin: { value: new THREE.Vector3(...data.min) }, giSize: { value: size },
+    giN: { value: new THREE.Vector3(nx, ny, nz) }, giK: { value: strength }, giViewInv: { value: new THREE.Matrix4() } };
+  const head = ['uniform highp sampler3D giR, giG, giB;', 'uniform vec3 giMin, giSize, giN;', 'uniform float giK;', 'uniform mat4 giViewInv;', ''].join(String.fromCharCode(10));
+  const body = `
+  {
+    vec3 gN = normalize( ( giViewInv * vec4( normal, 0.0 ) ).xyz );
+    vec3 gP = ( giViewInv * vec4( - vViewPosition, 1.0 ) ).xyz + gN * 0.15;
+    vec3 uvw = ( gP - giMin ) / giSize;
+    vec3 out3 = max( - uvw, uvw - 1.0 );
+    float gMask = 1.0 - smoothstep( 0.0, 0.06, max( out3.x, max( out3.y, out3.z ) ) );
+    vec3 tc = ( clamp( uvw, 0.0, 1.0 ) * ( giN - 1.0 ) + 0.5 ) / giN;
+    vec4 gB = vec4( 0.886227, 1.023328 * gN.y, 1.023328 * gN.z, 1.023328 * gN.x );
+    irradiance += max( vec3( dot( texture( giR, tc ), gB ), dot( texture( giG, tc ), gB ), dot( texture( giB, tc ), gB ) ), 0.0 ) * giK * gMask;
+  }`;
+  const done = new Set();
+  scene.traverse(o => {
+    for (const m of o.material ? [o.material].flat() : []) {
+      if (done.has(m) || m.isShaderMaterial || !(m.isMeshStandardMaterial || m.isMeshLambertMaterial || m.isMeshPhongMaterial)) continue;
+      done.add(m);
+      const prev = m.onBeforeCompile, key = prev.toString();
+      m.onBeforeCompile = (sh, r) => {
+        prev.call(m, sh, r);
+        if (!sh.fragmentShader.includes('#include <lights_fragment_maps>')) return;
+        Object.assign(sh.uniforms, U);
+        sh.fragmentShader = head + sh.fragmentShader.replace('#include <lights_fragment_maps>', '#include <lights_fragment_maps>' + body);
+      };
+      m.customProgramCacheKey = () => key + '|gi';
+      m.needsUpdate = true;
+    }
+  });
+  return { U, setNight(v) { const s = v ? night : day; U.giR.value = s[0]; U.giG.value = s[1]; U.giB.value = s[2]; } };
+}
+
 function floorReflection(meshes, mobile) {
   if (!meshes.length) return null;
   const scale = mobile ? 0.35 : 0.5;

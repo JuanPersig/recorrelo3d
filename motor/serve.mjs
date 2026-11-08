@@ -20,7 +20,8 @@ http.createServer(async (req, res) => {
   if (req.method === 'POST') {
     const file = normalize(join(root, path)), rel = file.slice(root.length).split(/[\\/]/).filter(Boolean);
     const okDir = ['capturas', 'entregas'].some(d => file.startsWith(join(root, d)))
-      || (rel[0] === 'departamentos' && rel.length === 4 && rel[2] === 'tex' && rel[3].endsWith('.jpg'));
+      || (rel[0] === 'departamentos' && rel.length === 4 && rel[2] === 'tex' && rel[3].endsWith('.jpg'))
+      || (rel[0] === 'departamentos' && rel.length === 3 && rel[2] === 'gi.json');   // luz rebotada (motor/hornear.html)
     if (!okDir || !/\.(png|jpg|json|svg)$/.test(file)) { res.writeHead(403); return res.end(); }
     const chunks = []; for await (const c of req) chunks.push(c);
     await mkdir(dirname(file), { recursive: true }); await writeFile(file, Buffer.concat(chunks));

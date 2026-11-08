@@ -1,0 +1,42 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luz rebotada: sin y con</title>
+<style>
+/* Herramienta de desarrollo: misma vista sin y con luz rebotada (motor/hornear.html), de día y de noche. */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:540px; height:720px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/rebote.html?id=depto5&vistas=living1,cocina1&capturar=rebote/<nombre>[&fuerza=1]
+// Arriba sin luz rebotada, abajo con; de día y de noche, una columna por vista y estado.
+import { start } from '/motor/engine.js';
+// &antes=/dist/motor-head/ : la fila de arriba con otra copia del motor (el de antes del cambio), para el antes y después
+const startAntes = new URLSearchParams(location.search).get('antes') ? (await import(new URLSearchParams(location.search).get('antes') + 'engine.js')).start : start;
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id), id = q.get('id') ?? 'depto5';
+const spec = await (await fetch(`/departamentos/${id}/scene.json`)).json();
+if (q.get('fuerza')) spec.lighting = { ...spec.lighting, bounce: Number(q.get('fuerza')) };
+const names = (q.get('vistas') ?? 'living1,cocina1,bano1').split(',');
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.src = src; });
+const rows = [];
+for (const gi of [false, true]) {
+  const api = await (gi ? start : startAntes)($('stage'), { scene: spec, state: { view: names[0], cut: false, night: false, decor: true }, device: 'desktop', gi, base: `/departamentos/${id}/` });
+  await api.ready;
+  const row = [];
+  for (const night of [false, true]) for (const k of names) { api.setNight(night); api.go(k, true); row.push([`${spec.views[k].name ?? k} · ${night ? 'noche' : 'día'}`, await load(api.capture())]); }
+  rows.push(row); api.destroy(); $('stage').innerHTML = '';
+}
+const W = 360, H = 480, c = Object.assign(document.createElement('canvas'), { width: rows[0].length * (W + 6), height: 2 * (H + 28) }), g = c.getContext('2d');
+g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+rows.forEach((row, j) => row.forEach(([t, im], i) => { g.drawImage(im, i * (W + 6), j * (H + 28) + 24, W, H); g.fillStyle = '#1d2430'; g.font = '600 15px system-ui'; g.fillText(`${j ? 'DESPUÉS' : 'ANTES'} · ${t}`, i * (W + 6) + 4, j * (H + 28) + 17); }));
+if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.9); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
+document.title = 'rebote: listo';
+</script>

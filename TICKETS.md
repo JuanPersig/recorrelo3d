@@ -1411,3 +1411,21 @@ solo cambia la Planta (3 %, copas más angostas); línea base actualizada.
 el tronco apenas inclinado hacia ese lado; solo se angosta hacia la fachada lo que haga falta (`REACH` 1,95 m desde su
 centro, k entre 0,68 y 0,93). Ningún árbol queda a menos de 2,2 m de un farol. Hoja: `capturas/entorno/arboles4.jpg`.
 verificar.html del depto 5: solo la Planta (2,2 %); línea base actualizada.
+
+## T-55 · Luz rebotada horneada y reflejos reales (espera aprobación del usuario, 2026-11-07)
+
+**Qué se hizo:** (1) `motor/hornear.html?id=<depto>`: en una grilla cada 50 cm (y ~80 cm en altura) dentro del
+departamento renderiza un cubo de 16 px con toda la luz prendida y lo guarda como armónicos esféricos de orden 1, de
+día y de noche, en `departamentos/<id>/gi.json` (Float16 en base64; depto 5: 1.280 puntos, 80 KB, 13 s). Los puntos
+dentro de paredes o muebles se rellenan con sus vecinos. El scene lo usa con `"lighting": { "bake": "gi.json" }`
+(`"bounce"` regula cuánto suma; por defecto 0,6). El motor lo carga en tres texturas 3D y cada material lo suma a su luz
+indirecta según posición y normal; con horneado, la luz hemisférica baja a la mitad (sumado encima todo quedaba lavado:
+`capturas/rebote/f1.jpg`). Hay que volver a hornear si cambian distribución, muebles o luz. empaquetar.mjs copia el
+gi.json; serve.mjs acepta guardarlo. (2) Reflejos reales: cada metal o espejo de adentro tiene una copia del material
+por ambiente y refleja una foto de su ambiente (desde el centro, a 1,4 m, de día y de noche) tomada en la precarga
+(`ready`); verificar.html y exportar.html esperan `api.ready`. (3) De paso: la comprobación de sintaxis tiene que ser
+`node --input-type=module --check < archivo` (`node --check` no detectó un salto de línea dentro de un texto).
+**Cómo se verificó:** `motor/pruebas/rebote.html` → `capturas/rebote/antes-despues.jpg` (motor anterior vs nuevo, día y
+noche): de noche el techo deja de verse marrón y oscuro y la luz se reparte; de día paredes y techo toman algo del tono
+del piso. verificar.html del depto 5: todas las vistas de adentro cambian 6–10 % (es el tono de la luz); **línea base sin
+actualizar** y `sitio/` sin rearmar hasta que el usuario lo apruebe.
