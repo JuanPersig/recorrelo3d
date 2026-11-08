@@ -37,7 +37,8 @@ adornos, libros, frascos, teléfonos, cables, almohadones.
   minuto suyo y evita la hora de rehacer (los errores de la cocina del depto 6 se habrían visto ahí).
 
 **Compuerta 2 · Muebles contundentes:** solo los que se ven en alguna foto, en su lugar y de su tamaño, mirando hacia
-donde miran. Un ambiente sin fotos queda vacío. Comparar todas las hojas mirando solo los muebles contundentes.
+donde miran. Un ambiente sin fotos queda vacío (salvo que el usuario prefiera amueblarlo: va igual en `estimated`; pasó con
+el segundo dormitorio del depto 6). Comparar todas las hojas mirando solo los muebles contundentes.
 
 **Compuerta 3 · Detalle, luz y verificación:** adornos y textiles, colores (`colores.html`), hornear la luz una sola vez
 al final, `verificar.html` una vez, láminas.
@@ -137,6 +138,8 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
 - Piezas que se tocan sin compartir caras: dos caras en el mismo plano parpadean y el usuario lo ve de cerca.
 - Nada que se prenda, se apague o cambie de calidad a la vista mientras se camina.
 - Editar archivos con Edit/Write o con node; PowerShell `Get-Content`/`Set-Content` rompe los acentos.
+- Cambios de aspecto (texturas, materiales, estilos): página de muestras y que el usuario elija; procedimiento en
+  "Fidelidad y materiales: cómo trabajar" → "Cambiar el aspecto del motor".
 
 ## Referencia del scene.json
 
@@ -285,3 +288,64 @@ Todo lo que costó resolver al modelar el primer depto grande. Leerlo antes de a
   texto con nombres de comandos entre comillas invertidas llegó a lanzar `node motor/kit.mjs`).
 - Publicar: carpeta fija en `publicar.json`, `node motor/publicar.mjs`; revisar que `sitio/<carpeta>/` no tenga
   `/fotos/` (empaquetar saca fotos, nota, estimados y orientación). Anuncio ajeno: solo renders.
+
+## Fidelidad y materiales: cómo trabajar (segunda pasada del depto 6, 2026-11-08)
+
+Lo que permitió corregir la cocina del depto 6 y cambiar la madera sin romper nada. Vale para cualquier depto.
+
+### Medir antes de escribir un número
+- **Plano en píxeles.** Escala: dos caras conocidas (el largo de un ambiente que ya se sabe, o una cota). Para leer una
+  línea del plano: `magick plano.jpg -crop 230x1+420+330 -colorspace gray -threshold 55% txt:-` y contar `#` y `.`
+  (pared y hueco). Así salió el hueco de la puerta de la cocina (0,74 a 1,65 m de la pared de la heladera) y el pilar.
+  Cada hueco: anotar su distancia a la esquina más cercana antes de escribir el `at`.
+- **Fotos de frente como regla.** En una foto que mira de frente una pared, todo lo que está en esa pared tiene la misma
+  escala: medir en píxeles contra algo conocido (la altura piso–techo del scene, una puerta, una mesada de 0,90). La
+  ventana del lavadero salió 0,96 × el ancho de la puerta, con el antepecho a 1,26 m y las dos hasta 2,20.
+- **Lo que está más cerca de la cámara no se mide contra la pared del fondo** (un pilar, un mueble): la perspectiva lo
+  agranda. Para profundidades, la regla es otra foto del mismo rincón.
+
+### Fotos que engañan
+- Una sola foto no da profundidad: en `cocina2` el calefón parecía "encima" del mueble y el mueble estaba a 30 cm del
+  pilar. La foto opuesta (`cocina`, mirando al revés) y el plano lo resolvieron, y el usuario lo confirmó con un dibujo.
+- Una franja oscura en el borde de una foto suele ser el marco o la hoja de una puerta junto a la cámara: ubica la
+  cámara (está al lado de esa puerta) y sirve para encuadrar.
+- Si después de cruzar fotos y plano sigue la duda, preguntarle al usuario **con la foto y lo que se ve**, en una línea
+  ("el mueble blanco con tapa de madera, a la derecha en cocina2"). No usar el nombre del componente (`kitchen-cart`) en
+  la pregunta: el usuario no lo conoce. Contesta rápido y a veces con un dibujo sobre la foto.
+
+### Pilares, puertas y piezas que se tocan
+- Pilar o pleno: `structure` `column` metido 4–5 cm en las paredes que toca (sin caras compartidas), y el ambiente en
+  `rects` en L alrededor (así el zócalo y el validador lo respetan). El zócalo del pilar lo pone el motor.
+- El contramarco de una puerta asoma 3 cm afuera del vano: dejar ≥ 1 cm entre una puerta y una ventana o un pilar
+  vecinos. Una puerta y una ventana del mismo juego de carpintería van a 1 cm (se ven pegadas).
+- Objeto de pared en la cara de un pilar que mira a −z: `rotation` 180 y `at` con z en esa cara.
+- Puerta que en las fotos está cerrada: `open` 0. Puerta abierta que no se ve en ninguna foto: que abra hacia donde no
+  tapa nada (`side`, `hinge`, `open` 170 la deja contra la pared).
+
+### Cámaras de las vistas
+- `encuadre.html?depto=<id>&vistas=a,b` afina bien si la pose de partida está cerca (≤ 30 cm, pocos grados); si no, se
+  queda en un óptimo local. Primero una pose a mano: probar 3 poses con `__viewer.setPose({ p, t, f, fit: 1.37, mode:
+  'walk' })`, `capture()` y una tira con la foto (`magick a.jpg b.jpg c.jpg foto.png -resize 592x432! +append`), y
+  después `encuadre`. Después de cambiar muebles, volver a encuadrar las vistas de ese ambiente (el puntaje lo dice).
+- Fotos de inmobiliaria en cocinas chicas: cámara baja (1,2 m) apenas inclinada hacia arriba y gran angular (fov 70–75).
+- `__viewer.go(vista)` desde código deja el corte de techo de la vista general: para mirar el recorrido como el
+  usuario, recargar y usar los botones.
+
+### Cambiar el aspecto del motor (texturas, materiales)
+- Nunca directo: página de muestras en `motor/pruebas/` (ver `maderas.html`) con la actual en la fila 1 y las
+  alternativas sobre las mismas piezas, lejos / media / cerca de día y cerca de noche. El usuario elige.
+- La página reemplaza en vivo las texturas de los materiales del motor (buscando los que usan la textura actual), así
+  la muestra se ve exactamente como se verá en un depto. Después de pasar la elegida al motor, correr la página con
+  `?solo=<elegida>`: la fila 1 (motor) y la fila 2 (muestra) tienen que ser iguales.
+- Antes de cambiar una textura, buscar quién más la usa (`grep "TEX.woodR"`): el brillo de la madera también lo usaban
+  los pisos; la madera de muebles pasó a tener el suyo para no cambiar los pisos.
+- Texturas que se repiten: el período de cada ruido tiene que dividir justo la textura (512 / período entero); si no,
+  aparece una costura cada repetición.
+- Detalle chico (poros) como rayitas a lo largo de la veta, no como puntos (de cerca parecen lluvia); anillos de menos
+  de ~5 px forman muaré de lejos.
+- Después: `motor/generar-texturas.html` (regenera todas; en git deben cambiar solo las tocadas) y
+  `verificar.html?deptos=depto5,<en curso>`; `&base=1` solo con el cambio aprobado.
+
+### Tiempos medidos (PC, panel oculto)
+`comparar` ~8 s por vista con `&view=`; `encuadre` ~15 s por vista; `hornear` ~40 s; `verificar` con dos deptos
+~80 s; `maderas.html` con seis vetas ~30 s; `generar-texturas` ~20 s.

@@ -1586,7 +1586,7 @@ el visor saca la pantalla de carga cuando `api.ready` termina (tope de 25 s). La
 **Cómo se verificó:** visor del depto 6: listo a 1,7 s, la pantalla de carga sale a 4,8 s, sin errores en la consola;
 verificar.html: depto 5 sin cambios. Con el panel del navegador oculto no se puede ver la animación: probarlo en el sitio.
 
-## T-64 · Depto 6: pared inventada en la cocina y lavadero amueblado sin fotos (abierto, 2026-11-08)
+## T-64 · Depto 6: pared inventada en la cocina y lavadero amueblado sin fotos (hecho, 2026-11-08)
 
 **Marcado por el usuario** (render de la vista "Mesada" al lado de la foto `cocina3`): "se agrega un pedazo de pared
 que no existe, agrandando dimensiones y mintiendo respecto a la realidad"; "se agrega el lavadero el cual no está
@@ -1633,6 +1633,11 @@ adelantada (desde ahí la foto no muestra el mueble). Siguen abiertas: el baño 
 **Falta:** con las respuestas, cerrar la compuerta 1; después hornear la luz (gi.json quedó viejo para la cocina),
 `verificar.html … &base=1` y repasar "Errores que no se repiten" en todas las hojas.
 
+**Cierre (2026-11-08):** el usuario probó el recorrido ("así está muy bien"); luz horneada de nuevo y línea base
+actualizada. El depto 6 queda como banco de pruebas del motor, sin publicar (decisión del usuario). Lo que no se
+decidió (aviso de 60 cm del baño, lado del lavadero al patio, encuadre de living, baño y balcón) sigue en T-61.
+Procedimientos que salieron de acá: SKILL.md, "Fidelidad y materiales: cómo trabajar".
+
 ## T-65 · Madera de muebles más fina: muestras para elegir (hecho, 2026-11-08)
 
 **Pedido del usuario:** la madera actual se ve "grotesca" (vetas onduladas y gruesas en alacenas, puertas y
@@ -1654,3 +1659,4 @@ repetición) para que la textura cierre sin costura. Texturas regeneradas con `g
 `verificar.html?deptos=depto5,depto6`: demo 0,1–0,4 %, depto 6 ≤ 1 % fuera de la cocina (T-64); línea base
 actualizada (`&base=1`) con la cocina y la madera aprobadas. La página de muestras queda para comparar futuras
 vetas (su fila 1 es siempre la del motor). Opcional más adelante, con permiso de descarga: texturas escaneadas CC0.
+

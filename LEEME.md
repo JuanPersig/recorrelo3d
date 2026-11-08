@@ -61,6 +61,18 @@ un depto cargado"):
 - **Carga:** el motor no dibuja durante la precarga y el visor tapa todo hasta `api.ready`; la animación de carga es
   solo transform/opacity (no se traba).
 
+Hecho en la tanda de fidelidad y madera (2026-11-08 por la tarde, T-64 y T-65; procedimientos en SKILL.md, "Fidelidad
+y materiales: cómo trabajar"):
+- **Pilares y plenos:** `structure` `column` lleva zócalo en cada cara que da a un ambiente; `api.plan()` pasa la
+  estructura y `plano.html` la dibuja maciza como las paredes.
+- **Comparar solo lo que cambió:** `comparar.html?…&view=a,b` saca solo esas hojas (~8 s por vista en vez de ~75 s
+  todas).
+- **Madera de muebles: roble con radios** (elegido por el usuario entre seis vetas): `oakAt(x, y)` en components.js
+  genera color, relieve y brillo (`TEX.wood`, `woodN`, `woodPore`); `woodR` queda solo para los pisos. Página
+  de muestras para comparar vetas o materiales nuevos: `motor/pruebas/maderas.html` (la fila 1 es la del motor).
+- **Mimbre pre-generado** (`motor/texturas/wicker.webp`).
+- Línea base de `verificar.html` actualizada con la cocina del depto 6 y la madera nueva.
+
 ## Servidores (`.claude/launch.json`)
 
 `visor` :5180 (raíz del proyecto) · `sitio` :5183 (`sitio/` como Cloudflare) · `landing` :5184 (`npm run dev`).
@@ -88,29 +100,26 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 - Pensar todo como mejora general del motor para cualquier depto; el demo es solo la prueba.
 - Comprobar sintaxis con `node --input-type=module --check < archivo` (`node --check` no detecta todo).
 
-## Depto grande en curso (2026-11-08)
+## Depto 6: banco de pruebas del motor (no se publica)
 
 **depto6 "Dos dormitorios con balcón"** (anuncio ajeno de Rosario: solo renders, nunca sus fotos en algo público).
-Tandas hechas (T-60 a T-63): 7 componentes nuevos y muchas variantes, unión de lo decorativo y por
-color (el depto 5 bajó de 400–660 a 220–480 dibujos por vista con la misma imagen), luz horneada. Depto 6: armado
-3,9 s, 390–715 dibujos por vista. Hojas en `capturas/depto6/`. Publicado para probar en https://recorrelo3d.pages.dev/departamento-dos-dormitorios/ (el usuario sube `sitio/`).
-Pendiente (T-61): decidir el aviso del baño (1,50 m
-de ancho real: no entran 60 cm entre inodoro y lavatorio), colores con `colores.html`, puntaje de parecido, paredes por
-ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.md](prompt-depto-grande.md).
+**Decisión del usuario (2026-11-08): no hace falta que esté publicado**; sirve para hacer renders y mejorar el motor.
+La copia vieja en https://recorrelo3d.pages.dev/departamento-dos-dormitorios/ queda como está hasta que el usuario
+diga otra cosa (no republicar). Hojas en `capturas/depto6/`, plano 2D en `capturas/depto6/plano.png`.
+Estado: cocina fiel a las fotos y al plano (T-64), lavadero vacío, segundo dormitorio y placards amueblados por
+decisión del usuario, luz horneada al día. Quedan sin decidir el aviso de 60 cm del baño (1,50 m real) y el lado del
+lavadero al patio (hoy pared lisa); las cámaras de living, baño y balcón no calzan del todo (`encuadre.html`).
+Sigue en `verificar.html?deptos=depto5,depto6` como el depto cargado de referencia.
 
 ## Próximos pasos (2026-11-08)
 
-**Primero: cerrar la compuerta 1 del depto 6 con las respuestas del usuario** (T-64). La cocina ya está corregida
-(2026-11-08, segunda sesión): ventana desde la esquina, puerta del lavadero pegada y cerrada, pilar con el calefón de
-frente, carro junto al pilar, puerta de entrada a la cocina en el hueco del plano y lavadero vacío. Detalle en
-TICKETS.md (T-64, "Hecho" y "Dudas"). El plano 2D con el pilar está en `capturas/depto6/plano.png`.
-1. **Dudas abiertas:** lado del lavadero al patio; pleno C22 (quedó plano por la foto `cocina`); aviso de 60 cm del baño. Decididas por el usuario (2026-11-08): el
-   segundo dormitorio y los placards quedan como están; el mueble de la cocina arranca en el marco de la puerta y
-   no llega al pilar (la puerta, donde marca el plano).
-2. Con eso: compuerta 2 (muebles contundentes, solo lo que se ve) y compuerta 3: hornear la luz (gi.json quedó viejo
-   para la cocina), `verificar.html?deptos=depto5,depto6&base=1` y repasar "Errores que no se repiten" (ahora 7) en
-   todas las hojas. Las cámaras de living, baño y balcón no calzan del todo con sus fotos: `encuadre.html` en la
-   compuerta 3.
+**Primero: el departamento nuevo** (pedido del usuario, 2026-11-08). Seguir SKILL.md al pie de la letra: inventario de
+fotos, **compuerta 1** (secuencia de cada pared por foto, huecos y pilares medidos en el plano en píxeles, plano 2D con
+la lista de dudas y OK del usuario), **compuerta 2** (muebles contundentes, solo lo que se ve), **compuerta 3**
+(detalle, colores, luz horneada una vez, `verificar.html?deptos=depto5,<nuevo>` una vez) y repasar los 7 "Errores
+que no se repiten" en cada hoja. Objetivo: ~30 min con el catálogo actual; piezas nuevas del motor en una tanda aparte.
+Ojo: la carpeta `DEPARTAMENTO_NUEVO/` (sin versionar) hoy tiene las fotos originales del depto 6; antes de arrancar,
+confirmar dónde están las fotos del nuevo.
 
 **Después:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
 cargar (sospecha: el iframe del recorrido en vivo carga el motor en el mismo hilo) y en celular las tarjetas de "Las
