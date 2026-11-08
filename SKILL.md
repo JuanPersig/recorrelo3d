@@ -43,6 +43,11 @@ el segundo dormitorio del depto 6). Comparar todas las hojas mirando solo los mu
 **Compuerta 3 · Detalle, luz y verificación:** adornos y textiles, colores (`colores.html`), hornear la luz una sola vez
 al final, `verificar.html` una vez, láminas.
 
+**Sin plano ni medidas no se arranca** (2026-11-08): con fotos solas, sin ninguna medida real de los ambientes, las
+proporciones salen mal aunque cada mueble esté bien elegido. Antes de la compuerta 1 tiene que haber un plano (de la
+escritura, de la inmobiliaria) o un croquis con el largo y el ancho de cada ambiente, o unas medidas con cinta. Si el
+anuncio no lo trae, pedírselo al usuario o al dueño; para probar el motor, elegir anuncios con plano.
+
 **Tiempo:** el objetivo es un depto completo en ~30 minutos cuando el catálogo ya tiene las piezas (estructura ~10,
 muebles ~10, detalle y verificación ~10). Para lograrlo: piezas nuevas del motor en una tanda aparte (no en medio del
 depto); comparar solo las vistas que cambiaron (`comparar.html?…&view=<vista>`); hornear y verificar una sola vez, al
@@ -138,6 +143,9 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
 - Piezas que se tocan sin compartir caras: dos caras en el mismo plano parpadean y el usuario lo ve de cerca.
 - Nada que se prenda, se apague o cambie de calidad a la vista mientras se camina.
 - Editar archivos con Edit/Write o con node; PowerShell `Get-Content`/`Set-Content` rompe los acentos.
+- Textura nueva en components.js: pre-generarla (`motor/generar-texturas.html`) antes de medir el armado; calculada
+  al abrir, una sola textura de 512 px llevó un armado de 4 a 28 s. Sus ruidos con períodos enteros (512 / período),
+  o aparece una costura cada repetición.
 - Cambios de aspecto (texturas, materiales, estilos): página de muestras y que el usuario elija; procedimiento en
   "Fidelidad y materiales: cómo trabajar" → "Cambiar el aspecto del motor".
 
@@ -152,6 +160,11 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
   `nightAmbient` 0,5 y `nightExposure` 1,35); cambiarlos solo si las fotos lo piden. `lighting.lamps` (rendimiento de
   las lámparas de noche, 0,8), `sunFrom` (de dónde viene el sol; elegirlo para que entre como en las fotos).
 - Entorno: `exterior.balcony`, `exterior.city` (calle y edificios) o `exterior.landscape: "lake"` con `nature`.
+  Casa en planta baja: "exterior": { "floorsBelow": 0 } (el suelo al nivel de la casa, sin edificio debajo).
+- Techo de cada ambiente ("ceiling"): "open" (patio a cielo abierto), { "kind": "boards", "color", "height" }
+  (machimbre) o { "kind": "sheet", "color", "beams", "spacing", "height", "over" } (chapa con tirantes; "over" son los
+  rectángulos que techa, para el alero). Postes y vigas de madera: `structure` con "color".
+- Exterior verde: piso { "kind": "grass" }; plantas plantadas en la tierra con "pot": false ("leaves", "spread").
 - Claves válidas y opciones cerradas: `KEYS` y `ONE_OF` en `motor/validate.js` (el validador sugiere la más parecida
   ante una clave mal escrita).
 - Ejemplos completos: `departamentos/depto1` (dos ambientes, piso brillante), `depto2` (monoambiente, fotos de

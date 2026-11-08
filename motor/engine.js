@@ -467,7 +467,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     const e = extentsOf(Lv.walls);
     if (!li) tagO(blk(root, M.paint('#d9d5cd'), [e.x0, e.x1], [-0.2, -0.002], [e.z0, e.z1]), { kind: 'slab', level: li });
     const up = levels[li + 1], top = up ? (up.y ?? H + 0.25) - y0 - 0.003 : Hl + 0.12;
-    // techo por ambiente (2026-11-08, casa con patio). "ceiling" de un ambiente: un color (el del cielorraso de todo el
+    // techo por ambiente (2026-11-08). "ceiling" de un ambiente: un color (el del cielorraso de todo el
     // nivel, como antes); "open" = a cielo abierto (patios: no lleva cielorraso y entra el sol); { "kind": "boards" }
     // = machimbre; { "kind": "sheet", "beams" } = chapa vista desde abajo con tirantes de madera (galerías, quinchos).
     // Los dos últimos aceptan "height" (más bajo que el nivel) y "over" (rectángulos que techa, si no son los del

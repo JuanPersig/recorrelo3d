@@ -73,6 +73,21 @@ y materiales: cómo trabajar"):
 - **Mimbre pre-generado** (`motor/texturas/wicker.webp`).
 - Línea base de `verificar.html` actualizada con la cocina del depto 6 y la madera nueva.
 
+Hecho en la tanda de casas (2026-11-08 a la noche; sirve para cualquier casa o departamento, referencia en SKILL.md):
+- **Techo por ambiente** ("ceiling" de cada ambiente): "open" = a cielo abierto (patios, patios de luz: entra el sol);
+  { "kind": "boards" } = machimbre; { "kind": "sheet", "beams" } = chapa con tirantes de madera (galerías, quinchos).
+  Aceptan "height" (más bajo que el nivel) y "over" (rectángulos que techa: el alero). Lo abierto y la chapa salen de
+  la losa del nivel, así desde afuera no queda una losa flotando.
+- **Planta baja:** "exterior": { "floorsBelow": 0 } apoya la casa en el suelo (sin edificio debajo) y la vereda termina
+  en la línea de frente.
+- **Piso de pasto** ("floor": { "kind": "grass" }) pre-generado, y **plantas en la tierra** ("pot": false, con "leaves"
+  y "spread" para matas); el control de distribución deja que la vegetación en tierra se toque y se apoye en paredes.
+- **Piezas nuevas:** `ceiling-fan` (ventilador de techo con luz: globo, plato o tulipas; brilla de noche) y `grill`
+  (parrilla de ladrillo con fogón, reja, campana escalonada y conducto de chapa).
+- **Variantes:** mantel en la mesa ovalada ("tablecloth" en "shape": "oval"); respaldo de madera en la cama
+  ("headboard": { "material": "wood" }); la tele encastra en una biblioteca (mueble de tele).
+- **Rendimiento:** una textura nueva calculada al abrir (el pasto) llevó un armado de 4 a 28 s; pre-generada, volvió a 4.
+
 ## Servidores (`.claude/launch.json`)
 
 `visor` :5180 (raíz del proyecto) · `sitio` :5183 (`sitio/` como Cloudflare) · `landing` :5184 (`npm run dev`).

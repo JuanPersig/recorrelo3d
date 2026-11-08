@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-08T17:06:01.315Z",
+  "fecha": "2026-11-08T17:35:26.871Z",
   "deptos": {
     "depto5": {
       "estado": "ok",
@@ -111,7 +111,7 @@
           "nombre": "Recibidor",
           "dibujos": 428,
           "triangulos": 811342,
-          "cambio": 0.2
+          "cambio": 0.1
         },
         "consola": {
           "nombre": "Consola y espejo",
@@ -138,7 +138,7 @@
           "cambio": 0.2
         }
       },
-      "armadoMs": 3022,
+      "armadoMs": 3268,
       "mapas": [
         "/capturas/verificacion/actual/depto5/circulacion-0.png"
       ],
@@ -147,132 +147,108 @@
       "advertencias": [],
       "consola": []
     },
-    "casa7": {
-      "estado": "ok",
-      "problemas": [],
+    "depto6": {
+      "estado": "revisar",
+      "problemas": [
+        "3 advertencias de distribución"
+      ],
       "vistas": {
         "general": {
           "nombre": "Vista general",
-          "dibujos": 524,
-          "triangulos": 1189996,
-          "cambio": null
+          "dibujos": 559,
+          "triangulos": 1388170,
+          "cambio": 0.2
+        },
+        "completo": {
+          "nombre": "Living hacia el balcón",
+          "dibujos": 443,
+          "triangulos": 1664548,
+          "cambio": 0.2
         },
         "comedor": {
-          "nombre": "Comedor",
-          "dibujos": 598,
-          "triangulos": 1421924,
-          "cambio": null
+          "nombre": "Comedor y ventanal",
+          "dibujos": 394,
+          "triangulos": 1619084,
+          "cambio": 0.2
         },
         "comedor2": {
-          "nombre": "Comedor y cocina",
-          "dibujos": 595,
-          "triangulos": 1423668,
-          "cambio": null
+          "nombre": "Tele y comedor",
+          "dibujos": 409,
+          "triangulos": 1616323,
+          "cambio": 0.2
+        },
+        "living": {
+          "nombre": "Sillón y biblioteca",
+          "dibujos": 585,
+          "triangulos": 1713034,
+          "cambio": 0.2
+        },
+        "living2": {
+          "nombre": "Tele y biblioteca",
+          "dibujos": 541,
+          "triangulos": 1705742,
+          "cambio": 0.2
+        },
+        "habitacion": {
+          "nombre": "Dormitorio",
+          "dibujos": 477,
+          "triangulos": 1580064,
+          "cambio": 0.2
         },
         "cocina": {
           "nombre": "Cocina",
-          "dibujos": 497,
-          "triangulos": 1315922,
-          "cambio": null
+          "dibujos": 594,
+          "triangulos": 1823774,
+          "cambio": 0.1
         },
         "cocina2": {
-          "nombre": "Heladera y alacenas",
-          "dibujos": 472,
-          "triangulos": 1344716,
-          "cambio": null
+          "nombre": "Cocina hacia el lavadero",
+          "dibujos": 373,
+          "triangulos": 1484754,
+          "cambio": 0.2
         },
-        "estar": {
-          "nombre": "Estar",
-          "dibujos": 670,
-          "triangulos": 1428715,
-          "cambio": null
-        },
-        "estar2": {
-          "nombre": "Estar y ventana",
-          "dibujos": 570,
-          "triangulos": 1397984,
-          "cambio": null
-        },
-        "dormitorio": {
-          "nombre": "Dormitorio",
-          "dibujos": 509,
-          "triangulos": 1368928,
-          "cambio": null
-        },
-        "dormitorio2": {
-          "nombre": "Segundo dormitorio",
-          "dibujos": 398,
-          "triangulos": 1358522,
-          "cambio": null
+        "cocina3": {
+          "nombre": "Mesada",
+          "dibujos": 441,
+          "triangulos": 1542157,
+          "cambio": 0.2
         },
         "bano": {
           "nombre": "Baño",
-          "dibujos": 596,
-          "triangulos": 1403002,
-          "cambio": null
+          "dibujos": 719,
+          "triangulos": 1870708,
+          "cambio": 0.2
         },
         "bano2": {
-          "nombre": "Inodoro y bidé",
-          "dibujos": 584,
-          "triangulos": 1493464,
-          "cambio": null
+          "nombre": "Lavatorio",
+          "dibujos": 456,
+          "triangulos": 1582742,
+          "cambio": 0.2
         },
-        "bano3": {
-          "nombre": "Vanitory",
-          "dibujos": 379,
-          "triangulos": 1381286,
-          "cambio": null
-        },
-        "patio": {
-          "nombre": "Patio",
-          "dibujos": 677,
-          "triangulos": 1688320,
-          "cambio": null
-        },
-        "patio2": {
-          "nombre": "Galería",
-          "dibujos": 744,
-          "triangulos": 1694080,
-          "cambio": null
-        },
-        "jardin": {
-          "nombre": "Jardín",
-          "dibujos": 417,
-          "triangulos": 1279096,
-          "cambio": null
-        },
-        "quincho": {
-          "nombre": "Quincho",
-          "dibujos": 368,
-          "triangulos": 1275386,
-          "cambio": null
-        },
-        "frente": {
-          "nombre": "Frente",
-          "dibujos": 712,
-          "triangulos": 1615944,
-          "cambio": null
-        },
-        "frente2": {
-          "nombre": "Porche",
-          "dibujos": 803,
-          "triangulos": 1712800,
-          "cambio": null
+        "balcon": {
+          "nombre": "Balcón",
+          "dibujos": 579,
+          "triangulos": 1671188,
+          "cambio": 0.1
         },
         "planta": {
           "nombre": "Planta",
-          "dibujos": 444,
-          "triangulos": 1189696,
-          "cambio": null
+          "dibujos": 569,
+          "triangulos": 1388190,
+          "cambio": 0.2
         }
       },
-      "armadoMs": 4393,
+      "armadoMs": 5840,
       "mapas": [
-        "/capturas/verificacion/actual/casa7/circulacion-0.png"
+        "/capturas/verificacion/actual/depto6/circulacion-0.png"
       ],
-      "mallas": 264,
-      "triangulos": 429586,
-      "advertencias": [],
+      "mallas": 247,
+      "triangulos": 500606,
+      "advertencias": [
+        "· no queda lugar para pararse junto a bathtub en [5.856, 4.51] con 60 cm de paso",
+        "· no queda lugar para pararse junto a toilet en [5.1, 4.054] con 60 cm de paso",
+        "· no queda lugar para pararse junto a bidet en [4.62, 3.98] con 60 cm de paso"
+      ],
       "consola": []
     }
   },
@@ -299,7 +275,7 @@
     ]
   },
   "piezas": {
-    "total": 298,
+    "total": 240,
     "componentes": 76,
     "filas": [],
     "detectaRota": true
