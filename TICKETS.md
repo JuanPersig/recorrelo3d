@@ -1684,3 +1684,9 @@ techo de chapa, parrilla de ladrillo, cuartito con puerta y ventana, baranda baj
 **Dudas de distribución** (sin plano): cómo se conectan los ambientes (no hay fotos de pasillo, entrada ni hall); a qué
 ambiente da la ventana del porche y la de piedra; si estar y estar2 son uno o dos ambientes; dónde está el baño; adónde
 llevan la puerta vidriada del comedor, la puerta lateral de la cocina y la puerta trasera; dónde está el lavadero.
+**Respuestas del usuario (2026-11-08):** dormitorio y dormitorio2 son dos dormitorios distintos; estar y estar2 son el
+mismo ambiente ("podría ser la entrada"). Revisado: no puede ser la entrada desde la calle, porque visto desde adentro
+mirando a la ventana, la puerta (con mirilla) está en la pared de la derecha; si la ventana diera al porche (sur),
+esa pared sería la medianera oeste. Encaja con la distribución propuesta: ventana a la galería (norte, con persiana
+como la del entrante en la foto patio) y puerta al comedor junto a la esquina norte, la misma que se ve abierta en
+comedor2. La mirilla sugiere que el estar es una ampliación y esa puerta era la salida al fondo.
