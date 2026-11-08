@@ -8,6 +8,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
+import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { makeMaterials, COMPONENTS, OPENINGS, META, nests, exterior, blk, uvScale } from './components.js';
 import { checkSpec, checkScene, loosePieces, looseText } from './validate.js';
@@ -369,7 +370,7 @@ const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
 // "wideViews": true (el visor) hace que las vistas de adentro arranquen con el zoom más abierto que permite la rueda o el
 // pellizco (FOV_MAX), para que se vea lo más posible; las herramientas lo dejan apagado: ahí cada vista tiene el fov de su
 // foto. "mobileAO": false vuelve al celular sin oclusión ambiental, dibujando directo (para comparar en motor/pruebas/movil-pc.html)
-export async function start(container, { scene: spec, state, preset = 'premium', device = 'auto', base = null, mobileAO = true, wideViews = false }) {
+export async function start(container, { scene: spec, state, preset = 'premium', device = 'auto', base = null, mobileAO = true, wideViews = false, refine = true }) {
   const mobile = device === 'auto' ? matchMedia('(pointer: coarse)').matches || innerWidth < 500 : device === 'mobile';
   const direct = mobile && !mobileAO;
   // el antialiasing lo hace el posproceso (SMAA en escritorio, muestreo múltiple en celular); dibujando directo, el lienzo
@@ -716,7 +717,58 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     // la AO se calcula sin antialiasing; SMAA al final alisa los bordes que deja dentados
     if (!mobile) composer.addPass(new SMAAPass(1, 1));
   }
-  const draw = () => { refl?.render(renderer, scene, camera); composer ? composer.render() : renderer.render(scene, camera); };
+  // Pulido con la cámara quieta (2026-11-07): el visor dibuja solo cuando algo cambia, así que quieto le sobra tiempo.
+  // Al detenerse suma REFINE cuadros más, cada uno con la cámara corrida una fracción de píxel (bordes sin dientes y el
+  // ruido de la oclusión promediado) y el sol corrido apenas dentro de su disco (sombras con penumbra de verdad). El
+  // promedio se ve al cabo de unos 0,3 s y se descarta apenas la cámara se mueve. Mientras se camina no cambia nada.
+  const REFINE = !refine ? 0 : mobile ? 12 : 24, SUN_R = 0.012;   // SUN_R: radio del disco del sol (en radianes, ~0,7°)
+  let acc = null, accN = 0;
+  if (composer) {
+    composer.renderToScreen = false;
+    const vs = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }';
+    acc = {
+      rts: [0, 1].map(() => new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType })),
+      blend: new THREE.ShaderMaterial({ uniforms: { tNew: { value: null }, tAcc: { value: null }, w: { value: 1 } }, vertexShader: vs, depthTest: false, depthWrite: false,
+        fragmentShader: 'uniform sampler2D tNew, tAcc; uniform float w; varying vec2 vUv; void main() { gl_FragColor = mix(texture2D(tAcc, vUv), texture2D(tNew, vUv), w); }' }),
+      copy: new THREE.ShaderMaterial({ uniforms: { t: { value: null } }, vertexShader: vs, depthTest: false, depthWrite: false,
+        fragmentShader: 'uniform sampler2D t; varying vec2 vUv; void main() { gl_FragColor = texture2D(t, vUv); }' }),
+      quad: new FullScreenQuad(),
+    };
+  }
+  const halton = (i, b) => { let f = 1, r = 0; for (; i > 0; i = Math.floor(i / b)) { f /= b; r += f * (i % b); } return r; };
+  const sunBase = new THREE.Vector3(), sunOff = new THREE.Vector3(), sunU = new THREE.Vector3(), sunV = new THREE.Vector3();
+  let sunMoved = false;
+  function placeSun(k) {   // k = número de cuadro del pulido; 0 = el sol en su lugar
+    if (!sunMoved) sunBase.copy(sun.position);
+    if (!k) { if (sunMoved) { sun.position.copy(sunBase); sunMoved = false; renderer.shadowMap.needsUpdate = true; } return; }
+    const d = sunBase.clone().sub(sun.target.position), len = d.length();
+    sunU.set(0, 1, 0).cross(d).normalize(); sunV.copy(d).cross(sunU).normalize();
+    const a = halton(k, 2) * Math.PI * 2, rr = Math.sqrt(halton(k, 3)) * SUN_R * len;
+    sunOff.copy(sunU).multiplyScalar(Math.cos(a) * rr).addScaledVector(sunV, Math.sin(a) * rr);
+    sun.position.copy(sunBase).add(sunOff); sunMoved = true; renderer.shadowMap.needsUpdate = true;
+  }
+  function present(keep) {
+    const src = composer.readBuffer, [a, b] = acc.rts;
+    if (a.width !== src.width || a.height !== src.height) { acc.rts.forEach(t => t.setSize(src.width, src.height)); keep = false; }
+    if (!keep) accN = 0;
+    Object.assign(acc.blend.uniforms, { tNew: { value: src.texture }, tAcc: { value: a.texture }, w: { value: 1 / (accN + 1) } });
+    renderer.setRenderTarget(b); acc.quad.material = acc.blend; acc.quad.render(renderer);
+    acc.rts.reverse(); accN++;
+    acc.copy.uniforms.t.value = acc.rts[0].texture; renderer.setRenderTarget(null); acc.quad.material = acc.copy; acc.quad.render(renderer);
+  }
+  // un cuadro normal (descarta el pulido) o, con refine, uno más del pulido
+  const draw = (refine = false) => {
+    if (!refine) placeSun(0);
+    if (refine && acc) {
+      placeSun(accN);
+      const src = composer.readBuffer, jx = halton(accN + 1, 2) - 0.5, jy = halton(accN + 1, 3) - 0.5;
+      camera.setViewOffset(src.width, src.height, jx, jy, src.width, src.height);
+    }
+    refl?.render(renderer, scene, camera);
+    if (composer) { composer.render(); present(refine); } else renderer.render(scene, camera);
+    if (refine && acc) camera.clearViewOffset();
+  };
+  const refining = () => acc && accN < REFINE;
 
   /* ---------- piezas fijas unidas por material (menos dibujos por cuadro) ---------- */
   // lo que se oculta o se prende por separado queda aparte: techo y lámparas, decoración, cantos, pisos con reflejo
@@ -983,7 +1035,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       lastView.copy(camera.matrixWorld); lastProj.copy(camera.projectionMatrix); dirty = false;
       draw();
       frames++;   // cuadros dibujados de verdad (quieta, el visor no dibuja y marca 0)
-    }
+    } else if (!moving && refining()) draw(true);
     if (now - last > 500) { fps = Math.round(frames * 1000 / (now - last)); frames = 0; last = now; }
     raf = requestAnimationFrame(loop);
   }
@@ -1046,10 +1098,10 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     _debug: { gtao, scene, camera, THREE, refl, renderer, walk, redraw: touch },
     // dibuja ya y devuelve la imagen del lienzo (para hojas de comparación)
     capture(type = 'image/jpeg') { return this.frame().toDataURL(type, 0.9); },
-    // dibuja ya a calidad completa y devuelve el lienzo: hay que copiarlo enseguida (las herramientas lo copian a su lienzo)
+    // dibuja ya a calidad completa, con el pulido ("drawn" queda con la cantidad de cuadros que sumó), y devuelve el lienzo: hay que copiarlo enseguida (las herramientas lo copian a su lienzo)
     frame() {
       if (gtao) { gtao.enabled = true; gtao.blendIntensity = AO; aoFrom = null; }
-      setScale(1); camera.updateMatrixWorld(); draw(); return renderer.domElement;
+      setScale(1); camera.updateMatrixWorld(); draw(); this.drawn = 1; while (refining()) { draw(true); this.drawn++; } return renderer.domElement;
     },
     // mapa de identificación desde la cámara actual, al tamaño del lienzo: { width, height, ids (fila 0 = arriba), table,
     // viewProj }. Con { depth: true } también la distancia a la cámara de cada píxel (metros, 0 = cielo); con

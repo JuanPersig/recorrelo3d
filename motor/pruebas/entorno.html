@@ -29,7 +29,7 @@ Object.assign(scene.views, {
   lejos: { name: 'Desde afuera', pos: [14, 10, -26], target: [0.5, -6, 2], fov: 50, cut: true },
 });
 const names = (q.get('vistas') ?? 'ventanal,calle,balcon,general').split(',');
-const api = window.__viewer = await start($('stage'), { scene, state: { view: names[0], cut: false, night: false, decor: true }, device: 'desktop' });
+const api = window.__viewer = await start($('stage'), { scene, state: { view: names[0], cut: false, night: false, decor: true }, device: 'desktop', refine: q.get('pulido') !== '0' });
 const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
 const W = 540, H = 720, rows = [];
 for (const night of [false, true]) {

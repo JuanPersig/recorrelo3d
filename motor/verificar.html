@@ -93,7 +93,8 @@ for (const id of deptos) {
     api.setCut(!!v.cut); api.go(k, true);
     R.info.autoReset = false; R.info.reset();
     const url = api.capture();
-    const vi = r.vistas[k] = { nombre: v.name, dibujos: R.info.render.calls, triangulos: R.info.render.triangles };
+    const n = api.drawn ?? 1;   // por cuadro: la captura suma los cuadros del pulido
+    const vi = r.vistas[k] = { nombre: v.name, dibujos: Math.round(R.info.render.calls / n), triangulos: Math.round(R.info.render.triangles / n) };
     R.info.autoReset = true;
     // primero se compara con la base anterior; recién después, con &base=1, se la reemplaza
     const [now, old] = await Promise.all([load(url), load(`/capturas/verificacion/base/${id}/${k}.jpg?${Date.now()}`)]);

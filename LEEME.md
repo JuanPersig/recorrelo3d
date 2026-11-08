@@ -12,7 +12,7 @@ rioplatense. Hay git local (sin remoto): commitear al cerrar cada tanda.
 | `departamentos/<id>/scene.json` | lo único que cambia por depto (depto1, depto2, depto4, sannicolas, depto5) |
 | `fotos/<id>/` | PNG que usan las vistas; `fotos/<id>/original/` las originales. `fotos/depto3/` sin modelar |
 | `muestras/` | escenas de la rueda de la landing (fotos de Pexels), fuera de la verificación |
-| `capturas/` | hojas de comparación por depto, línea base de `verificar.html`, imágenes de la landing |
+| `capturas/` | hojas de comparación por depto, línea base de `verificar.html`, `entorno/` (pruebas del entorno), imágenes de la landing |
 | `entregas/depto5/` | kit del dueño: `index.html` + `tarjeta.html` con QR (`node motor/kit.mjs depto5`) |
 | `dist/`, `sitio/` | se regeneran (`empaquetar.mjs`, `publicar.mjs`); no van a git |
 | `presentacion/carta.html` | carta del servicio con QR al recorrido de muestra |
@@ -44,7 +44,9 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 ## Pendientes
 
 1. Subir `sitio/` a Cloudflare (el usuario).
-2. Calidad del render del visor y entorno por las ventanas (en curso, ver TICKETS).
+2. Calidad del render: hechos el entorno nuevo (T-53) y el pulido al quedarse quieto (T-54); siguen reflejos con el
+   propio depto, luz rebotada, brillo de lámparas y texturas reales (ver T-54).
+8. Borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/` (340 MB, copia vieja).
 3. Limitar la cámara de la vista general y botón "▶ Recorrer" (feedback de una administradora).
 4. Sección "Cómo es el proceso" de la landing: elegir qué imagen va (propuesta: una por paso).
 5. `og:image` para `/departamento-prueba/`; dominio propio (`recorrelo3d.com.ar`).

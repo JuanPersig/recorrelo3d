@@ -1348,3 +1348,46 @@ demo (living, dormitorio, cocina) y renders de noche nuevos del demo con el moto
 de `capturas/depto5/imagenes` eran de un motor viejo y se veían de día). Scroll por tarjeta 0,09 → 0,06 para que la
 portada no se alargue. Preview `sitio`: 19 imágenes únicas, ninguna rota.
 **Falta:** subir `sitio/`. Ojo: Bariloche es un anuncio ajeno (solo render, sin nombre ni ubicación).
+
+## T-52 · Limpieza del proyecto y sin videos (hecho, 2026-11-07)
+
+**Pedido del usuario:** "lo de los videos no será necesario: borrarlo y olvidarlo"; hacer las eliminaciones propuestas.
+**Qué se hizo:** git local (sin remoto) con el estado previo como primer commit. Se borraron los videos de todas las
+entregas, `motor/video.html` y toda mención en kit.mjs, exportar, plano, visor, engine, serve y SKILL.md (la entrega es
+recorrido 3D + tarjeta con QR). Fuera: `prototipo-detalle/`, `motor/lamina.html`, entregas de los deptos 1, 2, 4 y San
+Nicolás, capturas `t*`, `analisis-*` y `quitado-*`, los cuatro `prompt-*.md` y `ESTADO-2026-11-07.md` (reemplazados por
+`LEEME.md`). Fotos reordenadas en `fotos/<id>/` (PNG de las vistas) y `fotos/<id>/original/`; rutas actualizadas en los
+scene, comparar.html, convertir-avif.mjs y SKILL.md. launch.json sin las configuraciones viejas. Todo recuperable desde git.
+**Falta:** borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/` (340 MB, copia vieja): el permiso automático no dejó
+borrar fuera de la carpeta del proyecto; lo hace el usuario o lo autoriza.
+
+## T-53 · Entorno urbano más chico y de más calidad (hecho, 2026-11-07)
+
+**Pedido del usuario:** "el ambiente generado puede parecer medio barato; generar un entorno más chico pero de mayor calidad".
+**Qué se hizo (components.js, `cityAround` rehecho):** la cuadra de enfrente y los vecinos de la propia cuadra (±36 m)
+tienen relieve: marcos de ventana que sobresalen 10 cm (el vidrio parece hundido), carpinterías, vidrio con reflejo de
+cielo e interior en penumbra (de noche, 30 % encendidas), persianas a distinta altura, balconcitos con baranda de hierro,
+balcones corridos con vidrio, molduras, cornisa, parapeto, azotea con baldosas, tanques y planta baja con locales y
+toldos. Tres tipos de fachada (clásica, moderna, ladrillo). Veredas de baldosas con cordón, asfalto con textura,
+árboles de vereda con copa de hojas (tarjetas con transparencia, instanciadas) y sombra suave al pie, faroles con charco
+de luz de noche. Más allá de ±36 m, cajas con fachada pintada; al fondo, una silueta de ciudad en la bruma (antes había
+torres y manzanas enteras de cajas lisas). Los vecinos cercanos quedan al menos dos pisos por debajo del departamento.
+Pisos de abajo del propio edificio: la misma baranda que el balcón del depto y puertaventanas con vidrio (antes,
+antepechos macizos y paneles azules). Ventanas, balcones y hojas instanciados: por cuadro, las llamadas de dibujo
+quedaron iguales o menores (living1 579 → 471) y los triángulos +15 %.
+**Cómo se verificó:** `motor/pruebas/entorno.html` (hojas en `capturas/entorno/`: antes, despues, despues2, despues3);
+verificar.html del depto 5 (cambian general 8,6 %, balcón 6,2 %, planta 7,5 %; el resto < 1,5 %), línea base
+actualizada; sin avisos. Los otros deptos con ciudad también cambian (no se verificaron, por pedido del usuario).
+
+## T-54 · Pulido con la cámara quieta (hecho, 2026-11-07)
+
+**Qué se hizo (engine.js):** al detenerse la cámara el visor suma 24 cuadros (12 en celular), cada uno con la cámara
+corrida una fracción de píxel y el sol corrido dentro de un disco de ~0,7°: bordes sin dientes, ruido de la oclusión
+promediado y sombras con penumbra suave. Se ve en ~0,3 s y se descarta al moverse (mientras se camina no cambia nada;
+al arrancar a moverse vuelve el cuadro simple, diferencia sutil). `frame()`/`capture()` devuelven el cuadro pulido
+(exportar, portada y verificación salen mejor); `start(…, { refine: false })` lo apaga. Barandas sin mipmaps para que
+no desaparezcan de lejos.
+**Cómo se verificó:** `capturas/entorno/sin-pulido.jpg` vs `con-pulido.jpg` y `recorte.jpg`; verificar.html por cuadro.
+**Falta:** probarlo en el celular real; siguientes mejoras propuestas: reflejos de metales y espejos con el propio
+departamento (captura del ambiente), luz rebotada por ambiente (sondas), brillo suave de las lámparas de noche,
+texturas reales (descarga: pedir permiso) y limitar la cámara de la vista general + "▶ Recorrer".

@@ -2474,9 +2474,10 @@ function crownBank(mats, seedOf, max, c, far = 35) {
 // Lo repetido (ventanas, balcones, hojas) va instanciado: pocas llamadas de dibujo aunque haya cientos de ventanas.
 const ENVTEX = {};
 const envTex = (k, f) => (ENVTEX[k] ??= f());
-function canvasTex(w, h, draw, srgb = true) {
+function canvasTex(w, h, draw, srgb = true, mips = true) {
   const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
   const t = new THREE.CanvasTexture(c); if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  if (!mips) { t.generateMipmaps = false; t.minFilter = THREE.LinearFilter; }
   t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; return t;
 }
 function noiseFill(g, w, h, f) {
@@ -2526,7 +2527,7 @@ const railTex = () => envTex('rail', () => canvasTex(256, 256, (g, w, h) => {
   g.clearRect(0, 0, w, h); g.fillStyle = '#ffffff';
   g.fillRect(0, 0, w, 10); g.fillRect(0, h - 40, w, 6);
   for (let x = 6; x < w; x += 28) g.fillRect(x, 0, 4, h - 34);
-}));
+}, true, false));
 // vereda de baldosas de 40 cm (2 m por repetición) y asfalto (4 m)
 const walkTex = () => envTex('walk', () => canvasTex(512, 512, (g, w) => {
   noiseFill(g, w, w, (x, y) => { const t = hash(Math.floor(x / 102.4), Math.floor(y / 102.4)), v = 196 + 14 * t + 10 * vnoise(x / 6, y / 6, 86, 86); return [v, v - 2, v - 7]; });
@@ -2707,7 +2708,7 @@ function cityAround(spec, { M, ext, baseY, front }) {
     while (Math.abs(x - cx) < NEAR) {
       const w = 8 + r() * 6, xa = side < 0 ? x - w : x, xb = side < 0 ? x : x + w;
       const near = Math.min(Math.abs(xa - cx), Math.abs(xb - cx)) < (ext.x1 - ext.x0) / 2 + 12;
-      const floors = near ? Math.max(2, Math.min(fb - 1, 2 + Math.floor(r() * fb))) : nFloors();
+      const floors = near ? Math.max(2, Math.min(fb - 2, 2 + Math.floor(r() * fb))) : nFloors();   // al menos dos pisos por debajo: ni el tanque llega al departamento
       building(xa + 0.02, xb - 0.02, ext.z0, -1, ext.z1 - ext.z0 + 8, floors, pick(), pal[Math.floor(r() * pal.length)]);
       x += side * w;
     }
