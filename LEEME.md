@@ -43,6 +43,24 @@ Hecho y aprobado en las tandas del 7 y 8 de noviembre (detalle en TICKETS.md, T-
   piezas distintas (`jitter`), variación de tono a escala de habitación, y texturas pre-generadas en `motor/texturas/`
   (el armado no se hizo más lento). Probado en iPhone: anda bien, solo tarda un poco en cargar.
 
+Hecho en la tanda del depto grande (2026-11-08, T-60 a T-63; las lecciones de proceso están en SKILL.md, "Lecciones de
+un depto cargado"):
+- **Piezas nuevas:** `ladder-shelf`, `wire-shelf`, `kitchen-cart`, `medicine-cabinet`, `wall-shelf` (cubby, spice con
+  luz, box), `washer`, `laundry-sink`. **Variantes:** `sofa` daybed (capitoné con botones, rulos, cajón), `chair`
+  panel / spindle / stool, `dining-table` trestle, plank con patas de madera y `boards`, `tablecloth` (liso o tropical),
+  `bookshelf` con `cabinet`, `crown` y stepped, `vanity` pedestal con `taps: "cross"`, `toilet` con válvula, `bathtub`
+  con `faucet`, `kitchen-base` de madera con perillas, acero, doble bacha y canilla de pared, `kitchen-wall` con perillas,
+  `curtains` con barral de madera, presillas, ruedo y `sheer` numérico, `ceiling-light` dome, `floor-fan` tower, cama
+  con almohadones redondos y al crochet. **Objetos:** olla, cacerola, escurridor, frascos, canasto, caja, portarretratos,
+  potus, organizador escalonado y flexo. **Aberturas:** puerta con media hoja vidriada o mirilla, ventana esmerilada con
+  travesaños; balcón con baranda de paños, red y tabiques. **Materiales:** crochet, tropical, mimbre, hojas, acero cepillado.
+- **Rendimiento:** lo decorativo se une por material en un grupo por nivel, y los materiales iguales salvo el color se
+  unen con color por vértice. Depto 5: de 400–660 a 220–480 dibujos por vista con la misma imagen.
+- **Vista general:** la bruma se mide desde el departamento (de lejos teñía el piso y los edificios en franjas) y no se
+  puede alejar más que el encuadre de la vista × 1,15 (`ZOOM_OUT`).
+- **Carga:** el motor no dibuja durante la precarga y el visor tapa todo hasta `api.ready`; la animación de carga es
+  solo transform/opacity (no se traba).
+
 ## Servidores (`.claude/launch.json`)
 
 `visor` :5180 (raíz del proyecto) · `sitio` :5183 (`sitio/` como Cloudflare) · `landing` :5184 (`npm run dev`).
@@ -50,8 +68,11 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 
 ## Reglas del usuario
 
-- Solo se pule el **depto 5 ("Departamento demo"**, sin barrio en nada público). Los cambios de motor son generales,
-  pero se verifica **solo el depto 5**: `motor/verificar.html?deptos=depto5` (`&base=1` solo si el cambio es bueno).
+- El **depto 5 ("Departamento demo"**, sin barrio en nada público) es la referencia que no se puede romper. Los cambios
+  de motor son generales y se verifican con el demo y el depto en curso: `motor/verificar.html?deptos=depto5,depto6`
+  (`&base=1` solo si el cambio es bueno).
+- La vista general no se aleja mucho más que su encuadre de arranque; la pantalla de carga tapa toda la precarga.
+- Si un rincón se ve en una sola foto y el objeto es ambiguo, pedir otra foto antes de inventar el mueble.
 - Entrega = recorrido 3D + tarjeta con QR. **Sin videos** (se quitaron el 2026-11-07), sin imágenes sueltas ni plano,
   sin fotos reales en las ventanas.
 - Piezas sin caras compartidas ni flotando; 60 cm de circulación; `warnings` vacío. Nada que se prenda, apague o
@@ -65,9 +86,10 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 ## Depto grande en curso (2026-11-08)
 
 **depto6 "Dos dormitorios con balcón"** (anuncio ajeno de Rosario: solo renders, nunca sus fotos en algo público).
-Primera tanda hecha (T-60 motor, T-61 depto): 7 componentes nuevos y muchas variantes, unión de lo decorativo y por
+Tandas hechas (T-60 a T-63): 7 componentes nuevos y muchas variantes, unión de lo decorativo y por
 color (el depto 5 bajó de 400–660 a 220–480 dibujos por vista con la misma imagen), luz horneada. Depto 6: armado
-3,9 s, 390–715 dibujos por vista. Hojas en `capturas/depto6/`. Pendiente (T-61): decidir el aviso del baño (1,50 m
+3,9 s, 390–715 dibujos por vista. Hojas en `capturas/depto6/`. Publicado para probar en https://recorrelo3d.pages.dev/departamento-dos-dormitorios/ (el usuario sube `sitio/`).
+Pendiente (T-61): decidir el aviso del baño (1,50 m
 de ancho real: no entran 60 cm entre inodoro y lavatorio), colores con `colores.html`, puntaje de parecido, paredes por
 ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.md](prompt-depto-grande.md).
 

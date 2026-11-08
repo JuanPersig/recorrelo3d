@@ -176,10 +176,10 @@
    "side-table"
   ],
   "params": {
-   "wood": "'#5c2a1c' / '#c8925e'",
-   "seatHeight": "0.46",
+   "wood": "'#6b3d24' / '#5c2a1c' / '#c8925e'",
+   "seatHeight": "0.48 / 0.46",
+   "color": "'#c8483f' / '#202022' / '#b8783f' / '#d9d3c7' / '#2b2b2b' / '#9a9a9a'",
    "height": "0.9",
-   "color": "'#202022' / '#b8783f' / '#d9d3c7' / '#2b2b2b' / '#9a9a9a'",
    "panel": "'#ece7dc'",
    "legs": "'#c3c6ca' / '#1d1d1d'"
   }

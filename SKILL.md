@@ -84,12 +84,20 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
 
 ## Si se cambia el motor o un componente
 
-- Correr `motor/verificar.html` (todos los departamentos) antes de darlo por hecho: compara una captura de día por
-  vista con `capturas/verificacion/base/`. Mirar los pares que marca; recién si el cambio es bueno, `&base=1`.
+- Correr `motor/verificar.html?deptos=depto5,<depto en curso>` antes de darlo por hecho (no todos: el demo es la
+  referencia que no se puede romper): compara una captura de día por vista con `capturas/verificacion/base/`. Mirar los
+  pares que marca; recién si el cambio es bueno, `&base=1`. Anotar armado, mallas y dibujos por vista.
+- Pieza nueva: probarla de cerca con `motor/pruebas/cerca.html?items=[…]&capturar=<id>/cerca-<nombre>` (un mueble por
+  hoja: con varios, el encuadre queda lejos) y leer la hoja.
 - Antes de ubicar algo de pared, leer en el catálogo dónde está su origen (las alacenas van centradas en su
   profundidad; la cama con respaldo, 10 cm más adelante).
 - Componente nuevo: comentario de una línea antes de su función (qué es, hacia dónde mira), su ficha en `META`
-  (`mount`, `solid`, `use`, `nests`) y `node motor/catalogo.mjs` para regenerar el catálogo.
+  (`mount`, `solid`, `use`, `nests`, `fixed`) y `node motor/catalogo.mjs` para regenerar el catálogo. El catálogo lee
+  los parámetros de `p.algo` dentro de la función (y de las que reciben `p`): si un ayudante recibe otra cosa, pasarle
+  `p.algo` explícito para que el parámetro figure.
+- Calidad de las piezas: curvas reales (torno, tubos, tablas curvas con `bentBoard`), lo chico unido por material con
+  `meshBag()`, botones de capitoné con `tuftGeo`/`addButtons`, almohadones apoyados con `restPillow`, y ninguna pieza
+  flotando: lo que entra en otra pieza entra 2–5 mm.
 - Piezas que se tocan sin compartir caras: dos caras en el mismo plano parpadean y el usuario lo ve de cerca.
 - Nada que se prenda, se apague o cambie de calidad a la vista mientras se camina.
 - Editar archivos con Edit/Write o con node; PowerShell `Get-Content`/`Set-Content` rompe los acentos.
@@ -109,3 +117,90 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
   ante una clave mal escrita).
 - Ejemplos completos: `departamentos/depto1` (dos ambientes, piso brillante), `depto2` (monoambiente, fotos de
   proporciones distintas) y `depto4` (dúplex con techo a dos aguas y lago).
+
+## Lecciones de un depto cargado (depto 6, 2026-11-08)
+
+Todo lo que costó resolver al modelar el primer depto grande. Leerlo antes de arrancar el próximo.
+
+### Fotos y plano
+- **Pedir o buscar todas las fotos antes de amueblar.** Un rincón visto en una sola foto engaña: un organizador
+  escalonado arriba de una mesita se leyó como un estante escalera de piso, y la mesa como una mesa rústica suelta en el
+  medio. La foto que faltaba (la otra punta del living) mostró que la mesa iba contra la pared. Si un objeto grande se
+  ve solo de costado o en el borde de una foto, preguntar al usuario si hay otra foto de ese rincón antes de inventarlo.
+- Un mismo mueble cambia mucho de color entre fotos (la tapa de la mesita: oscura en una, naranja en otra): buscarlo en
+  todas antes de decidir que son dos muebles distintos.
+- **Plano del anuncio** (si viene): ampliarlo con `magick plano.jpg -crop …  -resize 200%` y medir en píxeles. Escala:
+  una cota total conocida (el frente, 10,06 m) entre dos ejes de columna. Las cotas sueltas suman el frente (4,56 +
+  0,60 + 1,50 + 0,60 + 2,80 = 10,06). Convenciones de planos de obra: "S.C." = semicubierto (balcón); "AIRE Y LUZ" =
+  patio (ventanas que dan ahí: dormitorio 2, cocina, lavadero); una caja con una línea fina de un lado = placard con sus
+  puertas del lado de la línea; huecos en las paredes = puertas o pasos (el plano no dibuja las hojas); los rectángulos
+  rayados = plenos o columnas. Los dormitorios suelen tener un nicho de placard y un "hall" chico de entrada: van como
+  ambiente en L con `rects`.
+- Superficie de control: cubierta ≈ suma de ambientes + paredes; descubierta ≈ el balcón (7 m² = 1,10 × 6,1).
+
+### Coordenadas
+- Conviene la fachada de los ventanales en z = 0 con el balcón en -z (el entorno se arma mirando a -Z). Mirando hacia -z,
+  la derecha de la cámara es +x: elegir x para que lo que está a la derecha en la foto quede en +x.
+- Rotación de los muebles (frente local +Z): `90` → el frente mira a +X; `-90` → a -X (el fondo queda en +X, contra una
+  pared en x alta); `180` → a -Z. Los de pared tienen el fondo en z = 0: con `90` el fondo queda hacia -X.
+- La cama con la cabecera contra una pared en +X: `rotation: -90`, centro a largo/2 de la pared.
+- Paredes en Z se cortan contra las paredes en X solo en sus puntas; un cruce en T o en + en el medio está bien (los
+  volúmenes se tapan entre sí). Una pared en Z puede ir de centro a centro.
+
+### Baños y revestimientos
+- `wall-tiles` tiene 14 mm: todo lo que va contra una pared revestida se corre 0,014 (lavatorio, botiquín, toallero,
+  inodoro: fondo en la cara del azulejo). Alrededor de una puerta, el revestimiento va en tramos: a los costados y un
+  tramo arriba con `"y": 2.05`. Los tramos de paredes vecinas no se tocan en la esquina (uno corto 14 mm).
+- Un baño de 1,50 m de ancho con inodoro y bidé de un lado y lavatorio del otro deja ~50 cm: el control de 60 cm
+  avisa. Con artefactos de tamaño real no se arregla: consultar al usuario (pendiente en T-61).
+- La puerta del baño abre hacia adentro y su hoja barre el lado donde va la bisagra: ponerla del lado que no choca (la
+  foto lo dice: el picaporte está del otro lado). `hinge: "start"` es la punta del lado del `from` de la pared.
+
+### Muebles y adornos
+- Lo que va sobre un estante o una mesa es `tabletop-decor` con `"y"` = la altura de la tapa; ahora acepta objetos
+  `{ "kind", "color", "x", … }`. Sobre una mesa con mantel, la tapa queda en `height` + 0,008.
+- Electrodomésticos sobre un carro: `appliance` encastra con `kitchen-cart`.
+- Lámpara de techo bajo un cielorraso bajo (viga de `structure`): `"y": -0,2` (lo que baja el cielorraso).
+- Cortinas con presillas (`tabs`): el barral queda a `height` + 0,06; el aire acondicionado va arriba del barral.
+  Cortina corrida que tapa la ventana: `panelWidth` = `width` / 2. Algodón que brilla a contraluz: `"sheer": 0,86`.
+- Llaves de cruz (`crossTap`) y picos (`spoutGeo`) para cualquier grifería clásica; un caño que sale de una pared
+  arranca en z = 0 o adentro: si asoma detrás del plano de la pared, el control de piezas sueltas no lo ve amurado.
+- Para que una pieza amurada no cuente como suelta, el componente necesita `fixed` en su ficha (`back` o `sides`) y la
+  pieza tiene que tocar justo el borde de la caja del componente (nada más puede sobresalir de ese lado).
+- Torres de una biblioteca escalonada: se tocan de costado (una separación de 2 mm las hace "piezas sueltas").
+
+### Circulación
+- El mapa `capturas/verificacion/actual/<id>/circulacion-0.png`: x horizontal, z vertical (z = 0 arriba), punto rojo =
+  la puerta de entrada, verde = se llega, amarillo = libre pero sin llegada. Lo más común en un living cargado: el paso
+  entre la punta de una mesa y una biblioteca (dejar ≥ 0,65 m, la persona es un círculo de 60 cm).
+- "No queda lugar para pararse junto a…" en todo un ambiente casi siempre es que el ambiente entero no se alcanza:
+  arreglar primero la llegada.
+
+### Encuadre y comparación
+- Fotos de celular apaisadas (1184 × 864): `viewAspect` 1,37. Cámaras a 1,3–1,5 m, fov 70–74. Si en el render se ve
+  más hondo que en la foto, la cámara está demasiado atrás; si un mueble aparece encima de la cámara, la cámara está
+  dentro de él.
+- Comparar a tamaño real cada hoja y corregir en tandas: encuadre, después materiales, después adornos.
+
+### Luz
+- Hornear (`hornear.html?id=<id>`, 40–80 s) cada vez que se mueven muebles; las herramientas de horneado, plano y
+  texturas ya entienden `rects`.
+- Metal puro (`M.metal`) refleja el ambiente y en una cocina sale casi negro: para acero inoxidable de mesadas y
+  heladeras usar `M.brushed`.
+
+### Rendimiento (medido)
+- El motor une lo decorativo por material y los materiales iguales salvo el color en uno con color por vértice: no hace
+  falta ahorrar colores en el scene. Lo que sí multiplica triángulos: bordes redondeados (`blk` con radio) en cientos de
+  piezas chicas (libros): usar cajas rectas.
+- Referencia: depto 5 = 220–480 dibujos por vista; depto 6 (cargado) = 390–715, ~520 k triángulos de escena, armado
+  ~1,5 s y precarga completa ~4–5 s en la PC.
+
+### Herramientas (desde Claude Code)
+- Con el panel del navegador oculto no corre `requestAnimationFrame`: no se puede probar arrastrar ni la rueda. Para
+  ver una pose: `__viewer.setPose({ p, t, f, mode: 'orbit' })`, `__viewer.capture()` y POST a `/capturas/<id>/x.jpg`.
+- `javascript_tool` corta a los 45 s: esperar de a 40 s. `verificar.html` con dos deptos tarda ~80 s, `comparar.html`
+  ~75 s, `hornear.html` 40–80 s. Con `&base=1`, esperar a que termine antes de commitear.
+- Cambios grandes de código: escribir el script en el scratchpad (`.cjs`) y correrlo con node; un `node -e` largo con
+  comillas invertidas dentro de un heredoc de bash falló.
+- Publicar: carpeta fija en `publicar.json`, `node motor/publicar.mjs`; revisar que `sitio/<carpeta>/` no tenga
+  `/fotos/` (empaquetar saca fotos, nota, estimados y orientación). Anuncio ajeno: solo renders.
