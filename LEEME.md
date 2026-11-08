@@ -126,8 +126,10 @@ tolerables: el render es una abstracción precisa del departamento, no puede agr
    anotado en `estimated` como "sin fotos: solo el espacio del plano".
 3. **Mismo criterio en todo lo que no tiene foto** (consultar al usuario antes): el segundo dormitorio (cama, mesa de
    luz, velador, cortinas y placard están estimados) y los frentes de los placards.
-4. Recorrer todas las hojas de `capturas/depto6/` con la lista de control de SKILL.md ("Errores que no se repiten") y
-   anotar cada diferencia de paredes, aberturas y muebles antes de dar el depto por bueno.
+4. Rehacer la **compuerta 1 de SKILL.md** en todo el depto 6, no solo en la cocina: la secuencia de cada pared
+   visible en cada foto, cruzada con el plano (pilares y plenos incluidos), y mostrarle al usuario el plano 2D
+   (`motor/plano.html?depto=depto6`) con las dudas antes de tocar muebles. Después, compuerta 2 (muebles contundentes)
+   y recién al final la luz y la verificación. Recorrer todas las hojas con "Errores que no se repiten".
 
 **Después:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
 cargar (sospecha: el iframe del recorrido en vivo carga el motor en el mismo hilo) y en celular las tarjetas de "Las

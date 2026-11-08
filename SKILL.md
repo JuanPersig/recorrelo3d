@@ -12,6 +12,41 @@ componente que sirva para cualquier departamento; nunca un parche para uno solo.
 El público son anfitriones e inmobiliarias: el modelo es **fiel** a las fotos y a la vez **luce** el lugar (luz, calidez,
 detalles que suman), sin inventar ambientes, ventanas ni metros. Todo lo visible para el usuario, en español.
 
+## Precisión primero: tres compuertas (obligatorio desde el 2026-11-08)
+
+El usuario: "la precisión debería traer 100 % los detalles principales de los departamentos; hay cuestiones finas como
+la existencia de un teléfono que no importan, pero paredes y muebles contundentes es importante". Y el tiempo: el depto
+6 llevó cerca de una hora y salió con errores de paredes. Por eso el trabajo va en tres compuertas; no se pasa a la
+siguiente sin cerrar la anterior, y lo de una compuerta posterior nunca justifica volver a mover paredes.
+
+**Qué es "principal" (tiene que estar al 100 %):** paredes, esquinas, pilares y plenos, puertas, ventanas y pasos (su
+lugar, su ancho y hacia dónde abren), y los muebles contundentes: camas, sillones, mesas, placards, bibliotecas,
+mesadas y alacenas, heladera, cocina, artefactos del baño, tele, aire, calefón. **Fino (suma, pero no es requisito):**
+adornos, libros, frascos, teléfonos, cables, almohadones.
+
+**Compuerta 1 · Estructura** (antes de un solo mueble):
+- Por cada foto, escribir la **secuencia de cada pared visible**, de esquina a esquina: "esquina N → ventana (~0,5 m,
+  sobre la mesada) → puerta (~0,8 m) → pilar (~0,55 × 0,3) → esquina S". Medir los anchos contra algo conocido (puerta
+  0,80, mesada 0,60, heladera 0,60, cama 1,40/1,60).
+- Cruzar cada secuencia con el plano y con las otras fotos de la misma pared: tienen que coincidir. Si no coinciden o
+  una pared no se ve en ninguna foto, es una duda.
+- Del plano: cada rectángulo rayado o con cruz es un pilar o pleno (`structure`), cada hueco es una abertura.
+- Armar solo paredes, aberturas y estructura y comparar todas las hojas (`comparar.html`) mirando **solo** eso: cada
+  tramo de pared, cada esquina, dónde empieza y termina cada abertura.
+- **Mostrarle al usuario el plano 2D** (`motor/plano.html?depto=<id>`) con la lista de dudas y esperar su OK. Es un
+  minuto suyo y evita la hora de rehacer (los errores de la cocina del depto 6 se habrían visto ahí).
+
+**Compuerta 2 · Muebles contundentes:** solo los que se ven en alguna foto, en su lugar y de su tamaño, mirando hacia
+donde miran. Un ambiente sin fotos queda vacío. Comparar todas las hojas mirando solo los muebles contundentes.
+
+**Compuerta 3 · Detalle, luz y verificación:** adornos y textiles, colores (`colores.html`), hornear la luz una sola vez
+al final, `verificar.html` una vez, láminas.
+
+**Tiempo:** el objetivo es un depto completo en ~30 minutos cuando el catálogo ya tiene las piezas (estructura ~10,
+muebles ~10, detalle y verificación ~10). Para lograrlo: piezas nuevas del motor en una tanda aparte (no en medio del
+depto); comparar solo las vistas que cambiaron (`comparar.html?…&view=<vista>`); hornear y verificar una sola vez, al
+final de la compuerta 3; pedir al usuario las fotos que faltan en la compuerta 1, no al final.
+
 ## Pasos
 
 Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
@@ -26,13 +61,14 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
    carga el texto tarde: en el navegador, buscar en los `<script>` los `"htmlText"` (descripción) y los `"title"`
    (resumen y servicios); los muebles conocidos son la regla
    (cama queen 1,60 × 2,00 m, doble 1,40 × 1,90, puerta 0,80 × 2,05). No subestimar: un monoambiente porteño ronda
-   30–32 m². Lo que no se ve en ninguna foto se modela simple y va en `estimated`.
+   30–32 m². Lo que no se ve en ninguna foto: solo el espacio del plano, sin muebles, y va en `estimated`.
    *Hecho cuando* cada ambiente tiene ancho y largo con su fuente (anuncio, mueble de referencia o estimado).
 3. **Plano.** Ambientes como rectángulos en metros (`rooms[].rect`), paredes en X o en Z (`walls`), aberturas con
    `at` medido desde el `from` de la pared. Orientar el plano contra la cámara de **una foto concreta** y escribirlo en
    `orientation`: así no se espeja (pasó en el depto 2). Si la fachada con los ventanales no mira a −Z, `"exterior": { "facing": "+x" }`. Un ambiente en L o en U
    lleva `"rects"` (varios rectángulos) en lugar de `"rect"`. Las paredes, por ahora, en X o en Z.
-   *Hecho cuando* recorriendo cada foto, lo que está a la izquierda y a la derecha de la cámara coincide con el plano.
+   *Hecho cuando* recorriendo cada foto, lo que está a la izquierda y a la derecha de la cámara coincide con el plano, la
+   secuencia de cada pared (compuerta 1) coincide con todas las fotos y el usuario aprobó el plano 2D.
    Plano para el dueño: `motor/plano.html?depto=<id>` deja `capturas/<id>/plano.png` y la lista de dudas (lo que va en
    `estimated`); si hay un dueño, mandárselo y corregir antes de seguir. Es una herramienta de trabajo: no va en la
    entrega.
