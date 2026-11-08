@@ -1,151 +1,172 @@
 {
-  "fecha": "2026-11-08T00:25:23.018Z",
+  "fecha": "2026-11-08T00:57:39.895Z",
   "deptos": {
     "depto5": {
       "estado": "revisar",
       "problemas": [
-        "la vista \"Planta\" cambió 2.2 %"
+        "la vista \"Vista general\" cambió 3 %",
+        "la vista \"Living y ventanal\" cambió 6.5 %",
+        "la vista \"Sillón y barra\" cambió 6.5 %",
+        "la vista \"Comedor y balcón\" cambió 6.7 %",
+        "la vista \"Sillón\" cambió 7.4 %",
+        "la vista \"Desde la barra\" cambió 7.2 %",
+        "la vista \"Living hacia la entrada\" cambió 7.3 %",
+        "la vista \"Barra y ventanal\" cambió 6.9 %",
+        "la vista \"Mesa para dos\" cambió 6.7 %",
+        "la vista \"Cocina\" cambió 9 %",
+        "la vista \"Cocina por el arco\" cambió 8.5 %",
+        "la vista \"Arco y banquetas\" cambió 10.5 %",
+        "la vista \"Desde la entrada\" cambió 7 %",
+        "la vista \"Cama\" cambió 7.3 %",
+        "la vista \"Zona de dormir\" cambió 7.4 %",
+        "la vista \"Baño\" cambió 4.8 %",
+        "la vista \"Vanitory\" cambió 7.6 %",
+        "la vista \"Recibidor\" cambió 7.2 %",
+        "la vista \"Consola y espejo\" cambió 8.3 %",
+        "la vista \"Pasillo de entrada\" cambió 6.9 %",
+        "la vista \"Vista al balcón\" cambió 3.6 %",
+        "la vista \"Planta\" cambió 3.3 %"
       ],
       "vistas": {
         "general": {
           "nombre": "Vista general",
-          "dibujos": 651,
-          "triangulos": 575970,
-          "cambio": 0.2
+          "dibujos": 597,
+          "triangulos": 640402,
+          "cambio": 3
         },
         "living1": {
           "nombre": "Living y ventanal",
-          "dibujos": 463,
-          "triangulos": 617909,
-          "cambio": 0.2
+          "dibujos": 461,
+          "triangulos": 608677,
+          "cambio": 6.5
         },
         "living2": {
           "nombre": "Sillón y barra",
           "dibujos": 473,
-          "triangulos": 600689,
-          "cambio": 0.2
+          "triangulos": 597505,
+          "cambio": 6.5
         },
         "living3": {
           "nombre": "Comedor y balcón",
-          "dibujos": 512,
-          "triangulos": 601716,
-          "cambio": 0.2
+          "dibujos": 511,
+          "triangulos": 595508,
+          "cambio": 6.7
         },
         "living4": {
           "nombre": "Sillón",
-          "dibujos": 579,
-          "triangulos": 571649,
-          "cambio": 0.2
+          "dibujos": 578,
+          "triangulos": 565441,
+          "cambio": 7.4
         },
         "living5": {
           "nombre": "Desde la barra",
-          "dibujos": 629,
-          "triangulos": 661836,
-          "cambio": 0.2
+          "dibujos": 619,
+          "triangulos": 690720,
+          "cambio": 7.2
         },
         "living6": {
           "nombre": "Living hacia la entrada",
-          "dibujos": 608,
-          "triangulos": 616890,
-          "cambio": 0.1
+          "dibujos": 539,
+          "triangulos": 710832,
+          "cambio": 7.3
         },
         "living8": {
           "nombre": "Barra y ventanal",
-          "dibujos": 552,
-          "triangulos": 594416,
-          "cambio": 0.2
+          "dibujos": 553,
+          "triangulos": 594256,
+          "cambio": 6.9
         },
         "comedor": {
           "nombre": "Mesa para dos",
-          "dibujos": 438,
-          "triangulos": 558007,
-          "cambio": 0.1
+          "dibujos": 439,
+          "triangulos": 553311,
+          "cambio": 6.7
         },
         "cocina1": {
           "nombre": "Cocina",
-          "dibujos": 432,
-          "triangulos": 549723,
-          "cambio": 0.1
+          "dibujos": 433,
+          "triangulos": 546539,
+          "cambio": 9
         },
         "cocina2": {
           "nombre": "Cocina por el arco",
-          "dibujos": 662,
-          "triangulos": 580406,
-          "cambio": 0.1
+          "dibujos": 663,
+          "triangulos": 575230,
+          "cambio": 8.5
         },
         "cocina5": {
           "nombre": "Arco y banquetas",
-          "dibujos": 626,
-          "triangulos": 586762,
-          "cambio": 0.1
+          "dibujos": 630,
+          "triangulos": 590658,
+          "cambio": 10.5
         },
         "dormitorio1": {
           "nombre": "Desde la entrada",
-          "dibujos": 585,
-          "triangulos": 688000,
-          "cambio": 0.2
+          "dibujos": 557,
+          "triangulos": 748368,
+          "cambio": 7
         },
         "dormitorio3": {
           "nombre": "Cama",
-          "dibujos": 392,
-          "triangulos": 474498,
-          "cambio": 0.1
+          "dibujos": 395,
+          "triangulos": 475850,
+          "cambio": 7.3
         },
         "dormitorio4": {
           "nombre": "Zona de dormir",
-          "dibujos": 401,
-          "triangulos": 485362,
-          "cambio": 0.1
+          "dibujos": 402,
+          "triangulos": 480666,
+          "cambio": 7.4
         },
         "bano1": {
           "nombre": "Baño",
-          "dibujos": 561,
-          "triangulos": 491308,
-          "cambio": 0.2
+          "dibujos": 564,
+          "triangulos": 493692,
+          "cambio": 4.8
         },
         "bano2": {
           "nombre": "Vanitory",
           "dibujos": 395,
-          "triangulos": 479752,
-          "cambio": 0.1
+          "triangulos": 473544,
+          "cambio": 7.6
         },
         "entrada": {
           "nombre": "Recibidor",
-          "dibujos": 717,
-          "triangulos": 722254,
-          "cambio": 0.1
+          "dibujos": 670,
+          "triangulos": 785442,
+          "cambio": 7.2
         },
         "consola": {
           "nombre": "Consola y espejo",
-          "dibujos": 664,
-          "triangulos": 497226,
-          "cambio": 0.1
+          "dibujos": 610,
+          "triangulos": 559986,
+          "cambio": 8.3
         },
         "pasillo": {
           "nombre": "Pasillo de entrada",
-          "dibujos": 563,
-          "triangulos": 695250,
-          "cambio": 0.2
+          "dibujos": 553,
+          "triangulos": 756914,
+          "cambio": 6.9
         },
         "balcon": {
           "nombre": "Vista al balcón",
-          "dibujos": 339,
-          "triangulos": 454752,
-          "cambio": 0.1
+          "dibujos": 340,
+          "triangulos": 454592,
+          "cambio": 3.6
         },
         "planta": {
           "nombre": "Planta",
-          "dibujos": 629,
-          "triangulos": 575926,
-          "cambio": 2.2
+          "dibujos": 575,
+          "triangulos": 640358,
+          "cambio": 3.3
         }
       },
-      "armadoMs": 2498,
+      "armadoMs": 20276,
       "mapas": [
         "/capturas/verificacion/actual/depto5/circulacion-0.png"
       ],
-      "mallas": 288,
-      "triangulos": 217816,
+      "mallas": 260,
+      "triangulos": 250032,
       "advertencias": [],
       "consola": []
     }

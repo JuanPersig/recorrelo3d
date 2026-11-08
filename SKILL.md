@@ -40,6 +40,11 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
    para el huésped en `about` (solo lo que muestran las fotos, sin metros); lo interno en `note`. Una vista por foto con
    `photo` (id del archivo sin extensión) y `photoAspect` si las fotos no tienen todas la misma proporción
    (`viewAspect` es la del departamento); vistas generales con `"cut": true`. Ver la referencia más abajo.
+   Floreros y ramos: `tabletop-decor` con "dried-flowers", "eucalyptus", "pampas", "wildflowers", "vase" o
+   "bottle-flowers" (generador de ramos en components.js: estilos en `BOUQUETS`, recipientes en `vessel`); elegir el
+   que más se parezca a la foto y dar `flowers` con el color de las flores.
+   Luz rebotada: con la distribución y los muebles cerrados, `motor/hornear.html?id=<id>` (unos segundos) y
+   `"lighting": { "bake": "gi.json" }` en el scene; volver a hornear si algo cambia.
    *Hecho cuando* el visor lo abre sin errores en la consola:
    `http://localhost:5180/motor/visor.html?scene=/departamentos/<id>/scene.json&dev` (servidor `visor` de launch.json).
 5. **Validar.** `http://localhost:5180/motor/verificar.html?deptos=<id>` y `node motor/catalogo.mjs`.

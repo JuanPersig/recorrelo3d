@@ -2105,78 +2105,153 @@ function bookshelf(p, { M }) {
   return g;
 }
 
-// objetos chicos para apoyar en una mesa, mesada o estante ("items": "vase", "books", "bowl", "candle", "plant",
-// "bottle" (botella de vidrio, llena de "fill" si se da), "bottle-flowers" (botella con flores secas), en fila sobre X):
-// cada uno apoya en y = 0
+/* ---------- ramos y recipientes para los adornos (2026-11-07) ---------- */
+// Generador de ramos, a partir del florero de la consola del depto 5 (el usuario: "se ve muy bien"; pidió llevarlo al
+// motor para generar decoraciones así). Lo que lo hace creíble: tallos finos y curvos (no varillas rectas) que salen del
+// fondo del recipiente, pasan por la boca y se abren en abanico; ramitas laterales; puntas variadas y hojitas; y todo lo
+// chico unido en una malla por material (los adornos no pasan por la unión de piezas del motor: sin esto, cada bolita
+// era un dibujo más). Un estilo de ramo dice cuántos tallos, cuán altos y abiertos, de qué color y qué va en las puntas.
+// Puntas: "dome" (cúpula de florcitas, del color "flowers"), "buds" (pimpollos en pedicelos), "daisy" (flor de pétalos),
+// "plume" (penacho de pampa), "coins" (hojas redondas a lo largo del tallo, eucalipto), "twig" (ramita seca sin nada).
+const BOUQUETS = {
+  dried: { stems: 8, height: [0.44, 0.64], spread: [0.07, 0.29], stem: '#6b6a46', leaf: '#7c8452', tips: ['dome', 'buds', 'buds'], side: 0.8, leaves: true },
+  eucalyptus: { stems: 7, height: [0.4, 0.58], spread: [0.05, 0.22], stem: '#6f7a6c', leaf: '#8d9c8c', tips: ['coins'], side: 0.5, leaves: false },
+  pampas: { stems: 6, height: [0.6, 0.85], spread: [0.04, 0.24], stem: '#c9b48c', tips: ['plume'], side: 0, leaves: false, radius: 0.0028 },
+  wildflowers: { stems: 9, height: [0.32, 0.48], spread: [0.04, 0.2], stem: '#5f7a43', leaf: '#6f8f4a', tips: ['daisy', 'buds', 'daisy', 'dome'], side: 0.6, leaves: true },
+  branches: { stems: 5, height: [0.36, 0.56], spread: [0.03, 0.14], stem: '#8a6b4a', tips: ['twig'], side: 0.7, leaves: false },
+};
+// malla por material: put(material, geometría); addTo(grupo) une todo lo de cada material en una sola malla
+function meshBag() {
+  const bag = new Map();
+  return {
+    put(mat, geo) { if (!bag.has(mat)) bag.set(mat, []); bag.get(mat).push(geo.index ? geo.toNonIndexed() : geo); },
+    addTo(g) { for (const [mat, geos] of bag) add(g, mergeGeometries(geos, false), mat).castShadow = false; },
+  };
+}
+// Recipiente centrado en x, apoyado en y = 0. Devuelve dónde arrancan los tallos ("base"), la altura de la boca y su radio.
+// "glass" (vidrio cónico con un dedo de agua), "bottle" (botella de cuello angosto), "bud" (cerámica panzona de cuello
+// corto), "tall" (cerámica alta y recta, para pampa), "jar" (frasco de vidrio ancho y bajo)
+function vessel(g, M, kind, x, color) {
+  const lathe = (pts, mat, seg = 40) => { const m = add(g, new THREE.LatheGeometry(v2(pts), seg), mat, x, 0, 0); m.castShadow = false; return m; };
+  if (kind === 'glass') {
+    const H = 0.26;
+    lathe([[0.001, 0], [0.04, 0], [0.042, 0.006], [0.056, H], [0.052, H], [0.037, 0.014], [0.001, 0.012]], M.glass());
+    lathe([[0.001, 0.013], [0.0368, 0.013], [0.0395, 0.075], [0.001, 0.075]], M.tintedGlass('#d4e2dc', 0.18), 32).renderOrder = 1;
+    return { base: 0.02, mouth: H, r: 0.05 };
+  }
+  if (kind === 'jar') {
+    const H = 0.16;
+    lathe([[0.001, 0], [0.05, 0], [0.055, 0.008], [0.058, 0.13], [0.05, H], [0.046, H], [0.053, 0.13], [0.05, 0.012], [0.001, 0.01]], M.glass());
+    lathe([[0.001, 0.011], [0.049, 0.011], [0.051, 0.06], [0.001, 0.06]], M.tintedGlass('#d4e2dc', 0.18), 32).renderOrder = 1;
+    return { base: 0.015, mouth: H, r: 0.045 };
+  }
+  if (kind === 'bottle') {
+    lathe([[0.001, 0], [0.04, 0], [0.042, 0.006], [0.042, 0.17], [0.03, 0.2], [0.016, 0.215], [0.016, 0.245], [0.019, 0.25], [0.014, 0.25], [0.012, 0.215], [0.001, 0.215]], M.glass(), 32);
+    return { base: 0.1, mouth: 0.25, r: 0.012 };
+  }
+  if (kind === 'tall') {
+    lathe([[0.001, 0], [0.05, 0], [0.058, 0.03], [0.062, 0.24], [0.05, 0.3], [0.045, 0.31], [0.04, 0.3], [0.001, 0.29]], M.ceramic(color ?? '#e3dccf'));
+    return { base: 0.29, mouth: 0.31, r: 0.035 };
+  }
+  // "bud": la cerámica de cuello corto de siempre, un poco más grande
+  lathe([[0.001, 0], [0.04, 0], [0.058, 0.06], [0.05, 0.16], [0.024, 0.2], [0.028, 0.215], [0.022, 0.215], [0.016, 0.2], [0.001, 0.2]], M.ceramic(color ?? '#d8cfc2'), 32);
+  return { base: 0.19, mouth: 0.215, r: 0.016 };
+}
+// El ramo: los tallos van del fondo (o del cuello) a la boca, cerca del centro, y de ahí se abren hacia los costados
+// (más que hacia adelante y atrás: los adornos suelen ir contra una pared). "o": { x, base, mouth, r, style, flowers,
+// stems, scale }
+function bouquet(g, M, r, o) {
+  const S = { ...BOUQUETS[o.style ?? 'dried'], ...(o.stems ? { stems: o.stems } : {}) }, k = o.scale ?? 1, bag = meshBag();
+  const V = (...a) => new THREE.Vector3(...a), up = V(0, 1, 0), x = o.x;
+  const stem = M.paint(S.stem), lf = M.paint(S.leaf ?? S.stem), fc = o.flowers ?? '#5b2f3a';
+  const heads = [M.paint(shade(fc, -0.06)), M.paint(fc), M.paint(shade(fc, 0.07))], buds = [M.paint('#ddd6a8'), M.paint('#c4c183')];
+  const petals = M.paint(o.petals ?? '#f3efe6'), core = M.paint('#d9a93a'), plume = M.fabric('#e8dcc4');
+  const tube = (pts, rad) => bag.put(stem, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 14, rad, 5, false));
+  const ball = (mat, c, rad, sy = 1) => { const s = new THREE.SphereGeometry(rad, 7, 5); s.scale(1, sy, 1); s.translate(c.x, c.y, c.z); bag.put(mat, s); };
+  const orient = (geo, at, dir) => { geo.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())); geo.translate(at.x, at.y, at.z); return geo; };
+  const leaf = (at, dir) => bag.put(lf, orient(leafGeo((0.035 + 0.02 * r()) * k, 0.011 * k, 0.25), at, dir));
+  const TIPS = {
+    dome(c) { for (let i = 0; i < 34; i++) { const th = Math.acos(1 - r() * 0.75), ph = r() * Math.PI * 2; ball(heads[Math.floor(r() * 3)], c.clone().addScaledVector(V(Math.sin(th) * Math.cos(ph), Math.cos(th) - 0.55, Math.sin(th) * Math.sin(ph)), 0.027 * k), (0.005 + 0.0028 * r()) * k); } },
+    buds(c) {
+      for (let i = 0, n = 3 + Math.floor(r() * 3); i < n; i++) {
+        const e = c.clone().add(V((r() - 0.5) * 0.05 * k, (0.012 + r() * 0.025) * k, (r() - 0.5) * 0.04 * k));
+        tube([c, c.clone().lerp(e, 0.5).add(V(0, 0.006 * k, 0)), e], 0.0011);
+        ball(buds[Math.floor(r() * 2)], e, (0.0075 + 0.003 * r()) * k, 1.15);
+      }
+    },
+    daisy(c, dir) {   // flor abierta mirando hacia afuera y arriba: pétalos alargados alrededor de un centro amarillo
+      const n = dir.clone().setY(Math.max(dir.y, 0.4)).normalize(), q = new THREE.Quaternion().setFromUnitVectors(up, n);
+      for (let i = 0; i < 11; i++) {
+        const a = i / 11 * Math.PI * 2, s = new THREE.SphereGeometry(0.009 * k, 6, 4); s.scale(0.45, 0.12, 1.6); s.translate(0, 0, 0.014 * k); s.rotateY(a);
+        s.applyQuaternion(q); s.translate(c.x, c.y, c.z); bag.put(petals, s);
+      }
+      const cc = new THREE.SphereGeometry(0.0065 * k, 8, 6); cc.scale(1, 0.55, 1); orient(cc, c, n); bag.put(core, cc);
+    },
+    plume(c, dir, curve) {   // penacho: muchas hebras finas a lo largo del último tercio del tallo, abiertas y caídas
+      for (let i = 0; i < 70; i++) {
+        const t = 0.68 + 0.32 * r(), a = curve.getPoint(t), tan = curve.getTangent(t), side = V(r() - 0.5, (r() - 0.6) * 0.6, r() - 0.5).normalize();
+        const d = tan.clone().multiplyScalar(0.6).add(side).normalize(), s = new THREE.SphereGeometry(0.004 * k, 5, 3); s.scale(1, 5 + 4 * r(), 1);
+        bag.put(plume, orient(s, a.clone().addScaledVector(d, 0.012 * k), d));
+      }
+    },
+    coins(c, dir, curve) {   // eucalipto: hojas redondas chicas, de a una y alternadas, separadas, del medio a la punta
+      let s = 1;
+      for (let t = 0.4; t <= 1.001; t += 0.075 + 0.02 * r()) {
+        const a = curve.getPoint(Math.min(t, 1)), tan = curve.getTangent(Math.min(t, 1)), sz = (0.011 + 0.007 * (1 - t)) * k;
+        const out = V(tan.z, 0.25, -tan.x).multiplyScalar(s).normalize(), disk = new THREE.CircleGeometry(sz, 12);
+        disk.rotateX(-Math.PI / 2); disk.translate(0, 0, sz * 1.05);
+        bag.put(lf, orient(disk, a, out.clone().add(V(0, 0.5, 0)))); s = -s;
+      }
+    },
+    twig() {},
+  };
+  for (let s = 0; s < S.stems; s++) {
+    const side = s % 2 ? 1 : -1, spread = (S.spread[0] + (S.spread[1] - S.spread[0]) * r()) * k, hgt = o.mouth + (S.height[0] + (S.height[1] - S.height[0]) * r() - 0.26) * k;   // alturas del estilo medidas sobre el florero de vidrio (boca a 0,26)
+    const zz = (-0.02 + 0.1 * r()) * k, j = Math.min(0.012, o.r * 0.4);
+    const pts = [V(x + (r() - 0.5) * Math.min(0.03, o.r), o.base, (r() - 0.5) * Math.min(0.03, o.r)), V(x + side * j, o.mouth, (r() - 0.5) * j),
+      V(x + side * spread * 0.45, o.mouth + (hgt - o.mouth) * 0.7, zz * 0.6), V(x + side * spread, hgt, zz)];
+    const curve = new THREE.CatmullRomCurve3(pts), tipName = S.tips[s % S.tips.length];
+    tube(pts, S.radius ?? 0.0021);
+    TIPS[tipName](curve.getPoint(1), curve.getTangent(1), curve);
+    for (const t of [0.6, 0.8]) {
+      if (r() > S.side) continue;
+      const a = curve.getPoint(t), d = V(side * (0.04 + 0.05 * r()) * k, (0.025 + 0.05 * r()) * k, (r() - 0.5) * 0.06 * k), e = a.clone().add(d);
+      const sub = [a, a.clone().addScaledVector(d, 0.5).add(V(0, 0.01 * k, 0)), e];
+      tube(sub, 0.0014);
+      const sideTip = tipName === 'dome' || tipName === 'buds' ? (r() < 0.4 ? 'dome' : 'buds') : tipName;
+      if (sideTip !== 'plume' && sideTip !== 'coins') TIPS[sideTip](e, d.clone().normalize(), new THREE.CatmullRomCurve3(sub));
+      else if (sideTip === 'coins') TIPS.coins(e, d, new THREE.CatmullRomCurve3(sub));
+      if (S.leaves) leaf(a, V(-side * 0.5, 0.7, (r() - 0.5) * 0.6));
+    }
+    if (S.leaves) leaf(curve.getPoint(0.7), V(side * 0.6, 0.6, (r() - 0.5) * 0.6));
+  }
+  bag.addTo(g);
+}
+
+// adorno → [recipiente, estilo de ramo, ajustes]
+const RAMOS = { 'dried-flowers': ['glass', 'dried'], eucalyptus: ['glass', 'eucalyptus'], pampas: ['tall', 'pampas'], wildflowers: ['jar', 'wildflowers'],
+  vase: ['bud', 'branches', { scale: 0.8 }], 'bottle-flowers': ['bottle', 'dried', { stems: 3, scale: 0.7 }] };
+
+// objetos chicos para apoyar en una mesa, mesada o estante, en fila sobre X, cada uno apoyado en y = 0. "items":
+// "books", "bowl", "candle", "plant", "diffuser", "bottle" (botella de vidrio, llena de "fill" si se da) y los de ramo
+// (ver bouquet): "vase" (cerámica con ramas secas), "bottle-flowers" (botella con flores secas), "dried-flowers" (vidrio
+// con flores secas, cabezuelas "flowers" y pimpollos), "eucalyptus" (vidrio con eucalipto), "pampas" (cerámica alta con
+// pampa), "wildflowers" (frasco con flores de campo). "vase": color de la cerámica; "flowers": color de las cabezuelas
 function tabletopDecor(p, { M }) {
   const g = new THREE.Group(), list = p.items ?? ['vase', 'books', 'bowl'], r = rng(p.seed ?? 3), step = p.spacing ?? 0.22;
   list.forEach((kind, i) => {
     const x = (i - (list.length - 1) / 2) * step;
-    if (kind === 'vase') {   // florero con ramas secas que salen de adentro
-      add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.04, 0], [0.055, 0.06], [0.045, 0.16], [0.022, 0.2], [0.026, 0.215], [0.02, 0.215], [0.015, 0.2], [0.001, 0.2]]), 32), M.ceramic(p.vase ?? '#d8cfc2'), x, 0, 0);
-      for (let k = 0; k < 5; k++) { const s = cyl(g, M.wood('#8a6b4a'), x, 0.15, 0.45 + r() * 0.15, 0, 0.003, 5); s.rotation.set((r() - 0.5) * 0.4, 0, (r() - 0.5) * 0.4); s.castShadow = false; }
-    } else if (kind === 'books') {   // pila de libros acostados
+    if (kind === 'books') {   // pila de libros acostados
       let y = 0;
       for (let k = 0; k < 3; k++) { const bh = 0.025 + r() * 0.015; blk(g, M.lacquer(['#7a3b2e', '#c9b79c', '#2f4a5f'][k]), [x - 0.1 + k * 0.006, x + 0.1 - k * 0.01], [y, y + bh], [-0.07 + k * 0.005, 0.07 - k * 0.006], 0.002); y += bh; }
     } else if (kind === 'bowl') {
       add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.04, 0], [0.09, 0.05], [0.1, 0.07], [0.094, 0.07], [0.084, 0.052], [0.035, 0.008], [0.001, 0.008]]), 40), M.ceramic(p.bowl ?? '#e9e4dc'), x, 0, 0);
-    } else if (kind === 'bottle' || kind === 'bottle-flowers') {   // botella de vidrio; adentro, semillas o piedras ("fill") o ramas
-      add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.04, 0], [0.042, 0.006], [0.042, 0.17], [0.03, 0.2], [0.016, 0.215], [0.016, 0.245], [0.019, 0.25], [0.014, 0.25], [0.012, 0.215], [0.001, 0.215]]), 32), M.glass(), x, 0, 0).castShadow = false;
-      if (kind === 'bottle' && p.fill) cyl(g, M.lacquer(p.fill), x, 0.004, 0.17, 0, 0.036, 24);
-      if (kind === 'bottle-flowers') {
-        for (let k = 0; k < 6; k++) { const s = cyl(g, M.wood('#8a6b4a'), x, 0.1, 0.42 + r() * 0.16, 0, 0.0025, 5); s.rotation.set((r() - 0.5) * 0.35, 0, (r() - 0.5) * 0.35); s.castShadow = false; }
-        for (const [dx, h, col] of [[-0.03, 0.47, p.flowers ?? '#a8342c'], [0.025, 0.44, '#9c8566']]) { const f = add(g, new THREE.SphereGeometry(0.018, 10, 8), M.fabric(col), x + dx, 0.1 + h * 0.86, 0); f.scale.y = 1.6; f.castShadow = false; cyl(g, M.wood('#8a6b4a'), x + dx * 0.5, 0.1, 0.1 + h * 0.86, 0, 0.0025, 5).rotation.z = -dx; }
-      }
-    } else if (kind === 'dried-flowers') {
-      // Florero de la consola, rehecho el 2026-11-07 (pedido del usuario) mirando la foto: vidrio cónico más ancho arriba
-      // con un dedo de agua, tallos finos que salen curvados en abanico (más hacia los costados que hacia la pared), con
-      // ramitas laterales; en las puntas, cabezuelas bordó (cúpulas de florcitas) o ramilletes de pimpollos crema, y
-      // hojitas verdes. Antes eran varillas rectas desde el fondo con bolitas. Todo lo chico se une en una malla por
-      // material (los adornos no pasan por la unión de piezas del motor)
-      const H = 0.26, bag = new Map(), put = (mat, geo) => { if (!bag.has(mat)) bag.set(mat, []); bag.get(mat).push(geo.index ? geo.toNonIndexed() : geo); };
-      add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.04, 0], [0.042, 0.006], [0.056, H], [0.052, H], [0.037, 0.014], [0.001, 0.012]]), 40), M.glass(), x, 0, 0).castShadow = false;
-      const water = add(g, new THREE.LatheGeometry(v2([[0.001, 0.013], [0.0368, 0.013], [0.0395, 0.075], [0.001, 0.075]]), 32), M.tintedGlass('#d4e2dc', 0.18), x, 0, 0);
-      water.castShadow = false; water.renderOrder = 1;
-      const stem = M.paint('#6b6a46'), lf = M.paint('#7c8452'), buds = [M.paint('#ddd6a8'), M.paint('#c4c183')];
-      const fc = p.flowers ?? '#5b2f3a', heads = [M.paint(shade(fc, -0.06)), M.paint(fc), M.paint(shade(fc, 0.07))];
-      const V = (...a) => new THREE.Vector3(...a), up = V(0, 1, 0);
-      const tube = (pts, rad) => put(stem, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 14, rad, 5, false));
-      const ball = (mat, c, rad, sy = 1) => { const s = new THREE.SphereGeometry(rad, 7, 5); s.scale(1, sy, 1); s.translate(c.x, c.y, c.z); put(mat, s); };
-      const leaf = (at, dir) => {   // hojita que sale del tallo hacia "dir"
-        const l = leafGeo(0.035 + 0.02 * r(), 0.011, 0.25), q = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize());
-        l.applyQuaternion(q); l.translate(at.x, at.y, at.z); put(lf, l);
-      };
-      const head = c => {   // cúpula de florcitas bordó
-        for (let i = 0; i < 34; i++) {
-          const th = Math.acos(1 - r() * 0.75), ph = r() * Math.PI * 2, d = V(Math.sin(th) * Math.cos(ph), Math.cos(th) - 0.55, Math.sin(th) * Math.sin(ph));
-          ball(heads[Math.floor(r() * 3)], c.clone().addScaledVector(d, 0.027), 0.005 + 0.0028 * r());
-        }
-      };
-      const budCluster = c => {   // pimpollos en pedicelos cortos
-        for (let i = 0, n = 3 + Math.floor(r() * 3); i < n; i++) {
-          const e = c.clone().add(V((r() - 0.5) * 0.05, 0.012 + r() * 0.025, (r() - 0.5) * 0.04));
-          tube([c, c.clone().lerp(e, 0.5).add(V(0, 0.006, 0)), e], 0.0011);
-          ball(buds[Math.floor(r() * 2)], e, 0.0075 + 0.003 * r(), 1.15);
-        }
-      };
-      for (let k = 0; k < 8; k++) {
-        const side = k % 2 ? 1 : -1, spread = 0.07 + 0.22 * r(), hgt = 0.44 + 0.2 * r(), zz = -0.02 + 0.1 * r();
-        const pts = [V(x + (r() - 0.5) * 0.03, 0.02, (r() - 0.5) * 0.03), V(x + side * 0.012, H, (r() - 0.5) * 0.012),
-          V(x + side * spread * 0.45, H + (hgt - H) * 0.7, zz * 0.6), V(x + side * spread, hgt, zz)];
-        const curve = new THREE.CatmullRomCurve3(pts);
-        tube(pts, 0.0021);
-        const tip = curve.getPoint(1);
-        if (k % 3 === 0) head(tip); else budCluster(tip);
-        for (const t of [0.6, 0.8]) {
-          if (r() > 0.8) continue;
-          const a = curve.getPoint(t), d = V(side * (0.04 + 0.05 * r()), 0.025 + 0.05 * r(), (r() - 0.5) * 0.06), e = a.clone().add(d);
-          tube([a, a.clone().addScaledVector(d, 0.5).add(V(0, 0.01, 0)), e], 0.0014);
-          if (r() < 0.4) head(e); else budCluster(e);
-          leaf(a, V(-side * 0.5, 0.7, (r() - 0.5) * 0.6));
-        }
-        leaf(curve.getPoint(0.7), V(side * 0.6, 0.6, (r() - 0.5) * 0.6));
-      }
-      for (const [mat, geos] of bag) add(g, mergeGeometries(geos, false), mat).castShadow = false;
+    } else if (kind === 'bottle') {   // botella de vidrio; adentro, semillas o piedras ("fill")
+      vessel(g, M, 'bottle', x);
+      if (p.fill) cyl(g, M.lacquer(p.fill), x, 0.004, 0.17, 0, 0.036, 24);
+    } else if (RAMOS[kind]) {   // recipiente + ramo (ver bouquet)
+      const [vk, style, o] = RAMOS[kind], v = vessel(g, M, vk, x, p.vase);
+      bouquet(g, M, r, { x, ...v, style, flowers: p.flowers, ...o });
     } else if (kind === 'diffuser') {   // difusor de aromas: frasco de vidrio ámbar con varillas
       add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.03, 0], [0.032, 0.005], [0.032, 0.07], [0.012, 0.085], [0.012, 0.1], [0.001, 0.1]]), 24), M.tintedGlass('#7a5530', 0.7), x, 0, 0).castShadow = false;
       for (let k = 0; k < 6; k++) { const s = cyl(g, M.wood('#c79a6a'), x, 0.04, 0.3, 0, 0.0018, 4); s.rotation.set((r() - 0.5) * 0.5, 0, (r() - 0.5) * 0.5); s.castShadow = false; }

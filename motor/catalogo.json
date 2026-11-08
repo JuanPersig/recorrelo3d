@@ -798,9 +798,7 @@
    "items": "['vase', 'books', 'bowl']",
    "seed": "3",
    "spacing": "0.22",
-   "vase": "'#d8cfc2'",
    "bowl": "'#e9e4dc'",
-   "flowers": "'#a8342c' / '#5b2f3a'",
    "candle": "'#f1ece2'",
    "pot": "'#cfc6ba'"
   }

@@ -1412,7 +1412,7 @@ el tronco apenas inclinado hacia ese lado; solo se angosta hacia la fachada lo q
 centro, k entre 0,68 y 0,93). Ningún árbol queda a menos de 2,2 m de un farol. Hoja: `capturas/entorno/arboles4.jpg`.
 verificar.html del depto 5: solo la Planta (2,2 %); línea base actualizada.
 
-## T-55 · Luz rebotada horneada y reflejos reales (espera aprobación del usuario, 2026-11-07)
+## T-55 · Luz rebotada horneada y reflejos reales (hecho, aprobado por el usuario el 2026-11-07)
 
 **Qué se hizo:** (1) `motor/hornear.html?id=<depto>`: en una grilla cada 50 cm (y ~80 cm en altura) dentro del
 departamento renderiza un cubo de 16 px con toda la luz prendida y lo guarda como armónicos esféricos de orden 1, de
@@ -1443,3 +1443,20 @@ ramilletes de pimpollos crema en pedicelos y hojitas verdes; todo lo chico unido
 pasó de 289 a 260 mallas).
 **Cómo se verificó:** `capturas/rebote/florero-bano.jpg` y `florero2.jpg` (de día y de noche, de cerca); verificar.html
 del depto 5 sin avisos ni piezas sueltas (la línea base sigue esperando la aprobación de T-55).
+
+**Aprobado (2026-11-07):** el usuario: "dejá la luz rebotada". Línea base del depto 5 actualizada y `sitio/` rearmado
+(el paquete incluye `gi.json`).
+
+## T-57 · Generador de ramos para la decoración (hecho, 2026-11-07)
+
+**Pedido del usuario:** "aplicá en el motor las mejoras necesarias para generar decoraciones como el florero de recién,
+el cual se ve muy bien".
+**Qué se hizo (components.js):** lo del florero (T-56) pasó a ser general. `bouquet()` arma un ramo con tallos finos y
+curvos que salen del recipiente y se abren en abanico, ramitas laterales, hojitas y puntas por estilo ("dome", "buds",
+"daisy", "plume", "coins", "twig"), todo unido por material con `meshBag()`. Estilos en `BOUQUETS`: dried, eucalyptus,
+pampas, wildflowers, branches. Recipientes en `vessel()`: glass (vidrio cónico con agua), jar, bottle, bud (cerámica de
+cuello corto), tall (cerámica alta). `tabletop-decor` suma "eucalyptus", "pampas" y "wildflowers"; "vase" (cerámica con
+ramas secas) y "bottle-flowers" pasan al generador (los deptos que los usan se ven mejor sin tocar su scene).
+"dried-flowers" sale idéntico (verificar.html del depto 5: todo igual a la base). SKILL.md y CATALOGO.md actualizados.
+**Cómo se verificó:** `capturas/rebote/ramos.jpg` (las seis variantes de frente y de cerca; el eucalipto se corrigió:
+hojas chicas, alternadas y verde salvia en lugar de una paleta turquesa continua).
