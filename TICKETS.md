@@ -1429,3 +1429,17 @@ por ambiente y refleja una foto de su ambiente (desde el centro, a 1,4 m, de dí
 noche): de noche el techo deja de verse marrón y oscuro y la luz se reparte; de día paredes y techo toman algo del tono
 del piso. verificar.html del depto 5: todas las vistas de adentro cambian 6–10 % (es el tono de la luz); **línea base sin
 actualizar** y `sitio/` sin rearmar hasta que el usuario lo apruebe.
+
+## T-56 · Pie del inodoro y bidet, espejos sin reflejo y florero nuevo (hecho, 2026-11-07)
+
+**Pedido del usuario:** "arreglar estas luces debajo del inodoro y bidet, sacá el reflejo del espejo porque se ve mal y
+no aporta, mejoremos cómo se ve el florero".
+**Qué se hizo:** (1) Inodoro y bidet: el perfil del torno arrancaba con la base cerrada y la normal de la esquina se
+promediaba con la del fondo (hacia el piso): los primeros 6 cm de loza se veían negros. El perfil ahora empieza en el
+borde de abajo. (2) Espejos (`M.mirror`, todos): sin reflejo; plateado claro con un degradé suave, mate al entorno.
+(3) `tabletop-decor` "dried-flowers" rehecho según la foto `adicional2`: vidrio cónico más ancho arriba con un dedo de
+agua, 8 tallos curvos en abanico con ramitas laterales, cabezuelas bordó grandes (cúpulas de ~5 cm de florcitas),
+ramilletes de pimpollos crema en pedicelos y hojitas verdes; todo lo chico unido en una malla por material (el depto 5
+pasó de 289 a 260 mallas).
+**Cómo se verificó:** `capturas/rebote/florero-bano.jpg` y `florero2.jpg` (de día y de noche, de cerca); verificar.html
+del depto 5 sin avisos ni piezas sueltas (la línea base sigue esperando la aprobación de T-55).

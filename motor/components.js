@@ -154,6 +154,9 @@ const gray = v => [v, v, v];
 const T = {};
 const lazy = (k, f) => () => T[k] || (T[k] = f());
 const TEX = {
+  mirror: lazy('mirror', () => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 128, 128);
+    gr.addColorStop(0, '#f6f8f8'); gr.addColorStop(0.55, '#e6eaec'); gr.addColorStop(1, '#d6dcdf'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }),
   fabric: lazy('fabric', () => toTex(canvasFrom(256, (x, y) => {
     const weave = (((x >> 1) & 1) ^ ((y >> 1) & 1)) ? 1 : 0.9;
     return gray(255 * weave * (0.94 + 0.06 * vnoise(x / 8, y / 8, 32, 32)));
@@ -425,9 +428,9 @@ export function makeMaterials(preset) {
     screen: () => once('screen', () => new THREE.MeshStandardMaterial({ color: clay ? col('#3a3d42') : 0x0b0d10, roughness: 0.12, metalness: clay ? 0 : 0.3 })),
     mirror: () => once('mirror', () => {
       if (clay) return matte('#cfd8de', 0.4);
-      const m = new THREE.MeshStandardMaterial({ color: 0xf2f4f5, roughness: 0.03, metalness: 1 });
-      m.userData.envBoost = 2.4;
-      return m;
+      // sin reflejo (2026-11-07, pedido del usuario: "se ve mal y no aporta"): un plateado claro con un degradé suave, como
+      // un espejo que refleja la pared de enfrente; mate al entorno para que no muestre nada
+      return new THREE.MeshStandardMaterial({ color: 0xffffff, map: TEX.mirror(), roughness: 0.55, metalness: 0, envMapIntensity: 0.3 });
     }),
     wood: c => once('wood' + c, () => clay ? matte(c, 0.9) : new THREE.MeshStandardMaterial({ color: col(c), map: TEX.wood(), roughness: 0.5 })),
     fabric: c => once('fab' + c, () => clay ? matte(c, 1) : new THREE.MeshPhysicalMaterial(fabricOpts(c))),
@@ -1588,7 +1591,9 @@ function showerCurtain(p, { M }) {
 // inodoro con mochila (fondo en -Z) y tapa cerrada
 function toilet(p, { M }) {
   const g = new THREE.Group(), cer = M.ceramic('#f7f7f5');
-  const bowl = add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.12, 0], [0.11, 0.06], [0.1, 0.2], [0.14, 0.33], [0.172, 0.385], [0.16, 0.395], [0.12, 0.34], [0.001, 0.3]]), 40), M.ceramicDS('#f7f7f5'), 0, 0, 0.06);
+  // el perfil arranca en el borde de abajo, sin la base cerrada: con ella, la normal de la esquina se promediaba con la
+  // del fondo (hacia el piso) y los primeros 6 cm de loza se veían negros (2026-11-07)
+  const bowl = add(g, new THREE.LatheGeometry(v2([[0.12, 0], [0.11, 0.06], [0.1, 0.2], [0.14, 0.33], [0.172, 0.385], [0.16, 0.395], [0.12, 0.34], [0.001, 0.3]]), 40), M.ceramicDS('#f7f7f5'), 0, 0, 0.06);
   bowl.scale.set(1, 1, 1.3);
   const seat = add(g, new THREE.TorusGeometry(0.148, 0.022, 10, 40), cer, 0, 0.408, 0.06);
   seat.rotation.x = Math.PI / 2; seat.scale.set(1, 1.3, 0.6);
@@ -1607,7 +1612,7 @@ function toilet(p, { M }) {
 // bidet de cerámica con grifería (fondo en -Z)
 function bidet(p, { M }) {
   const g = new THREE.Group();
-  const bowl = add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.12, 0], [0.11, 0.06], [0.1, 0.2], [0.14, 0.33], [0.165, 0.385], [0.155, 0.395], [0.115, 0.35], [0.06, 0.29], [0.001, 0.285]]), 40), M.ceramicDS('#f7f7f5'), 0, 0, 0.02);
+  const bowl = add(g, new THREE.LatheGeometry(v2([[0.12, 0], [0.11, 0.06], [0.1, 0.2], [0.14, 0.33], [0.165, 0.385], [0.155, 0.395], [0.115, 0.35], [0.06, 0.29], [0.001, 0.285]]), 40), M.ceramicDS('#f7f7f5'), 0, 0, 0.02);
   bowl.scale.set(1, 1, 1.25);
   const steel = M.metal('#c9ccd0', 0.25);
   cyl(g, steel, 0, 0.39, 0.43, -0.14, 0.018, 16);
@@ -2122,18 +2127,56 @@ function tabletopDecor(p, { M }) {
         for (let k = 0; k < 6; k++) { const s = cyl(g, M.wood('#8a6b4a'), x, 0.1, 0.42 + r() * 0.16, 0, 0.0025, 5); s.rotation.set((r() - 0.5) * 0.35, 0, (r() - 0.5) * 0.35); s.castShadow = false; }
         for (const [dx, h, col] of [[-0.03, 0.47, p.flowers ?? '#a8342c'], [0.025, 0.44, '#9c8566']]) { const f = add(g, new THREE.SphereGeometry(0.018, 10, 8), M.fabric(col), x + dx, 0.1 + h * 0.86, 0); f.scale.y = 1.6; f.castShadow = false; cyl(g, M.wood('#8a6b4a'), x + dx * 0.5, 0.1, 0.1 + h * 0.86, 0, 0.0025, 5).rotation.z = -dx; }
       }
-    } else if (kind === 'dried-flowers') {   // florero alto de vidrio con ramas secas abiertas en abanico, hojas y flores oscuras
-      add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.045, 0], [0.05, 0.01], [0.05, 0.2], [0.042, 0.22], [0.038, 0.22], [0.044, 0.2], [0.044, 0.012], [0.001, 0.008]]), 32), M.glass(), x, 0, 0).castShadow = false;
-      const stem = M.wood('#6e5a44'), fl = M.fabric(p.flowers ?? '#5b2f3a'), lf = M.lacquer('#6f6a4e');
-      for (let k = 0; k < 9; k++) {
-        const a = k / 9 * Math.PI * 2 + r(), tilt = 0.25 + 0.45 * r(), len = 0.35 + 0.25 * r(), b = [x, 0.02, 0];
-        const t = [x + Math.cos(a) * Math.sin(tilt) * len, 0.02 + Math.cos(tilt) * len, Math.sin(a) * Math.sin(tilt) * len];
-        strut(g, stem, b, t, 0.002, 0.0015, 5).castShadow = false;
-        if (k % 2 === 0) for (let c = 0; c < 4; c++) {   // ramillete de cabezuelas chicas en la punta
-          const f = add(g, new THREE.SphereGeometry(0.009 + 0.005 * r(), 7, 5), fl, t[0] + (r() - 0.5) * 0.03, t[1] - c * 0.012, t[2] + (r() - 0.5) * 0.03); f.scale.set(1, 0.75, 1); f.castShadow = false;
+    } else if (kind === 'dried-flowers') {
+      // Florero de la consola, rehecho el 2026-11-07 (pedido del usuario) mirando la foto: vidrio cónico más ancho arriba
+      // con un dedo de agua, tallos finos que salen curvados en abanico (más hacia los costados que hacia la pared), con
+      // ramitas laterales; en las puntas, cabezuelas bordó (cúpulas de florcitas) o ramilletes de pimpollos crema, y
+      // hojitas verdes. Antes eran varillas rectas desde el fondo con bolitas. Todo lo chico se une en una malla por
+      // material (los adornos no pasan por la unión de piezas del motor)
+      const H = 0.26, bag = new Map(), put = (mat, geo) => { if (!bag.has(mat)) bag.set(mat, []); bag.get(mat).push(geo.index ? geo.toNonIndexed() : geo); };
+      add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.04, 0], [0.042, 0.006], [0.056, H], [0.052, H], [0.037, 0.014], [0.001, 0.012]]), 40), M.glass(), x, 0, 0).castShadow = false;
+      const water = add(g, new THREE.LatheGeometry(v2([[0.001, 0.013], [0.0368, 0.013], [0.0395, 0.075], [0.001, 0.075]]), 32), M.tintedGlass('#d4e2dc', 0.18), x, 0, 0);
+      water.castShadow = false; water.renderOrder = 1;
+      const stem = M.paint('#6b6a46'), lf = M.paint('#7c8452'), buds = [M.paint('#ddd6a8'), M.paint('#c4c183')];
+      const fc = p.flowers ?? '#5b2f3a', heads = [M.paint(shade(fc, -0.06)), M.paint(fc), M.paint(shade(fc, 0.07))];
+      const V = (...a) => new THREE.Vector3(...a), up = V(0, 1, 0);
+      const tube = (pts, rad) => put(stem, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 14, rad, 5, false));
+      const ball = (mat, c, rad, sy = 1) => { const s = new THREE.SphereGeometry(rad, 7, 5); s.scale(1, sy, 1); s.translate(c.x, c.y, c.z); put(mat, s); };
+      const leaf = (at, dir) => {   // hojita que sale del tallo hacia "dir"
+        const l = leafGeo(0.035 + 0.02 * r(), 0.011, 0.25), q = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize());
+        l.applyQuaternion(q); l.translate(at.x, at.y, at.z); put(lf, l);
+      };
+      const head = c => {   // cúpula de florcitas bordó
+        for (let i = 0; i < 34; i++) {
+          const th = Math.acos(1 - r() * 0.75), ph = r() * Math.PI * 2, d = V(Math.sin(th) * Math.cos(ph), Math.cos(th) - 0.55, Math.sin(th) * Math.sin(ph));
+          ball(heads[Math.floor(r() * 3)], c.clone().addScaledVector(d, 0.027), 0.005 + 0.0028 * r());
         }
-        else for (const q of [0.55, 0.8]) { const m = add(g, leafGeo(0.05, 0.016, 0.3), lf, b[0] + (t[0] - b[0]) * q, b[1] + (t[1] - b[1]) * q, (t[2] - b[2]) * q); m.rotation.order = 'YXZ'; m.rotation.set(0.6, a + q * 3, 0); m.castShadow = false; }
+      };
+      const budCluster = c => {   // pimpollos en pedicelos cortos
+        for (let i = 0, n = 3 + Math.floor(r() * 3); i < n; i++) {
+          const e = c.clone().add(V((r() - 0.5) * 0.05, 0.012 + r() * 0.025, (r() - 0.5) * 0.04));
+          tube([c, c.clone().lerp(e, 0.5).add(V(0, 0.006, 0)), e], 0.0011);
+          ball(buds[Math.floor(r() * 2)], e, 0.0075 + 0.003 * r(), 1.15);
+        }
+      };
+      for (let k = 0; k < 8; k++) {
+        const side = k % 2 ? 1 : -1, spread = 0.07 + 0.22 * r(), hgt = 0.44 + 0.2 * r(), zz = -0.02 + 0.1 * r();
+        const pts = [V(x + (r() - 0.5) * 0.03, 0.02, (r() - 0.5) * 0.03), V(x + side * 0.012, H, (r() - 0.5) * 0.012),
+          V(x + side * spread * 0.45, H + (hgt - H) * 0.7, zz * 0.6), V(x + side * spread, hgt, zz)];
+        const curve = new THREE.CatmullRomCurve3(pts);
+        tube(pts, 0.0021);
+        const tip = curve.getPoint(1);
+        if (k % 3 === 0) head(tip); else budCluster(tip);
+        for (const t of [0.6, 0.8]) {
+          if (r() > 0.8) continue;
+          const a = curve.getPoint(t), d = V(side * (0.04 + 0.05 * r()), 0.025 + 0.05 * r(), (r() - 0.5) * 0.06), e = a.clone().add(d);
+          tube([a, a.clone().addScaledVector(d, 0.5).add(V(0, 0.01, 0)), e], 0.0014);
+          if (r() < 0.4) head(e); else budCluster(e);
+          leaf(a, V(-side * 0.5, 0.7, (r() - 0.5) * 0.6));
+        }
+        leaf(curve.getPoint(0.7), V(side * 0.6, 0.6, (r() - 0.5) * 0.6));
       }
+      for (const [mat, geos] of bag) add(g, mergeGeometries(geos, false), mat).castShadow = false;
     } else if (kind === 'diffuser') {   // difusor de aromas: frasco de vidrio ámbar con varillas
       add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.03, 0], [0.032, 0.005], [0.032, 0.07], [0.012, 0.085], [0.012, 0.1], [0.001, 0.1]]), 24), M.tintedGlass('#7a5530', 0.7), x, 0, 0).castShadow = false;
       for (let k = 0; k < 6; k++) { const s = cyl(g, M.wood('#c79a6a'), x, 0.04, 0.3, 0, 0.0018, 4); s.rotation.set((r() - 0.5) * 0.5, 0, (r() - 0.5) * 0.5); s.castShadow = false; }
