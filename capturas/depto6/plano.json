@@ -1,0 +1,20 @@
+{
+ "fecha": "2026-11-08T14:59:33.860Z",
+ "dudas": [
+  "Medidas: del plano del anuncio, con la escala tomada del frente (10,06 m); dormitorios de 2,93 m de fondo",
+  "Segundo dormitorio: no hay fotos; cama, mesa de luz, cortinas y placard estimados",
+  "Lavadero: no hay fotos; solo el espacio del plano, vacío (puerta cerrada como en las fotos)",
+  "Placards de los dormitorios: el plano muestra los nichos; los frentes están estimados",
+  "Pasillo de entrada: cielorraso bajo y plafón por la foto del living; el largo, del plano"
+ ],
+ "ambientes": [
+  "Living y comedor",
+  "Pasillo de entrada",
+  "Cocina",
+  "Lavadero",
+  "Pasillo",
+  "Baño",
+  "Dormitorio",
+  "Segundo dormitorio"
+ ]
+}

@@ -563,6 +563,17 @@ export async function start(container, { scene: spec, state, preset = 'premium',
         for (const [p0, p1] of pieces) tagO(L.alongX ? blk(root, skirt, [p0, p1], [0, 0.07], cs, 0.002) : blk(root, skirt, cs, [0, 0.07], [p0, p1], 0.002), { kind: 'baseboard', level: li });
       }
     }
+    // pilares que llegan al piso: zócalo en cada cara que da a un ambiente (las caras metidas en una pared no llevan)
+    const inRoom = (x, z) => rooms.some(r => x > r.rect.x[0] && x < r.rect.x[1] && z > r.rect.z[0] && z < r.rect.z[1]);
+    for (const s of Lv.structure ?? []) {
+      if (s.kind !== 'column' || (s.y?.[0] ?? 0) > 0.01) continue;
+      const [x0, x1] = s.x, [z0, z1] = s.z, xm = (x0 + x1) / 2, zm = (z0 + z1) / 2;
+      for (const [alongX, c, n] of [[true, z0, -1], [true, z1, 1], [false, x0, -1], [false, x1, 1]]) {
+        if (!(alongX ? inRoom(xm, c + n * 0.05) : inRoom(c + n * 0.05, zm))) continue;
+        const cs = [c, c + n * 0.012].sort((p, q) => p - q), e = 0.012;   // las puntas cubren el canto del zócalo vecino
+        tagO(alongX ? blk(root, skirt, [x0 - e, x1 + e], [0, 0.07], cs, 0.002) : blk(root, skirt, cs, [0, 0.07], [z0, z1], 0.002), { kind: 'baseboard', level: li });
+      }
+    }
 
     /* ---------- muebles y objetos ---------- */
     for (const [ii, it] of (Lv.items ?? []).entries()) {
@@ -1231,7 +1242,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     },
     // datos para el plano 2D (motor/plano.html): niveles con ambientes (ya repartidos), paredes con aberturas, huecos y
     // la huella de cada mueble; balcones y hacia dónde mira la fachada
-    plan: () => ({ levels: levels.map((L, li) => ({ name: L.name, y: levelInfo[li].root.position.y, rooms: L.rooms ?? [], walls: L.walls ?? [], voids: li ? L.voids ?? [] : [], items: footprints.filter(f => f.level === li) })),
+    plan: () => ({ levels: levels.map((L, li) => ({ name: L.name, y: levelInfo[li].root.position.y, rooms: L.rooms ?? [], walls: L.walls ?? [], structure: L.structure ?? [], voids: li ? L.voids ?? [] : [], items: footprints.filter(f => f.level === li) })),
       balconies, facing: spec.exterior?.facing ?? '-z' }),
     getPose: () => ({ p: camera.position.toArray(), t: (mode === 'walk' ? walk.target(new THREE.Vector3()) : controls.target).toArray(), f: baseFov, fit, mode }),
     stats() {

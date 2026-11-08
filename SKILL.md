@@ -182,6 +182,14 @@ anteriores: un error de esta lista que vuelve a aparecer es lo peor que puede pa
    encuentro pared–techo: cada quiebre de esas líneas es una esquina que el modelo tiene que tener; (c) cada objeto de
    pared (calefón, aire, cuadro, repisa, tele) mira hacia donde mira en la foto: si se lo ve de frente con la cámara
    mirando a lo largo del ambiente, está en una pared perpendicular a esa dirección, no en una de costado.
+7. **Puerta corrida respecto del hueco del plano** (depto 6, entrada a la cocina, encontrado el 2026-11-08): estaba
+   pegada a la pared de la heladera y el plano la pone a 0,74 m. Nadie lo marcó porque ninguna foto la muestra de
+   frente, pero corría el carro y la cámara de `cocina2`. Control: medir en píxeles cada hueco del plano (escala de una
+   cota conocida) y anotar su distancia a la esquina más cercana antes de escribir el `at`; si una foto no lo
+   contradice, manda el plano. Si la foto marca otra cosa (en `cocina2` el carro llega al marco), es una duda para el
+   usuario, no un ajuste a ojo. Y si dos lecturas de una foto se contradicen (el calefón "encima" del carro), buscar otra
+   foto del mismo rincón antes de mover muebles: en `cocina`, mirando al revés, no hay carro junto a la puerta.
+   Las líneas del plano se leen rápido con `magick plano.jpg -crop Wx1+X+Y -threshold 55% txt:-`.
 
 Control mínimo por hoja (`comparar.html … &capturar=<id>`):
 - ¿Cada tramo de pared del render se ve en la foto (o en el plano, si la foto no lo muestra)?

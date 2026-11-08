@@ -100,36 +100,17 @@ ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.
 
 ## Próximos pasos (2026-11-08)
 
-**Mañana, primero: errores de fidelidad del depto 6** (marcados por el usuario el 2026-11-08; T-64). No son
-tolerables: el render es una abstracción precisa del departamento, no puede agrandarlo ni inventar cosas.
-1. **Cocina, pared del fondo (la del lavadero): hay un tramo de pared que no existe.** En el render (vista "Mesada")
-   quedó ~0,65 m de pared revestida entre el final de la mesada y la puerta del lavadero, con una ventana angosta
-   centrada encima y corrida 0,4 m de la esquina. En la foto `cocina3` (y `cocina2`): la ventana esmerilada empieza en
-   la esquina, justo arriba del final de la mesada, y la puerta del lavadero está pegada a la ventana; ventana y puerta
-   son un mismo juego de carpintería (marco oscuro, cuatro filas de vidrio esmerilado en cada una, la puerta vidriada en
-   su mitad de arriba). Entre la puerta y la pared sur queda solo el tramo corto del calefón. Corregir: medir en las dos
-   fotos el ancho de la ventana y de la puerta y su posición respecto de la esquina y de la mesada; ventana desde la
-   esquina norte, puerta inmediatamente al lado, sin pared entre las dos; la mesada llega a la pared de la ventana.
-   Volver a hornear y comparar `cocina`, `cocina2` y `cocina3` a tamaño real.
-   **Además falta una esquina y el calefón está mal orientado** (foto `cocina2`): a la derecha de la puerta del
-   lavadero la pared da un quiebre hacia la cocina (pilar o pleno; en el plano es el rectángulo con la cruz en la
-   esquina sudeste de la cocina, cotas 0,50 y 0,35). El calefón cuelga de la cara de ese pilar que mira hacia la cocina
-   (hacia -z, de frente a quien entra), no de la pared sur de costado como está ahora. Lectura de las fotos: de la
-   esquina norte a la sur, ventana esmerilada (una columna de cuatro paños, ~0,5 m, sobre el final de la mesada) →
-   puerta del lavadero (~0,8 m, con los cuatro paños esmerilados arriba llegando a la misma altura que la ventana) →
-   pilar (~0,5–0,6 m de frente, ~0,3–0,35 m de fondo) con el calefón al centro, el conducto hasta el techo y las
-   conexiones abajo → recién ahí la pared sur con el especiero, el portero y el carro. Medir ancho y fondo del pilar en
-   el plano y en `cocina2`/`cocina3`; modelarlo como `structure` `column` (o un tramo de pared) y mover la puerta y la
-   ventana para que entren entre la esquina norte y el pilar.
-2. **Lavadero: solo el espacio del plano.** No hay fotos: sacar el lavarropas, la pileta y su plafón, y revisar en el
-   plano si la ventana al patio existe (si no se ve, sacarla). Queda el ambiente vacío con sus paredes, piso y la puerta,
-   anotado en `estimated` como "sin fotos: solo el espacio del plano".
-3. **Mismo criterio en todo lo que no tiene foto** (consultar al usuario antes): el segundo dormitorio (cama, mesa de
-   luz, velador, cortinas y placard están estimados) y los frentes de los placards.
-4. Rehacer la **compuerta 1 de SKILL.md** en todo el depto 6, no solo en la cocina: la secuencia de cada pared
-   visible en cada foto, cruzada con el plano (pilares y plenos incluidos), y mostrarle al usuario el plano 2D
-   (`motor/plano.html?depto=depto6`) con las dudas antes de tocar muebles. Después, compuerta 2 (muebles contundentes)
-   y recién al final la luz y la verificación. Recorrer todas las hojas con "Errores que no se repiten".
+**Primero: cerrar la compuerta 1 del depto 6 con las respuestas del usuario** (T-64). La cocina ya está corregida
+(2026-11-08, segunda sesión): ventana desde la esquina, puerta del lavadero pegada y cerrada, pilar con el calefón de
+frente, carro junto al pilar, puerta de entrada a la cocina en el hueco del plano y lavadero vacío. Detalle en
+TICKETS.md (T-64, "Hecho" y "Dudas"). El plano 2D con el pilar está en `capturas/depto6/plano.png`.
+1. **Dudas que contestó (o no) el usuario:** tramo de pared entre la puerta de la cocina y el carro; lado del lavadero
+   al patio; pleno C22 (quedó plano por la foto `cocina`); vaciar el segundo dormitorio y sacar los frentes de placard
+   estimados; aviso de 60 cm del baño.
+2. Con eso: compuerta 2 (muebles contundentes, solo lo que se ve) y compuerta 3: hornear la luz (gi.json quedó viejo
+   para la cocina), `verificar.html?deptos=depto5,depto6&base=1` y repasar "Errores que no se repiten" (ahora 7) en
+   todas las hojas. Las cámaras de living, baño y balcón no calzan del todo con sus fotos: `encuadre.html` en la
+   compuerta 3.
 
 **Después:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
 cargar (sospecha: el iframe del recorrido en vivo carga el motor en el mismo hilo) y en celular las tarjetas de "Las

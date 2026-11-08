@@ -76,6 +76,8 @@ plan.levels.forEach((L, li) => {
       const [p0, p1, p2, p3] = pts; for (let k = 1; k < 12; k++) { const t = k / 12, a = [p0[0] + (p3[0] - p0[0]) * t, p0[1] + (p3[1] - p0[1]) * t], c = [p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]; out.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${c[0].toFixed(1)}" y2="${c[1].toFixed(1)}" stroke="#8b949c" stroke-width="0.8"/>`); }
     }
   }
+  // pilares y plenos que llegan al piso: macizos como las paredes (las vigas no se dibujan: no cambian la planta)
+  for (const s of L.structure ?? []) if (s.kind === 'column' && (s.y?.[0] ?? 0) < 0.01) R(s.x[0], s.x[1], s.z[0], s.z[1], 'fill="#2b3038"');
   // paredes: tramos macizos entre vanos; puertas con su barrido; ventanas con doble línea
   for (const w of L.walls) {
     const Lw = wallLine(w), ops = (w.openings ?? []).map(o => ({ o, s: Lw.start(o) })).sort((p, q) => p.s - q.s);

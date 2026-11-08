@@ -1603,3 +1603,28 @@ LEEME.md, para que no vuelva a pasar en ningún depto.
 **Agregado (2026-11-08):** también falta el pilar o pleno junto a la puerta del lavadero (rectángulo con cruz en el
 plano) y el calefón está colgado de costado en la pared sur: en la foto `cocina2` cuelga de la cara del pilar que mira a
 la cocina. Detalle de la lectura de las fotos en LEEME.md; error 6 de "Errores que no se repiten" en SKILL.md.
+
+**Hecho (2026-11-08, segunda sesión):**
+- Cocina, pared del lavadero (de la esquina norte a la sur): ventana esmerilada desde la esquina (x 2,42–3,19, antepecho
+  1,26, alto 0,94), puerta del lavadero pegada (x 1,62–2,41, 2,20 de alto, vidrio desde 1,26, cerrada como en las
+  fotos) y pilar `column` de 0,54 × 0,30 (x 1,03–1,61, z 8,45–8,80). Medidas tomadas de `cocina2` (puerta y ventana de
+  frente; ventana ≈ 0,96 × la puerta; techo a 2,60 como regla de alturas). La cocina pasa a `rects` en L alrededor del
+  pilar. El revestimiento de la pared del fondo va solo bajo la ventana, hasta el piso.
+- Calefón en la cara del pilar que mira a la cocina (`rotation` 180). Carro, microondas y pava junto al pilar
+  (z 7,43–8,43; el microondas en la punta lejana, como en la foto) y el especiero corrido para no chocar con el calefón.
+- **Puerta de entrada a la cocina:** estaba pegada a la pared de la heladera (z 5,65–6,45); en el plano el hueco va de
+  0,74 a 1,65 m de esa pared (z 6,19–7,10). Corregida; abre hacia el pasillo (la foto `cocina` no muestra ninguna hoja
+  del lado de la cocina). Error de compuerta 1 que no se había marcado: error 7 en SKILL.md.
+- Lavadero vacío (sin lavarropas, pileta, plafón ni ventana), en `estimated`.
+- Cámaras de `cocina`, `cocina2` y `cocina3` con `encuadre.html` (`cocina2`, a mano: el borde oscuro de la foto es el
+  marco de la puerta de la cocina).
+- Motor: zócalo alrededor de los pilares que llegan al piso (solo en las caras que dan a un ambiente); `api.plan()`
+  pasa la estructura y `plano.html` dibuja los pilares; `comparar.html?…&view=a,b` captura solo esas vistas (SKILL.md
+  ya lo nombraba, pero no estaba hecho). `verificar.html?deptos=depto5,depto6`: depto 5 sin cambios (0,1–0,3 %); depto 6
+  cambia solo en las tres vistas de la cocina; línea base sin actualizar hasta que el usuario apruebe el plano.
+**Dudas para el usuario (compuerta 1, con `capturas/depto6/plano.png`):** el tramo de pared entre la puerta de la
+cocina y el carro (en `cocina2` el carro llega al marco); el lado del lavadero que da al patio (el plano dibuja líneas
+finas); el pleno rayado C22 (en la foto `cocina` la pared de la heladera es un solo plano, sin escalón: quedó plana);
+vaciar el segundo dormitorio y quitar los frentes de placard estimados; el aviso de 60 cm del baño (T-61).
+**Falta:** con las respuestas, cerrar la compuerta 1; después hornear la luz (gi.json quedó viejo para la cocina),
+`verificar.html … &base=1` y repasar "Errores que no se repiten" en todas las hojas.

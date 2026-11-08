@@ -34,7 +34,8 @@ const q = new URLSearchParams(location.search), $ = id => document.getElementByI
 const scene = await (await fetch(q.get('scene'))).json(), dir = q.get('fotos') ?? scene.photos ?? '';
 const aspectOf = v => v.photoAspect ?? scene.viewAspect ?? 0.75;   // proporción de la foto de la vista (o del departamento)
 const keys = Object.keys(scene.views).filter(k => scene.views[k].photo);
-const state = { view: q.get('view') ?? keys[0], cut: false, night: q.get('night') === '1', decor: q.get('decor') !== '0', pose: null };
+const only = q.get('view')?.split(',').filter(k => scene.views[k]);   // &view=a,b: solo esas vistas en las hojas
+const state = { view: only?.[0] ?? keys[0], cut: false, night: q.get('night') === '1', decor: q.get('decor') !== '0', pose: null };
 const api = await start($('stage'), { scene, state, device: q.get('device') ?? 'desktop', base: new URL('.', new URL(q.get('scene'), location.href)).pathname });
 window.__viewer = api;
 setInterval(() => api._debug.redraw(), 300);   // el visor dibuja solo cuando algo cambia; las capturas necesitan cuadros nuevos
@@ -82,7 +83,7 @@ if (q.get('medir')) {
 if (q.get('capturar')) {
   const frame = () => new Promise(r => setTimeout(r, 120));   // con el panel oculto no corre requestAnimationFrame
   const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
-  for (const k of keys) {
+  for (const k of only?.length ? only : keys) {
     state.view = k; const v = scene.views[k], shots = [], A = aspectOf(v), W = A >= 1 ? 720 : 540, H = Math.round(W / A);
     for (const n of [false, true]) { api.setNight(n); show(); await frame(); shots.push(await load(api.capture())); }
     const photo = await load(`${dir}${v.photo}.png`), c = document.createElement('canvas'); c.width = 3 * W + 16; c.height = H + 40;

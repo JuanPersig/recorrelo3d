@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-08T05:59:39.271Z",
+  "fecha": "2026-11-08T14:59:56.166Z",
   "deptos": {
     "depto5": {
       "estado": "ok",
@@ -111,7 +111,7 @@
           "nombre": "Recibidor",
           "dibujos": 428,
           "triangulos": 811342,
-          "cambio": 0.2
+          "cambio": 0.1
         },
         "consola": {
           "nombre": "Consola y espejo",
@@ -138,7 +138,7 @@
           "cambio": 0.3
         }
       },
-      "armadoMs": 3178,
+      "armadoMs": 9892,
       "mapas": [
         "/capturas/verificacion/actual/depto5/circulacion-0.png"
       ],
@@ -150,100 +150,103 @@
     "depto6": {
       "estado": "revisar",
       "problemas": [
-        "3 advertencias de distribución"
+        "3 advertencias de distribución",
+        "la vista \"Cocina\" cambió 17.5 %",
+        "la vista \"Cocina hacia el lavadero\" cambió 21.8 %",
+        "la vista \"Mesada\" cambió 16.6 %"
       ],
       "vistas": {
         "general": {
           "nombre": "Vista general",
-          "dibujos": 578,
-          "triangulos": 1428090,
-          "cambio": 0.2
+          "dibujos": 559,
+          "triangulos": 1388170,
+          "cambio": 0.5
         },
         "completo": {
           "nombre": "Living hacia el balcón",
-          "dibujos": 452,
-          "triangulos": 1733144,
+          "dibujos": 443,
+          "triangulos": 1664548,
           "cambio": 0.2
         },
         "comedor": {
           "nombre": "Comedor y ventanal",
-          "dibujos": 400,
-          "triangulos": 1658052,
+          "dibujos": 394,
+          "triangulos": 1619084,
           "cambio": 0.2
         },
         "comedor2": {
           "nombre": "Tele y comedor",
-          "dibujos": 417,
-          "triangulos": 1675043,
+          "dibujos": 409,
+          "triangulos": 1616323,
           "cambio": 0.2
         },
         "living": {
           "nombre": "Sillón y biblioteca",
-          "dibujos": 615,
-          "triangulos": 1771746,
+          "dibujos": 585,
+          "triangulos": 1713034,
           "cambio": 0.2
         },
         "living2": {
           "nombre": "Tele y biblioteca",
-          "dibujos": 571,
-          "triangulos": 1764454,
+          "dibujos": 541,
+          "triangulos": 1705742,
           "cambio": 0.2
         },
         "habitacion": {
           "nombre": "Dormitorio",
-          "dibujos": 485,
-          "triangulos": 1619224,
+          "dibujos": 477,
+          "triangulos": 1580064,
           "cambio": 0.2
         },
         "cocina": {
           "nombre": "Cocina",
-          "dibujos": 664,
-          "triangulos": 1943160,
-          "cambio": 0.2
+          "dibujos": 603,
+          "triangulos": 1848070,
+          "cambio": 17.5
         },
         "cocina2": {
           "nombre": "Cocina hacia el lavadero",
-          "dibujos": 426,
-          "triangulos": 1586030,
-          "cambio": 0.2
+          "dibujos": 373,
+          "triangulos": 1484754,
+          "cambio": 21.8
         },
         "cocina3": {
           "nombre": "Mesada",
-          "dibujos": 453,
-          "triangulos": 1588069,
-          "cambio": 0.2
+          "dibujos": 441,
+          "triangulos": 1542157,
+          "cambio": 16.6
         },
         "bano": {
           "nombre": "Baño",
-          "dibujos": 736,
-          "triangulos": 1921044,
+          "dibujos": 719,
+          "triangulos": 1870708,
           "cambio": 0.2
         },
         "bano2": {
           "nombre": "Lavatorio",
-          "dibujos": 476,
-          "triangulos": 1634438,
+          "dibujos": 456,
+          "triangulos": 1582742,
           "cambio": 0.2
         },
         "balcon": {
           "nombre": "Balcón",
-          "dibujos": 594,
-          "triangulos": 1744392,
+          "dibujos": 579,
+          "triangulos": 1671188,
           "cambio": 0.1
         },
         "planta": {
           "nombre": "Planta",
-          "dibujos": 582,
-          "triangulos": 1428038,
-          "cambio": 0.2
+          "dibujos": 569,
+          "triangulos": 1388190,
+          "cambio": 0.8
         }
       },
-      "armadoMs": 4767,
+      "armadoMs": 4707,
       "mapas": [
         "/capturas/verificacion/actual/depto6/circulacion-0.png"
       ],
-      "mallas": 255,
-      "triangulos": 516476,
+      "mallas": 247,
+      "triangulos": 500606,
       "advertencias": [
         "· no queda lugar para pararse junto a bathtub en [5.856, 4.51] con 60 cm de paso",
         "· no queda lugar para pararse junto a toilet en [5.1, 4.054] con 60 cm de paso",
@@ -275,7 +278,7 @@
     ]
   },
   "piezas": {
-    "total": 241,
+    "total": 238,
     "componentes": 74,
     "filas": [],
     "detectaRota": true
