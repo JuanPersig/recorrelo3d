@@ -1626,5 +1626,7 @@ la cocina. Detalle de la lectura de las fotos en LEEME.md; error 6 de "Errores q
 cocina y el carro (en `cocina2` el carro llega al marco); el lado del lavadero que da al patio (el plano dibuja líneas
 finas); el pleno rayado C22 (en la foto `cocina` la pared de la heladera es un solo plano, sin escalón: quedó plana);
 vaciar el segundo dormitorio y quitar los frentes de placard estimados; el aviso de 60 cm del baño (T-61).
+**Respuesta del usuario (2026-11-08):** el segundo dormitorio y los frentes de placard quedan como están (amueblados y
+anotados en `estimated`). Siguen abiertas las otras dudas.
 **Falta:** con las respuestas, cerrar la compuerta 1; después hornear la luz (gi.json quedó viejo para la cocina),
 `verificar.html … &base=1` y repasar "Errores que no se repiten" en todas las hojas.

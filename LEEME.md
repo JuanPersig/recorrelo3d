@@ -105,8 +105,8 @@ ambiente, mimbre pre-generado. El prompt original está en [prompt-depto-grande.
 frente, carro junto al pilar, puerta de entrada a la cocina en el hueco del plano y lavadero vacío. Detalle en
 TICKETS.md (T-64, "Hecho" y "Dudas"). El plano 2D con el pilar está en `capturas/depto6/plano.png`.
 1. **Dudas que contestó (o no) el usuario:** tramo de pared entre la puerta de la cocina y el carro; lado del lavadero
-   al patio; pleno C22 (quedó plano por la foto `cocina`); vaciar el segundo dormitorio y sacar los frentes de placard
-   estimados; aviso de 60 cm del baño.
+   al patio; pleno C22 (quedó plano por la foto `cocina`); aviso de 60 cm del baño. El segundo dormitorio y los
+   frentes de placard quedan como están (decisión del usuario, 2026-11-08).
 2. Con eso: compuerta 2 (muebles contundentes, solo lo que se ve) y compuerta 3: hornear la luz (gi.json quedó viejo
    para la cocina), `verificar.html?deptos=depto5,depto6&base=1` y repasar "Errores que no se repiten" (ahora 7) en
    todas las hojas. Las cámaras de living, baño y balcón no calzan del todo con sus fotos: `encuadre.html` en la
