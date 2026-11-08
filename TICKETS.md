@@ -1553,3 +1553,9 @@ horneada (`gi.json`).
 y el control de 60 cm avisa en bañera, inodoro y bidé (consultar al usuario). La puerta del lavadero está abierta
 (en la foto, cerrada) para que se pueda entrar. Segundo dormitorio y lavadero sin fotos (estimados). Colores con
 `colores.html` y puntaje de parecido sin correr todavía. Paredes de un solo color (el dormitorio de la foto es más rosado).
+
+**T-61, corrección del usuario (2026-11-08):** con una foto nueva (`living2`, ahora vista "Tele y biblioteca") se
+corrigió el rincón del living: no había estante escalera ni mesa rústica; es una mesita contra la pared sur, al lado
+del mueble de la tele, con un organizador escalonado y un flexo encima y una banqueta torneada al lado. Motor: `chair`
+"stool" (banqueta) y en `tabletop-decor` "rack" (organizador escalonado con cosas) y "desk-lamp" (flexo que se prende
+de noche). Luz re-horneada; depto 5 sin cambios; base del depto 6 actualizada.

@@ -1280,9 +1280,23 @@ function tablecloth(g, M, tc, L, W, h) {
 
 // silla con casco tapizado en capitoné (o liso) y patas metálicas abiertas; "style": "wood" (madera y asiento de cuero) o "tube"
 // (caño cromado, asiento redondo tapizado y respaldo de varillas)
-// "panel": madera recta con respaldo de tabla ("panel" su color) y almohadón; "spindle": torneada con respaldo de husillos
+// "panel": madera recta con respaldo de tabla ("panel" su color) y almohadón; "spindle": torneada con respaldo de husillos;
+// "stool": banqueta baja sin respaldo, asiento redondo tejido ("color") en un aro de madera
 function chair(p, { M }) {
   if (p.style === 'wishbone') return wishboneChair(p, { M });
+  if (p.style === 'stool') {   // cuatro patas abiertas que entran en el asiento, con una cuenta torneada y un aro de travesaño
+    const g = new THREE.Group(), wood = M.wood(p.wood ?? '#6b3d24'), sh = p.seatHeight ?? 0.48, R = 0.165, top = sh - 0.02;
+    const ring = add(g, new THREE.TorusGeometry(R, 0.016, 10, 40), wood, 0, sh - 0.018, 0); ring.rotation.x = Math.PI / 2;
+    add(g, uvScale(new THREE.CylinderGeometry(R - 0.004, R - 0.004, 0.03, 40), 3), M.knit(p.color ?? '#c8483f'), 0, sh - 0.015, 0);
+    const at = (a, k) => [Math.cos(a) * R * (1.05 - 0.3 * k), k * top, Math.sin(a) * R * (1.05 - 0.3 * k)];
+    for (let i = 0; i < 4; i++) {
+      const a = i * Math.PI / 2 + Math.PI / 4;
+      strut(g, wood, at(a, 0), at(a, 1), 0.017, 0.015);
+      add(g, new THREE.SphereGeometry(0.022, 12, 8), wood, ...at(a, 0.62)).scale.y = 1.6;   // cuenta torneada
+    }
+    const k = 0.4, rr = R * (1.05 - 0.3 * k), st = add(g, new THREE.TorusGeometry(rr, 0.009, 8, 40), wood, 0, k * top, 0); st.rotation.x = Math.PI / 2;
+    return g;
+  }
   if (p.style === 'spindle') return spindleChair(p, { M });
   if (p.style === 'panel') {   // silla de madera recta: patas cuadradas, almohadón de asiento ("color") y respaldo de tabla
     const g = new THREE.Group(), wood = M.wood(p.wood ?? '#5c2a1c'), sh = p.seatHeight ?? 0.46, w = 0.42, d = 0.42, s = 0.034, top = p.height ?? 0.9;
@@ -2621,6 +2635,32 @@ function decorExtra(g, M, r, kind, it, x, V) {
     strut(g, fr, [x, top * Math.cos(tilt) - 0.01, -top * Math.sin(tilt) - 0.002], [x, 0.004, -top * Math.sin(tilt) - 0.07], 0.004);
     return true;
   }
+  if (kind === 'rack') {   // organizador escalonado de mesa: dos costados en escalera y tres estantes, cada uno más alto y
+    // más atrás; lleva cosas en cada escalón ("fill": false lo deja vacío)
+    const W = it.width ?? 0.36, D = it.depth ?? 0.27, t = 0.012, sd = D / 3, hs = [0.11, 0.22, 0.33], wood = M.wood(it.color ?? '#e0c9a0');
+    const prof = new THREE.Shape(v2([[-D / 2, 0], [D / 2, 0], [D / 2, hs[0]], [D / 2 - sd, hs[0]], [D / 2 - sd, hs[1]], [D / 2 - 2 * sd, hs[1]], [D / 2 - 2 * sd, hs[2]], [-D / 2, hs[2]]]));
+    for (const sx of [-W / 2 + t, W / 2]) { const geo = new THREE.ExtrudeGeometry(prof, { depth: t, bevelEnabled: false }); geo.rotateY(-Math.PI / 2); add(g, uvScale(geo, 2), wood, x + sx, 0, 0); }
+    hs.forEach((h, i) => blk(g, wood, [x - W / 2 + t - 0.002, x + W / 2 - t + 0.002], [h - t, h], [D / 2 - (i + 1) * sd, D / 2 - i * sd]));
+    blk(g, wood, [x - W / 2 + t - 0.002, x + W / 2 - t + 0.002], [0, t], [-D / 2, D / 2]);
+    if (it.fill !== false) {
+      const things = [['box', { color: '#e8609a', size: [0.2, 0.07, 0.07] }], ['basket', { color: '#c58f52', size: 0.08, height: 0.07 }], ['jars', { count: 3 }]];
+      things.forEach(([kd, o], i) => { const sub = new THREE.Group(); sub.position.set(0, hs[i], D / 2 - (i + 0.5) * sd); g.add(sub); decorExtra(sub, M, r, kd, o, x + (kd === 'jars' ? 0 : (i - 1) * 0.06), V); });
+    }
+    return true;
+  }
+  if (kind === 'desk-lamp') {   // flexo: base redonda, dos brazos con una articulación y pantalla cónica hacia abajo y adelante;
+    // de noche se prende ("intensity")
+    const c = M.lacquer(it.color ?? '#f2f1ee'), j = M.metal('#c9ccd0', 0.3), up = V(0, 1, 0);
+    lathe([[0.001, 0], [0.07, 0], [0.072, 0.012], [0.06, 0.03], [0.001, 0.03]], c, 32);
+    const A = [x, 0.025, 0], B = [x, 0.3, -0.06], C = [x, 0.42, 0.1], dir = V(0, -0.75, 0.66).normalize();
+    strut(g, c, A, B, 0.008); add(g, new THREE.SphereGeometry(0.014, 12, 8), j, ...B); strut(g, c, B, C, 0.007);
+    const sh = add(g, new THREE.LatheGeometry(v2([[0.014, -0.012], [0.026, 0.02], [0.062, 0.1], [0.059, 0.1]]), 32), M.ceramicDS(it.color ?? '#f2f1ee'), ...C);
+    sh.quaternion.setFromUnitVectors(up, dir);
+    const bulb = V(...C).addScaledVector(dir, 0.06);
+    add(g, new THREE.SphereGeometry(0.02, 12, 8), M.glow(), bulb.x, bulb.y, bulb.z).castShadow = false;
+    lampSpot(g, bulb.x, bulb.y, bulb.z, it.intensity ?? 2, 0.9, 3);
+    return true;
+  }
   if (kind === 'pothos') {   // potus en maceta ("pot" su color), con guías que caen ("trail")
     const R = it.size ?? 0.07, H = R * 1.3;
     lathe([[0.001, 0], [R * 0.75, 0], [R, H], [R * 1.06, H + 0.006], [R * 0.96, H + 0.006], [R * 0.93, H - 0.01]], M.ceramic(it.pot ?? '#c8442e'), 32);
@@ -2643,7 +2683,8 @@ const RAMOS = { 'dried-flowers': ['glass', 'dried'], eucalyptus: ['glass', 'euca
 // Cocina y estantes (2026-11-08): "pot" (olla con tapa), "pan" (cacerola baja con mango largo; "knob" color de la perilla
 // y el mango), "dish-rack" (escurridor de alambre; "plates" platos parados), "jars" (frascos de especias; "count",
 // "colors"), "basket" (canasto de mimbre; "size", "height", "shape": "square"), "box" (caja con tapa; "size": [ancho, alto,
-// fondo]), "frame" (portarretratos; "size": [ancho, alto]) y "pothos" (potus en maceta con guías que caen, "trail").
+// fondo]), "frame" (portarretratos; "size": [ancho, alto]), "pothos" (potus en maceta con guías que caen, "trail"),
+// "rack" (organizador escalonado de mesa con cosas en cada escalón) y "desk-lamp" (flexo que se prende de noche).
 // Cada objeto puede ser el nombre o { "kind", "color", "x" (su lugar en la fila), … }
 function tabletopDecor(p, { M }) {
   const g = new THREE.Group(), list = p.items ?? ['vase', 'books', 'bowl'], r = rng(p.seed ?? 3), step = p.spacing ?? 0.22, V = (a, b, c) => new THREE.Vector3(a, b, c);
