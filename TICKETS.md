@@ -1632,3 +1632,21 @@ llega al pilar (usuario, sobre `cocina2`): z 7,135–8,135, la puerta queda dond
 adelantada (desde ahí la foto no muestra el mueble). Siguen abiertas: el baño (60 cm) y el lavadero (patio y C22).
 **Falta:** con las respuestas, cerrar la compuerta 1; después hornear la luz (gi.json quedó viejo para la cocina),
 `verificar.html … &base=1` y repasar "Errores que no se repiten" en todas las hojas.
+
+## T-65 · Madera de muebles más fina: muestras para elegir (abierto, 2026-11-08)
+
+**Pedido del usuario:** la madera actual se ve "grotesca" (vetas onduladas y gruesas en alacenas, puertas y
+bibliotecas); no reemplazarla directo, sino mostrar alternativas fuera de los departamentos y elegir.
+**Causa del aspecto actual:** `TEX.wood` es una onda de 4 cm de período (12 por cada 50 cm) torcida por un ruido que
+cambia cada ~6 cm a lo largo de la tabla: de cerca se ven franjas anchas que serpentean.
+**Hecho:** `motor/pruebas/maderas.html` arma una cocina-comedor de laboratorio (alacena, bajo mesada, biblioteca con
+puertas, mesa y sillas) y, por cada alternativa, reemplaza en vivo las tres texturas de la madera (color, relieve y
+brillo) de todos los muebles. Lámina: `capturas/maderas/muestras.jpg` (`?capturar=maderas/muestras`, ~30 s), una fila
+por madera (lejos, biblioteca y puertas de alacena de día, puertas de noche). Alternativas, todas en gris sobre el
+color del mueble como hoy: 1 actual, 2 enchapado fino (veta recta de ~6 mm), 3 roble con radios, 4 roble catedral
+(arcos de corte tangencial, como las alacenas de los 70), 5 pino con nudos chicos, 6 casi lisa (nogal). Los poros son
+rayitas de 1 mm a lo largo de la veta (los puntitos de la primera vuelta parecían lluvia).
+**Falta:** que el usuario elija (puede ser una para todo o una por tipo de mueble: un parámetro `grain` por mueble
+sería general); pasar la elegida a `components.js` (`TEX.wood`, `woodN`, `woodR`), regenerar las texturas con
+`motor/generar-texturas.html` y verificar demo + depto 6. Opcional, con permiso de descarga: texturas escaneadas
+CC0 (ambientCG / Poly Haven).

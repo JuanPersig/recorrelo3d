@@ -1,0 +1,183 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muestras de madera</title>
+<style>
+/* Herramienta de desarrollo (2026-11-08): alternativas de veta para la madera de los muebles, lado a lado sobre las
+   mismas piezas (alacena, bajo mesada, biblioteca, mesa, sillas), a tres distancias, de día y de noche. Nada de esto
+   cambia el motor: el usuario elige y recién ahí la veta elegida pasa a components.js (TEX.wood, woodN, woodR). */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:640px; height:480px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/maderas.html[?solo=fino,roble][&capturar=maderas/muestras]
+// Una fila por alternativa (la actual primero) y cuatro columnas: lejos, media y cerca de día, y cerca de noche.
+// Las texturas se calculan acá, en gris, como las del motor: 512 px = 0,5 m (1 px ≈ 1 mm), la veta a lo largo de V.
+import { start } from '../engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+
+/* ---------- ruido periódico (igual que en components.js) ---------- */
+function hash(x, y) {
+  let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function vnoise(x, y, px, py) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), m = (a, p) => ((a % p) + p) % p;
+  const a = hash(m(xi, px), m(yi, py)), b = hash(m(xi + 1, px), m(yi, py));
+  const c = hash(m(xi, px), m(yi + 1, py)), d = hash(m(xi + 1, px), m(yi + 1, py));
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+const frac = v => v - Math.floor(v), S = 512;
+// distancia en una textura que se repite (para los nudos)
+const wrap = d => { d = ((d % S) + S) % S; return d > S / 2 ? d - S : d; };
+
+/* ---------- vetas: cada una devuelve { tono (0–1, 1 = color del mueble), alto (relieve), poro (0–1, más mate) } ---------- */
+// línea de leño tardío: banda oscura angosta cerca del final de cada anillo (f = fase dentro del anillo)
+const late = (f, a = 0.62, b = 0.8, c = 0.97) => smooth(a, b, f) * (1 - smooth(b + 0.06, c, f));
+// rayado recto (cortes radiales): "lines" anillos por repetición, con ondulación lenta y espaciado irregular
+function straight(x, y, lines, sway) {
+  const w = sway * (vnoise(x / 128, y / 256, 4, 2) - 0.5) + sway * 0.25 * (vnoise(x / 32, y / 128, 16, 4) - 0.5);
+  const u = x + w, ph = u * lines / S + 2.2 * vnoise(u / 64, 0.5, 8, 1);
+  return { u, ph, f: frac(ph), k: 0.45 + 0.55 * hash(Math.floor(ph), 3) };
+}
+// catedrales (corte tangencial): anillos de un tronco cortados por un plano que se acerca y se aleja de la médula
+function cathedral(x, y, ring, depth, swing) {
+  const dx = 2.4 * (S / Math.PI) * Math.sin(Math.PI * (x - S / 2) / S) + 10 * (vnoise(x / 64, y / 128, 8, 4) - 0.5);
+  const h = depth + swing * (0.5 + 0.5 * Math.cos(2 * Math.PI * y / S)) + 8 * vnoise(x / 128, y / 64, 4, 8);
+  const ph = Math.hypot(dx, h) / ring + 1.2 * vnoise(x / 32, y / 64, 16, 8);
+  return { ph, f: frac(ph), k: 0.5 + 0.5 * hash(Math.floor(ph), 5) };
+}
+const pores = (x, y, along, t) => smooth(t, t + 0.05, vnoise(x, y / along, S, S / along));
+
+const VETAS = {
+  fino: { name: 'Enchapado fino, veta recta', note: 'líneas de ~6 mm, casi rectas, poco contraste', normal: 0.9,
+    at(x, y) {
+      const s = straight(x, y, 84, 10), l = late(s.f) * s.k, band = vnoise(s.u / 16, y / 256, 32, 2), p = pores(x, y, 32, 0.9);
+      return { tono: 1 - 0.12 * l - 0.05 * band - 0.03 * p, alto: 1 - 0.4 * l - 0.4 * p, poro: p };
+    } },
+  roble: { name: 'Roble con radios', note: 'veta recta, poro abierto y radios claros cruzados', normal: 1.2,
+    at(x, y) {
+      const s = straight(x, y, 64, 14), l = late(s.f, 0.55, 0.75, 0.95) * s.k, p = pores(x, y, 48, 0.85);
+      const ray = smooth(0.66, 0.74, vnoise(x / 32, y / 4, 16, 128)) * (0.5 + 0.5 * vnoise(x / 64, y / 64, 8, 8));
+      return { tono: 1 - 0.13 * l - 0.06 * p + 0.1 * ray, alto: 1 - 0.4 * l - 0.9 * p + 0.15 * ray, poro: Math.max(0, p - 0.6 * ray) };
+    } },
+  catedral: { name: 'Roble catedral (alacenas clásicas)', note: 'arcos suaves de corte tangencial y poro fino', normal: 1.0,
+    at(x, y) {
+      const c = cathedral(x, y, 6.5, 20, 170), l = late(c.f) * c.k, p = pores(x, y, 32, 0.88), band = vnoise(x / 32, y / 128, 16, 4);
+      return { tono: 1 - 0.12 * l - 0.04 * band - 0.03 * p, alto: 1 - 0.35 * l - 0.4 * p, poro: p };
+    } },
+  pino: { name: 'Pino con nudos chicos', note: 'anillos más anchos, catedral y dos nudos chicos (1–1,5 cm) cada 50 cm', normal: 1.0,
+    at(x, y) {
+      let c = cathedral(x, y, 7, 46, 120), knot = 0;
+      // nudo: óvalo estirado a lo largo de la veta, centro oscuro con borde marcado; los anillos lo rodean
+      for (const [kx, ky, r] of [[150, 120, 7], [380, 400, 5]]) {
+        const d = Math.hypot(wrap(x - kx), wrap(y - ky) * 0.45);
+        c = { ...c, ph: c.ph + 1.6 * Math.exp(-(d * d) / (5 * r * r)) };
+        knot = Math.max(knot, 0.75 * (1 - smooth(r * 0.7, r, d)) + 0.25 * Math.exp(-((d - r) ** 2) / 4));
+      }
+      const f = frac(c.ph), l = late(f, 0.55, 0.72, 0.95) * (0.5 + 0.5 * hash(Math.floor(c.ph), 5));
+      return { tono: 1 - 0.13 * l - 0.32 * Math.min(1, knot), alto: 1 - 0.3 * l - 0.4 * knot, poro: 0.25 * knot };
+    } },
+  lisa: { name: 'Casi lisa (nogal, maderas oscuras)', note: 'veta apenas marcada: se lee el color, no el dibujo', normal: 0.6,
+    at(x, y) {
+      const s = straight(x, y, 140, 8), l = late(s.f) * s.k, band = vnoise(s.u / 32, y / 256, 16, 2), p = pores(x, y, 32, 0.9);
+      return { tono: 1 - 0.035 * l - 0.04 * band - 0.015 * p, alto: 1 - 0.2 * l - 0.4 * p, poro: p };
+    } },
+};
+const ACTUAL = { name: 'Actual (de referencia)', note: 'la del motor hoy: ondas de 4 cm que serpentean cada ~6 cm' };
+
+/* ---------- de la veta a las tres texturas del material ---------- */
+let THREE;
+function texFrom(px, srgb) {
+  const c = document.createElement('canvas'); c.width = c.height = S;
+  const g = c.getContext('2d'), img = g.createImageData(S, S);
+  for (let i = 0; i < S * S; i++) { const [r, gg, b] = px(i); img.data.set([r, gg, b, 255], i * 4); }
+  g.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8;
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+function build(v) {
+  const tono = new Float32Array(S * S), alto = new Float32Array(S * S), poro = new Float32Array(S * S);
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) { const o = v.at(x, y), i = y * S + x; tono[i] = o.tono; alto[i] = o.alto; poro[i] = o.poro; }
+  const at = (x, y) => alto[((y + S) % S) * S + ((x + S) % S)], k = v.normal;
+  return {
+    map: texFrom(i => { const g = 255 * Math.max(0, Math.min(1, tono[i])); return [g, g, g]; }, true),
+    normalMap: texFrom(i => {
+      const x = i % S, y = (i / S) | 0, dx = (at(x + 1, y) - at(x - 1, y)) * k, dy = (at(x, y + 1) - at(x, y - 1)) * k, l = Math.hypot(dx, dy, 1);
+      return [(-dx / l * 0.5 + 0.5) * 255, (dy / l * 0.5 + 0.5) * 255, (1 / l * 0.5 + 0.5) * 255];
+    }, false),
+    roughnessMap: texFrom(i => { const g = 255 * (0.72 + 0.28 * poro[i]); return [g, g, g]; }, false),
+  };
+}
+
+/* ---------- escena de laboratorio: solo muebles de madera, piso y paredes neutros ---------- */
+const scene = {
+  name: 'Maderas', height: 2.6, wallColor: '#efebe4',
+  rooms: [{ name: 'Cocina y comedor', rect: { x: [-2.2, 2.2], z: [-1.8, 1.8] }, floor: { kind: 'tile', color: '#cfcac2' } }],
+  walls: [{ from: [-2.2, -1.8], to: [2.2, -1.8] }, { from: [-2.2, 1.8], to: [2.2, 1.8] },
+    { from: [-2.2, -1.8], to: [-2.2, 1.8] }, { from: [2.2, -1.8], to: [2.2, 1.8], openings: [{ kind: 'sliding-window', at: 1.2, width: 1.4, sill: 0.9, height: 1.3, panels: 2 }] }],
+  items: [
+    { type: 'kitchen-base', at: [-1.2, -1.425], params: { width: 1.6, material: 'wood', color: '#c8924f', handles: 'knob', modules: [{ w: 0.4, kind: 'drawers', count: 3 }, { w: 0.8, kind: 'doors', count: 2 }, { w: 0.4, kind: 'doors', count: 1 }] } },
+    { type: 'kitchen-wall', at: [-1.2, -1.56], params: { width: 1.6, material: 'wood', color: '#c8924f', handles: 'knob', y0: 1.5, modules: [{ w: 0.8, kind: 'doors', count: 2 }, { w: 0.8, kind: 'doors', count: 2 }] } },
+    { type: 'bookshelf', at: [0.9, -1.56], params: { width: 0.9, height: 1.95, depth: 0.32, cabinet: 0.75, crown: true, color: '#c9a172', books: 'some' } },
+    { type: 'dining-table', at: [0.3, 0.55], params: { shape: 'oval', color: '#9a7350', length: 1.4, width: 0.85 } },
+    { type: 'chair', at: [0.3, 1.2], rotation: 180, params: { style: 'spindle', wood: '#8a5a35' } },
+    { type: 'chair', at: [0.3, -0.1], params: { style: 'panel', wood: '#6b3d24' } },
+    { type: 'ceiling-light', at: [-0.9, -0.6] }, { type: 'ceiling-light', at: [0.3, 0.55] },
+  ],
+  exterior: {},
+  lighting: { sunFrom: [10, 6, -2] },
+  views: {
+    lejos: { name: 'Lejos', pos: [1.9, 1.55, 1.55], target: [-0.6, 0.9, -1.4], fov: 70 },
+    media: { name: 'Media', pos: [0.5, 1.2, -0.7], target: [0.9, 0.9, -1.5], fov: 55 },
+    cerca: { name: 'Cerca', pos: [-1.0, 1.55, -0.75], target: [-1.2, 1.75, -1.6], fov: 50 },
+  },
+};
+const COLS = [['lejos', false], ['media', false], ['cerca', false], ['cerca', true]];
+const api = window.__viewer = await start($('stage'), { scene, state: { view: 'lejos', cut: false, night: false, decor: true }, device: 'desktop' });
+await api.ready;
+THREE = api._debug.THREE;
+
+// los materiales de madera del motor: los que usan la textura wood.webp (o la calculada si no hay archivo)
+const woodMats = new Set(), isWood = t => !!t && (t.image?.src?.includes('/wood.webp') || t.userData?.wood);
+api._debug.scene.traverse(o => { if (o.isMesh) for (const m of [o.material].flat()) if (isWood(m?.map)) woodMats.add(m); });
+const original = [...woodMats].map(m => [m, { map: m.map, normalMap: m.normalMap, roughnessMap: m.roughnessMap, ns: m.normalScale.clone() }]);
+const apply = t => { for (const [m, o] of original) { Object.assign(m, t ?? { map: o.map, normalMap: o.normalMap, roughnessMap: o.roughnessMap }); m.normalScale.copy(t ? new THREE.Vector2(0.5, 0.5) : o.ns); m.needsUpdate = true; } };
+
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.src = src; });
+const pick = q.get('solo')?.split(',') ?? Object.keys(VETAS);
+const rows = [['actual', ACTUAL, null], ...pick.filter(k => VETAS[k]).map(k => [k, VETAS[k], build(VETAS[k])])];
+const W = 400, H = 300, LBL = 46, c = Object.assign(document.createElement('canvas'), { width: COLS.length * (W + 6), height: rows.length * (H + LBL) }), g = c.getContext('2d');
+g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+for (const [ri, [key, v, tex]] of rows.entries()) {
+  $('estado').textContent = `Capturando ${v.name}…`;
+  apply(tex);
+  const y = ri * (H + LBL);
+  g.fillStyle = '#1d2430'; g.font = '700 18px system-ui'; g.fillText(`${ri + 1}. ${v.name}`, 4, y + 20);
+  g.fillStyle = '#5b6573'; g.font = '14px system-ui'; g.fillText(v.note, 4, y + 39);
+  for (const [ci, [view, night]] of COLS.entries()) {
+    api.setNight(night); api.go(view, true);
+    const im = await load(api.capture()), x = ci * (W + 6);
+    g.drawImage(im, x, y + LBL, W, H);
+    g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(x, y + LBL, 112, 20); g.fillStyle = '#1d2430'; g.font = '600 13px system-ui';
+    g.fillText(`${scene.views[view].name} · ${night ? 'noche' : 'día'}`, x + 5, y + LBL + 15);
+  }
+}
+api.setNight(false); apply(null);
+$('estado').textContent = `${rows.length} maderas · ${woodMats.size} materiales de madera reemplazados en cada fila${api.warnings.length ? ' · avisos: ' + api.warnings.join(' | ') : ''}`;
+$('stage').hidden = true; c.style.cssText = 'display:block;max-width:100%;height:auto'; document.body.append(c);
+if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.9); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
+document.title = 'maderas: listo';
+</script>

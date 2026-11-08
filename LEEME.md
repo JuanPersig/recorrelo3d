@@ -124,7 +124,7 @@ fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando
    en la foto); fotos del segundo dormitorio y del lavadero si el anuncio las tiene.
 2. **Paredes de color por ambiente:** hoy hay un solo `wallColor` (el dormitorio del depto 6 es más rosado que el
    living). Hacerlo general: cada cara de pared toma el color del ambiente al que mira.
-3. **Textura de madera más fina** (pedido del usuario, 2026-11-08): la actual se ve "grotesca" (vetas onduladas y
+3. **Textura de madera más fina** (T-65; muestras hechas en `motor/pruebas/maderas.html`, falta que el usuario elija) (pedido del usuario, 2026-11-08): la actual se ve "grotesca" (vetas onduladas y
    gruesas, sobre todo en alacenas, puertas y bibliotecas). **No reemplazarla directamente:** primero armar una página
    de muestras fuera de los departamentos (por ejemplo `motor/pruebas/maderas.html`, como `materiales.html`) con varias
    alternativas lado a lado sobre las mismas piezas (puerta de alacena, tapa de mesa, frente de biblioteca, silla) y a
