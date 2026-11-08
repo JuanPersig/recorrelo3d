@@ -1391,3 +1391,9 @@ no desaparezcan de lejos.
 **Falta:** probarlo en el celular real; siguientes mejoras propuestas: reflejos de metales y espejos con el propio
 departamento (captura del ambiente), luz rebotada por ambiente (sondas), brillo suave de las lámparas de noche,
 texturas reales (descarga: pedir permiso) y limitar la cámara de la vista general + "▶ Recorrer".
+**Ajuste (2026-11-07, usuario: la luz de las farolas "muy bruta y potente"):** el charco de luz es ahora una caída
+gaussiana sin borde, a menos de la mitad de intensidad (0,55 → 0,28), pegado a cada superficie (vereda, cordón,
+calzada) en vez de un disco que flotaba a la altura de la vereda, y los faroles de una y otra vereda van alternados para
+que los charcos no se pisen. La sombra al pie de los árboles también era un disco de borde duro (alphaMap leía una
+textura con transparencia): ahora es un degradé suave. Hoja: `capturas/entorno/faroles-final.jpg` (día | noche).
+verificar.html del depto 5: sin cambios (0,2 %).

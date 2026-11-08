@@ -2552,8 +2552,11 @@ const leavesTex = () => envTex('leaves', () => canvasTex(256, 256, (g, w) => {
   }
 }));
 // sombra suave al pie de cada árbol y charco de luz de los faroles (degradé radial)
+// (gris sobre negro: alphaMap lee el canal verde, no la transparencia; con transparencia quedaba un disco de borde duro)
 const blobTex = () => envTex('blob', () => canvasTex(128, 128, (g, w) => {
-  const gr = g.createRadialGradient(w / 2, w / 2, 0, w / 2, w / 2, w / 2); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.55, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = '#000'; g.fillRect(0, 0, w, w);
+  const gr = g.createRadialGradient(w / 2, w / 2, 0, w / 2, w / 2, w / 2);
+  for (let t = 0; t <= 1.0001; t += 0.1) { const v = Math.exp(-t * t * 3.5) * (1 - smooth(0.75, 1, t)) * 255 | 0; gr.addColorStop(Math.min(1, t), `rgb(${v},${v},${v})`); }
   g.fillStyle = gr; g.fillRect(0, 0, w, w);
 }, false));
 // silueta de la ciudad a lo lejos: edificios recortados contra el cielo (transparente arriba) y, de noche, ventanas
@@ -2779,18 +2782,41 @@ function cityAround(spec, { M, ext, baseY, front }) {
     }
     crowns.forEach(b => b.addTo(g)); trunks.addTo(g); shadows.addTo(g);
   }
-  // faroles de calle con su charco de luz de noche
-  const pool = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffc98a, emissiveMap: blobTex(), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, emissiveIntensity: 0, fog: false });
-  pool.userData.night = [0, 0.55];
-  const pools = instBank(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), pool, { order: 2 });
-  for (let x = cx - NEAR; x <= cx + NEAR; x += 18) for (const [z, dz] of [[zw + 0.4, -1], [zr - 0.4, 1]]) {
+  // Faroles de calle con su charco de luz de noche (2026-11-07, pedido del usuario: "muy bruta y potente"). El charco cae
+  // como una luz real: más fuerte bajo el farol y apagándose de a poco, sin borde (curva gaussiana), y tenue. Va pegado a
+  // cada superficie que toca (vereda, cordón, calzada) en vez de un disco que flotaba a la altura de la vereda, y los
+  // faroles de una y otra vereda van alternados para que los charcos no se pisen
+  const poolTex = envTex('pool', () => canvasTex(128, 128, (g, w) => {
+    g.fillStyle = '#000'; g.fillRect(0, 0, w, w);
+    const gr = g.createRadialGradient(w / 2, w / 2, 0, w / 2, w / 2, w / 2);
+    for (let t = 0; t <= 1.0001; t += 0.1) { const v = Math.exp(-t * t * 5) * (1 - smooth(0.8, 1, t)) * 255 | 0; gr.addColorStop(Math.min(1, t), `rgb(${v},${v},${v})`); }
+    g.fillStyle = gr; g.fillRect(0, 0, w, w);
+  }));
+  const pool = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffbf86, emissiveMap: poolTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, emissiveIntensity: 0, fog: false });
+  pool.userData.night = [0, 0.28];
+  // superficies del suelo: [z0, z1, altura de arriba]
+  const surfaces = [[zw + 0.15, front + 0.5, 0.15], [zw, zw + 0.15, 0.16], [zr, zw, 0.02], [zr - 0.15, zr, 0.16], [zo - 30, zr - 0.15, 0.15]];
+  const poolGeos = [];
+  const lightPool = (xc, zc, R) => {
+    for (const [s0, s1, top] of surfaces) {
+      const z0 = Math.max(s0, zc - R), z1 = Math.min(s1, zc + R);
+      if (z1 <= z0) continue;
+      const x0 = xc - R, x1 = xc + R, y = baseY + top + 0.004, u = x => (x - x0) / (2 * R), v = z => 1 - (z - (zc - R)) / (2 * R);
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute([x0, y, z1, x1, y, z1, x1, y, z0, x0, y, z0], 3));
+      geo.setAttribute('normal', new THREE.Float32BufferAttribute([0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], 3));
+      geo.setAttribute('uv', new THREE.Float32BufferAttribute([u(x0), v(z1), u(x1), v(z1), u(x1), v(z0), u(x0), v(z0)], 2));
+      geo.setIndex([0, 1, 2, 0, 2, 3]); poolGeos.push(geo);
+    }
+  };
+  for (const [z, dz, shift] of [[zw + 0.4, -1, 0], [zr - 0.4, 1, 9]]) for (let x = cx - NEAR + shift; x <= cx + NEAR; x += 18) {
     cyl(g, M.metal('#34373b', 0.5), x, baseY + 0.15, baseY + 6.8, z, 0.07, 10, 0.05);
     bar(g, M.metal('#34373b', 0.5), 'z', Math.min(z, z + dz * 1.2), Math.max(z, z + dz * 1.2), baseY + 6.75, x, 0.03, 8);
     blk(g, M.metal('#2e3135', 0.5), [x - 0.18, x + 0.18], [baseY + 6.55, baseY + 6.72], [z + dz * 1.2 - 0.3, z + dz * 1.2 + 0.3]);
     add(g, new THREE.BoxGeometry(0.3, 0.02, 0.5), M.glow(), x, baseY + 6.54, z + dz * 1.2);
-    mtx.compose(new THREE.Vector3(x, baseY + 0.17, z + dz * 1.5), q0, new THREE.Vector3(7, 1, 7)); pools.put(mtx);
+    lightPool(x, z + dz * 1.2, 5);
   }
-  pools.addTo(g);
+  if (poolGeos.length) { const m = new THREE.Mesh(mergeGeometries(poolGeos, false), pool); m.renderOrder = 2; m.userData.keep = true; g.add(m); }
   for (const b of banks.values()) b.addTo(g);
   g.traverse(o => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
   return g;
