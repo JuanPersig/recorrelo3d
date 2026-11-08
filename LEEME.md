@@ -2,15 +2,15 @@
 
 Fotos de un departamento → `scene.json` → recorrido 3D en el navegador (Three.js). Público: anfitriones e
 inmobiliarias. Cómo modelar un depto nuevo: `SKILL.md`. Historial de cambios: `TICKETS.md`. Todo lo visible, en español
-rioplatense. Hay git local (sin remoto): commitear al cerrar cada tanda.
+rioplatense. Git con copia en GitHub privado (https://github.com/JuanPersig/recorrelo3d): commitear y subir (`git push`) al cerrar cada tanda.
 
 ## Dónde está cada cosa
 
 | Carpeta | Qué hay |
 |---|---|
 | `motor/` | `engine.js` (escena, luz, posproceso, cámara), `components.js` (catálogo de piezas), `validate.js`, `visor.html` y herramientas (`comparar`, `verificar`, `exportar`, `plano`, `colores`, `encuadre`, `telas`, `texturas`) |
-| `departamentos/<id>/scene.json` | lo único que cambia por depto (depto1, depto2, depto4, sannicolas, depto5) |
-| `fotos/<id>/` | PNG que usan las vistas; `fotos/<id>/original/` las originales. `fotos/depto3/` sin modelar |
+| `departamentos/<id>/scene.json` | lo único que cambia por depto; hoy solo `depto5` (los otros cuatro se borraron el 2026-11-08: están en el historial de git) |
+| `fotos/<id>/` | PNG que usan las vistas; `fotos/<id>/original/` las originales |
 | `muestras/` | escenas de la rueda de la landing (fotos de Pexels), fuera de la verificación |
 | `capturas/` | hojas de comparación por depto, línea base de `verificar.html`, `entorno/` (pruebas del entorno), imágenes de la landing |
 | `entregas/depto5/` | kit del dueño: `index.html` + `tarjeta.html` con QR (`node motor/kit.mjs depto5`) |

@@ -1,5 +1,5 @@
 // Servidor estático para abrir el visor en local desde la raíz del proyecto: node motor/serve.mjs
-// Después: http://localhost:5180/motor/visor.html?scene=/departamentos/depto2/scene.json
+// Después: http://localhost:5180/motor/visor.html?scene=/departamentos/depto5/scene.json
 import http from 'node:http';
 import { readFile, writeFile, mkdir, readdir, access } from 'node:fs/promises';
 import { dirname, extname, join, normalize } from 'node:path';
@@ -44,4 +44,4 @@ http.createServer(async (req, res) => {
   } catch {
     res.writeHead(404); res.end('No encontrado');
   }
-}).listen(port, () => console.log(`Visor en http://localhost:${port}/motor/visor.html?scene=/departamentos/depto2/scene.json`));
+}).listen(port, () => console.log(`Visor en http://localhost:${port}/motor/visor.html?scene=/departamentos/depto5/scene.json`));

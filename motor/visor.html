@@ -212,7 +212,7 @@ import { start } from './engine.js';
 const $ = id => document.getElementById(id);
 const fail = msg => { $('err').textContent = msg; $('err').hidden = false; $('loader')?.remove(); };
 
-// local: visor.html?scene=/departamentos/depto2/scene.json · publicado: scene.json junto a la página
+// local: visor.html?scene=/departamentos/depto5/scene.json · publicado: scene.json junto a la página
 // El huésped ve el título y, al abrir "Más información", el texto "about" y el aviso de modelo aproximado; con &dev
 // (o ?dev) aparecen la nota interna, la lista de estimados, las estadísticas y el scene.json, para trabajar.
 const params = new URLSearchParams(location.search), dev = params.has('dev');

@@ -1,4 +1,4 @@
-// Arma la carpeta publicable de un departamento: node motor/empaquetar.mjs depto2
+// Arma la carpeta publicable de un departamento: node motor/empaquetar.mjs depto5
 // Resultado en dist/<depto>/: index.html (el visor con el nombre del departamento), engine.js, components.js,
 // validate.js y scene.json
 // El scene.json publicado va sin lo interno (nota de producción, lista de estimados, orientación, ids de las fotos):

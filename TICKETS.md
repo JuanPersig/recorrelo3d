@@ -1473,3 +1473,13 @@ en el scene el cuadrado toma el color de la marca; si el visor falla, se saca pa
 **Ojo:** otra sesión en paralelo había agregado una segunda pantalla de carga al mismo archivo; quedó una sola.
 **Cómo se verificó:** preview del visor (aparece de entrada, hay un solo `#loader` y se va sola) y captura a tamaño de
 celular en modo claro. `sitio/` rearmado.
+
+## T-58 · Solo el depto demo y copia en GitHub (hecho, 2026-11-08)
+
+**Pedido del usuario:** borrar los departamentos que no son el demo ("no se están usando; después haremos uno nuevo
+para probar la eficiencia del motor") y subir el progreso a https://github.com/JuanPersig/recorrelo3d (privado).
+**Qué se hizo:** fuera depto1, depto2, depto4 (Bariloche) y San Nicolás (scene, texturas, fotos, capturas, línea base y
+paquetes) y las fotos del depto 3 (nunca modelado). publicar.json queda solo con el depto 5 (y la redirección del QR
+viejo): **la próxima subida de sitio/ saca esos cuatro recorridos de recorrelo3d.pages.dev**. Ejemplos de los
+comentarios del motor pasados al depto 5. Todo sigue en el historial de git. verificar.html (sin parámetros = todos)
+revisa solo el depto 5: igual a la base.
