@@ -54,6 +54,8 @@ const W = 360, H = 480, c = Object.assign(document.createElement('canvas'), { wi
 g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
 shots.forEach(([t, im], i) => { const x = (i % 3) * (W + 6), y = Math.floor(i / 3) * (H + 26); g.drawImage(im, x, y + 22, W, H); g.fillStyle = '#1d2430'; g.font = '600 15px system-ui'; g.fillText(t, x + 4, y + 16); });
 $('estado').textContent = `${api.warnings.length} avisos${api.warnings.length ? ': ' + api.warnings.join(' | ') : ''}`;
+// la hoja se muestra en la página (y se guarda si se pidió &capturar)
+$('stage').hidden = true; c.style.cssText = 'display:block;max-width:100%;height:auto'; document.body.append(c);
 if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.9); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
 document.title = 'materiales: listo';
 </script>
