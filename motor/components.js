@@ -202,10 +202,25 @@ function fileTex(k) {
   }));
   return t;
 }
+// Madera de muebles (T-65, elegida por el usuario el 2026-11-08 en motor/pruebas/maderas.html): roble con radios.
+// 512 px = 0,5 m (1 px ≈ 1 mm), veta a lo largo de V: anillos rectos de ~8 mm con ondulación lenta y espaciado
+// irregular, línea de leño tardío angosta, poros como rayitas de 1 mm a lo largo de la veta y radios claros cruzados
+// (manchas de ~3 cm × 4 mm). Devuelve tono (1 = color del mueble), alto (relieve) y poro (0–1, más mate).
+function oakAt(x, y) {
+  const S = 512, frac = v => v - Math.floor(v);
+  const w = 14 * (vnoise(x / 128, y / 256, 4, 2) - 0.5) + 3.5 * (vnoise(x / 32, y / 128, 16, 4) - 0.5);
+  const u = x + w, ph = u * 64 / S + 2.2 * vnoise(u / 64, 0.5, 8, 1), f = frac(ph), k = 0.45 + 0.55 * hash(Math.floor(ph), 3);
+  const late = smooth(0.55, 0.75, f) * (1 - smooth(0.81, 0.95, f)) * k;
+  const pore = smooth(0.85, 0.9, vnoise(x, y / 51.2, S, 10));
+  const ray = smooth(0.66, 0.74, vnoise(x / 32, y / 4, 16, 128)) * (0.5 + 0.5 * vnoise(x / 64, y / 64, 8, 8));
+  return { tono: 1 - 0.13 * late - 0.06 * pore + 0.1 * ray, alto: 1 - 0.4 * late - 0.9 * pore + 0.15 * ray, poro: Math.max(0, pore - 0.6 * ray) };
+}
 const lazy = (k, f) => { GEN[k] = f; return () => T[k] || (T[k] = fileTex(k) ?? f()); };
 const TEX = {
-  // madera: veta (anillos estirados a lo largo de V) y poro fino; el poro es más mate
-  woodN: lazy('woodN', () => normalTex(512, (x, y) => { const n = vnoise(x / 16, y / 64, 32, 8), ring = 0.5 + 0.5 * Math.sin((x / 512) * Math.PI * 2 * 12 + n * 4); return 1 - 0.55 * ring ** 2 - 0.45 * vnoise(x / 2, y / 8, 256, 64); }, 1.4)),
+  // madera de muebles (roble con radios, ver oakAt): relieve y brillo; el poro es más mate y los radios más lisos
+  woodN: lazy('woodN', () => normalTex(512, (x, y) => oakAt(x, y).alto, 1.2)),
+  woodPore: lazy('woodPore', () => toTex(canvasFrom(512, (x, y) => gray(255 * (0.72 + 0.28 * oakAt(x, y).poro))), false)),
+  // poro fino genérico: brillo de los pisos de tablas y de espiga
   woodR: lazy('woodR', () => toTex(canvasFrom(512, (x, y) => gray(255 * (0.7 + 0.3 * vnoise(x / 2, y / 8, 256, 64)))), false)),
   // tela: la trama del tejido, de a pares de hilos
   fabricN: lazy('fabricN', () => normalTex(256, (x, y) => { const u = Math.sin(x / 256 * Math.PI * 2 * 64), v = Math.sin(y / 256 * Math.PI * 2 * 64); return 0.5 + 0.25 * (((x >> 2) + (y >> 2)) % 2 ? u : v) + 0.1 * vnoise(x / 8, y / 8, 32, 32); }, 1.2)),
@@ -233,13 +248,8 @@ const TEX = {
     const line = Math.min(a, 1 - a, b, 1 - b);
     return gray(255 * (0.72 + 0.28 * smooth(0, 0.09, line)) * (0.95 + 0.05 * hash(x >> 1, y >> 1)));
   }), true)),
-  // veta vertical (a lo largo de V), estirada como un enchapado
-  wood: lazy('wood', () => toTex(canvasFrom(512, (x, y) => {
-    const n = vnoise(x / 16, y / 64, 32, 8);
-    const ring = 0.5 + 0.5 * Math.sin((x / 512) * Math.PI * 2 * 12 + n * 4);
-    const fine = vnoise(x / 2, y / 8, 256, 64);
-    return gray(255 * (1 - 0.14 * ring ** 2 - 0.06 * fine));
-  }), true)),
+  // madera de muebles: roble con radios (oakAt), la veta a lo largo de V
+  wood: lazy('wood', () => toTex(canvasFrom(512, (x, y) => gray(255 * Math.max(0, Math.min(1, oakAt(x, y).tono)))), true)),
   // 2 × 2 placas por repetición, con junta fina (2 px ≈ 2 mm en una placa de 60 cm) y un nublado suave de porcelanato
   tile: lazy('tile', () => toTex(canvasFrom(1024, (x, y) => {
     const gx = x % 512, gy = y % 512;
@@ -550,7 +560,7 @@ export function makeMaterials(preset) {
       // un espejo que refleja la pared de enfrente; mate al entorno para que no muestre nada
       return new THREE.MeshStandardMaterial({ color: 0xffffff, map: TEX.mirror(), roughness: 0.55, metalness: 0, envMapIntensity: 0.3 });
     }),
-    wood: c => once('wood' + c, () => clay ? matte(c, 0.9) : jitter(new THREE.MeshStandardMaterial({ color: col(c), map: TEX.wood(), normalMap: TEX.woodN(), normalScale: new THREE.Vector2(0.35, 0.35), roughnessMap: TEX.woodR(), roughness: 0.62 }))),
+    wood: c => once('wood' + c, () => clay ? matte(c, 0.9) : jitter(new THREE.MeshStandardMaterial({ color: col(c), map: TEX.wood(), normalMap: TEX.woodN(), normalScale: new THREE.Vector2(0.5, 0.5), roughnessMap: TEX.woodPore(), roughness: 0.62 }))),
     // pared: pintura sobre revoque fino, con la variación de tono a escala de habitación
     wall: c => once('wall' + c, () => clay ? matte(c, 1) : macroTone(new THREE.MeshStandardMaterial({ color: col(c), roughness: 0.92, normalMap: TEX.plasterN(), normalScale: new THREE.Vector2(0.18, 0.18) }), 0.025, 0.35)),
     fabric: c => once('fab' + c, () => clay ? matte(c, 1) : jitter(new THREE.MeshPhysicalMaterial(fabricOpts(c)))),

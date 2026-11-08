@@ -1633,7 +1633,7 @@ adelantada (desde ahí la foto no muestra el mueble). Siguen abiertas: el baño 
 **Falta:** con las respuestas, cerrar la compuerta 1; después hornear la luz (gi.json quedó viejo para la cocina),
 `verificar.html … &base=1` y repasar "Errores que no se repiten" en todas las hojas.
 
-## T-65 · Madera de muebles más fina: muestras para elegir (abierto, 2026-11-08)
+## T-65 · Madera de muebles más fina: muestras para elegir (hecho, 2026-11-08)
 
 **Pedido del usuario:** la madera actual se ve "grotesca" (vetas onduladas y gruesas en alacenas, puertas y
 bibliotecas); no reemplazarla directo, sino mostrar alternativas fuera de los departamentos y elegir.
@@ -1646,7 +1646,11 @@ por madera (lejos, biblioteca y puertas de alacena de día, puertas de noche). A
 color del mueble como hoy: 1 actual, 2 enchapado fino (veta recta de ~6 mm), 3 roble con radios, 4 roble catedral
 (arcos de corte tangencial, como las alacenas de los 70), 5 pino con nudos chicos, 6 casi lisa (nogal). Los poros son
 rayitas de 1 mm a lo largo de la veta (los puntitos de la primera vuelta parecían lluvia).
-**Falta:** que el usuario elija (puede ser una para todo o una por tipo de mueble: un parámetro `grain` por mueble
-sería general); pasar la elegida a `components.js` (`TEX.wood`, `woodN`, `woodR`), regenerar las texturas con
-`motor/generar-texturas.html` y verificar demo + depto 6. Opcional, con permiso de descarga: texturas escaneadas
-CC0 (ambientCG / Poly Haven).
+**Elegida por el usuario: roble con radios.** En `components.js`, `oakAt(x, y)` da tono, relieve y poro; `TEX.wood`
+y `TEX.woodN` salen de ahí y la madera de muebles tiene su propio brillo, `TEX.woodPore` (`woodR` queda para los
+pisos de tablas y espiga, que no cambian). `normalScale` 0,5 como en la muestra. Poros cada 51,2 px (10 por
+repetición) para que la textura cierre sin costura. Texturas regeneradas con `generar-texturas.html`: cambiaron solo
+`wood`, `woodN` y la nueva `woodPore`; de paso se pre-generó el mimbre (`wicker.webp`, pendiente de LEEME).
+`verificar.html?deptos=depto5,depto6`: demo 0,1–0,4 %, depto 6 ≤ 1 % fuera de la cocina (T-64); línea base
+actualizada (`&base=1`) con la cocina y la madera aprobadas. La página de muestras queda para comparar futuras
+vetas (su fila 1 es siempre la del motor). Opcional más adelante, con permiso de descarga: texturas escaneadas CC0.
