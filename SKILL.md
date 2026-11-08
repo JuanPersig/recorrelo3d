@@ -138,6 +138,14 @@ anteriores: un error de esta lista que vuelve a aparecer es lo peor que puede pa
    sin que ninguna foto los mostrara. Un ambiente que no aparece en ninguna foto es solo el espacio del plano (paredes,
    piso, puertas que se ven desde otro ambiente), vacío, y va en `estimated`. Nada de muebles "probables".
 5. **Comillas invertidas en `node -e "…"`** (2026-11-08): bash las ejecuta. Escribir el texto en un archivo aparte.
+6. **Esquina comida y artefacto mal orientado** (depto 6, cocina, 2026-11-08): en la foto la pared da un quiebre (un
+   pilar o pleno junto a la puerta del lavadero) y el calefón cuelga de la cara del pilar que mira a la cocina; en el
+   modelo no estaba el pilar y el calefón colgaba de costado en la pared de al lado. El plano lo marcaba (rectángulo con
+   cruz = pleno o columna). Control: (a) en el plano, cada rectángulo rayado o con cruz es un pilar o un pleno que hace
+   esquinas: va como `structure` aunque ninguna foto lo muestre de frente; (b) en cada foto, seguir el zócalo y el
+   encuentro pared–techo: cada quiebre de esas líneas es una esquina que el modelo tiene que tener; (c) cada objeto de
+   pared (calefón, aire, cuadro, repisa, tele) mira hacia donde mira en la foto: si se lo ve de frente con la cámara
+   mirando a lo largo del ambiente, está en una pared perpendicular a esa dirección, no en una de costado.
 
 Control mínimo por hoja (`comparar.html … &capturar=<id>`):
 - ¿Cada tramo de pared del render se ve en la foto (o en el plano, si la foto no lo muestra)?

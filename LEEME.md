@@ -111,6 +111,16 @@ tolerables: el render es una abstracción precisa del departamento, no puede agr
    fotos el ancho de la ventana y de la puerta y su posición respecto de la esquina y de la mesada; ventana desde la
    esquina norte, puerta inmediatamente al lado, sin pared entre las dos; la mesada llega a la pared de la ventana.
    Volver a hornear y comparar `cocina`, `cocina2` y `cocina3` a tamaño real.
+   **Además falta una esquina y el calefón está mal orientado** (foto `cocina2`): a la derecha de la puerta del
+   lavadero la pared da un quiebre hacia la cocina (pilar o pleno; en el plano es el rectángulo con la cruz en la
+   esquina sudeste de la cocina, cotas 0,50 y 0,35). El calefón cuelga de la cara de ese pilar que mira hacia la cocina
+   (hacia -z, de frente a quien entra), no de la pared sur de costado como está ahora. Lectura de las fotos: de la
+   esquina norte a la sur, ventana esmerilada (una columna de cuatro paños, ~0,5 m, sobre el final de la mesada) →
+   puerta del lavadero (~0,8 m, con los cuatro paños esmerilados arriba llegando a la misma altura que la ventana) →
+   pilar (~0,5–0,6 m de frente, ~0,3–0,35 m de fondo) con el calefón al centro, el conducto hasta el techo y las
+   conexiones abajo → recién ahí la pared sur con el especiero, el portero y el carro. Medir ancho y fondo del pilar en
+   el plano y en `cocina2`/`cocina3`; modelarlo como `structure` `column` (o un tramo de pared) y mover la puerta y la
+   ventana para que entren entre la esquina norte y el pilar.
 2. **Lavadero: solo el espacio del plano.** No hay fotos: sacar el lavarropas, la pileta y su plafón, y revisar en el
    plano si la ventana al patio existe (si no se ve, sacarla). Queda el ambiente vacío con sus paredes, piso y la puerta,
    anotado en `estimated` como "sin fotos: solo el espacio del plano".

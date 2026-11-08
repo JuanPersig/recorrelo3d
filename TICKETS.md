@@ -1600,3 +1600,6 @@ puerta está pegada. La hoja de comparación lo mostraba y no se marcó. El lava
 lo que no tiene foto consultando al usuario, y repaso de todas las hojas con la lista de control).
 **Qué ya se hizo:** la lista de control "Errores que no se repiten" en SKILL.md y la regla de abstracción precisa en
 LEEME.md, para que no vuelva a pasar en ningún depto.
+**Agregado (2026-11-08):** también falta el pilar o pleno junto a la puerta del lavadero (rectángulo con cruz en el
+plano) y el calefón está colgado de costado en la pared sur: en la foto `cocina2` cuelga de la cara del pilar que mira a
+la cocina. Detalle de la lectura de las fotos en LEEME.md; error 6 de "Errores que no se repiten" en SKILL.md.
