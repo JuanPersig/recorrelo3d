@@ -62,6 +62,12 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 - Pensar todo como mejora general del motor para cualquier depto; el demo es solo la prueba.
 - Comprobar sintaxis con `node --input-type=module --check < archivo` (`node --check` no detecta todo).
 
+## Próximo objetivo (2026-11-08)
+
+Modelar un **departamento nuevo, más grande y cargado de objetos**, con calidad premium (detalle, luz, fidelidad), y
+resolver en el motor, de forma general, todo lo que haga falta. El prompt para arrancar está en
+[prompt-depto-grande.md](prompt-depto-grande.md): completar el id, el nombre y la carpeta de fotos.
+
 ## Pendientes
 
 1. **El usuario:** `git push` (hay commits locales sin subir) y subir `sitio/` a Cloudflare (ya armado: al subirlo
