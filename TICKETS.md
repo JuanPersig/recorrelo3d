@@ -1627,6 +1627,8 @@ cocina y el carro (en `cocina2` el carro llega al marco); el lado del lavadero q
 finas); el pleno rayado C22 (en la foto `cocina` la pared de la heladera es un solo plano, sin escalón: quedó plana);
 vaciar el segundo dormitorio y quitar los frentes de placard estimados; el aviso de 60 cm del baño (T-61).
 **Respuesta del usuario (2026-11-08):** el segundo dormitorio y los frentes de placard quedan como están (amueblados y
-anotados en `estimated`). Siguen abiertas las otras dudas.
+anotados en `estimated`). El mueble blanco de la cocina (`kitchen-cart`) arranca en el marco de la puerta de entrada y no
+llega al pilar (usuario, sobre `cocina2`): z 7,135–8,135, la puerta queda donde marca el plano. Cámara de `cocina`
+adelantada (desde ahí la foto no muestra el mueble). Siguen abiertas: el baño (60 cm) y el lavadero (patio y C22).
 **Falta:** con las respuestas, cerrar la compuerta 1; después hornear la luz (gi.json quedó viejo para la cocina),
 `verificar.html … &base=1` y repasar "Errores que no se repiten" en todas las hojas.
