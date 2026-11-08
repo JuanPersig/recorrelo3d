@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Generar texturas del motor</title>
+<style>body{ font-family:system-ui,"Segoe UI",sans-serif; padding:12px; color:#1d2430 } p{ font-size:13px }</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Generando…</p>
+<script type="module">
+// generar-texturas.html (con el servidor visor): calcula una vez cada textura procedural del motor (TEX en components.js)
+// y la guarda en motor/texturas/<nombre>.webp, más motor/texturas/indice.js con la lista. Después el visor las carga como
+// imagen en vez de calcularlas al abrir el recorrido. Volver a correrla cada vez que se cambia una textura en components.js.
+import * as THREE from 'three';
+import { TEX_GENERATORS } from './components.js';
+const $ = id => document.getElementById(id), index = {}, sizes = [];
+for (const [k, gen] of Object.entries(TEX_GENERATORS)) {
+  const t = gen(), c = t.image, srgb = t.colorSpace === THREE.SRGBColorSpace;
+  // color con calidad 0,9; relieve y brillo (datos, no color) más fieles
+  const blob = await new Promise(r => c.toBlob(r, 'image/webp', srgb ? 0.9 : 0.95));
+  await fetch(`/motor/texturas/${k}.webp`, { method: 'POST', body: blob });
+  index[k] = { srgb }; sizes.push(`${k} ${c.width}px ${(blob.size / 1024).toFixed(0)} KB`);
+  $('estado').textContent = sizes.join(' · ');
+}
+const js = `// Índice de texturas pre-generadas (motor/generar-texturas.html lo reescribe): nombre → sRGB o no.\n// Las que figuran acá se cargan como imagen desde esta carpeta; las demás se calculan al vuelo.\nexport const TEXTURAS = ${JSON.stringify(index)};\n`;
+await fetch('/motor/texturas/indice.js', { method: 'POST', body: js });
+$('estado').textContent = `Listo: ${sizes.length} texturas · ` + sizes.join(' · ');
+document.title = 'texturas: listo';
+</script>

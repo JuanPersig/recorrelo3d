@@ -5,6 +5,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeVertices, mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { TEXTURAS } from './texturas/indice.js';
 
 /* ---------- utilidades ---------- */
 export function rng(seed) {
@@ -76,6 +77,9 @@ export function blk(parent, mat, [x0, x1], [y0, y1], [z0, z1], r = 0, uvm = 0.5)
   const rr = Math.min(r, w / 2 - 1e-4, h / 2 - 1e-4, d / 2 - 1e-4);
   const geo = rr > 0.0005 ? new RoundedBoxGeometry(w, h, d, 3, rr) : new THREE.BoxGeometry(w, h, d);
   boxUV(geo, uvm);
+  // materiales con "jitter" (madera, telas, piedra): cada pieza arranca en otro punto de la textura, así dos tablas o
+  // dos puertas vecinas no tienen la misma veta. Las baldosas y los azulejos no lo llevan (las juntas tienen que seguir)
+  if (!Array.isArray(mat) && mat?.userData?.jitter) { const k = ++uvSeed, uv = geo.attributes.uv, ou = hash(k, 17) * 7, ov = hash(k, 29) * 7; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) + ou, uv.getY(i) + ov); }
   return add(parent, geo, mat, (x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
 }
 export function cyl(parent, mat, x, y0, y1, z, r, seg = 24, rTop = r) {
@@ -151,9 +155,71 @@ function toTex(c, srgb) {
   return t;
 }
 const gray = v => [v, v, v];
+// Detalle de materiales (2026-11-08): relieve como mapa normal calculado de una altura (0–1) que se repite sin costura;
+// "k" es la pendiente máxima (más alto = relieve más marcado). Los mapas normales y de brillo no llevan sRGB
+function normalTex(px, height, k = 2) {
+  const h = new Float32Array(px * px);
+  for (let y = 0; y < px; y++) for (let x = 0; x < px; x++) h[y * px + x] = height(x, y);
+  const at = (x, y) => h[((y + px) % px) * px + ((x + px) % px)];
+  return toTex(canvasFrom(px, (x, y) => {
+    const dx = (at(x + 1, y) - at(x - 1, y)) * k, dy = (at(x, y + 1) - at(x, y - 1)) * k, l = Math.hypot(dx, dy, 1);
+    return [(-dx / l * 0.5 + 0.5) * 255, (dy / l * 0.5 + 0.5) * 255, (1 / l * 0.5 + 0.5) * 255];
+  }), false);
+}
+// Variación suave de tono en el espacio (manchas de 1–3 m): rompe la repetición de pisos y paredes en ambientes grandes.
+// Se encadena con lo que el motor agrega después a cada material (reflejo del piso, luz rebotada)
+function macroTone(m, amp = 0.05, scale = 0.45) {
+  const prev = m.onBeforeCompile, key = prev.toString();
+  m.onBeforeCompile = (sh, r) => {
+    prev.call(m, sh, r);
+    sh.uniforms.uMacro = { value: new THREE.Vector2(amp, scale) };
+    sh.vertexShader = 'varying vec3 vMacroPos;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n  vMacroPos = ( modelMatrix * vec4( transformed, 1.0 ) ).xyz;');
+    sh.fragmentShader = 'uniform vec2 uMacro;\nvarying vec3 vMacroPos;\nfloat mHash( vec2 p ) { return fract( sin( dot( p, vec2( 127.1, 311.7 ) ) ) * 43758.5453 ); }\nfloat mNoise( vec2 p ) { vec2 i = floor( p ), f = fract( p ); f = f * f * ( 3.0 - 2.0 * f ); return mix( mix( mHash( i ), mHash( i + vec2( 1, 0 ) ), f.x ), mix( mHash( i + vec2( 0, 1 ) ), mHash( i + vec2( 1, 1 ) ), f.x ), f.y ); }\n'
+      + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n  { vec2 q = ( vMacroPos.xz + vMacroPos.y * 0.37 ) * uMacro.y; diffuseColor.rgb *= 1.0 + uMacro.x * ( ( mNoise( q ) * 0.65 + mNoise( q * 2.7 + 13.0 ) * 0.35 ) * 2.0 - 1.0 ); }');
+  };
+  m.customProgramCacheKey = () => key + '|macro';
+  return m;
+}
 const T = {};
-const lazy = (k, f) => () => T[k] || (T[k] = f());
+// Texturas pre-generadas (2026-11-08): calcularlas píxel por píxel al abrir el recorrido costaba entre 0,2 y 0,9 s cada
+// una en la PC (varias veces más en un celular). motor/generar-texturas.html las calcula una vez y las guarda en
+// motor/texturas/ (WebP); acá se cargan como imagen (el navegador las guarda en caché) y, si alguna falta, se calcula
+// como antes. texturesReady() espera a que lleguen todas las pedidas (el motor la espera antes del primer cuadro).
+// Las texturas escaneadas, cuando las haya, van en la misma carpeta y por el mismo camino
+const GEN = {}, pending = [];
+export const TEX_GENERATORS = GEN;
+export const texturesReady = () => Promise.all(pending.splice(0));
+function fileTex(k) {
+  const info = TEXTURAS[k]; if (!info) return null;
+  const t = new THREE.Texture(), img = new Image();
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; if (info.srgb) t.colorSpace = THREE.SRGBColorSpace;
+  if (info.mips === false) { t.generateMipmaps = false; t.minFilter = THREE.LinearFilter; }
+  // onload y no decode(): con la página fuera de la vista, decode() puede no terminar nunca
+  pending.push(new Promise(ok => {
+    img.onload = () => { t.image = img; t.needsUpdate = true; ok(); };
+    img.onerror = () => { console.warn('textura ' + k + ': no se pudo cargar, se calcula'); t.image = GEN[k]().image; t.needsUpdate = true; ok(); };
+    img.src = new URL(k + '.webp', new URL('./texturas/', import.meta.url)).href;
+  }));
+  return t;
+}
+const lazy = (k, f) => { GEN[k] = f; return () => T[k] || (T[k] = fileTex(k) ?? f()); };
 const TEX = {
+  // madera: veta (anillos estirados a lo largo de V) y poro fino; el poro es más mate
+  woodN: lazy('woodN', () => normalTex(512, (x, y) => { const n = vnoise(x / 16, y / 64, 32, 8), ring = 0.5 + 0.5 * Math.sin((x / 512) * Math.PI * 2 * 12 + n * 4); return 1 - 0.55 * ring ** 2 - 0.45 * vnoise(x / 2, y / 8, 256, 64); }, 1.4)),
+  woodR: lazy('woodR', () => toTex(canvasFrom(512, (x, y) => gray(255 * (0.7 + 0.3 * vnoise(x / 2, y / 8, 256, 64)))), false)),
+  // tela: la trama del tejido, de a pares de hilos
+  fabricN: lazy('fabricN', () => normalTex(256, (x, y) => { const u = Math.sin(x / 256 * Math.PI * 2 * 64), v = Math.sin(y / 256 * Math.PI * 2 * 64); return 0.5 + 0.25 * (((x >> 2) + (y >> 2)) % 2 ? u : v) + 0.1 * vnoise(x / 8, y / 8, 32, 32); }, 1.2)),
+  // revoque de pared: casi liso, un granulado fino y ondulaciones muy suaves de la llana
+  plasterN: lazy('plasterN', () => normalTex(512, (x, y) => 0.6 * vnoise(x / 3, y / 3, 171, 171) + 0.3 * vnoise(x / 24, y / 24, 22, 22) + 0.1 * vnoise(x / 90, y / 90, 6, 6), 0.9)),
+  // pisos de tablas y espiga: junta hundida con canto redondeado y la veta de cada tabla
+  planksN: lazy('planksN', () => normalTex(1024, (x, y) => {
+    const row = y >> 7, gy = y & 127, off = Math.floor(hash(row, 3) * 1024), lx = (x + off) % 1024, gx = lx & 511, e = Math.min(gy, 127 - gy, gx, 511 - gx);
+    return Math.min(1, e / 4) * (1 - 0.08 * vnoise(x / 3, y / 2, 341, 512) - 0.06 * (0.5 + 0.5 * Math.sin(gy * 0.35 + 6 * vnoise(x / 64, y / 6, 16, 171))));
+  }, 2.2)),
+  herringboneN: lazy('herringboneN', () => normalTex(1024, (x, y) => { const b = herringboneAt(x, y, 1024); return Math.min(1, b.edge / 0.03) * (1 - 0.1 * vnoise(b.along * 60, b.across * 14, 512, 64)); }, 2.2)),
+  // piedra y hormigón: poro y nublado
+  stoneN: lazy('stoneN', () => normalTex(512, (x, y) => 0.7 * vnoise(x / 2, y / 2, 256, 256) + 0.3 * vnoise(x / 10, y / 10, 51, 51), 0.7)),
+  concreteN: lazy('concreteN', () => normalTex(512, (x, y) => (hash(x, y) > 0.992 ? 0 : 1) * (0.8 + 0.2 * vnoise(x / 5, y / 5, 103, 103)), 1.2)),
   mirror: lazy('mirror', () => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 128, 128);
     gr.addColorStop(0, '#f6f8f8'); gr.addColorStop(0.55, '#e6eaec'); gr.addColorStop(1, '#d6dcdf'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }),
@@ -402,7 +468,10 @@ function facadeTexture(style, base, seed) {
 }
 
 /* ---------- materiales: dos estilos sobre los mismos componentes ---------- */
+let uvSeed = 0;
+const jitter = m => { m.userData.jitter = true; return m; };
 export function makeMaterials(preset) {
+  uvSeed = 0;   // cada departamento arma igual cada vez
   const clay = preset === 'clay';
   const cache = new Map();
   const once = (k, f) => { if (!cache.has(k)) cache.set(k, f()); return cache.get(k); };
@@ -415,7 +484,7 @@ export function makeMaterials(preset) {
   const matte = (c, r = 0.9) => new THREE.MeshStandardMaterial({ color: col(c), roughness: r });
   const night = (m, day, nightV) => { m.userData.night = [day, nightV]; m.emissiveIntensity = day; return m; };
   const fabricOpts = c => ({
-    color: col(c), map: TEX.fabric(), bumpMap: TEX.fabric(), bumpScale: 0.25, roughness: 0.95,
+    color: col(c), map: TEX.fabric(), normalMap: TEX.fabricN(), normalScale: new THREE.Vector2(0.55, 0.55), roughness: 0.95,
     sheen: 0.6, sheenRoughness: 0.7, sheenColor: new THREE.Color(c).lerp(new THREE.Color('#ffffff'), 0.5),
   });
   const lib = {
@@ -432,8 +501,10 @@ export function makeMaterials(preset) {
       // un espejo que refleja la pared de enfrente; mate al entorno para que no muestre nada
       return new THREE.MeshStandardMaterial({ color: 0xffffff, map: TEX.mirror(), roughness: 0.55, metalness: 0, envMapIntensity: 0.3 });
     }),
-    wood: c => once('wood' + c, () => clay ? matte(c, 0.9) : new THREE.MeshStandardMaterial({ color: col(c), map: TEX.wood(), roughness: 0.5 })),
-    fabric: c => once('fab' + c, () => clay ? matte(c, 1) : new THREE.MeshPhysicalMaterial(fabricOpts(c))),
+    wood: c => once('wood' + c, () => clay ? matte(c, 0.9) : jitter(new THREE.MeshStandardMaterial({ color: col(c), map: TEX.wood(), normalMap: TEX.woodN(), normalScale: new THREE.Vector2(0.35, 0.35), roughnessMap: TEX.woodR(), roughness: 0.62 }))),
+    // pared: pintura sobre revoque fino, con la variación de tono a escala de habitación
+    wall: c => once('wall' + c, () => clay ? matte(c, 1) : macroTone(new THREE.MeshStandardMaterial({ color: col(c), roughness: 0.92, normalMap: TEX.plasterN(), normalScale: new THREE.Vector2(0.18, 0.18) }), 0.025, 0.35)),
+    fabric: c => once('fab' + c, () => clay ? matte(c, 1) : jitter(new THREE.MeshPhysicalMaterial(fabricOpts(c)))),
     cloth: c => once('cloth' + c, () => { const m = clay ? matte(c, 1) : new THREE.MeshPhysicalMaterial(fabricOpts(c)); m.side = THREE.DoubleSide; return m; }),
     // voile: tela fina traslúcida; brilla un poco con la luz de la ventana y no tapa la vista (no escribe profundidad)
     voile: c => once('voile' + c, () => night(new THREE.MeshPhysicalMaterial({
@@ -448,18 +519,18 @@ export function makeMaterials(preset) {
       if (clay) return matte(c, 0.8);
       // "herringbone": parquet en espiga (madera plastificada, semimate); "terrazzo": granito claro pulido
       const m = kind === 'planks'
-        ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.planks(), roughness: 0.55 - 0.3 * gloss, bumpMap: TEX.planksBump(), bumpScale: 0.8 })
+        ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.planks(), roughness: 0.62 - 0.3 * gloss, roughnessMap: TEX.woodR(), normalMap: TEX.planksN(), normalScale: new THREE.Vector2(0.6, 0.6) })
         : kind === 'herringbone'
-        ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.herringbone(), roughness: 0.5 - 0.3 * gloss, bumpMap: TEX.herringboneBump(), bumpScale: 0.7 })
+        ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.herringbone(), roughness: 0.58 - 0.3 * gloss, roughnessMap: TEX.woodR(), normalMap: TEX.herringboneN(), normalScale: new THREE.Vector2(0.55, 0.55) })
         : kind === 'terrazzo'
         ? new THREE.MeshStandardMaterial({ color: col(c), map: TEX.terrazzo(), roughness: 0.35 - 0.2 * gloss })
         : new THREE.MeshStandardMaterial({ color: col(c), map: TEX.tile(), roughnessMap: TEX.tileRough(), roughness: 1 - 0.7 * gloss, bumpMap: TEX.tileBump(), bumpScale: 0.6 });
       if (gloss > 0) { m.userData.gloss = gloss; m.envMapIntensity = 1 - 0.6 * gloss; }
-      return m;
+      return macroTone(m, kind === 'tile' ? 0.025 : 0.05);
     }),
-    granite: c => once('gran' + c, () => clay ? matte(c, 0.8) : new THREE.MeshStandardMaterial({ color: new THREE.Color(c).lerp(new THREE.Color('#ffffff'), 0.75), map: TEX.granite(), roughness: 0.18 })),
-    marble: c => once('marb' + c, () => clay ? matte(c, 0.8) : new THREE.MeshStandardMaterial({ color: col(c), map: TEX.marble(), roughness: 0.15 })),
-    concrete: c => once('conc' + c, () => clay ? matte(c, 1) : new THREE.MeshStandardMaterial({ color: col(c), map: TEX.concrete(), bumpMap: TEX.concrete(), bumpScale: 0.6, roughness: 0.9 })),
+    granite: c => once('gran' + c, () => clay ? matte(c, 0.8) : jitter(new THREE.MeshStandardMaterial({ color: new THREE.Color(c).lerp(new THREE.Color('#ffffff'), 0.75), map: TEX.granite(), roughness: 0.18, normalMap: TEX.stoneN(), normalScale: new THREE.Vector2(0.12, 0.12) }))),
+    marble: c => once('marb' + c, () => clay ? matte(c, 0.8) : jitter(new THREE.MeshStandardMaterial({ color: col(c), map: TEX.marble(), roughness: 0.15, normalMap: TEX.stoneN(), normalScale: new THREE.Vector2(0.08, 0.08) }))),
+    concrete: c => once('conc' + c, () => clay ? matte(c, 1) : jitter(new THREE.MeshStandardMaterial({ color: col(c), map: TEX.concrete(), normalMap: TEX.concreteN(), normalScale: new THREE.Vector2(0.5, 0.5), roughness: 0.9 }))),
     // vidrio esmerilado: traslúcido y mate (mamparas, divisores interiores)
     frosted: (c, o = 0.62) => once('frost' + c + o, () => Object.assign(new THREE.MeshPhysicalMaterial({
       color: col(c), transparent: true, opacity: clay ? Math.max(o, 0.6) : o, roughness: 0.55, metalness: 0, depthWrite: false, side: THREE.DoubleSide,

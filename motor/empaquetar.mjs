@@ -18,6 +18,9 @@ const page = (await readFile(new URL('visor.html', motor), 'utf8')).replace(/<ti
 await mkdir(out, { recursive: true });
 await writeFile(new URL('index.html', out), page);
 for (const f of ['engine.js', 'components.js', 'validate.js']) await copyFile(new URL(f, motor), new URL(f, out));
+// texturas pre-generadas del motor (motor/texturas/)
+await mkdir(new URL('texturas/', out), { recursive: true });
+for (const t of await readdir(new URL('texturas/', motor))) await copyFile(new URL('texturas/' + t, motor), new URL('texturas/' + t, out));
 if (scene.lighting?.bake) await copyFile(new URL(`departamentos/${id}/${scene.lighting.bake}`, root), new URL(scene.lighting.bake, out));   // luz rebotada horneada
 const pub = { ...scene };
 for (const k of ['note', 'estimated', 'orientation', 'photos']) delete pub[k];

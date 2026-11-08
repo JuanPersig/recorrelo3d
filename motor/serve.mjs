@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const project = fileURLToPath(new URL('..', import.meta.url));
 const root = process.env.ROOT ? join(project, process.env.ROOT, '/') : project;
 const port = Number(process.env.PORT) || 5180;
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 
 http.createServer(async (req, res) => {
   let path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -21,8 +21,9 @@ http.createServer(async (req, res) => {
     const file = normalize(join(root, path)), rel = file.slice(root.length).split(/[\\/]/).filter(Boolean);
     const okDir = ['capturas', 'entregas'].some(d => file.startsWith(join(root, d)))
       || (rel[0] === 'departamentos' && rel.length === 4 && rel[2] === 'tex' && rel[3].endsWith('.jpg'))
-      || (rel[0] === 'departamentos' && rel.length === 3 && rel[2] === 'gi.json');   // luz rebotada (motor/hornear.html)
-    if (!okDir || !/\.(png|jpg|json|svg)$/.test(file)) { res.writeHead(403); return res.end(); }
+      || (rel[0] === 'departamentos' && rel.length === 3 && rel[2] === 'gi.json')   // luz rebotada (motor/hornear.html)
+      || (rel[0] === 'motor' && rel[1] === 'texturas' && rel.length === 3 && /\.(webp|js)$/.test(rel[2]));   // motor/generar-texturas.html
+    if (!okDir || !/\.(png|jpg|json|svg|webp|js)$/.test(file)) { res.writeHead(403); return res.end(); }
     const chunks = []; for await (const c of req) chunks.push(c);
     await mkdir(dirname(file), { recursive: true }); await writeFile(file, Buffer.concat(chunks));
     res.writeHead(201); return res.end();

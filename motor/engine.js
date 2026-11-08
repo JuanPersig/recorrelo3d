@@ -10,7 +10,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { makeMaterials, COMPONENTS, OPENINGS, META, nests, exterior, blk, uvScale } from './components.js';
+import { makeMaterials, COMPONENTS, OPENINGS, META, nests, exterior, blk, uvScale, texturesReady } from './components.js';
 import { checkSpec, checkScene, loosePieces, looseText } from './validate.js';
 
 // recta de una pared alineada a X o a Z; "at" de cada abertura se mide desde el extremo "from"
@@ -453,7 +453,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     /* ---------- paredes, siempre a altura completa; sin techo se ve su canto oscuro arriba ---------- */
     const wallGroup = new THREE.Group(), wallCaps = new THREE.Group(); root.add(wallGroup, wallCaps);
     info.caps = wallCaps; wallGroups.push(wallGroup);
-    let wallMat = M.paint(wallColor);
+    let wallMat = M.wall(wallColor);   // pintura sobre revoque fino (2026-11-08)
     if (clip) { wallMat = wallMat.clone(); wallMat.clippingPlanes = clip; wallMat.clipShadows = true; }   // paredes del altillo cortadas por el techo
     buildFns.push(() => {
       for (const [wi, w] of Lv.walls.entries()) {
@@ -1079,6 +1079,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     raf = requestAnimationFrame(loop);
   }
 
+  await texturesReady();   // texturas pre-generadas (motor/texturas/): que el primer cuadro ya las tenga
   setCut(state.cut); setNight(state.night); setDecor(state.decor);
   if (state.pose) setPose(state.pose); else go(state.view, true);
   raf = requestAnimationFrame(loop);
@@ -1266,7 +1267,11 @@ function floorReflection(meshes, mobile) {
   const rt = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
   const U = { tReflect: { value: rt.texture }, uReflMatrix: { value: new THREE.Matrix4() }, uReflF0: { value: 0.14 }, uReflBoost: { value: 1.4 } };
   for (const mat of new Set(meshes.map(m => m.material))) {
-    mat.onBeforeCompile = sh => {
+    // se encadena con lo que ya tenga el material (la variación de tono de components.js)
+    const prev = mat.onBeforeCompile, key = prev.toString();
+    mat.customProgramCacheKey = () => key + '|refl';
+    mat.onBeforeCompile = (sh, r) => {
+      prev.call(mat, sh, r);
       Object.assign(sh.uniforms, U, { uGloss: { value: mat.userData.gloss } });
       sh.vertexShader = 'uniform mat4 uReflMatrix;\nvarying vec4 vReflUv;\n' + sh.vertexShader.replace('#include <project_vertex>',
         '#include <project_vertex>\n  vReflUv = uReflMatrix * modelMatrix * vec4( transformed, 1.0 );');

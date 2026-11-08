@@ -1483,3 +1483,25 @@ paquetes) y las fotos del depto 3 (nunca modelado). publicar.json queda solo con
 viejo): **la próxima subida de sitio/ saca esos cuatro recorridos de recorrelo3d.pages.dev**. Ejemplos de los
 comentarios del motor pasados al depto 5. Todo sigue en el historial de git. verificar.html (sin parámetros = todos)
 revisa solo el depto 5: igual a la base.
+
+## T-59 · Sistema de detalle de materiales y texturas pre-generadas (hecho, 2026-11-08)
+
+**Pedido del usuario:** texturas que no se vean baratas, resueltas de forma general para cualquier departamento ("dejá
+de pensar en el modelo actual"); "hacé lo necesario para mejorar el motor".
+**Qué se hizo (general, sin tocar ningún scene.json):**
+- Relieve real (mapas normales calculados con Sobel de una altura que se repite sin costura) por familia: madera
+  (veta y poro), pisos de tablas y de espiga (junta con canto y veta), telas (trama), paredes (revoque fino, material
+  nuevo `M.wall` que el motor usa para todas las paredes), piedra y hormigón. Brillo variable en madera (el poro, más mate).
+- Piezas distintas: los materiales con `jitter` (madera, telas, piedra, hormigón) arrancan cada pieza en otro punto de
+  la textura; baldosas y azulejos no (las juntas siguen alineadas).
+- Variación de tono a escala de habitación (`macroTone`) en pisos y paredes. El reflejo del piso ahora se encadena con
+  lo que tenga el material en vez de pisarlo.
+- Texturas pre-generadas: calcularlas al abrir el recorrido costaba 0,2–0,9 s cada una en la PC (con el detalle nuevo,
+  el armado del depto 5 subió de 4 a 10,6 s). `motor/generar-texturas.html` las calcula una vez y las guarda en
+  `motor/texturas/` (27 WebP, 1,4 MB, con `indice.js`); el motor las carga como imagen y las espera antes del primer
+  cuadro; si falta alguna, la calcula como antes. empaquetar.mjs copia la carpeta. Armado del depto 5: 4,4 s. Volver a
+  correr generar-texturas.html cada vez que se cambia una textura en components.js. Las escaneadas irán por el mismo camino.
+- `motor/pruebas/materiales.html`: laboratorio genérico a tres distancias, de día y de noche (`&motor=` compara con
+  otra copia del motor, `&piso=` cambia el piso).
+**Cómo se verificó:** `capturas/materiales/`; verificar.html del depto 5: < 1 % de cambio, sin avisos; base actualizada.
+**Límite:** el dibujo de la veta y de las telas sigue siendo sintético: lo resuelven las texturas escaneadas.
