@@ -1,10 +1,10 @@
 {
-  "fecha": "2026-11-08T00:22:01.271Z",
+  "fecha": "2026-11-08T00:25:23.018Z",
   "deptos": {
     "depto5": {
       "estado": "revisar",
       "problemas": [
-        "la vista \"Planta\" cambió 2.9 %"
+        "la vista \"Planta\" cambió 2.2 %"
       ],
       "vistas": {
         "general": {
@@ -41,7 +41,7 @@
           "nombre": "Desde la barra",
           "dibujos": 629,
           "triangulos": 661836,
-          "cambio": 0.1
+          "cambio": 0.2
         },
         "living6": {
           "nombre": "Living hacia la entrada",
@@ -137,10 +137,10 @@
           "nombre": "Planta",
           "dibujos": 629,
           "triangulos": 575926,
-          "cambio": 2.9
+          "cambio": 2.2
         }
       },
-      "armadoMs": 2582,
+      "armadoMs": 2498,
       "mapas": [
         "/capturas/verificacion/actual/depto5/circulacion-0.png"
       ],

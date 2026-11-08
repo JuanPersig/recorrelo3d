@@ -1406,3 +1406,8 @@ barandas de vidrio se veían así; ahora el tronco va a 60 cm del cordón y la c
 de vereda, `CLEAR` 1,15 m). (3) Hojas de canto que reflejaban el entorno: material mate (Lambert), además más liviano.
 Hojas: `capturas/entorno/arboles.jpg` (antes del arreglo de copas), `arboles3.jpg` (después). verificar.html del depto 5:
 solo cambia la Planta (3 %, copas más angostas); línea base actualizada.
+**Ajuste (2026-11-07, usuario: los árboles "quedaron muy chatos"):** en lugar de achatar la copa hacia la fachada, los
+árboles miden 7 a 9,5 m y la copa (redonda, 10 % más ancha a lo largo de la calle) se corre 80 cm hacia la calzada con
+el tronco apenas inclinado hacia ese lado; solo se angosta hacia la fachada lo que haga falta (`REACH` 1,95 m desde su
+centro, k entre 0,68 y 0,93). Ningún árbol queda a menos de 2,2 m de un farol. Hoja: `capturas/entorno/arboles4.jpg`.
+verificar.html del depto 5: solo la Planta (2,2 %); línea base actualizada.

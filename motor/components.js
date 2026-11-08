@@ -2775,17 +2775,24 @@ function cityAround(spec, { M, ext, baseY, front }) {
     const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, alphaMap: blobTex(), transparent: true, opacity: 0.35, depthWrite: false, fog: false });
     const shadows = instBank(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), shadowMat, { order: 1 });
     const greens = ['#ffffff', '#e8f0dc', '#f4f0d8'].map(c => new THREE.Color(c));
-    // Árboles podados de vereda (2026-11-07): el tronco a 60 cm del cordón y la copa achatada del lado de la fachada, a lo
-    // largo de la calle. Con la copa redonda (radio ~0,3 h ≈ 3 m) las hojas se metían en los balcones y las paredes, y
-    // detrás de las barandas de vidrio se veían como manchas celestes. CLEAR: lo que puede crecer hacia la fachada desde
-    // el tronco (la vereda mide 3,2 m, los balcones salen hasta 1,1 m y las tarjetas de hojas suman ~25 cm)
-    const CLEAR = 1.15, yAxis = new THREE.Vector3(0, 1, 0);
-    for (const [z, y0] of [[zw + 0.6, baseY + 0.15], [zr - 0.6, baseY + 0.15]]) for (let x = cx - NEAR - 6; x < cx + NEAR + 6; x += 6 + r() * 2.5) {
-      const h = 8 + r() * 3.5, xx = x + r(), q = new THREE.Quaternion().setFromAxisAngle(yAxis, r() < 0.5 ? 0 : Math.PI);
-      const k = Math.min(1, CLEAR / (0.3 * h));
-      mtx.compose(new THREE.Vector3(xx, y0, z), q, new THREE.Vector3(h, h, h * Math.max(k, 0.6))); trunks.put(mtx);
-      mtx.compose(new THREE.Vector3(xx, y0, z), q, new THREE.Vector3(h, h, h * k)); crowns[Math.floor(r() * 3)].put(mtx, greens[Math.floor(r() * 3)]);
-      mtx.compose(new THREE.Vector3(xx, y0 + 0.025, z), q0, new THREE.Vector3(h * 0.6, 1, h * 0.6 * k)); shadows.put(mtx);
+    // Árboles de vereda (2026-11-07). Una copa redonda de radio ~0,3 h se metía en los balcones y las paredes (las hojas
+    // detrás de las barandas de vidrio se veían como manchas celestes); achatarla del lado de la fachada los dejaba como
+    // paredes ("muy chatos", el usuario). Ahora: árboles de 7 a 9,5 m, la copa corrida LEAN metros hacia la calle (donde
+    // sobra lugar) con el tronco apenas inclinado hacia ese lado, como los árboles que buscan la luz, y solo si hace
+    // falta, un poco más angosta hacia la fachada. REACH: lo que la copa puede crecer hacia la fachada desde su centro
+    // (la vereda mide 3,2 m, los balcones salen hasta 1,1 m y las tarjetas de hojas suman ~25 cm). Ninguno pegado a un farol
+    const LEAN = 0.8, REACH = 1.15 + LEAN, yAxis = new THREE.Vector3(0, 1, 0), xAxis = new THREE.Vector3(1, 0, 0);
+    const lampsAt = side => { const l = []; for (let x = cx - NEAR + (side ? 9 : 0); x <= cx + NEAR; x += 18) l.push(x); return l; };
+    for (const [z, y0, toStreet, side] of [[zw + 0.6, baseY + 0.15, -1, 0], [zr - 0.6, baseY + 0.15, 1, 1]]) for (let x = cx - NEAR - 6; x < cx + NEAR + 6; x += 6 + r() * 2.5) {
+      const h = 7 + r() * 2.5, spin = r() < 0.5 ? 0 : Math.PI, k = Math.min(1, REACH / (0.3 * h));
+      let xx = x + r();
+      for (const lx of lampsAt(side)) if (Math.abs(xx - lx) < 2.2) xx = lx + (xx < lx ? -2.2 : 2.2);
+      const tilt = Math.atan(LEAN / (0.7 * h)) * toStreet;   // el tronco se inclina hacia la calle
+      const qt = new THREE.Quaternion().setFromAxisAngle(xAxis, tilt).multiply(new THREE.Quaternion().setFromAxisAngle(yAxis, spin));
+      mtx.compose(new THREE.Vector3(xx, y0, z), qt, new THREE.Vector3(h, h, h)); trunks.put(mtx);
+      const qc = new THREE.Quaternion().setFromAxisAngle(yAxis, spin);
+      mtx.compose(new THREE.Vector3(xx, y0, z + toStreet * LEAN), qc, new THREE.Vector3(h * 1.1, h, h * k)); crowns[Math.floor(r() * 3)].put(mtx, greens[Math.floor(r() * 3)]);
+      mtx.compose(new THREE.Vector3(xx, y0 + 0.025, z + toStreet * LEAN * 0.7), q0, new THREE.Vector3(h * 0.65, 1, h * 0.6 * k)); shadows.put(mtx);
       blk(g, M.paint('#5b4a3b'), [xx - 0.5, xx + 0.5], [baseY + 0.15, baseY + 0.16], [z - 0.5, z + 0.5]);   // cantero
     }
     crowns.forEach(b => b.addTo(g)); trunks.addTo(g); shadows.addTo(g);
