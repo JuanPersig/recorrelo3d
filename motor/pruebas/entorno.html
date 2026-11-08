@@ -1,0 +1,54 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entorno por las ventanas</title>
+<style>
+/* Herramienta de desarrollo: hoja con lo que se ve del entorno (por el ventanal, desde el balcón y desde arriba), de día y de noche. */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:540px; height:720px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/entorno.html?scene=/departamentos/depto5/scene.json&capturar=entorno/<nombre>[&vistas=balcon,living1,general]
+// Guarda /capturas/<carpeta>/<nombre>.jpg: arriba de día, abajo de noche. Agrega dos vistas propias: "calle" (desde el
+// balcón mirando la cuadra de enfrente) y "ventanal" (desde el fondo del living hacia el balcón).
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+const { start } = await import((q.get('motor') ?? '/motor/') + 'engine.js');
+const scene = await (await fetch(q.get('scene') ?? '/departamentos/depto5/scene.json')).json();
+Object.assign(scene.views, {
+  calle: { name: 'Calle', pos: [0.6, 1.5, -0.8], target: [0.2, 3, -14], fov: 70 },
+  ventanal: { name: 'Ventanal', pos: [1.3, 1.5, 4.6], target: [0.9, 1.6, -5], fov: 70 },
+  abajo: { name: 'Hacia la calle', pos: [1.2, 1.5, -1.0], target: [-3, -21, -9], fov: 75 },
+  lejos: { name: 'Desde afuera', pos: [14, 10, -26], target: [0.5, -6, 2], fov: 50, cut: true },
+});
+const names = (q.get('vistas') ?? 'ventanal,calle,balcon,general').split(',');
+const api = window.__viewer = await start($('stage'), { scene, state: { view: names[0], cut: false, night: false, decor: true }, device: 'desktop' });
+const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
+const W = 540, H = 720, rows = [];
+for (const night of [false, true]) {
+  api.setNight?.(night) ?? api.set?.({ night });
+  const row = [];
+  for (const k of names) { api.go(k, true); row.push([scene.views[k].name ?? k, await load(api.capture())]); }
+  rows.push(row);
+}
+const c = Object.assign(document.createElement('canvas'), { width: names.length * (W + 8), height: 2 * (H + 34) }), g = c.getContext('2d');
+g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+rows.forEach((row, j) => row.forEach(([name, img], i) => {
+  g.drawImage(img, i * (W + 8), j * (H + 34) + 30, W, H);
+  g.fillStyle = '#1d2430'; g.font = '600 18px system-ui'; g.fillText(`${name} · ${j ? 'noche' : 'día'}`, i * (W + 8) + 6, j * (H + 34) + 22);
+}));
+const info = api.stats?.() ?? {};
+$('estado').textContent = `${api.warnings.length} avisos · ${JSON.stringify(info)}`;
+if (q.get('capturar')) {
+  const url = c.toDataURL('image/jpeg', 0.88), bytes = Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0));
+  await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: bytes });
+}
+document.title = 'entorno: listo';
+</script>
