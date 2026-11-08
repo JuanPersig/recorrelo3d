@@ -1660,3 +1660,27 @@ repetición) para que la textura cierre sin costura. Texturas regeneradas con `g
 actualizada (`&base=1`) con la cocina y la madera aprobadas. La página de muestras queda para comparar futuras
 vetas (su fila 1 es siempre la del motor). Opcional más adelante, con permiso de descarga: texturas escaneadas CC0.
 
+
+## T-66 · Casa con patio (casa7): inventario y compuerta 1 sin plano (abierto, 2026-11-08)
+
+**Pedido del usuario:** probar el motor con una casa con patio. Fotos en `CASA_CON_PATIO/` (17 fotos y 3 capturas de
+la información del anuncio); no hay plano. Anuncio ajeno (Rosario, barrio Alberdi): solo renders, nunca sus fotos en
+algo público. Nombre visible propuesto: "Casa con patio".
+**Datos del anuncio:** terreno 8,62 × 24,30 m (209 m²), cubierta 124 m², descubierta 85 m², orientación sur, 50 años;
+4 ambientes: estar-comedor, cocina independiente, 2 dormitorios, 1 baño con ducha y mampara, lavadero independiente,
+patio verde y seco, galería o quincho semicubierto con parrilla.
+**Inventario** (`fotos/casa7/`, originales en `original/`): frente y frente2 (fachada de piedra con ventana enrejada a
+la derecha, porche enrejado con ventana de persiana a la izquierda, entrada entre los dos, terraza arriba); comedor y
+comedor2 (mesa ovalada, mueble de tele, aire, ventilador; vano ancho a la cocina y puerta vidriada en la misma pared;
+ventana de vidrios repartidos en la pared de la derecha; puerta a un ambiente oscuro y placard blanco a la izquierda);
+cocina y cocina2 (en L, calefón, estantes abiertos, campana, cocina, bacha bajo la ventana, heladera junto al vano,
+puerta en la pared derecha); dormitorio (cama doble, cómoda, mesa de luz, ventana grande con persiana a la izquierda);
+dormitorio2 (cama de una plaza, tocador con luces, estante, ventana grande con persiana; afuera, árboles de vereda);
+estar y estar2 (techo de machimbre con faja de madera sobre la ventana, piso cerámico blanco, sillón de cuero,
+escritorio; dudoso si son el mismo ambiente); bano, bano2 y bano3 (inodoro y bidé, ducha con mampara al fondo,
+vanitory con espejo); patio, patio2 y patio3 (frente trasero: puerta blanca a un pasillo, ventana enrejada, entrante
+bajo una galería de chapa sobre postes de madera con otra ventana con persiana; patio seco y pasto); quincho (al fondo,
+techo de chapa, parrilla de ladrillo, cuartito con puerta y ventana, baranda baja blanca).
+**Dudas de distribución** (sin plano): cómo se conectan los ambientes (no hay fotos de pasillo, entrada ni hall); a qué
+ambiente da la ventana del porche y la de piedra; si estar y estar2 son uno o dos ambientes; dónde está el baño; adónde
+llevan la puerta vidriada del comedor, la puerta lateral de la cocina y la puerta trasera; dónde está el lavadero.
