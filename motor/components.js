@@ -833,7 +833,8 @@ function bed(p, { M }) {
   }
   const hb = p.headboard;
   if (hb) {   // respaldo contra la pared, detrás de la cabecera (-Z)
-    const hw = W / 2 + 0.06, hh = hb.height ?? 1.2, mat = M.fabric(hb.color ?? '#262b3a');
+    // "material": "wood" = respaldo de madera (camas de dormitorio clásicas); si no, tapizado
+    const hw = W / 2 + 0.06, hh = hb.height ?? 1.2, mat = hb.material === 'wood' ? M.wood(hb.color ?? '#4a2d1e') : M.fabric(hb.color ?? '#262b3a');
     if (hb.style !== 'panels') {   // respaldo de 6 cm, atornillado a la base con dos herrajes bajos (quedan ocultos)
       blk(g, mat, [-hw, hw], [0, hh], [-L / 2 - 0.1, -L / 2 - 0.04], 0.02, 0.25);
       for (const sx of [-1, 1]) blk(g, M.lacquer('#4a4c50'), [sx * (W / 2 - 0.12) - 0.04, sx * (W / 2 - 0.12) + 0.04], [0.12, 0.22], [-L / 2 - 0.041, -L / 2 + 0.001]);
@@ -1060,11 +1061,12 @@ function plant(p, { M }) {
     }
     return g;
   }
+  // "pot": false = plantada en la tierra (jardines, patios): sin maceta, sale del piso
+  const inPot = p.pot !== false;
   if (p.style === 'tree') {
-    add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.15, 0], [0.17, 0.36], [0.18, 0.37], [0.165, 0.37], [0.157, 0.33]]), 48), M.ceramic(p.pot ?? '#d9d4cc'));
-    cyl(g, M.lacquer('#3b2e24'), 0, 0.31, 0.332, 0, 0.157, 32);
+    if (inPot) { add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.15, 0], [0.17, 0.36], [0.18, 0.37], [0.165, 0.37], [0.157, 0.33]]), 48), M.ceramic(p.pot ?? '#d9d4cc')); cyl(g, M.lacquer('#3b2e24'), 0, 0.31, 0.332, 0, 0.157, 32); }
     const trunk = M.wood('#7a5a3e'), top = hgt * 0.62;
-    cyl(g, trunk, 0, 0.31, top, 0, 0.022, 10, 0.014);
+    cyl(g, trunk, 0, inPot ? 0.31 : 0, top, 0, inPot ? 0.022 : 0.04, 10, inPot ? 0.014 : 0.025);
     for (let i = 0; i < 40; i++) {   // hojas que salen del tronco en la mitad de arriba
       const y = top - 0.05 + r() * (hgt - top - 0.1), m = add(g, leafGeo(0.18 + r() * 0.12, 0.05 + 0.025 * r(), 0.25 + 0.25 * r()), M.leaf(), 0, Math.min(y, top), 0);
       m.rotation.order = 'YXZ'; m.rotation.set(0.5 + 0.7 * r(), r() * Math.PI * 2, 0);
@@ -1073,12 +1075,13 @@ function plant(p, { M }) {
     g.userData.h = hgt;
     return g;
   }
-  add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.11, 0], [0.125, 0.015], [0.15, 0.3], [0.16, 0.31], [0.146, 0.31], [0.138, 0.27]]), 48), M.ceramic(p.pot ?? '#d9d4cc'));
-  cyl(g, M.lacquer('#3b2e24'), 0, 0.25, 0.272, 0, 0.138, 32);
-  for (let i = 0; i < 16; i++) {
-    const len = hgt * (0.45 + 0.5 * r()) - 0.27;
-    const m = add(g, leafGeo(len, 0.05 + 0.03 * r(), 0.25 + 0.3 * r()), M.leaf(), (r() - 0.5) * 0.08, 0.26, (r() - 0.5) * 0.08);
-    m.rotation.order = 'YXZ'; m.rotation.set(0.1 + 0.45 * r(), (i / 16) * Math.PI * 2 + r() * 0.4, 0);
+  if (inPot) { add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.11, 0], [0.125, 0.015], [0.15, 0.3], [0.16, 0.31], [0.146, 0.31], [0.138, 0.27]]), 48), M.ceramic(p.pot ?? '#d9d4cc')); cyl(g, M.lacquer('#3b2e24'), 0, 0.25, 0.272, 0, 0.138, 32); }
+  // "leaves": cantidad de hojas (16); "spread": cuánto se abre la mata desde el centro (matas de jardín)
+  const nl = p.leaves ?? 16, y0 = inPot ? 0.26 : -0.004, sp = p.spread ?? 0.08;   // en la tierra, las hojas nacen 4 mm adentro del piso
+  for (let i = 0; i < nl; i++) {
+    const len = hgt * (0.45 + 0.5 * r()) - (inPot ? 0.27 : 0);
+    const m = add(g, leafGeo(len, 0.05 + 0.03 * r(), 0.25 + 0.3 * r()), M.leaf(), (r() - 0.5) * sp, y0, (r() - 0.5) * sp);
+    m.rotation.order = 'YXZ'; m.rotation.set(0.1 + 0.45 * r() + (inPot ? 0 : 0.25), (i / nl) * Math.PI * 2 + r() * 0.4, 0);
   }
   return g;
 }
@@ -1282,6 +1285,7 @@ function diningTable(p, { M }) {
     top.rotateX(-Math.PI / 2); add(g, uvScale(top, 1.5), wood, 0, h - 0.03, 0);
     blk(g, wood, [-L / 2 + 0.25, L / 2 - 0.25], [h - 0.1, h - 0.03], [-W / 2 + 0.12, W / 2 - 0.12], 0.01);
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) { const l = cyl(g, wood, sx * (L / 2 - 0.3), 0, h - 0.06, sz * (W / 2 - 0.16), 0.02, 12, 0.026); l.rotation.set(-sz * 0.06, 0, sx * 0.06); }
+    ovalTablecloth(g, M, p.tablecloth, L, W, h);
     return g;
   }
   if (p.shape === 'trestle') {   // tapa de madera sobre dos pies de patas curvas abiertas, unidos por un travesaño
@@ -1344,6 +1348,26 @@ function diningTable(p, { M }) {
 // mantel de una mesa rectangular ("tablecloth": { "color" } liso o { "pattern": "palm", "colors" } estampado tropical de
 // hule; "drop" cuánto cae por los lados): cubre la tapa 5 mm por encima y cae por los cuatro lados con pliegues suaves.
 // Lo que va sobre la mesa se apoya en "height" + 0,008
+// mantel de una mesa ovalada (mismos "color", "pattern" y "drop"): sigue el contorno de la tapa y cae con ondas suaves
+// que se abren un poco hacia el ruedo; la tapa del mantel queda 5 mm por encima de la de madera
+function ovalTablecloth(g, M, tc, L, W, h) {
+  if (!tc) return;
+  const mat = tc.pattern === 'palm' ? M.palm(tc.colors ?? ['#f4f3ee', '#2f7d3a', '#5aa04a', '#1f5e33', '#8cc06a']) : M.cloth(tc.color ?? '#efe9de');
+  const e = 0.006, sh = rrect(new THREE.Shape(), -L / 2 - e, -W / 2 - e, L + 2 * e, W + 2 * e, W / 2 + e - 0.001), y0 = h + 0.005, d = tc.drop ?? 0.22;
+  const top = new THREE.ShapeGeometry(sh, 24); top.rotateX(-Math.PI / 2); uvScale(top, 1 / 0.75);
+  add(g, top, mat, 0, y0, 0).castShadow = true;
+  const pts = sh.getSpacedPoints(180), n = pts.length - 1, R = 7, per = sh.getLength(), pos = [], uv = [], idx = [];
+  for (let i = 0; i <= n; i++) {
+    const a = pts[(i + n - 1) % n], b = pts[(i + 1) % n], tx = b.x - a.x, ty = b.y - a.y, l = Math.hypot(tx, ty) || 1, nx = ty / l, ny = -tx / l;
+    for (let r = 0; r <= R; r++) {
+      const v = r / R, off = 0.002 + v * v * 0.025 + v * 0.012 * Math.sin((i / n) * Math.PI * 2 * 22 + 1.3 * Math.sin(i * 0.37));
+      pos.push(pts[i].x + nx * off, y0 - v * d, -(pts[i].y + ny * off)); uv.push((i / n) * per / 0.75, (v * d) / 0.75);
+    }
+  }
+  for (let i = 0; i < n; i++) for (let r = 0; r < R; r++) { const a = i * (R + 1) + r, b = a + R + 1; idx.push(a, a + 1, b, b, a + 1, b + 1); }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  geo.setIndex(idx); geo.computeVertexNormals(); add(g, geo, mat);
+}
 function tablecloth(g, M, tc, L, W, h) {
   if (!tc) return;
   const mat = tc.pattern === 'palm' ? M.palm(tc.colors ?? ['#f4f3ee', '#2f7d3a', '#5aa04a', '#1f5e33', '#8cc06a']) : M.cloth(tc.color ?? '#efe9de');

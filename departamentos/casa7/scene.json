@@ -151,7 +151,7 @@
         ],
         "z": [
           5.125,
-          10
+          10.8
         ]
       },
       "floor": {
@@ -176,7 +176,7 @@
         ],
         "z": [
           6.475,
-          10
+          10.8
         ]
       },
       "floor": {
@@ -194,8 +194,8 @@
           4.545
         ],
         "z": [
-          10.15,
-          12.85
+          10.95,
+          13.65
         ]
       },
       "floor": {
@@ -213,8 +213,8 @@
           2.345
         ],
         "z": [
-          10.15,
-          12.85
+          10.95,
+          13.65
         ]
       },
       "floor": {
@@ -234,7 +234,7 @@
         ],
         "z": [
           4,
-          12.85
+          13.65
         ]
       },
       "floor": {
@@ -255,8 +255,8 @@
           8.47
         ],
         "z": [
-          10.15,
-          13.15
+          10.95,
+          13.95
         ]
       },
       "floor": {
@@ -278,8 +278,8 @@
               8.47
             ],
             "z": [
-              10.15,
-              13.5
+              10.95,
+              14.87
             ]
           },
           {
@@ -288,8 +288,8 @@
               4.695
             ],
             "z": [
-              13.15,
-              13.5
+              13.95,
+              14.87
             ]
           }
         ]
@@ -305,8 +305,8 @@
             8.47
           ],
           "z": [
-            13.15,
-            14.2
+            13.95,
+            15
           ]
         },
         {
@@ -315,7 +315,7 @@
             5.02
           ],
           "z": [
-            14.2,
+            15,
             21.2
           ]
         }
@@ -337,7 +337,7 @@
           8.47
         ],
         "z": [
-          14.2,
+          15,
           24.15
         ]
       },
@@ -534,9 +534,10 @@
           "width": 0.7,
           "height": 2.05,
           "hinge": "start",
-          "open": 80,
-          "color": "#f2efe8",
-          "material": "lacquer"
+          "open": 0,
+          "color": "#b06a2e",
+          "material": "wood",
+          "glass": "slot"
         }
       ]
     },
@@ -547,7 +548,7 @@
       ],
       "to": [
         4.62,
-        13
+        13.8
       ],
       "thickness": 0.15,
       "openings": [
@@ -564,11 +565,11 @@
         },
         {
           "kind": "door",
-          "at": 7.65,
+          "at": 8.45,
           "width": 0.8,
           "height": 2.05,
           "hinge": "end",
-          "open": 85,
+          "open": 0,
           "color": "#f2efe8",
           "material": "lacquer"
         }
@@ -622,13 +623,13 @@
       ],
       "to": [
         0.775,
-        13
+        13.8
       ],
       "thickness": 0.15,
       "openings": [
         {
           "kind": "sliding-window",
-          "at": 4.775,
+          "at": 5.575,
           "width": 1.15,
           "height": 1.35,
           "sill": 0.9,
@@ -641,11 +642,11 @@
     {
       "from": [
         8.62,
-        10.075
+        10.875
       ],
       "to": [
         0.775,
-        10.075
+        10.875
       ],
       "thickness": 0.15,
       "openings": [
@@ -683,11 +684,11 @@
     {
       "from": [
         2.42,
-        10.075
+        10.875
       ],
       "to": [
         2.42,
-        13
+        13.8
       ],
       "thickness": 0.15,
       "openings": [
@@ -705,11 +706,11 @@
     {
       "from": [
         4.62,
-        13
+        13.8
       ],
       "to": [
         0,
-        13
+        13.8
       ],
       "thickness": 0.3,
       "openings": [
@@ -717,7 +718,7 @@
           "kind": "sliding-window",
           "at": 1,
           "width": 0.9,
-          "height": 1.1,
+          "height": 0.9,
           "sill": 1.1,
           "panels": 2,
           "frame": "#f2efe8"
@@ -790,8 +791,8 @@
         5
       ],
       "z": [
-        13.38,
-        13.5
+        14.75,
+        14.87
       ],
       "y": [
         0,
@@ -806,8 +807,8 @@
         8.47
       ],
       "z": [
-        13.38,
-        13.5
+        14.75,
+        14.87
       ],
       "y": [
         2.41,
@@ -853,7 +854,7 @@
       "type": "dining-table",
       "at": [
         2.45,
-        8
+        8.6
       ],
       "rotation": 90,
       "params": {
@@ -872,7 +873,7 @@
       "type": "bookshelf",
       "at": [
         1.075,
-        7.6
+        8.4
       ],
       "rotation": 90,
       "params": {
@@ -881,7 +882,7 @@
         "depth": 0.45,
         "cabinet": 0.8,
         "crown": true,
-        "shelves": 3,
+        "shelves": 2,
         "color": "#4a1e18",
         "books": false
       }
@@ -889,10 +890,10 @@
     {
       "type": "tv",
       "at": [
-        0.851,
-        7.6
+        0.852,
+        8.4
       ],
-      "y": 0.95,
+      "y": 0.82,
       "rotation": 90,
       "params": {
         "size": 32
@@ -902,7 +903,7 @@
       "type": "ac-split",
       "at": [
         0.85,
-        7.6
+        8.4
       ],
       "y": 2.35,
       "rotation": 90,
@@ -914,7 +915,7 @@
       "type": "ceiling-fan",
       "at": [
         2.45,
-        8.05
+        8.65
       ],
       "params": {
         "light": "dish",
@@ -926,7 +927,7 @@
       "type": "wardrobe",
       "at": [
         4.305,
-        7.85
+        8.65
       ],
       "rotation": -90,
       "params": {
@@ -942,7 +943,7 @@
       "type": "wardrobe",
       "at": [
         4.32,
-        8.62
+        9.42
       ],
       "rotation": -90,
       "params": {
@@ -959,7 +960,7 @@
       "type": "kitchen-base",
       "at": [
         2.915,
-        12.55
+        13.35
       ],
       "rotation": 180,
       "params": {
@@ -993,7 +994,7 @@
       "type": "range",
       "at": [
         3.66,
-        12.56
+        13.36
       ],
       "rotation": 180,
       "params": {
@@ -1007,7 +1008,7 @@
       "type": "kitchen-base",
       "at": [
         4.245,
-        12.225
+        13.025
       ],
       "rotation": -90,
       "params": {
@@ -1035,7 +1036,7 @@
       "type": "fridge",
       "at": [
         4.21,
-        11.2
+        12
       ],
       "rotation": -90,
       "params": {
@@ -1049,20 +1050,23 @@
       "type": "kitchen-wall",
       "at": [
         3.625,
-        12.685
+        13.485
       ],
       "rotation": 180,
       "params": {
         "width": 0.85,
         "depth": 0.33,
-        "y0": 1.55,
-        "height": 0.95,
+        "y0": 1.6,
+        "height": 1,
         "material": "wood",
         "color": "#c9955a",
         "modules": [
           {
             "w": 0.55,
-            "kind": "open"
+            "kind": "open",
+            "box": true,
+            "shelves": 2,
+            "closedTop": 0.02
           },
           {
             "w": 0.3,
@@ -1076,14 +1080,14 @@
       "type": "kitchen-wall",
       "at": [
         2.8475,
-        12.685
+        13.485
       ],
       "rotation": 180,
       "params": {
         "width": 0.705,
         "depth": 0.33,
-        "y0": 2.15,
-        "height": 0.65,
+        "y0": 2.03,
+        "height": 0.57,
         "material": "wood",
         "color": "#c9955a",
         "modules": [
@@ -1099,14 +1103,14 @@
       "type": "kitchen-wall",
       "at": [
         4.38,
-        11.95
+        12.75
       ],
       "rotation": -90,
       "params": {
         "width": 0.9,
         "depth": 0.33,
         "y0": 1.6,
-        "height": 0.7,
+        "height": 1,
         "material": "wood",
         "color": "#c9955a",
         "modules": [
@@ -1122,7 +1126,7 @@
       "type": "appliance",
       "at": [
         3.645,
-        12.62
+        13.42
       ],
       "y": 1.42,
       "rotation": 180,
@@ -1135,7 +1139,7 @@
       "type": "water-heater",
       "at": [
         4.28,
-        12.85
+        13.65
       ],
       "y": 1.5,
       "rotation": 180,
@@ -1149,7 +1153,7 @@
     {
       "type": "bed",
       "at": [
-        7.47,
+        7.37,
         3.7
       ],
       "rotation": -90,
@@ -1174,7 +1178,12 @@
             "row": 1,
             "color": "#d8c8ae"
           }
-        ]
+        ],
+        "headboard": {
+          "material": "wood",
+          "color": "#3b2418",
+          "height": 1.05
+        }
       }
     },
     {
@@ -1236,7 +1245,7 @@
     {
       "type": "bed",
       "at": [
-        1.1,
+        1.2,
         2
       ],
       "rotation": 90,
@@ -1253,7 +1262,11 @@
             "row": 0,
             "color": "#d6c9b2"
           }
-        ]
+        ],
+        "headboard": {
+          "color": "#efe6d2",
+          "height": 1.1
+        }
       }
     },
     {
@@ -1370,7 +1383,7 @@
       "type": "sofa",
       "at": [
         5.145,
-        7.6
+        8
       ],
       "rotation": 90,
       "params": {
@@ -1384,7 +1397,7 @@
       "type": "desk",
       "at": [
         7.95,
-        9.75
+        10.55
       ],
       "rotation": 180,
       "params": {
@@ -1399,7 +1412,7 @@
       "type": "floor-lamp",
       "at": [
         7.25,
-        9.78
+        10.58
       ],
       "params": {
         "shade": "#efe6d6"
@@ -1409,7 +1422,7 @@
       "type": "curtains",
       "at": [
         5.65,
-        10
+        10.8
       ],
       "rotation": 180,
       "params": {
@@ -1427,7 +1440,7 @@
       "type": "ceiling-light",
       "at": [
         6.58,
-        7.56
+        7.96
       ],
       "y": -0.25,
       "params": {
@@ -1439,7 +1452,7 @@
       "type": "paneling",
       "at": [
         6.5825,
-        10
+        10.8
       ],
       "y": 2.35,
       "rotation": 180,
@@ -1453,24 +1466,24 @@
     {
       "type": "shower",
       "at": [
-        1.25,
+        1.264,
         5.1625
       ],
       "rotation": 90,
       "params": {
-        "width": 2.25,
+        "width": 2.29,
         "depth": 0.8
       }
     },
     {
       "type": "glass-screen",
       "at": [
-        1.65,
+        1.664,
         5.1625
       ],
       "rotation": 90,
       "params": {
-        "width": 2.25,
+        "width": 2.29,
         "height": 1.9
       }
     },
@@ -1478,7 +1491,7 @@
       "type": "toilet",
       "at": [
         2.9,
-        6.045
+        6.031
       ],
       "rotation": 180,
       "params": {}
@@ -1487,7 +1500,7 @@
       "type": "bidet",
       "at": [
         2.35,
-        6.045
+        6.031
       ],
       "rotation": 180,
       "params": {}
@@ -1496,7 +1509,7 @@
       "type": "vanity",
       "at": [
         2.5,
-        4.225
+        4.239
       ],
       "params": {
         "width": 0.7,
@@ -1510,7 +1523,7 @@
       "type": "bath-mirror",
       "at": [
         2.5,
-        4
+        4.014
       ],
       "y": 1.2,
       "params": {
@@ -1523,7 +1536,7 @@
       "type": "towel-bar",
       "at": [
         3.2,
-        4
+        4.014
       ],
       "y": 1.05,
       "params": {
@@ -1590,19 +1603,6 @@
       "type": "chair",
       "at": [
         1.7,
-        7.4
-      ],
-      "rotation": 90,
-      "params": {
-        "color": "#262626",
-        "legs": "#b98a5a",
-        "quilted": false
-      }
-    },
-    {
-      "type": "chair",
-      "at": [
-        1.7,
         8
       ],
       "rotation": 90,
@@ -1628,8 +1628,21 @@
     {
       "type": "chair",
       "at": [
+        1.7,
+        9.2
+      ],
+      "rotation": 90,
+      "params": {
+        "color": "#262626",
+        "legs": "#b98a5a",
+        "quilted": false
+      }
+    },
+    {
+      "type": "chair",
+      "at": [
         3.2,
-        7.6
+        8.2
       ],
       "rotation": -90,
       "params": {
@@ -1642,7 +1655,7 @@
       "type": "chair",
       "at": [
         3.2,
-        8.4
+        9
       ],
       "rotation": -90,
       "params": {
@@ -1655,7 +1668,7 @@
       "type": "chair",
       "at": [
         2.45,
-        9.15
+        9.75
       ],
       "rotation": 180,
       "params": {
@@ -1702,6 +1715,249 @@
         "wood": "#7a3f22",
         "color": "#d8cdb8"
       }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        4.545,
+        13.02
+      ],
+      "rotation": -90,
+      "y": 0.9,
+      "params": {
+        "width": 1.23,
+        "height": 0.7,
+        "tile": [
+          0.15,
+          0.15
+        ],
+        "color": "#ddc6b0"
+      }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        2.495,
+        12.4
+      ],
+      "rotation": 90,
+      "y": 0,
+      "params": {
+        "width": 1.24,
+        "height": 1.75,
+        "tile": [
+          0.15,
+          0.15
+        ],
+        "color": "#ddc6b0"
+      }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        2.1725,
+        4
+      ],
+      "rotation": 0,
+      "params": {
+        "width": 2.617,
+        "height": 1.75,
+        "tile": [
+          0.33,
+          0.33
+        ],
+        "color": "#b39478"
+      }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        2.1725,
+        6.325
+      ],
+      "rotation": 180,
+      "params": {
+        "width": 2.617,
+        "height": 1.75,
+        "tile": [
+          0.33,
+          0.33
+        ],
+        "color": "#b39478"
+      }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        0.85,
+        5.1625
+      ],
+      "rotation": 90,
+      "params": {
+        "width": 2.297,
+        "height": 1.75,
+        "tile": [
+          0.33,
+          0.33
+        ],
+        "color": "#b39478"
+      }
+    },
+    {
+      "type": "plant",
+      "at": [
+        7.95,
+        23.55
+      ],
+      "params": {
+        "style": "tree",
+        "pot": false,
+        "height": 2.6,
+        "seed": 4
+      },
+      "decor": true
+    },
+    {
+      "type": "plant",
+      "at": [
+        0.55,
+        15.4
+      ],
+      "params": {
+        "height": 0.7,
+        "seed": 21,
+        "pot": "#c9c1b4"
+      },
+      "decor": true
+    },
+    {
+      "type": "plant",
+      "at": [
+        6.4,
+        23.55
+      ],
+      "params": {
+        "pot": false,
+        "height": 1.6,
+        "leaves": 28,
+        "spread": 0.25,
+        "seed": 7
+      },
+      "decor": true
+    },
+    {
+      "type": "plant",
+      "at": [
+        7.75,
+        19.5
+      ],
+      "params": {
+        "pot": false,
+        "height": 1.3,
+        "leaves": 28,
+        "spread": 0.25,
+        "seed": 9
+      },
+      "decor": true
+    },
+    {
+      "type": "plant",
+      "at": [
+        5.95,
+        21.75
+      ],
+      "params": {
+        "pot": false,
+        "height": 0.55,
+        "leaves": 28,
+        "spread": 0.25,
+        "seed": 12
+      },
+      "decor": true
+    },
+    {
+      "type": "plant",
+      "at": [
+        6.2,
+        22.5
+      ],
+      "params": {
+        "pot": false,
+        "height": 0.5,
+        "leaves": 28,
+        "spread": 0.25,
+        "seed": 14
+      },
+      "decor": true
+    },
+    {
+      "type": "plant",
+      "at": [
+        5.85,
+        23
+      ],
+      "params": {
+        "pot": false,
+        "height": 0.5,
+        "leaves": 28,
+        "spread": 0.25,
+        "seed": 15
+      },
+      "decor": true
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        3.518,
+        13.65
+      ],
+      "rotation": 180,
+      "y": 0.9,
+      "params": {
+        "width": 2.026,
+        "height": 0.2,
+        "tile": [
+          0.15,
+          0.15
+        ],
+        "color": "#ddc6b0"
+      }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        2.6075,
+        13.65
+      ],
+      "rotation": 180,
+      "y": 1.1,
+      "params": {
+        "width": 0.205,
+        "height": 0.5,
+        "tile": [
+          0.15,
+          0.15
+        ],
+        "color": "#ddc6b0"
+      }
+    },
+    {
+      "type": "wall-tiles",
+      "at": [
+        4.0805,
+        13.65
+      ],
+      "rotation": 180,
+      "y": 1.1,
+      "params": {
+        "width": 0.901,
+        "height": 0.5,
+        "tile": [
+          0.15,
+          0.15
+        ],
+        "color": "#ddc6b0"
+      }
     }
   ],
   "exterior": {
@@ -1722,7 +1978,8 @@
       -3,
       6,
       8
-    ]
+    ],
+    "bake": "gi.json"
   },
   "views": {
     "general": {
@@ -1740,17 +1997,272 @@
       "fov": 50,
       "cut": true
     },
+    "comedor": {
+      "name": "Comedor",
+      "pos": [
+        2.9,
+        1.452,
+        6.48
+      ],
+      "target": [
+        2.748,
+        1.067,
+        8.437
+      ],
+      "fov": 76.5,
+      "photo": "comedor"
+    },
+    "comedor2": {
+      "name": "Comedor y cocina",
+      "pos": [
+        1.62,
+        1.482,
+        6.71
+      ],
+      "target": [
+        2.553,
+        1.309,
+        8.47
+      ],
+      "fov": 74,
+      "photo": "comedor2"
+    },
+    "cocina": {
+      "name": "Cocina",
+      "pos": [
+        3.21,
+        1.38,
+        11.22
+      ],
+      "target": [
+        3.223,
+        1.173,
+        13.209
+      ],
+      "fov": 70.5,
+      "photo": "cocina"
+    },
+    "cocina2": {
+      "name": "Heladera y alacenas",
+      "pos": [
+        3.36,
+        1.45,
+        11.1
+      ],
+      "target": [
+        4.425,
+        1.187,
+        12.773
+      ],
+      "fov": 70,
+      "photo": "cocina2"
+    },
+    "estar": {
+      "name": "Estar",
+      "pos": [
+        7.6,
+        1.5,
+        7.2
+      ],
+      "target": [
+        4.7,
+        1.2,
+        9.8
+      ],
+      "fov": 72,
+      "photo": "estar"
+    },
+    "estar2": {
+      "name": "Estar y ventana",
+      "pos": [
+        5.84,
+        1.38,
+        5.946
+      ],
+      "target": [
+        6.383,
+        1.247,
+        7.866
+      ],
+      "fov": 73,
+      "photo": "estar2"
+    },
+    "dormitorio": {
+      "name": "Dormitorio",
+      "pos": [
+        4.94,
+        1.552,
+        2.16
+      ],
+      "target": [
+        6.832,
+        1.201,
+        2.705
+      ],
+      "fov": 72,
+      "photo": "dormitorio"
+    },
+    "dormitorio2": {
+      "name": "Segundo dormitorio",
+      "pos": [
+        2.666,
+        1.592,
+        3.472
+      ],
+      "target": [
+        1.809,
+        1.378,
+        1.678
+      ],
+      "fov": 72,
+      "photo": "dormitorio2"
+    },
+    "bano": {
+      "name": "Baño",
+      "pos": [
+        3.374,
+        1.7,
+        5.12
+      ],
+      "target": [
+        1.699,
+        0.64,
+        5.386
+      ],
+      "fov": 85,
+      "photo": "bano3"
+    },
+    "bano2": {
+      "name": "Inodoro y bidé",
+      "pos": [
+        3.22,
+        1.552,
+        4.6
+      ],
+      "target": [
+        2.524,
+        0.415,
+        6.091
+      ],
+      "fov": 80,
+      "photo": "bano"
+    },
+    "bano3": {
+      "name": "Vanitory",
+      "pos": [
+        2.526,
+        1.56,
+        5.904
+      ],
+      "target": [
+        2.421,
+        1.352,
+        3.918
+      ],
+      "fov": 74.1,
+      "photo": "bano2"
+    },
+    "patio": {
+      "name": "Patio",
+      "pos": [
+        4.014,
+        1.408,
+        18.454
+      ],
+      "target": [
+        4.026,
+        1.375,
+        16.454
+      ],
+      "fov": 72,
+      "photo": "patio"
+    },
+    "patio2": {
+      "name": "Galería",
+      "pos": [
+        1.952,
+        1.426,
+        19.42
+      ],
+      "target": [
+        2.746,
+        1.263,
+        17.591
+      ],
+      "fov": 74.1,
+      "photo": "patio2"
+    },
+    "jardin": {
+      "name": "Jardín",
+      "pos": [
+        6.62,
+        1.38,
+        14.5
+      ],
+      "target": [
+        6.737,
+        1.472,
+        16.494
+      ],
+      "fov": 78.8,
+      "photo": "patio3"
+    },
+    "quincho": {
+      "name": "Quincho",
+      "pos": [
+        4.028,
+        1.486,
+        16.274
+      ],
+      "target": [
+        3.396,
+        1.296,
+        18.162
+      ],
+      "fov": 66,
+      "photo": "quincho"
+    },
+    "frente": {
+      "name": "Frente",
+      "pos": [
+        -2.046,
+        1.628,
+        -3.44
+      ],
+      "target": [
+        -0.174,
+        1.669,
+        -2.738
+      ],
+      "fov": 72,
+      "photo": "frente"
+    },
+    "frente2": {
+      "name": "Porche",
+      "pos": [
+        8.38,
+        1.494,
+        -5
+      ],
+      "target": [
+        7.422,
+        1.483,
+        -3.244
+      ],
+      "fov": 70,
+      "photo": "frente2"
+    },
     "planta": {
       "name": "Planta",
       "pos": [
         4.32,
         26,
-        12.15
+        12.95
       ],
       "target": [
         4.32,
         0,
-        12.14
+        12.94
       ],
       "fov": 50,
       "cut": true

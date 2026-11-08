@@ -193,6 +193,11 @@ anteriores: un error de esta lista que vuelve a aparecer es lo peor que puede pa
    usuario, no un ajuste a ojo. Y si dos lecturas de una foto se contradicen (el calefón "encima" del carro), buscar otra
    foto del mismo rincón antes de mover muebles: en `cocina`, mirando al revés, no hay carro junto a la puerta.
    Las líneas del plano se leen rápido con `magick plano.jpg -crop Wx1+X+Y -threshold 55% txt:-`.
+8. **Plano espejado otra vez** (casa con patio, 2026-11-08): sin plano, se pusieron x hacia el este y z hacia el fondo
+   (al norte); el motor mira hacia -z con +x a la derecha, así que ese sistema sale espejado. Se vio recién con los
+   muebles. Control (compuerta 1, antes de un solo mueble): con z hacia el fondo, x crece hacia la IZQUIERDA de quien
+   mira la casa desde la calle; y la primera prueba es una vista desde el patio hacia la casa o desde la vereda: lo que
+   está a la izquierda en la foto (una puerta, una ventana) tiene que estar a la izquierda en el render.
 
 Control mínimo por hoja (`comparar.html … &capturar=<id>`):
 - ¿Cada tramo de pared del render se ve en la foto (o en el plano, si la foto no lo muestra)?
@@ -349,3 +354,22 @@ Lo que permitió corregir la cocina del depto 6 y cambiar la madera sin romper n
 ### Tiempos medidos (PC, panel oculto)
 `comparar` ~8 s por vista con `&view=`; `encuadre` ~15 s por vista; `hornear` ~40 s; `verificar` con dos deptos
 ~80 s; `maderas.html` con seis vetas ~30 s; `generar-texturas` ~20 s.
+
+## Casas con patio y sin plano (casa con patio, 2026-11-08)
+
+- **Sin plano, la distribución sale de las fotos y del anuncio:** superficie del terreno, cubierta y descubierta (sirven
+  de control: la suma de ambientes tiene que dar parecido), frente y fondo del lote, orientación. Cada ambiente se arma
+  con sus fotos; lo que las une (hall, pasillos) va vacío y en `estimated`. Mostrar el plano 2D y esperar el OK.
+- **La mano de las fotos decide dónde va cada cosa:** "parado mirando la ventana, la puerta queda a la derecha" fija de
+  qué lado está la puerta; si esa pared es una medianera, la hipótesis está mal. Así se descartó que el estar fuera la
+  entrada.
+- **Una jamba o un marco oscuro en el borde de la foto** suele ser el vano desde donde se sacó; un objeto que en la foto
+  está lejos (la mesa a ~2 m) y en el render queda pegado a la cámara indica que el ambiente es más hondo de lo supuesto.
+- **Patios y galerías:** "ceiling": "open" en el patio (y en patios de luz); galerías y quinchos con { "kind": "sheet" }
+  y su alero en "over"; postes y vigas de madera como `structure` con "color". Casa en planta baja:
+  "exterior": { "floorsBelow": 0 }. Pasto: piso "grass". Plantas del jardín con "pot": false.
+- **Toda textura nueva se pre-genera** (`motor/generar-texturas.html`) antes de medir el armado: el pasto calculado al
+  abrir llevó la casa de 4,3 a 28,6 s.
+- **Lo que va en una pared no cruza sus huecos:** azulejos, zócalos de madera o revestimientos en tramos alrededor de
+  ventanas y puertas (el validador avisa "va colgado pero no tiene pared detrás").
+- **Un "#" en una dirección de prueba** (cerca.html con un color "#…") corta la dirección: escribir %23.

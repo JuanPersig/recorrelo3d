@@ -1690,3 +1690,33 @@ mirando a la ventana, la puerta (con mirilla) está en la pared de la derecha; s
 esa pared sería la medianera oeste. Encaja con la distribución propuesta: ventana a la galería (norte, con persiana
 como la del entrante en la foto patio) y puerta al comedor junto a la esquina norte, la misma que se ve abierta en
 comedor2. La mirilla sugiere que el estar es una ampliación y esa puerta era la salida al fondo.
+
+**Avance (2026-11-08, tarde):** el usuario aprobó seguir con la distribución estimada ("hacé lo mejor posible sin
+inventar cosas que no estén en las fotos; si no hay foto, no lo hagas"). Hall y patio de luz quedan vacíos.
+- **Plano espejado (otra vez el error 1):** se había armado con x hacia el este; la primera vista desde el patio mostró
+  la puerta trasera a la derecha de la ventana de la cocina, y en la foto está a la izquierda. Se espejó todo
+  (x crece hacia el oeste). Control agregado a SKILL.md (error 8).
+- **Comedor y estar 0,8 m más hondos** (la mesa a ~2 m de la cámara en las fotos del comedor; la puerta al estar pegada
+  a la esquina norte en las dos fotos); cocina, lavadero, galería y frente trasero corridos. Patio de luz (sin fotos) de
+  0,95 a 0,55 m para que el comedor tenga 60 cm de paso con la mesa, las 6 sillas, el mueble de la tele y el placard.
+- **Muebles de las fotos:** comedor (mesa ovalada con mantel, 6 sillas, mueble de tele con tele, aire, ventilador,
+  placard blanco, mueble de madera); cocina en L (bacha doble bajo la ventana, cocina blanca, esquinero de mármol,
+  heladera, alacenas con estantes abiertos, campana, calefón, azulejos); dormitorio (cama doble con respaldo de madera,
+  cómoda, mesa de luz, ventilador, cortinas); segundo dormitorio (cama de una plaza con respaldo crema, mesa de luz con
+  velador, tocador con espejo con luz, silla, estante, cortinas, plafón); estar (sillón de cuero negro, escritorio,
+  lámpara de pie, cortinas, plafón, machimbre y faja de madera); baño (ducha a lo ancho con mampara, inodoro, bidé,
+  vanitory, espejo con luz, toallero, revestimiento beige hasta 1,75 m); galería de chapa con tirantes, poste y viga;
+  patio seco, pasto, limonero, matas y potus; quincho de chapa con poste, parrilla de ladrillo, mesa de trabajo, mesa con
+  sillas, baranda baja y cuartito blanco. 17 vistas, una por foto, con encuadre.html. Sin avisos; armado 4,4 s.
+- **Motor (general):** techo por ambiente ("ceiling": "open", { "kind": "boards" } machimbre, { "kind": "sheet" }
+  chapa con tirantes, con "height" y "over"); "exterior.floorsBelow": 0 = planta baja (suelo al nivel de la casa, la
+  vereda termina en la línea de frente); piso "grass" (pre-generado: calculado al abrir, el armado tardaba 28,6 s);
+  piezas "ceiling-fan" (ventilador de techo con luz: globo, plato o tulipas) y "grill" (parrilla de ladrillo con
+  campana y conducto); mantel ovalado para la mesa "oval"; respaldo de madera en la cama ("headboard.material");
+  plantas en la tierra ("pot": false, "leaves", "spread"), que pueden tocarse y apoyarse en las medianeras; la tele
+  encastra en una biblioteca. Demo sin cambios (0,1–0,2 %); depto 6 sin cambios.
+**Falta (lo que se ve en las fotos y el motor todavía no dibuja):** fachada de piedra laja, reja de malla del porche,
+alero de tejas y baranda de la terraza del frente, vereda de ladrillo con pasto; rejas de las ventanas; tanques de agua
+en el techo; media sombra de la galería; cortina verde del quincho; vanitory de pie con mesada de mármol y espejo con
+marco decorado; revestimiento decorado (empapelado y zócalo de madera del comedor, azulejos con dibujo de la cocina).
+Después: colores con colores.html y puntaje de parecido; línea base de verificar.html con la casa.

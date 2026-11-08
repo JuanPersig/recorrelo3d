@@ -364,15 +364,17 @@ function checkLayout(placed, wallGroups) {
   const out = [], tol = 0.02, boxes = placed.map(({ it, g }) => ({ it, b: new THREE.Box3().setFromObject(g, true) }));   // cajas precisas: con piezas inclinadas las aproximadas se agrandan
   const cross = (a, b) => ['x', 'y', 'z'].map(k => Math.min(a.max[k], b.max[k]) - Math.max(a.min[k], b.min[k]));
   const name = it => `${it.type} en [${it.at.join(', ')}]`;
+  // vegetación en la tierra (plantas con "pot": false): las matas de un jardín se tocan entre sí y se apoyan en las medianeras
+  const ground = it => it.type === 'plant' && it.params?.pot === false;
   for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
     const A = boxes[i], B = boxes[j];
-    if (nests(A.it.type, B.it.type)) continue;
+    if (nests(A.it.type, B.it.type) || (ground(A.it) && ground(B.it))) continue;
     const [cx, cy, cz] = cross(A.b, B.b);
     if (cx > tol && cy > tol && cz > tol) out.push(`· se superponen ${name(A.it)} y ${name(B.it)} (${(Math.min(cx, cz) * 100).toFixed(0)} cm)`);
   }
   const walls = wallGroups.flatMap(wg => { wg.updateMatrixWorld(true); return wg.children.map(m => new THREE.Box3().setFromObject(m)); });
   for (const A of boxes) {
-    if (nests(A.it.type, '*')) continue;
+    if (nests(A.it.type, '*') || ground(A.it)) continue;
     for (const w of walls) {
       const [cx, cy, cz] = cross(A.b, w);
       if (cx > tol && cy > tol && cz > tol) { out.push(`· ${name(A.it)} se mete ${(Math.min(cx, cz) * 100).toFixed(0)} cm en una pared`); break; }

@@ -73,6 +73,15 @@ y materiales: cómo trabajar"):
 - **Mimbre pre-generado** (`motor/texturas/wicker.webp`).
 - Línea base de `verificar.html` actualizada con la cocina del depto 6 y la madera nueva.
 
+Hecho en la tanda de la casa con patio (2026-11-08, T-66; procedimientos en SKILL.md, "Casas con patio y sin plano"):
+- **Techo por ambiente:** "ceiling": "open" (patios), { "kind": "boards" } (machimbre), { "kind": "sheet" } (chapa con
+  tirantes, galerías y quinchos), con "height" y "over" (alero).
+- **Planta baja:** "exterior": { "floorsBelow": 0 }: el suelo queda al nivel de la casa y la vereda termina en la línea
+  de frente.
+- **Piso de pasto** ("grass", pre-generado) y **plantas en la tierra** ("pot": false, "leaves", "spread").
+- **Piezas nuevas:** `ceiling-fan` (ventilador de techo con luz) y `grill` (parrilla de ladrillo); mantel ovalado;
+  respaldo de madera en la cama.
+
 ## Servidores (`.claude/launch.json`)
 
 `visor` :5180 (raíz del proyecto) · `sitio` :5183 (`sitio/` como Cloudflare) · `landing` :5184 (`npm run dev`).
@@ -113,13 +122,13 @@ Sigue en `verificar.html?deptos=depto5,depto6` como el depto cargado de referenc
 
 ## Próximos pasos (2026-11-08)
 
-**Primero: el departamento nuevo** (pedido del usuario, 2026-11-08). Seguir SKILL.md al pie de la letra: inventario de
-fotos, **compuerta 1** (secuencia de cada pared por foto, huecos y pilares medidos en el plano en píxeles, plano 2D con
-la lista de dudas y OK del usuario), **compuerta 2** (muebles contundentes, solo lo que se ve), **compuerta 3**
-(detalle, colores, luz horneada una vez, `verificar.html?deptos=depto5,<nuevo>` una vez) y repasar los 7 "Errores
-que no se repiten" en cada hoja. Objetivo: ~30 min con el catálogo actual; piezas nuevas del motor en una tanda aparte.
-Ojo: la carpeta `DEPARTAMENTO_NUEVO/` (sin versionar) hoy tiene las fotos originales del depto 6; antes de arrancar,
-confirmar dónde están las fotos del nuevo.
+**Primero: terminar la casa con patio** (`casa7`, T-66; anuncio ajeno de Rosario: solo renders). Distribución
+estimada y aprobada para seguir; estructura, muebles de las fotos, 17 vistas y luz horneada hechos. Falta lo que el motor
+todavía no dibuja (lista en T-66, "Falta"): el frente (piedra laja, reja de malla del porche, alero de tejas, terraza,
+vereda de ladrillo con pasto), rejas de ventanas, tanques, media sombra, cortina del quincho, vanitory de pie, empapelado
+y azulejos con dibujo. Hacerlo como tanda de motor general (casas) y después colores con `colores.html`, puntaje de
+parecido y `verificar.html?deptos=depto5,casa7&base=1`. Fotos en `fotos/casa7/` (originales y capturas del anuncio en
+`original/`); la carpeta `CASA_CON_PATIO/` es la copia que dejó el usuario.
 
 **Después:** la landing, con el prompt de [prompt-landing.md](prompt-landing.md): en PC el scroll se traba al
 cargar (sospecha: el iframe del recorrido en vivo carga el motor en el mismo hilo) y en celular las tarjetas de "Las

@@ -119,7 +119,9 @@
   "params": {
    "seed": "11",
    "height": "(p.style === 'tree' ? 1.6 : p.style === 'succulent' ? 0.1…",
-   "pot": "'#cfc6ba' / '#d9d4cc'"
+   "pot": "'#cfc6ba' / '#d9d4cc'",
+   "leaves": "16",
+   "spread": "0.08"
   }
  },
  "wall-art": {
@@ -216,7 +218,8 @@
   "solid": false,
   "use": false,
   "nests": [
-   "cube-shelf"
+   "cube-shelf",
+   "bookshelf"
   ],
   "params": {
    "size": "43"
