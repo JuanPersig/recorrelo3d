@@ -1,7 +1,8 @@
 {
   "sitio": "https://recorrelo3d.pages.dev",
   "deptos": {
-    "depto5": "departamento-prueba"
+    "depto5": "departamento-prueba",
+    "depto6": "departamento-dos-dormitorios"
   },
   "redirecciones": {
     "palermo-chico-q7q3": "departamento-prueba"
