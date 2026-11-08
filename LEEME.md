@@ -46,9 +46,9 @@ Con el panel del navegador oculto no corre `requestAnimationFrame`: las herramie
 1. Subir `sitio/` a Cloudflare (el usuario).
 2. Calidad del render: hechos el entorno nuevo (T-53) y el pulido al quedarse quieto (T-54); siguen reflejos con el
    propio depto, luz rebotada, brillo de lámparas y texturas reales (ver T-54).
-8. Borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/` (340 MB, copia vieja).
 3. Limitar la cámara de la vista general y botón "▶ Recorrer" (feedback de una administradora).
 4. Sección "Cómo es el proceso" de la landing: elegir qué imagen va (propuesta: una por paso).
 5. `og:image` para `/departamento-prueba/`; dominio propio (`recorrelo3d.com.ar`).
 6. Probar en el iPhone del usuario (rendimiento real en celular, T-11).
 7. Comercial: seguir la planilla; mail de contacto propio.
+8. Borrar `LANDING_PAGE_RECORRELO3D/informacionDelProyecto/` (340 MB, copia vieja).
