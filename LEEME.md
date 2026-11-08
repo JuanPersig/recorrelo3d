@@ -143,8 +143,13 @@ fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando
    en la foto); fotos del segundo dormitorio y del lavadero si el anuncio las tiene.
 2. **Paredes de color por ambiente:** hoy hay un solo `wallColor` (el dormitorio del depto 6 es más rosado que el
    living). Hacerlo general: cada cara de pared toma el color del ambiente al que mira.
-3. **Veta de madera en paneles grandes** (alacenas, puertas, bibliotecas): se ve ondulada. Mejorar el dibujo o
-   resolverlo con las texturas escaneadas.
+3. **Textura de madera más fina** (pedido del usuario, 2026-11-08): la actual se ve "grotesca" (vetas onduladas y
+   gruesas, sobre todo en alacenas, puertas y bibliotecas). **No reemplazarla directamente:** primero armar una página
+   de muestras fuera de los departamentos (por ejemplo `motor/pruebas/maderas.html`, como `materiales.html`) con varias
+   alternativas lado a lado sobre las mismas piezas (puerta de alacena, tapa de mesa, frente de biblioteca, silla) y a
+   tres distancias, de día y de noche: veta recta fina tipo enchapado, roble con radios, pino con nudos chicos, madera
+   oscura casi lisa, y la actual de referencia; si el usuario aprueba la descarga, también alguna escaneada (ambientCG /
+   Poly Haven). El usuario elige y recién ahí se cambia en el motor, verificando el demo.
 4. **Texturas escaneadas** (ambientCG / Poly Haven, CC0): armar la lista exacta (nombre, origen, tamaño) para que el
    usuario apruebe la descarga; entran por `motor/texturas/` como detalle en gris sobre el color medido.
 5. Correr `motor/generar-texturas.html` para pre-generar el mimbre (hoy se calcula al abrir).
