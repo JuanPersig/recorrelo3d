@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-08T17:35:26.871Z",
+  "fecha": "2026-11-09T22:48:05.893Z",
   "deptos": {
     "depto5": {
       "estado": "ok",
@@ -138,7 +138,7 @@
           "cambio": 0.2
         }
       },
-      "armadoMs": 3268,
+      "armadoMs": 4653,
       "mapas": [
         "/capturas/verificacion/actual/depto5/circulacion-0.png"
       ],
@@ -238,7 +238,7 @@
           "cambio": 0.2
         }
       },
-      "armadoMs": 5840,
+      "armadoMs": 5725,
       "mapas": [
         "/capturas/verificacion/actual/depto6/circulacion-0.png"
       ],
