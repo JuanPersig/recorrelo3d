@@ -1686,7 +1686,7 @@ capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la may
   para otra tanda #13 (cortinas a contraluz: el voile ya es traslúcido; faltaría que la tela opaca brille con el sol
   detrás) y #14 (arrugas en sábanas; los almohadones ya son asimétricos y se apoyan con `restPillow`).
 
-## T-68 · Cortinas a contraluz, arrugas en la ropa de cama y reflejos (en curso, 2026-11-09)
+## T-68 · Cortinas a contraluz, arrugas en la ropa de cama y reflejos (hecho, 2026-11-09)
 
 **Pedido del usuario:** aplicar #13, #14 y #11 de `MEJORAS-MOTOR-RENDER.md` (lo que quedaba después de T-67).
 - **#13 Cortinas a contraluz:** `backlit()` en components.js suma a la cara que se ve la luz del sol que le pega a la
@@ -1705,5 +1705,6 @@ capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la may
   (0,3 / 1 cm), medio (0,6 / 1,6 cm) y marcado (1 / 2,4 cm) en el living y la cama del demo y el living y el
   dormitorio del depto 6, de día.
 - `verificar.html?deptos=depto5,depto6` con todo en 0: demo sin cambios (≤ 0,2 %), depto 6 solo los avisos del baño.
-- **Falta:** que el usuario elija la fila (y la de `lente.html`, T-67) para fijar los valores por defecto y actualizar
-  la línea base (`&base=1`).
+- **Elegido por el usuario: "medio"** → `CURTAIN_LIGHT_DEFAULT` 0,6 y `BEDDING.wrinkles` 0,016. `verificar`: cambian
+  solo las vistas con cortinas al sol y con camas (demo ≤ 1,1 %, dormitorio del depto 6 1,9 %); +34 k triángulos en el
+  demo, armado igual. Línea base actualizada (`&base=1`). Sigue pendiente elegir el lente (T-67).

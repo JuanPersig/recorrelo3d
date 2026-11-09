@@ -396,8 +396,9 @@ const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
 // resplandor alrededor de lo muy brillante (pantallas de lámpara, ventanas a contraluz) de día y de noche, "threshold"
 // desde qué brillo (lineal, antes de la exposición) resplandece. Todo en 0 = la imagen de siempre. Cada departamento
 // puede cambiarlo en "lighting.lens"; motor/pruebas/lente.html compara las alternativas
-// cortinas a contraluz (MEJORAS-MOTOR-RENDER #13): 0 = como antes; motor/pruebas/telas-luz.html compara
-const CURTAIN_LIGHT_DEFAULT = 0;
+// cortinas a contraluz (MEJORAS-MOTOR-RENDER #13): 0,6 elegido por el usuario ("medio" de motor/pruebas/telas-luz.html,
+// 2026-11-09); 0 = sin contraluz
+const CURTAIN_LIGHT_DEFAULT = 0.6;
 const LENS = { grain: 0, vignette: 0, aberration: 0, bloom: 0, nightBloom: 0, threshold: 1, radius: 0.5 };
 
 // "device": 'auto' (el visor), 'desktop' o 'mobile'. Las herramientas (verificar, comparar, exportar) piden

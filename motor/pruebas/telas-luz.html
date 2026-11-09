@@ -29,7 +29,8 @@ const OPCIONES = {
   medio: { name: 'Medio', note: 'cortinas a contraluz 0,6 · arrugas de 1,6 cm', curtain: 0.6, wrinkles: 0.016 },
   marcado: { name: 'Marcado', note: 'cortinas a contraluz 1 · arrugas de 2,4 cm', curtain: 1, wrinkles: 0.024 },
 };
-const ACTUAL = { name: 'Actual del motor (de referencia)', note: 'cortinas sin contraluz · acolchado liso', curtain: 0, wrinkles: 0 };
+// la fila 1 es como era antes de T-68; el motor usa "medio" desde el 2026-11-09 (elegido por el usuario)
+const ACTUAL = { name: 'Sin contraluz ni arrugas (antes de T-68)', note: 'cortinas sin contraluz · acolchado liso', curtain: 0, wrinkles: 0 };
 const COLS = (q.get('vistas') ?? 'depto5:living1:dia,depto5:dormitorio3:dia,depto6:completo:dia,depto6:habitacion:dia').split(',')
   .map(s => { const [id, view, n] = s.split(':'); return { id, view, night: n === 'noche' }; });
 

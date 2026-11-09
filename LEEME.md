@@ -145,9 +145,8 @@ fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando
    (`lighting.lens`), todo en 0. Falta que el usuario elija una fila de `capturas/lente/muestras.jpg`
    (`motor/pruebas/lente.html`) para fijar `LENS` en engine.js. El cruce completo con `MEJORAS-MOTOR-RENDER.md` (qué
    ya estaba, qué no va) está en T-67.
-   Lo mismo para las cortinas a contraluz y las arrugas del acolchado (T-68): elegir una fila de
-   `capturas/telas-luz/muestras.jpg` (`motor/pruebas/telas-luz.html`) para fijar `CURTAIN_LIGHT_DEFAULT` y
-   `BEDDING.wrinkles`. Los reflejos (#11) ya estaban: el piso pulido refleja en vivo.
+   Cortinas a contraluz y arrugas del acolchado (T-68): hechas, con la fila "medio" que eligió el usuario
+   (`motor/pruebas/telas-luz.html` para comparar). Los reflejos (#11) ya estaban: el piso pulido refleja en vivo.
 1. **Depto 6 (T-61):** decidir el aviso de 60 cm del baño (medidas reales o artefactos más chicos); colores con
    `colores.html` y puntaje de parecido (`comparar.html?…&medir=`); fotos del segundo dormitorio y del lavadero si
    el anuncio las tiene.

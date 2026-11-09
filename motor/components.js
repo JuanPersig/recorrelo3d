@@ -205,8 +205,9 @@ function backlit(m) {
 }
 // Arrugas de la ropa de cama (2026-11-09, MEJORAS-MOTOR-RENDER #14): hundimientos suaves y algún pliegue largo, distintos
 // en cada cama ("seed"). "amp" es la altura en metros (0,01 = 1 cm). Sale en 0 en los bordes, donde la tela dobla
-// BEDDING.wrinkles: el valor de todas las camas que no dicen "wrinkles" (0 = lisas, como antes)
-export const BEDDING = { wrinkles: 0 };
+// BEDDING.wrinkles: el valor de todas las camas que no dicen "wrinkles" (0 = lisas). 1,6 cm elegido por el usuario
+// ("medio" de motor/pruebas/telas-luz.html, 2026-11-09)
+export const BEDDING = { wrinkles: 0.016 };
 export function rumple(x, z, seed, amp) {
   if (!amp) return 0;
   const s = seed * 7.31, soft = vnoise(x * 2.5 + s, z * 2.5 - s, 1024, 1024) - 0.5;
