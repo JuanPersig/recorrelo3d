@@ -1659,3 +1659,29 @@ repetición) para que la textura cierre sin costura. Texturas regeneradas con `g
 `verificar.html?deptos=depto5,depto6`: demo 0,1–0,4 %, depto 6 ≤ 1 % fuera de la cocina (T-64); línea base
 actualizada (`&base=1`) con la cocina y la madera aprobadas. La página de muestras queda para comparar futuras
 vetas (su fila 1 es siempre la del motor). Opcional más adelante, con permiso de descarga: texturas escaneadas CC0.
+
+## T-67 · Mejoras de render del documento externo: lente y resplandor (en curso, 2026-11-09)
+
+**Pedido del usuario:** analizar `MEJORAS-MOTOR-RENDER.md` (18 mejoras para pasar a "fotorrealismo", escrito sobre
+capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la mayoría ya estaba.
+- **Ya hechas:** #1 tone mapping (Khronos PBR Neutral sobre cuadro de media precisión, exposición de día y de noche),
+  #4 tono por tabla (tablas y espiga), #5 antialiasing (SMAA + pulido de 24 cuadros corridos, T-54), #6 PBR
+  (MeshStandard/Physical con rugosidad y metal por material), #7 relieve por familia (T-59), #8 luz rebotada horneada
+  (T-55), #9 GTAO (radio 0,3 m), #10 caída con el cuadrado de la distancia (`decay` 2 y alcance 4–6 m), #11 nivel 1
+  (reflejo fotografiado por ambiente; espejos sin reflejo por pedido del usuario, T-56), cielo con nubes (#3, parte).
+- **No van:** #3 HDRI fotográfico (el entorno urbano modelado está aprobado, T-53; sin fotos reales en las ventanas;
+  pide descargas), #17 desenfoque (el recorrido tiene que leerse nítido al caminar).
+- **Del depto, no del motor:** #15 vanitory, #16 decoración, #18 colores. Ojo: el documento se equivoca en #18 (las
+  sillas de la foto son de madera natural clara, no marrón oscuro); los colores se miden con `colores.html`.
+- **Hecho:** #2 y #12 como **lente** del motor (`LENS` en engine.js, `lighting.lens` por depto, `api.setLens`).
+  Resplandor (UnrealBloomPass) sobre la imagen lineal antes del tone mapping; grano, viñeteado y aberración en la copia
+  final, después del pulido (el grano no se promedia y queda quieto con la cámara quieta). **Todo en 0 por defecto**:
+  la imagen no cambia hasta que el usuario elija (`verificar.html?deptos=depto5,depto6`: demo sin cambios, 0,1–0,2 %;
+  depto 6 solo los tres avisos ya conocidos del baño). De día el resplandor vela la imagen entera (las paredes al sol
+  pasan cualquier umbral): queda solo de noche, umbral 2 y fuerza 0,3 (probado 0,15/1,5 y 0,5/3).
+- **Muestras:** `motor/pruebas/lente.html` → `capturas/lente/muestras.jpg` (~2 min): actual, solo resplandor, lente
+  sutil y lente marcado (lo del documento), en el demo de día y de noche y el velador del depto 6 de noche, a tamaño
+  real (achicado, el grano no se ve). El demo no tiene lámparas a la vista de noche: el resplandor casi no se nota ahí.
+- **Falta:** que el usuario elija la fila y pasar esos valores a `LENS`; después `verificar` con `&base=1`. Quedan
+  para otra tanda #13 (cortinas a contraluz: el voile ya es traslúcido; faltaría que la tela opaca brille con el sol
+  detrás) y #14 (arrugas en sábanas; los almohadones ya son asimétricos y se apoyan con `restPillow`).

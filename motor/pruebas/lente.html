@@ -1,0 +1,84 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muestras de lente</title>
+<style>
+/* Herramienta de desarrollo (2026-11-09, MEJORAS-MOTOR-RENDER #2 y #12): alternativas de "lente" (grano, viñeteado,
+   aberración de color y resplandor de las luces) lado a lado. Nada de esto cambia el motor: el usuario elige y recién
+   ahí esos valores pasan a ser los de LENS en engine.js. Las capturas van a tamaño real (sin achicar): el grano
+   achicado se promedia y no se ve. */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:640px; height:480px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/lente.html[?solo=sutil,medio][&vistas=depto5:living1:dia,depto6:habitacion:noche][&capturar=lente/muestras]
+// Una fila por alternativa (la actual primero) y una columna por vista, de día y de noche, a tamaño real. Las vistas
+// pueden ser de deptos distintos: el demo no tiene lámparas a la vista de noche (sus spots de techo no se ven de
+// frente), así que el resplandor se mira en el dormitorio del depto 6 (velador prendido)
+import { start } from '../engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+
+const OFF = { grain: 0, vignette: 0, aberration: 0, bloom: 0, nightBloom: 0, threshold: 1, radius: 0.5 };
+// el resplandor de día queda en 0: con el sol, las paredes iluminadas pasan el umbral y la imagen se vela entera.
+// Umbral 2 y fuerza 0,3: halo alrededor de la pantalla del velador sin velar la pared (probado con 0,15/1,5 y 0,5/3)
+const GLOW = { nightBloom: 0.3, threshold: 2, radius: 0.5 };
+const OPCIONES = {
+  brillo: { name: 'Solo resplandor de las luces (de noche)', note: 'las pantallas de lámpara y lo que brilla de más dejan un halo suave; sin grano ni viñeteado', lens: { ...GLOW } },
+  sutil: { name: 'Lente sutil', note: 'grano fino (0,012), esquinas 10 % más oscuras, medio píxel de aberración y el resplandor de noche',
+    lens: { grain: 0.012, vignette: 0.1, aberration: 0.5, ...GLOW } },
+  medio: { name: 'Lente marcado (lo que propone el documento)', note: 'grano 0,03, esquinas 15 % más oscuras, un píxel de aberración y más resplandor',
+    lens: { grain: 0.03, vignette: 0.15, aberration: 1, nightBloom: 0.5, threshold: 2, radius: 0.6 } },
+};
+const ACTUAL = { name: 'Actual del motor (de referencia)', note: 'la imagen limpia de hoy', lens: {} };
+const COLS = (q.get('vistas') ?? 'depto5:living1:dia,depto5:comedor:dia,depto5:dormitorio1:noche,depto6:habitacion:noche').split(',')
+  .map(s => { const [id, view, n] = s.split(':'); return { id, view, night: n === 'noche' }; });
+
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.src = src; });
+const pick = q.get('solo')?.split(',') ?? Object.keys(OPCIONES);
+const rows = [['actual', ACTUAL], ...pick.filter(k => OPCIONES[k]).map(k => [k, OPCIONES[k]])];
+let c = null, g = null, W = 0, H = 0;
+const LBL = 46;
+// un visor por departamento; cada uno saca sus columnas de todas las filas
+for (const id of [...new Set(COLS.map(k => k.id))]) {
+  const path = `/departamentos/${id}/`, scene = await (await fetch(path + 'scene.json')).json();
+  const mine = COLS.map((k, ci) => [k, ci]).filter(([k]) => k.id === id);
+  $('estado').textContent = `Cargando ${scene.name ?? id}…`;
+  const api = window.__viewer = await start($('stage'), { scene, state: { view: mine[0][0].view, cut: false, night: false, decor: true }, device: 'desktop', base: path });
+  await api.ready;
+  for (const [ri, [, o]] of rows.entries()) {
+    $('estado').textContent = `${scene.name ?? id}: ${o.name}…`;
+    api.setLens({ ...OFF, ...o.lens });
+    for (const [{ view, night }, ci] of mine) {
+      api.setNight(night); api.go(view, true);
+      const im = await load(api.capture());
+      if (!c) {
+        W = im.width; H = im.height;
+        c = Object.assign(document.createElement('canvas'), { width: COLS.length * (W + 6), height: rows.length * (H + LBL) }); g = c.getContext('2d');
+        g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+      }
+      const y = ri * (H + LBL), x = ci * (W + 6);
+      if (!ci) {
+        g.fillStyle = '#1d2430'; g.font = '700 18px system-ui'; g.fillText(`${ri + 1}. ${o.name}`, 4, y + 20);
+        g.fillStyle = '#5b6573'; g.font = '14px system-ui'; g.fillText(o.note, 4, y + 39);
+      }
+      g.drawImage(im, x, y + LBL);
+      const label = `${id === 'depto5' ? 'Demo' : 'Depto 6'} · ${scene.views[view]?.name ?? view} · ${night ? 'noche' : 'día'}`;
+      g.font = '600 13px system-ui'; g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(x, y + LBL, g.measureText(label).width + 10, 20);
+      g.fillStyle = '#1d2430'; g.fillText(label, x + 5, y + LBL + 15);
+    }
+  }
+  api.destroy();
+}
+$('estado').textContent = `${rows.length} alternativas de lente (capturas a tamaño real: ampliar para ver el grano)`;
+$('stage').hidden = true; c.style.cssText = 'display:block;max-width:none'; document.body.append(c);
+if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.92); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
+document.title = 'lente: listo';
+</script>

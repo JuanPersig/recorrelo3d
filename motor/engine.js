@@ -8,6 +8,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { makeMaterials, COMPONENTS, OPENINGS, META, nests, exterior, blk, uvScale, texturesReady } from './components.js';
@@ -388,6 +389,14 @@ function checkLayout(placed, wallGroups) {
 // beige) y relleno 0,82; de noche, relleno cálido 0,5 y exposición 1,35 (noche dorada con el techo legible).
 // Cada departamento puede cambiarlos en "lighting" (warmth, ambient, nightAmbient, nightExposure).
 const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
+
+// Lente (2026-11-09, MEJORAS-MOTOR-RENDER #2 y #12): lo que agrega una cámara real a la imagen. "grain" grano (amplitud
+// en la imagen final, 0,02 ≈ ±5 niveles de 255; más en los medios tonos), "vignette" cuánto se oscurecen las esquinas
+// (0,12 = 12 %), "aberration" corrimiento de rojo y azul en el borde del cuadro (en píxeles), "bloom" y "nightBloom" el
+// resplandor alrededor de lo muy brillante (pantallas de lámpara, ventanas a contraluz) de día y de noche, "threshold"
+// desde qué brillo (lineal, antes de la exposición) resplandece. Todo en 0 = la imagen de siempre. Cada departamento
+// puede cambiarlo en "lighting.lens"; motor/pruebas/lente.html compara las alternativas
+const LENS = { grain: 0, vignette: 0, aberration: 0, bloom: 0, nightBloom: 0, threshold: 1, radius: 0.5 };
 
 // "device": 'auto' (el visor), 'desktop' o 'mobile'. Las herramientas (verificar, comparar, exportar) piden
 // 'desktop': con el panel del navegador oculto la ventana mide 0 de ancho y el motor se creía en un celular
@@ -787,7 +796,8 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   // normales), 8 muestras en vez de 24 y el antialiasing es el muestreo múltiple del cuadro. A media resolución
   // dejaba bordes escalonados en los cantos; completa cuesta ~25 % más que dibujar directo (en la PC, 1080 × 1920:
   // 12,6 → 15,7 ms) y si el equipo no da abasto el visor baja la resolución al moverse (STEPS)
-  let composer = null, rt = null, gtao = null;
+  let composer = null, rt = null, gtao = null, bloom = null;
+  const lens = { ...LENS, ...(lit.lens ?? {}) };
   if (!direct) {
     rt = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 });
     composer = new EffectComposer(renderer, rt);
@@ -813,6 +823,11 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       for (const o of cutouts) o.visible = false;
     };
     composer.addPass(gtao);
+    // resplandor: sobre la imagen lineal (HDR), antes de la exposición y el tone mapping, así solo lo que de verdad
+    // brilla de más pasa el umbral. Apagado (fuerza 0) no cuesta nada
+    bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0, lens.radius, lens.threshold);
+    bloom.enabled = false;
+    composer.addPass(bloom);
     composer.addPass(new OutputPass());
     // la AO se calcula sin antialiasing; SMAA al final alisa los bordes que deja dentados
     if (!mobile) composer.addPass(new SMAAPass(1, 1));
@@ -830,8 +845,28 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       rts: [0, 1].map(() => new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType })),
       blend: new THREE.ShaderMaterial({ uniforms: { tNew: { value: null }, tAcc: { value: null }, w: { value: 1 } }, vertexShader: vs, depthTest: false, depthWrite: false,
         fragmentShader: 'uniform sampler2D tNew, tAcc; uniform float w; varying vec2 vUv; void main() { gl_FragColor = mix(texture2D(tAcc, vUv), texture2D(tNew, vUv), w); }' }),
-      copy: new THREE.ShaderMaterial({ uniforms: { t: { value: null } }, vertexShader: vs, depthTest: false, depthWrite: false,
-        fragmentShader: 'uniform sampler2D t; varying vec2 vUv; void main() { gl_FragColor = texture2D(t, vUv); }' }),
+      // la copia a la pantalla pasa por el lente: va después del pulido, así el grano no se promedia y desaparece, y
+      // queda quieto mientras la cámara no se mueve (la semilla cambia solo con cada cuadro nuevo, ver draw)
+      copy: new THREE.ShaderMaterial({ uniforms: { t: { value: null }, uRes: { value: new THREE.Vector2(1, 1) }, uGrain: { value: 0 }, uVig: { value: 0 }, uCA: { value: 0 }, uSeed: { value: 0 } },
+        vertexShader: vs, depthTest: false, depthWrite: false,
+        fragmentShader: `uniform sampler2D t; uniform vec2 uRes; uniform float uGrain, uVig, uCA, uSeed; varying vec2 vUv;
+          float h(vec2 p) { vec3 q = fract(vec3(p.xyx) * 0.1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
+          void main() {
+            vec2 d = vUv - 0.5;
+            vec4 c = texture2D(t, vUv);
+            // aberración: el rojo se abre hacia afuera y el azul hacia adentro, "uCA" píxeles en el borde del cuadro
+            if (uCA > 0.0) { vec2 o = d * 2.0 * uCA / uRes; c.r = texture2D(t, vUv + o).r; c.b = texture2D(t, vUv - o).b; }
+            // viñeteado redondo (0 en el centro, 1 en las esquinas): la caída empieza a un tercio del centro
+            vec2 a = d * vec2(uRes.x / uRes.y, 1.0); float r = length(a) / length(vec2(0.5 * uRes.x / uRes.y, 0.5));
+            c.rgb *= 1.0 - uVig * smoothstep(0.35, 1.0, r);
+            // grano: ruido triangular por píxel, más marcado en los medios tonos que en los blancos y los negros
+            if (uGrain > 0.0) {
+              vec2 p = gl_FragCoord.xy + uSeed * 173.0;
+              float n = h(p) + h(p + 57.3) - 1.0, l = dot(c.rgb, vec3(0.299, 0.587, 0.114));
+              c.rgb += n * uGrain * (0.35 + 2.6 * l * (1.0 - l));
+            }
+            gl_FragColor = c;
+          }` }),
       quad: new FullScreenQuad(),
     };
   }
@@ -854,7 +889,11 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     Object.assign(acc.blend.uniforms, { tNew: { value: src.texture }, tAcc: { value: a.texture }, w: { value: 1 / (accN + 1) } });
     renderer.setRenderTarget(b); acc.quad.material = acc.blend; acc.quad.render(renderer);
     acc.rts.reverse(); accN++;
-    acc.copy.uniforms.t.value = acc.rts[0].texture; renderer.setRenderTarget(null); acc.quad.material = acc.copy; acc.quad.render(renderer);
+    const U = acc.copy.uniforms;
+    U.t.value = acc.rts[0].texture; U.uRes.value.set(src.width, src.height);
+    U.uGrain.value = lens.grain; U.uVig.value = lens.vignette; U.uCA.value = lens.aberration;
+    if (!keep) U.uSeed.value = (U.uSeed.value + 0.618034) % 1;
+    renderer.setRenderTarget(null); acc.quad.material = acc.copy; acc.quad.render(renderer);
   }
   // un cuadro normal (descarta el pulido) o, con refine, uno más del pulido
   const draw = (refine = false) => {
@@ -962,12 +1001,20 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     glowMats.forEach(m => { m.emissiveIntensity = m.userData.night[v ? 1 : 0]; });
     glassMats.forEach(m => { m.color.copy(m.userData.base).multiplyScalar(v ? 0.3 : 1); });
     GI?.setNight(v);
+    setBloom();
     sky.material.uniforms.uNight.value = v ? 1 : 0;
     scene.fog.color.copy(S.fog); scene.background = S.fog;
     renderer.toneMappingExposure = S.exposure;
     touch();
   }
   const setDecor = v => { decor.forEach(g => { g.visible = v; }); touch(); };
+  function setBloom() {
+    if (!bloom) return;
+    bloom.strength = nightOn ? lens.nightBloom : lens.bloom; bloom.threshold = lens.threshold; bloom.radius = lens.radius;
+    bloom.enabled = bloom.strength > 0;
+  }
+  // cambia el lente en marcha (motor/pruebas/lente.html): los mismos nombres que "lighting.lens"
+  function setLens(o = {}) { Object.assign(lens, o); setBloom(); touch(); }
 
   /* ---------- cámara: girar alrededor en las vistas desde arriba, caminar en las de adentro ---------- */
   // "viewAspect" (p. ej. 0,75 = foto vertical de celular): el fov de cada vista con "photo" es el de su foto. En otra
@@ -1235,8 +1282,9 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   return {
     // resize: para quien cambia el tamaño del contenedor y necesita el cuadro ya (con el panel oculto el aviso de
     // cambio de tamaño del navegador puede no llegar)
-    go, setCut, setNight, setDecor, setPose, resize, hasDecor: decor.length > 0, warnings, ready,
-    _debug: { gtao, scene, camera, THREE, refl, renderer, walk, redraw: touch },
+    go, setCut, setNight, setDecor, setPose, setLens, resize, hasDecor: decor.length > 0, warnings, ready,
+    lens: () => ({ ...lens }),
+    _debug: { gtao, bloom, scene, camera, THREE, refl, renderer, walk, redraw: touch },
     // dibuja ya y devuelve la imagen del lienzo (para hojas de comparación)
     capture(type = 'image/jpeg') { return this.frame().toDataURL(type, 0.9); },
     // dibuja ya a calidad completa, con el pulido ("drawn" queda con la cantidad de cuadros que sumó), y devuelve el lienzo: hay que copiarlo enseguida (las herramientas lo copian a su lienzo)
