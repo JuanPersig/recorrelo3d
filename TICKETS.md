@@ -1685,3 +1685,25 @@ capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la may
 - **Falta:** que el usuario elija la fila y pasar esos valores a `LENS`; después `verificar` con `&base=1`. Quedan
   para otra tanda #13 (cortinas a contraluz: el voile ya es traslúcido; faltaría que la tela opaca brille con el sol
   detrás) y #14 (arrugas en sábanas; los almohadones ya son asimétricos y se apoyan con `restPillow`).
+
+## T-68 · Cortinas a contraluz, arrugas en la ropa de cama y reflejos (en curso, 2026-11-09)
+
+**Pedido del usuario:** aplicar #13, #14 y #11 de `MEJORAS-MOTOR-RENDER.md` (lo que quedaba después de T-67).
+- **#13 Cortinas a contraluz:** `backlit()` en components.js suma a la cara que se ve la luz del sol que le pega a la
+  tela desde atrás (más mirando hacia el sol), con el color de la tela. Solo las cortinas (`M.curtainCloth`,
+  `M.curtainVoile`, también el ruedo); de noche no hace nada (no hay sol). Fuerza: `lighting.curtainLight` por depto,
+  `CURTAIN_LIGHT_DEFAULT` en engine.js (**0** hasta que el usuario elija). El sol del motor es cálido: a contraluz la
+  cortina blanca del demo se ve durazno.
+- **#14 Arrugas:** `rumple()` (hundimientos suaves y dos juegos de pliegues angostos, distintos por cama) se suma a la
+  superficie del acolchado y la manta la sigue. `"wrinkles"` de la cama en metros, `BEDDING.wrinkles` por defecto
+  (**0**). Con arrugas, la malla del acolchado es 2,5 veces más densa (`drapeGeo` `fine`): con la de siempre (~4 cm
+  entre puntos) no se leían. Las arrugas arrancan pasando el embozo (19 cm): antes el acolchado asomaba por su borde.
+- **#11 Reflejos:** no hacía falta SSR. Los pisos con `gloss` ya reflejan en vivo el ambiente con una cámara espejada
+  (mejor que SSR: no pierde lo que sale de cuadro); metales con el ambiente fotografiado (T-55); espejos sin reflejo
+  por pedido (T-56). SSR sumaría una pasada de normales de toda la escena solo para la grifería.
+- **Muestras:** `motor/pruebas/telas-luz.html` → `capturas/telas-luz/muestras.jpg` (~3 min): actual, suave
+  (0,3 / 1 cm), medio (0,6 / 1,6 cm) y marcado (1 / 2,4 cm) en el living y la cama del demo y el living y el
+  dormitorio del depto 6, de día.
+- `verificar.html?deptos=depto5,depto6` con todo en 0: demo sin cambios (≤ 0,2 %), depto 6 solo los avisos del baño.
+- **Falta:** que el usuario elija la fila (y la de `lente.html`, T-67) para fijar los valores por defecto y actualizar
+  la línea base (`&base=1`).

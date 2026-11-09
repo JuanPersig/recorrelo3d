@@ -180,6 +180,40 @@ function macroTone(m, amp = 0.05, scale = 0.45) {
   m.customProgramCacheKey = () => key + '|macro';
   return m;
 }
+// Cortinas a contraluz (2026-11-09, MEJORAS-MOTOR-RENDER #13): cuando el sol le pega a la tela desde atrás, parte de la
+// luz la atraviesa y la cara de adentro brilla con su color (más mirando hacia el sol). No es luz que pasa de verdad:
+// se suma a la luz directa de la cara que se ve, con la luz del sol (de noche no hay sol y no hace nada). El "atrás" lo
+// decide la geometría: solo brillan las cortinas de las ventanas por donde entra el sol. CURTAIN_LIGHT.value es la
+// fuerza, la misma para todas las cortinas (el motor la toma de "lighting.curtainLight"; 0 = como antes)
+export const CURTAIN_LIGHT = { value: 0 };
+function backlit(m) {
+  const prev = m.onBeforeCompile, key = prev.toString();
+  m.onBeforeCompile = (sh, r) => {
+    prev.call(m, sh, r);
+    sh.uniforms.uCurtainLight = CURTAIN_LIGHT;
+    sh.fragmentShader = 'uniform float uCurtainLight;\n' + sh.fragmentShader.replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
+  #if NUM_DIR_LIGHTS > 0
+  {
+    vec3 L = directionalLights[ 0 ].direction;
+    float back = saturate( dot( -geometryNormal, L ) ), toward = pow( saturate( dot( geometryViewDir, -L ) ), 6.0 );
+    reflectedLight.directDiffuse += directionalLights[ 0 ].color * diffuseColor.rgb * uCurtainLight * back * ( 0.6 + 0.8 * toward );
+  }
+  #endif`);
+  };
+  m.customProgramCacheKey = () => key + '|backlit';
+  return m;
+}
+// Arrugas de la ropa de cama (2026-11-09, MEJORAS-MOTOR-RENDER #14): hundimientos suaves y algún pliegue largo, distintos
+// en cada cama ("seed"). "amp" es la altura en metros (0,01 = 1 cm). Sale en 0 en los bordes, donde la tela dobla
+// BEDDING.wrinkles: el valor de todas las camas que no dicen "wrinkles" (0 = lisas, como antes)
+export const BEDDING = { wrinkles: 0 };
+export function rumple(x, z, seed, amp) {
+  if (!amp) return 0;
+  const s = seed * 7.31, soft = vnoise(x * 2.5 + s, z * 2.5 - s, 1024, 1024) - 0.5;
+  // pliegues: crestas angostas de un ruido estirado, en dos direcciones que cambian con la cama
+  const crease = (a, k, along) => { const cx = Math.cos(a), cz = Math.sin(a), r = 1 - Math.abs(2 * vnoise((x * cx + z * cz) * k + s, (z * cx - x * cz) * along - s, 1024, 1024) - 1); return r * r * r * r - 0.2; };
+  return amp * (0.8 * soft + 0.7 * crease(0.6 + seed, 9, 1.6) + 0.45 * crease(2.1 + seed, 13, 2.2));
+}
 const T = {};
 // Texturas pre-generadas (2026-11-08): calcularlas píxel por píxel al abrir el recorrido costaba entre 0,2 y 0,9 s cada
 // una en la PC (varias veces más en un celular). motor/generar-texturas.html las calcula una vez y las guarda en
@@ -581,6 +615,9 @@ export function makeMaterials(preset) {
       ...fabricOpts(c), transparent: true, opacity: clay ? Math.max(0.8, o) : o, depthWrite: false, side: THREE.DoubleSide,
       emissive: new THREE.Color(c), bumpScale: 0.1,
     }), 0.12, 0.02)),
+    // las mismas telas para cortinas: además brillan a contraluz con el sol (ver backlit)
+    curtainCloth: c => once('ccloth' + c, () => clay ? lib.cloth(c) : backlit(lib.cloth(c).clone())),
+    curtainVoile: (c, o = 0.58) => once('cvoile' + c + o, () => { if (clay) return lib.voile(c, o); const v = lib.voile(c, o), m = backlit(v.clone()); m.userData.night = v.userData.night; return m; }),
     quilt: c => once('quilt' + c, () => clay ? matte(c, 1) : new THREE.MeshPhysicalMaterial({
       ...fabricOpts(c), map: TEX.quilt(), bumpMap: TEX.quilt(), bumpScale: 1.2,
     })),
@@ -717,11 +754,12 @@ export function restPillow(g, geo, mat, { x = 0, y = 0, z = 0, rx = 0, ry = 0, r
 // tela que cubre un rectángulo y cae por los lados abiertos, con un radio de doblez y pliegues suaves
 // "height" (px, pz) → y reemplaza la superficie de arriba (una manta que sigue al acolchado de abajo); "waveDrop" fija la
 // escala de los pliegues para que dos telas superpuestas ondulen igual y no se crucen
-export function drapeGeo({ x0, x1, z0, z1, top, drop, r, open, puff = 0, seed = 1, texM = 0.25, height = null, waveDrop = drop }) {
+// "fine": malla más densa (×2,5) para que se lean las arrugas de "height"
+export function drapeGeo({ x0, x1, z0, z1, top, drop, r, open, puff = 0, seed = 1, texM = 0.25, height = null, waveDrop = drop, fine = false }) {
   const arc = r * Math.PI / 2, ext = arc + Math.max(0, drop - r);
   const ex0 = open.xMin ? x0 - ext : x0, ex1 = open.xMax ? x1 + ext : x1;
   const ez0 = open.zMin ? z0 - ext : z0, ez1 = open.zMax ? z1 + ext : z1;
-  const geo = new THREE.PlaneGeometry(1, 1, 64, 50);
+  const geo = new THREE.PlaneGeometry(1, 1, fine ? 160 : 64, fine ? 125 : 50);
   geo.rotateX(-Math.PI / 2);
   const p = geo.attributes.position, uv = geo.attributes.uv;
   for (let i = 0; i < p.count; i++) {
@@ -817,9 +855,14 @@ function bed(p, { M }) {
   const cover = p.duvetCover ?? 0.62, full = cover >= 0.99;
   const z0 = full ? -L / 2 + 0.01 : L / 2 - L * cover, drop = Math.min(p.duvetDrop ?? 0.34, top - 0.08), puff = p.duvetPuff ?? 0.03;
   const dx0 = -W / 2 + 0.01, dx1 = W / 2 - 0.01, dz1 = L / 2 - 0.01, dTop = top + 0.03;
+  // "wrinkles": arrugas del acolchado en metros (ver rumple); la manta las sigue. Se apagan en los bordes que doblan y
+  // cerca de la cabecera (el embozo y las almohadas se apoyan ahí)
+  const wr = p.wrinkles ?? BEDDING.wrinkles, wseed = (p.seed ?? 0) + Math.round(W * 10 + L * 3);
+  const ramp = (d, w) => { const t = Math.min(1, Math.max(0, d / w)); return t * t * (3 - 2 * t); };
+  const wrinkle = (px, pz) => wr ? rumple(px, pz, wseed, wr) * ramp(Math.min(px - dx0, dx1 - px, dz1 - pz), 0.12) * ramp(pz - z0 - (full ? 0 : 0.21), full ? 0.75 : 0.25) : 0;   // sin embozo: lejos de las almohadas; con embozo: recién pasando su borde (19 cm)
   const duvetY = (px, pz) => dTop + puff * Math.sqrt(Math.max(0, Math.sin(Math.PI * (px - dx0) / (dx1 - dx0)) * Math.sin(Math.PI * (pz - z0) / (dz1 - z0))))
-    + 0.003 * Math.sin(px * 13 + pz * 7 + 3);
-  add(g, drapeGeo({ x0: dx0, x1: dx1, z0, z1: dz1, top: dTop, drop, r: 0.07, height: duvetY,
+    + 0.003 * Math.sin(px * 13 + pz * 7 + 3) + wrinkle(px, pz);
+  add(g, drapeGeo({ x0: dx0, x1: dx1, z0, z1: dz1, top: dTop, drop, r: 0.07, height: duvetY, fine: !!wr,
     open: { xMin: true, xMax: true, zMax: true }, seed: 3, texM: p.duvetStyle === 'puffer' ? 0.5 : 0.25 }), duvet);
   // embozo: la sábana doblada sobre el borde del acolchado
   if (!full) add(g, drapeGeo({ x0: -W / 2 + 0.005, x1: W / 2 - 0.005, z0: z0 - 0.01, z1: z0 + 0.19, top: top + 0.045, drop: drop * 0.4, r: 0.075,
@@ -828,7 +871,7 @@ function bed(p, { M }) {
   if (p.throw) {
     const gap = 0.015, tz0 = dz1 - L * (p.throw.cover ?? 0.3);
     add(g, drapeGeo({ x0: dx0, x1: dx1, z0: tz0, z1: dz1, top: dTop + gap, drop: Math.min(p.throw.drop ?? 0.3, drop), r: 0.07 + gap,
-      height: (px, pz) => duvetY(px, pz) + gap, waveDrop: drop, open: { xMin: true, xMax: true, zMax: true }, seed: 3, texM: p.throw.pattern ? 0.9 : 0.25 }),
+      height: (px, pz) => duvetY(px, pz) + gap, waveDrop: drop, fine: !!wr, open: { xMin: true, xMax: true, zMax: true }, seed: 3, texM: p.throw.pattern ? 0.9 : 0.25 }),
       p.throw.pattern ? M.print(p.throw.pattern) : M.cloth(p.throw.color ?? '#2e2f33'));
   }
   const hb = p.headboard;
@@ -1550,7 +1593,7 @@ function curtains(p, { M, H }) {
   const rr = wood ? 0.016 : 0.011, ry = Math.min(H - 0.04, h + 0.05) + 0.011, top = tabs ? ry - 0.07 : ry - 0.011;
   // "sheer": voile traslúcido (deja pasar la luz y se ve la calle a través; un número es la opacidad: 0,85 = algodón
   // liviano que brilla a contraluz); si no, tela opaca
-  const cloth = p.sheer ? M.voile(p.color ?? '#faf8f3', typeof p.sheer === 'number' ? p.sheer : 0.58) : M.cloth(p.color ?? '#e7e2d8');
+  const cloth = p.sheer ? M.curtainVoile(p.color ?? '#faf8f3', typeof p.sheer === 'number' ? p.sheer : 0.58) : M.curtainCloth(p.color ?? '#e7e2d8');
   // barral con dos soportes a la pared (z = 0); los paños cuelgan tocando el barral (o de presillas que lo abrazan)
   const rod = wood ? M.wood(p.rodColor ?? '#7a4a2a') : M.metal('#2b2b2b', 0.5);
   bar(g, rod, 'x', -W / 2 - 0.05, W / 2 + 0.05, ry, 0.08, rr, 16);
@@ -1558,7 +1601,7 @@ function curtains(p, { M, H }) {
     bar(g, rod, 'z', 0, 0.08, ry, sx * (W / 2 + 0.025), 0.006, 8); disc(g, rod, sx * (W / 2 + 0.025), ry, 0, 0.018, 0.006);
     if (wood) add(g, new THREE.SphereGeometry(0.03, 16, 12), rod, sx * (W / 2 + 0.075), ry, 0.08);
   }
-  const hem = p.hem ? M.cloth(p.hem) : null, hh = 0.07, ch = tabs ? h - 0.059 : h;   // con presillas el paño es más corto: el ruedo queda donde quedaría sin ellas
+  const hem = p.hem ? M.curtainCloth(p.hem) : null, hh = 0.07, ch = tabs ? h - 0.059 : h;   // con presillas el paño es más corto: el ruedo queda donde quedaría sin ellas
   for (const [x0, seed] of [[-W / 2, 2], [W / 2 - pw, 5]]) {
     if (hem) {   // ruedo: la misma tela plegada, con los mismos pliegues que el paño (se calcula con el alto total)
       add(g, foldedClothGeo(pw, ch - hh, 0.1, 0.035, seed, 0, ch), cloth, x0, top, 0.085);

@@ -422,6 +422,11 @@ if (!generalKey || !tourKey) { $('modes').hidden = true; document.querySelector(
 async function boot() {
   try { api = await start($('stage'), { scene, state, wideViews: true, base: new URL('.', new URL(src, location.href)).href }); window.__viewer = api; }
   catch (e) { console.error(e); fail('Este navegador no pudo iniciar el visor 3D.'); return; }
+  // ?lente=brillo|sutil|marcado: para probar las filas de motor/pruebas/lente.html recorriendo (T-67); sin él, el del motor
+  const glow = { nightBloom: 0.3, threshold: 2, radius: 0.5 };
+  const LENTES = { brillo: glow, sutil: { grain: 0.012, vignette: 0.1, aberration: 0.5, ...glow },
+    marcado: { grain: 0.03, vignette: 0.15, aberration: 1, nightBloom: 0.5, threshold: 2, radius: 0.6 } };
+  if (LENTES[params.get('lente')]) api.setLens(LENTES[params.get('lente')]);
   sync();
 }
 

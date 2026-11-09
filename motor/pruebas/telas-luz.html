@@ -1,0 +1,76 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muestras de telas</title>
+<style>
+/* Herramienta de desarrollo (2026-11-09, MEJORAS-MOTOR-RENDER #13 y #14): cortinas a contraluz (lighting.curtainLight)
+   y arrugas del acolchado ("wrinkles" de la cama) lado a lado. Nada de esto cambia el motor: el usuario elige y recién
+   ahí esos valores pasan a CURTAIN_LIGHT_DEFAULT (engine.js) y BEDDING.wrinkles (components.js). */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:640px; height:480px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/telas-luz.html[?solo=suave,marcado][&vistas=depto5:living1:dia,depto6:habitacion:dia][&capturar=telas-luz/muestras]
+// Una fila por alternativa (la actual primero) y una columna por vista. Cada fila vuelve a armar el depto (las arrugas
+// son geometría)
+import { start } from '../engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+
+const OPCIONES = {
+  suave: { name: 'Suave', note: 'cortinas a contraluz 0,3 · arrugas del acolchado de 1 cm', curtain: 0.3, wrinkles: 0.01 },
+  medio: { name: 'Medio', note: 'cortinas a contraluz 0,6 · arrugas de 1,6 cm', curtain: 0.6, wrinkles: 0.016 },
+  marcado: { name: 'Marcado', note: 'cortinas a contraluz 1 · arrugas de 2,4 cm', curtain: 1, wrinkles: 0.024 },
+};
+const ACTUAL = { name: 'Actual del motor (de referencia)', note: 'cortinas sin contraluz · acolchado liso', curtain: 0, wrinkles: 0 };
+const COLS = (q.get('vistas') ?? 'depto5:living1:dia,depto5:dormitorio3:dia,depto6:completo:dia,depto6:habitacion:dia').split(',')
+  .map(s => { const [id, view, n] = s.split(':'); return { id, view, night: n === 'noche' }; });
+
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.src = src; });
+const pick = q.get('solo')?.split(',') ?? Object.keys(OPCIONES);
+const rows = [ACTUAL, ...pick.filter(k => OPCIONES[k]).map(k => OPCIONES[k])];
+let c = null, g = null, W = 0, H = 0;
+const LBL = 46;
+for (const id of [...new Set(COLS.map(k => k.id))]) {
+  const path = `/departamentos/${id}/`, base = await (await fetch(path + 'scene.json')).json();
+  const mine = COLS.map((k, ci) => [k, ci]).filter(([k]) => k.id === id);
+  for (const [ri, o] of rows.entries()) {
+    $('estado').textContent = `${base.name ?? id}: ${o.name}…`;
+    const scene = structuredClone(base);
+    scene.lighting = { ...(scene.lighting ?? {}), curtainLight: o.curtain };
+    for (const L of [scene, ...(scene.levels ?? [])]) for (const it of L.items ?? []) if (it.type === 'bed') it.params = { ...(it.params ?? {}), wrinkles: o.wrinkles };
+    const api = await start($('stage'), { scene, state: { view: mine[0][0].view, cut: false, night: false, decor: true }, device: 'desktop', base: path });
+    await api.ready;
+    for (const [{ view, night }, ci] of mine) {
+      api.setNight(night); api.go(view, true);
+      const im = await load(api.capture());
+      if (!c) {
+        W = im.width; H = im.height;
+        c = Object.assign(document.createElement('canvas'), { width: COLS.length * (W + 6), height: rows.length * (H + LBL) }); g = c.getContext('2d');
+        g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+      }
+      const y = ri * (H + LBL), x = ci * (W + 6);
+      if (!ci) {
+        g.fillStyle = '#1d2430'; g.font = '700 18px system-ui'; g.fillText(`${ri + 1}. ${o.name}`, 4, y + 20);
+        g.fillStyle = '#5b6573'; g.font = '14px system-ui'; g.fillText(o.note, 4, y + 39);
+      }
+      g.drawImage(im, x, y + LBL);
+      const label = `${id === 'depto5' ? 'Demo' : 'Depto 6'} · ${base.views[view]?.name ?? view} · ${night ? 'noche' : 'día'}`;
+      g.font = '600 13px system-ui'; g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(x, y + LBL, g.measureText(label).width + 10, 20);
+      g.fillStyle = '#1d2430'; g.fillText(label, x + 5, y + LBL + 15);
+    }
+    api.destroy();
+  }
+}
+$('estado').textContent = `${rows.length} alternativas de cortinas y ropa de cama`;
+$('stage').hidden = true; c.style.cssText = 'display:block;max-width:none'; document.body.append(c);
+if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.92); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
+document.title = 'telas: listo';
+</script>

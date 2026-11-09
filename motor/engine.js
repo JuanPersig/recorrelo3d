@@ -11,7 +11,7 @@ import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { makeMaterials, COMPONENTS, OPENINGS, META, nests, exterior, blk, uvScale, texturesReady } from './components.js';
+import { makeMaterials, COMPONENTS, OPENINGS, META, nests, exterior, blk, uvScale, texturesReady, CURTAIN_LIGHT } from './components.js';
 import { checkSpec, checkScene, loosePieces, looseText } from './validate.js';
 
 // recta de una pared alineada a X o a Z; "at" de cada abertura se mide desde el extremo "from"
@@ -396,6 +396,8 @@ const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
 // resplandor alrededor de lo muy brillante (pantallas de lámpara, ventanas a contraluz) de día y de noche, "threshold"
 // desde qué brillo (lineal, antes de la exposición) resplandece. Todo en 0 = la imagen de siempre. Cada departamento
 // puede cambiarlo en "lighting.lens"; motor/pruebas/lente.html compara las alternativas
+// cortinas a contraluz (MEJORAS-MOTOR-RENDER #13): 0 = como antes; motor/pruebas/telas-luz.html compara
+const CURTAIN_LIGHT_DEFAULT = 0;
 const LENS = { grain: 0, vignette: 0, aberration: 0, bloom: 0, nightBloom: 0, threshold: 1, radius: 0.5 };
 
 // "device": 'auto' (el visor), 'desktop' o 'mobile'. Las herramientas (verificar, comparar, exportar) piden
@@ -672,6 +674,8 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   // luz de las ventanas y el horizonte; el relleno (cielo y rebote del piso) apenas, para que las paredes en sombra
   // sigan blancas. De noche, las lámparas cálidas más un relleno tenue del mismo tono para que se lea todo.
   const lit = spec.lighting ?? {};
+  // cortinas a contraluz (ver backlit en components.js): fuerza para todas las cortinas de este departamento
+  CURTAIN_LIGHT.value = lit.curtainLight ?? CURTAIN_LIGHT_DEFAULT;
   const warm = THREE.MathUtils.clamp(lit.warmth ?? WARMTH, 0, 1);
   const tint = (base, sunset, k = 1) => new THREE.Color(base).lerp(new THREE.Color(sunset), warm * k);
   const DAY = { sun: lit.sunIntensity ?? 4.5, hemi: lit.ambient ?? AMBIENT, env: lit.environment ?? 0.4, rect: lit.windowLight ?? 1.5, exposure: lit.exposure ?? 0.95,

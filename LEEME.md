@@ -11,7 +11,7 @@ tanda; `git push` lo corre el usuario (el permiso automático frena la subida de
 |---|---|
 | `motor/` | `engine.js` (escena, luz, posproceso, cámara), `components.js` (catálogo de piezas y materiales), `validate.js`, `visor.html` y herramientas (`verificar`, `hornear`, `generar-texturas`, `comparar`, `exportar`, `plano`, `colores`, `encuadre`, `telas`, `texturas`) |
 | `motor/texturas/` | texturas del motor pre-generadas (WebP + `indice.js`); se rehacen con `motor/generar-texturas.html` |
-| `motor/pruebas/` | páginas de prueba: `materiales.html` (laboratorio de materiales), `entorno.html`, `rebote.html`, `cerca.html`, muestras para elegir (`maderas.html`, `lente.html`) |
+| `motor/pruebas/` | páginas de prueba: `materiales.html` (laboratorio de materiales), `entorno.html`, `rebote.html`, `cerca.html`, muestras para elegir (`maderas.html`, `lente.html`, `telas-luz.html`) |
 | `departamentos/<id>/scene.json` | lo único que cambia por depto: `depto5` (demo) y `depto6` (depto grande, en curso; los otros cuatro se borraron el 2026-11-08: están en el historial de git) |
 | `fotos/<id>/` | PNG que usan las vistas; `fotos/<id>/original/` las originales |
 | `muestras/` | escenas de la rueda de la landing (fotos de Pexels), fuera de la verificación |
@@ -145,6 +145,9 @@ fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando
    (`lighting.lens`), todo en 0. Falta que el usuario elija una fila de `capturas/lente/muestras.jpg`
    (`motor/pruebas/lente.html`) para fijar `LENS` en engine.js. El cruce completo con `MEJORAS-MOTOR-RENDER.md` (qué
    ya estaba, qué no va) está en T-67.
+   Lo mismo para las cortinas a contraluz y las arrugas del acolchado (T-68): elegir una fila de
+   `capturas/telas-luz/muestras.jpg` (`motor/pruebas/telas-luz.html`) para fijar `CURTAIN_LIGHT_DEFAULT` y
+   `BEDDING.wrinkles`. Los reflejos (#11) ya estaban: el piso pulido refleja en vivo.
 1. **Depto 6 (T-61):** decidir el aviso de 60 cm del baño (medidas reales o artefactos más chicos); colores con
    `colores.html` y puntaje de parecido (`comparar.html?…&medir=`); fotos del segundo dormitorio y del lavadero si
    el anuncio las tiene.
