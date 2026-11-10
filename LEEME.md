@@ -27,7 +27,7 @@ tanda; `git push` lo corre el usuario (el permiso automático frena la subida de
   `publicar.json`; `palermo-chico-q7q3` redirige a `departamento-prueba` por un QR impreso: no tocar.
 - **Artifact privado del depto 5:** https://claude.ai/artifact/GvmujzWsuucQ8GepG3rekX (desde `dist/depto5/`).
 
-## Estado del motor (2026-11-08)
+## Estado del motor (2026-11-09)
 
 Hecho y aprobado en las tandas del 7 y 8 de noviembre (detalle en TICKETS.md, T-52 a T-59):
 - **Limpieza** (T-52, T-58): sin videos; solo queda el depto demo; fotos en `fotos/<id>/`; git + GitHub.
@@ -88,6 +88,24 @@ Hecho en la tanda de casas (2026-11-08 a la noche; sirve para cualquier casa o d
   ("headboard": { "material": "wood" }); la tele encastra en una biblioteca (mueble de tele).
 - **Rendimiento:** una textura nueva calculada al abrir (el pasto) llevó un armado de 4 a 28 s; pre-generada, volvió a 4.
 
+Hecho en la tanda de render (2026-11-09, T-67 a T-69; a partir de un documento externo, `MEJORAS-MOTOR-RENDER.md`,
+con el cruce completo de sus 18 puntos en T-67; todo general para cualquier depto):
+- **Lente** (elegido "sutil" por el usuario): grano fino, esquinas 10 % más oscuras, medio píxel de aberración de color
+  y resplandor de las luces solo de noche (de día vela la imagen). Va en la copia final, después del pulido; el grano
+  depende de la pose de la cámara (la misma vista da siempre la misma imagen). `LENS` en engine.js,
+  `"lighting": { "lens": {…} }` por depto, `visor.html?…&lente=no|brillo|sutil|marcado` para comparar.
+- **Cortinas a contraluz** (elegido "medio"): con el sol detrás, la tela brilla con su color (`CURTAIN_LIGHT_DEFAULT`
+  0,6; `lighting.curtainLight` por depto). De noche no cambia nada.
+- **Arrugas del acolchado** (elegido "medio"): hundimientos y pliegues de 1,6 cm distintos por cama, la manta los sigue
+  (`BEDDING.wrinkles`; `"wrinkles"` por cama, 0 = liso).
+- **Sombras estables al moverse** (T-69): en la PC la oclusión ambiental ya no se apaga al caminar o hacer zoom; si no
+  da abasto baja la resolución (100/80/65/50 %). `lighting.sunDisc`: disco del sol del pulido (0,012).
+- **Ya estaban** (no hubo que hacer nada): tone mapping, PBR, relieve, luz horneada, GTAO, caída real de la luz,
+  antialiasing, tono por tabla y piso con reflejo espejado en vivo. **No van:** cielo con fotos reales (HDRI) y
+  desenfoque. **Del depto, no del motor:** sanitarios fieles, decoración y colores contra la foto.
+- **Páginas de muestras** para elegir aspecto: `motor/pruebas/lente.html`, `telas-luz.html`; y
+  `quieto-movil.html` (qué cambia entre la cámara en movimiento y quieta).
+
 ## Servidores (`.claude/launch.json`)
 
 `visor` :5180 (raíz del proyecto) · `sitio` :5183 (`sitio/` como Cloudflare) · `landing` :5184 (`npm run dev`).
@@ -141,11 +159,6 @@ fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando
 **El usuario:** `git push` cuando haya commits locales y subir `sitio/` a Cloudflare cuando haya cambios.
 
 ### Motor
-0. **Lente (T-67, 2026-11-09):** hecho, "lente sutil" elegido por el usuario (grano fino, esquinas apenas más oscuras,
-   medio píxel de aberración y resplandor de las luces de noche); `lighting.lens` lo cambia por depto y
-   `visor.html?…&lente=no` lo saca para comparar. El cruce completo con `MEJORAS-MOTOR-RENDER.md` está en T-67.
-   Cortinas a contraluz y arrugas del acolchado (T-68): hechas, con la fila "medio" que eligió el usuario
-   (`motor/pruebas/telas-luz.html` para comparar). Los reflejos (#11) ya estaban: el piso pulido refleja en vivo.
 1. **Depto 6 (T-61):** decidir el aviso de 60 cm del baño (medidas reales o artefactos más chicos); colores con
    `colores.html` y puntaje de parecido (`comparar.html?…&medir=`); fotos del segundo dormitorio y del lavadero si
    el anuncio las tiene.

@@ -843,7 +843,7 @@ function leafGeo(len, wmax, curve) {
 }
 
 /* ---------- dormitorio ---------- */
-// cama con base, colchón, sábana, acolchado ("duvetStyle": "puffer"), manta ("throw"), respaldo opcional ("headboard") y almohadas/almohadones ("pillows"); la cabecera va en -Z.
+// cama con base, colchón, sábana, acolchado ("duvetStyle": "puffer"; "wrinkles": arrugas en metros, 0 = liso), manta ("throw"), respaldo opcional ("headboard") y almohadas/almohadones ("pillows"); la cabecera va en -Z.
 // Con "headboard" el respaldo queda 10 cm detrás de la cabecera: contra una pared, la cama va a length / 2 + 0,1 de ella
 function bed(p, { M }) {
   const g = new THREE.Group();

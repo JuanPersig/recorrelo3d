@@ -15,6 +15,8 @@
    "duvetCover": "0.62",
    "duvetDrop": "0.34",
    "duvetPuff": "0.03",
+   "wrinkles": "BEDDING.wrinkles",
+   "seed": "0",
    "throw.drop": "0.3",
    "throw.cover": "0.3",
    "throw.color": "'#2e2f33'",

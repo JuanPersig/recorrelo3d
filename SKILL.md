@@ -159,6 +159,10 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
 - Luz: los valores por defecto ya son los acogedores aprobados (T-28: `warmth` 0,58, `ambient` 0,82, de noche
   `nightAmbient` 0,5 y `nightExposure` 1,35); cambiarlos solo si las fotos lo piden. `lighting.lamps` (rendimiento de
   las lámparas de noche, 0,8), `sunFrom` (de dónde viene el sol; elegirlo para que entre como en las fotos).
+- Aspecto de cámara y telas (2026-11-09, ya con los valores que eligió el usuario; no hace falta tocarlos):
+  `lighting.lens` { grain, vignette, aberration, bloom, nightBloom, threshold, radius }, `lighting.curtainLight`
+  (cortinas a contraluz, 0,6), `lighting.sunDisc` (penumbra del sol al quedarse quieta, 0,012) y `"wrinkles"` de
+  cada cama (arrugas del acolchado en metros, 0,016; 0 = liso).
 - Entorno: `exterior.balcony`, `exterior.city` (calle y edificios) o `exterior.landscape: "lake"` con `nature`.
   Casa en planta baja: "exterior": { "floorsBelow": 0 } (el suelo al nivel de la casa, sin edificio debajo).
 - Techo de cada ambiente ("ceiling"): "open" (patio a cielo abierto), { "kind": "boards", "color", "height" }
@@ -358,6 +362,11 @@ Lo que permitió corregir la cocina del depto 6 y cambiar la madera sin romper n
 - Después: `motor/generar-texturas.html` (regenera todas; en git deben cambiar solo las tocadas) y
   `verificar.html?deptos=depto5,<en curso>`; `&base=1` solo con el cambio aprobado.
 
+- Si el cambio es un efecto (lente, contraluz, arrugas), la página prueba valores sobre deptos reales: `lente.html` y
+  `telas-luz.html` (filas = alternativas, columnas = `depto:vista:dia|noche`). El grano se ve solo a tamaño real.
+- Lo que cambia entre la cámara en movimiento y quieta: `motor/pruebas/quieto-movil.html?vistas=a,b` (con `&antes=1`
+  sin lente/contraluz/arrugas). Nada debe aparecer ni desaparecer al frenar: solo se alisan bordes.
+
 ### Tiempos medidos (PC, panel oculto)
 `comparar` ~8 s por vista con `&view=`; `encuadre` ~15 s por vista; `hornear` ~40 s; `verificar` con dos deptos
-~80 s; `maderas.html` con seis vetas ~30 s; `generar-texturas` ~20 s.
+~80 s; `maderas.html` con seis vetas ~30 s; `generar-texturas` ~20 s; `lente.html` ~2 min; `telas-luz.html` ~3 min.

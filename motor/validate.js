@@ -23,7 +23,8 @@ const KEYS = {
   void: S('x', 'z'),
   view: S('name', 'pos', 'target', 'fov', 'cut', 'photo', 'photoAspect', 'level'),
   lighting: S('sunFrom', 'sunColor', 'sunIntensity', 'ambient', 'environment', 'windowLight', 'exposure', 'sky', 'ground',
-    'nightAmbient', 'nightExposure', 'warmth', 'lamps', 'bake', 'bounce'),   // bake: archivo de luz rebotada (motor/hornear.html); bounce: cuánto suma
+    'nightAmbient', 'nightExposure', 'warmth', 'lamps', 'bake', 'bounce',   // bake: archivo de luz rebotada (motor/hornear.html); bounce: cuánto suma
+    'lens', 'curtainLight', 'sunDisc'),   // lente, cortinas a contraluz y penumbra del sol (2026-11-09, T-67 a T-69)
   exterior: S('balcony', 'floorsBelow', 'facade', 'landscape', 'nature', 'city', 'fog', 'facing', 'bearing'),   // bearing: rumbo de la fachada en grados (0 = mira al norte), para el norte del plano
   balcony: S('x', 'z', 'floor', 'covered', 'soffit', 'railing', 'ends'),
   railing: S('kind', 'height', 'color', 'sides', 'wall', 'handrail', 'net'),
