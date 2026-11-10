@@ -165,7 +165,7 @@ antes hay que medir la precisión real de las marcas. Backup del 2026-11-10 en e
 usuario. **Datos de la noche del 2026-11-10 en `INFORME-NOCTURNO-2026-11-10.md`**: el depto 6 coincide con su plano a 3,7 cm
 (`node motor/plano-medido.mjs comparar depto6 …`), así que sus diferencias con las fotos son de cámaras, materiales y
 objetos, no de paredes; `validate.js` tiene 3 controles de geometría nuevos; las hojas de `comparar.html` ya no salen
-borrosas ni con luz de noche.
+borrosas ni con luz de noche. **Auditoría de fidelidad del depto 6 (`AUDITORIA-DEPTO6-2026-11-10.md`):** 66 diferencias contra las fotos; color y material son el 56 % del error, la estructura 0 %, y el 55 % del peso está en 12 problemas que se repiten en varias vistas (piso del living, cortinas, piso y mesada de la cocina, pileta con pie, ventana…). Es la guía de qué arreglar primero.
 
 ## Próximos pasos (2026-11-08)
 
