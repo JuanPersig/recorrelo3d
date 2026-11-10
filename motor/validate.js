@@ -99,6 +99,43 @@ export function checkSpec(spec, { COMPONENTS, OPENINGS }) {
         oneOf(o.hinge, 'opening.hinge', ow); oneOf(o.material, 'opening.material', ow);
       }
     }
+    // (2026-11-10, PLAN-PRECISION pieza 4) controles de geometría que no necesitan el plano: aberturas que se pisan en una
+    // misma pared, ambientes que se superponen y lados de un ambiente que dan hacia afuera sin pared
+    for (const w of Lv.walls ?? []) {
+      if (!isPair(w.from) || !isPair(w.to)) continue;
+      const os = (w.openings ?? []).filter(o => isNum(o.at) && isNum(o.width)).sort((a, b) => a.at - b.at);
+      for (let i = 1; i < os.length; i++) if (os[i].at < os[i - 1].at + os[i - 1].width - 0.01) out.push(`· la pared de [${w.from}] a [${w.to}]: "${os[i - 1].kind}" (${os[i - 1].at}–${(os[i - 1].at + os[i - 1].width).toFixed(2)}) y "${os[i].kind}" (desde ${os[i].at}) se superponen`);
+    }
+    const rects = []; for (const r of Lv.rooms ?? []) for (const rc of r.rects ?? [r.rect]) if (isPair(rc?.x) && isPair(rc?.z)) rects.push({ name: r.name ?? r.id ?? '?', key: r.id ?? r.name, rc });
+    for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++) {
+      if (rects[i].key === rects[j].key) continue;
+      const ox = Math.min(rects[i].rc.x[1], rects[j].rc.x[1]) - Math.max(rects[i].rc.x[0], rects[j].rc.x[0]), oz = Math.min(rects[i].rc.z[1], rects[j].rc.z[1]) - Math.max(rects[i].rc.z[0], rects[j].rc.z[0]);
+      if (ox > 0.05 && oz > 0.05 && ox * oz > 0.05) out.push(`· los ambientes "${rects[i].name}" y "${rects[j].name}" se superponen ${(ox * oz).toFixed(2)} m² (${ox.toFixed(2)} × ${oz.toFixed(2)} m)`);
+    }
+    {
+      const wl = (Lv.walls ?? []).filter(w => isPair(w.from) && isPair(w.to)), inAny = (x, z) => rects.some(r => x > r.rc.x[0] && x < r.rc.x[1] && z > r.rc.z[0] && z < r.rc.z[1]);
+      // las columnas y plenos (structure con x y z) también cierran un lado
+      const cols = (Lv.structure ?? []).filter(s => s.kind !== 'beam' && isPair(s.x) && isPair(s.z));
+      const hasWall = (x, z) => wl.some(w => {
+        const t = (w.thickness ?? 0.15) / 2 + 0.04, [x0, x1] = [Math.min(w.from[0], w.to[0]), Math.max(w.from[0], w.to[0])], [z0, z1] = [Math.min(w.from[1], w.to[1]), Math.max(w.from[1], w.to[1])];
+        return x >= x0 - t && x <= x1 + t && z >= z0 - t && z <= z1 + t;
+      }) || cols.some(s => x >= s.x[0] - 0.04 && x <= s.x[1] + 0.04 && z >= s.z[0] - 0.04 && z <= s.z[1] + 0.04);
+      for (const r of Lv.rooms ?? []) {
+        if (r.closed || r.ceiling === 'open' || r.ceiling?.kind === 'open') continue;
+        for (const rc of r.rects ?? [r.rect]) {
+          if (!isPair(rc?.x) || !isPair(rc?.z)) continue;
+          for (const [name, a, b, nx, nz] of [['norte (z mínimo)', [rc.x[0], rc.z[0]], [rc.x[1], rc.z[0]], 0, -1], ['sur (z máximo)', [rc.x[0], rc.z[1]], [rc.x[1], rc.z[1]], 0, 1], ['x mínimo', [rc.x[0], rc.z[0]], [rc.x[0], rc.z[1]], -1, 0], ['x máximo', [rc.x[1], rc.z[0]], [rc.x[1], rc.z[1]], 1, 0]]) {
+            const len = Math.hypot(b[0] - a[0], b[1] - a[1]); let n = 0, ok = 0;
+            for (let d = 0.1; d < len - 0.1; d += 0.05) {
+              const x = a[0] + (b[0] - a[0]) * d / len, z = a[1] + (b[1] - a[1]) * d / len;
+              if (inAny(x + nx * 0.12, z + nz * 0.12)) continue;   // da a otro ambiente: puede ser un paso abierto
+              n++; if (hasWall(x + nx * 0.075, z + nz * 0.075)) ok++;
+            }
+            if (n >= 6 && ok / n < 0.9) out.push(`· el lado "${name}" de "${r.name ?? r.id ?? '?'}" (de [${a}] a [${b}]) da hacia afuera y solo tiene pared en el ${Math.round(100 * ok / n)} % de su largo`);
+          }
+        }
+      }
+    }
     for (const s of Lv.structure ?? []) { keys(s, 'structure', `la estructura de ${at}`); oneOf(s.kind, 'structure.kind', `la estructura de ${at}`); }
     for (const v of Lv.voids ?? []) keys(v, 'void', `un hueco de ${at}`);
     if (Lv.roof) {

@@ -45,7 +45,7 @@ function show() {
   // con el panel del navegador oculto la ventana mide 0 (vw = vh = 0): la caja toma un ancho fijo para que las capturas
   // salgan a tamaño real y no de un lienzo de 300 × 150
   for (const b of document.querySelectorAll('.box')) {
-    const hidden = innerWidth < 200;
+    const hidden = innerWidth < 200 || !!q.get('capturar');   // al capturar, siempre a tamaño fijo: con una ventana angosta el render salía de 209 px y borroso (2026-11-10)
     b.style.width = hidden ? `${aspectOf(v) >= 1 ? 720 : 540}px` : ''; b.style.flexShrink = hidden ? '0' : '';   // sin achicarse en el flex de ancho 0
   }
   api.resize();
