@@ -1,0 +1,392 @@
+fill none
+stroke-width 1
+stroke "#e08080"
+rectangle 123,59 454,70
+stroke "#e08080"
+rectangle 371,67 455,75
+stroke "#e08080"
+rectangle 335,76 376,81
+stroke "#e08080"
+rectangle 465,76 496,81
+stroke "#e08080"
+rectangle 649,202 712,204
+stroke "#e08080"
+rectangle 953,298 1023,304
+stroke "#e08080"
+rectangle 693,296 835,306
+stroke "#e08080"
+rectangle 618,329 701,336
+stroke "#e08080"
+rectangle 120,382 503,395
+stroke "#e08080"
+rectangle 597,447 701,453
+stroke "#e08080"
+rectangle 694,466 725,468
+stroke "#e08080"
+rectangle 767,462 832,473
+stroke "#e08080"
+rectangle 767,470 852,474
+stroke "#e08080"
+rectangle 922,468 1008,476
+stroke "#e08080"
+rectangle 616,557 694,559
+stroke "#e08080"
+rectangle 331,686 373,690
+stroke "#e08080"
+rectangle 459,686 492,690
+stroke "#e08080"
+rectangle 119,694 450,707
+stroke "#e08080"
+rectangle 449,506 451,559
+stroke "#e08080"
+rectangle 459,646 461,707
+stroke "#e08080"
+rectangle 618,447 622,478
+stroke "#e08080"
+rectangle 619,301 623,336
+stroke "#e08080"
+rectangle 625,555 630,595
+stroke "#e08080"
+rectangle 630,224 632,257
+stroke "#e08080"
+rectangle 631,554 634,594
+stroke "#e08080"
+rectangle 626,674 634,708
+stroke "#e08080"
+rectangle 629,439 635,478
+stroke "#e08080"
+rectangle 627,301 636,342
+stroke "#e08080"
+rectangle 628,61 637,112
+stroke "#e08080"
+rectangle 693,296 702,337
+stroke "#e08080"
+rectangle 104,42 650,44
+stroke "#e08080"
+rectangle 186,53 345,54
+stroke "#e08080"
+rectangle 353,55 637,56
+stroke "#e08080"
+rectangle 121,58 638,67
+stroke "#e08080"
+rectangle 371,67 466,74
+stroke "#e08080"
+rectangle 334,76 377,82
+stroke "#e08080"
+rectangle 453,76 496,82
+stroke "#e08080"
+rectangle 334,165 372,166
+stroke "#e08080"
+rectangle 452,166 496,167
+stroke "#e08080"
+rectangle 333,170 404,171
+stroke "#e08080"
+rectangle 452,170 496,171
+stroke "#e08080"
+rectangle 648,202 712,204
+stroke "#e08080"
+rectangle 628,216 702,217
+stroke "#e08080"
+rectangle 176,216 406,218
+stroke "#e08080"
+rectangle 452,217 637,219
+stroke "#e08080"
+rectangle 176,220 405,223
+stroke "#e08080"
+rectangle 452,222 697,223
+stroke "#e08080"
+rectangle 953,298 1023,301
+stroke "#e08080"
+rectangle 953,303 1023,304
+stroke "#e08080"
+rectangle 693,296 836,306
+stroke "#e08080"
+rectangle 333,312 376,313
+stroke "#e08080"
+rectangle 456,330 496,331
+stroke "#e08080"
+rectangle 451,334 496,336
+stroke "#e08080"
+rectangle 909,335 967,336
+stroke "#e08080"
+rectangle 604,329 702,337
+stroke "#e08080"
+rectangle 646,341 715,343
+stroke "#e08080"
+rectangle 697,384 785,385
+stroke "#e08080"
+rectangle 992,385 1023,386
+stroke "#e08080"
+rectangle 756,389 786,390
+stroke "#e08080"
+rectangle 888,390 940,391
+stroke "#e08080"
+rectangle 120,385 636,394
+stroke "#e08080"
+rectangle 104,400 649,402
+stroke "#e08080"
+rectangle 450,447 491,448
+stroke "#e08080"
+rectangle 450,451 491,452
+stroke "#e08080"
+rectangle 605,447 702,454
+stroke "#e08080"
+rectangle 694,465 732,468
+stroke "#e08080"
+rectangle 694,467 731,473
+stroke "#e08080"
+rectangle 922,471 1009,474
+stroke "#e08080"
+rectangle 766,468 1008,476
+stroke "#e08080"
+rectangle 175,553 402,556
+stroke "#e08080"
+rectangle 449,554 636,556
+stroke "#e08080"
+rectangle 615,557 695,558
+stroke "#e08080"
+rectangle 175,558 402,560
+stroke "#e08080"
+rectangle 449,559 636,560
+stroke "#e08080"
+rectangle 616,561 700,562
+stroke "#e08080"
+rectangle 330,605 402,606
+stroke "#e08080"
+rectangle 449,605 493,606
+stroke "#e08080"
+rectangle 331,609 369,610
+stroke "#e08080"
+rectangle 372,609 402,611
+stroke "#e08080"
+rectangle 449,609 493,611
+stroke "#e08080"
+rectangle 330,686 373,690
+stroke "#e08080"
+rectangle 449,686 492,690
+stroke "#e08080"
+rectangle 119,693 473,707
+stroke "#e08080"
+rectangle 581,707 689,708
+stroke "#e08080"
+rectangle 814,707 867,708
+stroke "#e08080"
+rectangle 982,708 1023,709
+stroke "#e08080"
+rectangle 154,711 612,713
+stroke "#e08080"
+rectangle 103,42 105,402
+stroke "#e08080"
+rectangle 119,496 120,713
+stroke "#e08080"
+rectangle 122,54 123,248
+stroke "#e08080"
+rectangle 125,369 126,519
+stroke "#e08080"
+rectangle 175,673 176,707
+stroke "#e08080"
+rectangle 176,363 177,593
+stroke "#e08080"
+rectangle 177,58 179,151
+stroke "#e08080"
+rectangle 180,591 181,674
+stroke "#e08080"
+rectangle 185,364 186,420
+stroke "#e08080"
+rectangle 184,518 186,631
+stroke "#e08080"
+rectangle 186,58 188,264
+stroke "#e08080"
+rectangle 273,272 274,312
+stroke "#e08080"
+rectangle 367,609 369,707
+stroke "#e08080"
+rectangle 371,61 372,167
+stroke "#e08080"
+rectangle 372,609 373,707
+stroke "#e08080"
+rectangle 375,61 377,166
+stroke "#e08080"
+rectangle 449,645 461,707
+stroke "#e08080"
+rectangle 449,506 462,560
+stroke "#e08080"
+rectangle 451,217 465,278
+stroke "#e08080"
+rectangle 453,61 466,113
+stroke "#e08080"
+rectangle 617,447 622,479
+stroke "#e08080"
+rectangle 619,301 624,336
+stroke "#e08080"
+rectangle 626,674 629,708
+stroke "#e08080"
+rectangle 630,189 631,257
+stroke "#e08080"
+rectangle 631,222 632,257
+stroke "#e08080"
+rectangle 627,439 634,479
+stroke "#e08080"
+rectangle 625,554 634,708
+stroke "#e08080"
+rectangle 634,189 635,225
+stroke "#e08080"
+rectangle 630,301 635,342
+stroke "#e08080"
+rectangle 631,519 636,595
+stroke "#e08080"
+rectangle 628,61 638,113
+stroke "#e08080"
+rectangle 646,341 649,402
+stroke "#e08080"
+rectangle 648,95 651,204
+stroke "#e08080"
+rectangle 694,447 695,558
+stroke "#e08080"
+rectangle 699,447 701,562
+stroke "#e08080"
+rectangle 693,296 702,337
+stroke "#e08080"
+rectangle 710,202 712,343
+stroke "#e08080"
+rectangle 779,296 780,390
+stroke "#e08080"
+rectangle 783,296 785,366
+stroke "#e08080"
+rectangle 817,297 818,390
+stroke "#e08080"
+rectangle 821,297 823,390
+stroke "#e08080"
+rectangle 846,344 847,386
+stroke "#e08080"
+rectangle 922,315 923,360
+stroke "#e08080"
+rectangle 992,297 994,391
+stroke "#e08080"
+rectangle 996,297 998,391
+stroke "#10a030"
+stroke-width 2
+line 181.4,389.3 181.4,62.6
+stroke none
+fill "#006020"
+font-size 10
+text 184.4,223.0 '0'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 181.4,389.3 638.0,389.3
+stroke none
+fill "#006020"
+font-size 10
+text 412.7,386.3 '1'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 181.4,62.6 638.0,62.6
+stroke none
+fill "#006020"
+font-size 10
+text 412.7,59.6 '2'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 638.0,389.3 638.0,62.6
+stroke none
+fill "#006020"
+font-size 10
+text 641.0,223.0 '3'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 638.0,333.2 704.9,333.2
+stroke none
+fill "#006020"
+font-size 10
+text 674.4,330.2 '4'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 638.0,218.8 704.9,218.8
+stroke none
+fill "#006020"
+font-size 10
+text 674.4,215.8 '5'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 704.9,335.7 704.9,216.2
+stroke none
+fill "#006020"
+font-size 10
+text 707.9,273.0 '6'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 181.4,218.8 638.0,218.8
+stroke none
+fill "#006020"
+font-size 10
+text 412.7,215.8 '7'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 459.7,335.7 459.7,218.8
+stroke none
+fill "#006020"
+font-size 10
+text 462.7,274.3 '8'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 457.1,218.8 457.1,62.6
+stroke none
+fill "#006020"
+font-size 10
+text 460.1,137.7 '9'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 406.4,218.8 406.4,165.4
+stroke none
+fill "#006020"
+font-size 10
+text 409.4,189.1 '10'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 335.0,165.4 498.2,165.4
+stroke none
+fill "#006020"
+font-size 10
+text 419.6,162.4 '11'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 376.1,165.4 376.1,62.6
+stroke none
+fill "#006020"
+font-size 10
+text 379.1,111.0 '12'
+fill none
+stroke-width 1
+stroke "#10a030"
+stroke-width 2
+line 459.7,333.2 638.0,333.2
+stroke none
+fill "#006020"
+font-size 10
+text 551.8,330.2 '13'
+fill none
+stroke-width 1
