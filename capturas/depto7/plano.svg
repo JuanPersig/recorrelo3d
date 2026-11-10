@@ -5,7 +5,7 @@
 <text x="98.0" y="122.5" font-size="15.4" font-weight="600" fill="#1d2430">Planta baja</text>
 <rect x="126.0" y="168.0" width="208.6" height="301.7" fill="#f7f4ee"/>
 <rect x="334.6" y="409.5" width="88.9" height="60.2" fill="#f7f4ee"/>
-<rect x="334.6" y="278.6" width="4.2" height="130.9" fill="#f7f4ee"/>
+<rect x="334.6" y="322.0" width="4.2" height="87.5" fill="#f7f4ee"/>
 <rect x="338.8" y="278.6" width="84.7" height="130.9" fill="#f7f4ee"/>
 <rect x="338.8" y="168.0" width="84.7" height="102.2" fill="#f7f4ee"/>
 <rect x="281.4" y="483.7" width="142.1" height="234.5" fill="#f7f4ee"/>
@@ -24,6 +24,7 @@
 <line x1="350.0" y1="413.7" x2="350.0" y2="469.7" stroke="#8b949c" stroke-width="0.8"/>
 <line x1="367.5" y1="413.7" x2="399.8" y2="469.7" stroke="#8b949c" stroke-width="0.8"/>
 <line x1="367.5" y1="413.7" x2="423.5" y2="446.0" stroke="#8b949c" stroke-width="0.8"/>
+<rect x="292.6" y="168.0" width="37.8" height="43.4" fill="#2b3038"/>
 <rect x="112.0" y="154.0" width="325.5" height="14.0" fill="#2b3038"/>
 <rect x="423.5" y="154.0" width="14.0" height="578.2" fill="#2b3038"/>
 <rect x="112.0" y="154.0" width="14.0" height="93.8" fill="#2b3038"/>
@@ -42,7 +43,7 @@
 <rect x="383.6" y="469.7" width="53.9" height="14.0" fill="#2b3038"/>
 <rect x="267.4" y="469.7" width="14.0" height="262.5" fill="#2b3038"/>
 <rect x="267.4" y="718.2" width="170.1" height="14.0" fill="#2b3038"/>
-<rect x="330.4" y="168.0" width="8.4" height="110.6" fill="#2b3038"/>
+<rect x="330.4" y="168.0" width="8.4" height="154.0" fill="#2b3038"/>
 <rect x="330.4" y="270.2" width="8.4" height="8.4" fill="#2b3038"/>
 <line x1="387.8" y1="278.6" x2="387.8" y2="327.6" stroke="#2b3038" stroke-width="2"/>
 <path d="M387.8,327.6 A49.0,49.0 0 0 1 338.8,278.6" fill="none" stroke="#8b949c" stroke-width="1" stroke-dasharray="4 3"/>

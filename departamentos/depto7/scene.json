@@ -14,7 +14,7 @@
   "wallColor": "#f6f5f2",
   "baseboard": "#e9e2d6",
   "rooms": [
-    { "id": "estar", "name": "Estar comedor y cocina", "rects": [{ "x": [0, 2.98], "z": [0, 4.31] }, { "x": [2.98, 4.25], "z": [3.45, 4.31] }, { "x": [2.98, 3.04], "z": [1.58, 3.45] }], "floor": { "kind": "tile", "color": "#dccbb0", "tile": 0.6, "gloss": 0.15 } },
+    { "id": "estar", "name": "Estar comedor y cocina", "rects": [{ "x": [0, 2.98], "z": [0, 4.31] }, { "x": [2.98, 4.25], "z": [3.45, 4.31] }, { "x": [2.98, 3.04], "z": [2.2, 3.45] }], "floor": { "kind": "tile", "color": "#dccbb0", "tile": 0.6, "gloss": 0.15 } },
     { "id": "antebano", "name": "Antebaño", "rect": { "x": [3.04, 4.25], "z": [1.58, 3.45] }, "floor": { "kind": "tile", "color": "#dccbb0", "tile": 0.6, "gloss": 0.15 } },
     { "id": "bano", "name": "Baño", "rect": { "x": [3.04, 4.25], "z": [0, 1.46] }, "floor": { "kind": "tile", "color": "#d3c3a8", "tile": 0.4 } },
     { "id": "patio", "name": "Patio", "rect": { "x": [2.22, 4.25], "z": [4.51, 7.86] }, "floor": { "kind": "tile", "color": "#e6dccb", "tile": 0.4 }, "ceiling": "open" }
@@ -32,10 +32,13 @@
     ] },
     { "from": [2.12, 4.41], "to": [2.12, 7.96], "thickness": 0.2 },
     { "from": [2.02, 7.96], "to": [4.45, 7.96], "thickness": 0.2 },
-    { "from": [2.98, 0], "to": [2.98, 1.58], "thickness": 0.12 },
+    { "from": [2.98, 0], "to": [2.98, 2.2], "thickness": 0.12 },
     { "from": [2.98, 1.52], "to": [4.25, 1.52], "thickness": 0.12, "openings": [
       { "kind": "door", "at": 0.06, "width": 0.7, "height": 2.05, "hinge": "end", "open": 0, "material": "lacquer", "color": "#f4f3ef" }
     ] }
+  ],
+  "structure": [
+    { "kind": "column", "x": [2.38, 2.92], "z": [0, 0.62] }
   ],
   "items": [
     { "type": "stair", "at": [3.85, 3.01], "params": { "width": 0.8, "rise": 2.7, "run": 2.6, "steps": 15, "turn": -1, "before": 2, "winders": 3, "beforeGo": 0.25, "open": -1, "rail": true, "tread": "#8a4422", "stringer": "#f1f1ee" } }
@@ -69,11 +72,11 @@
   "views": {
     "general": { "name": "Vista general", "pos": [9.5,11,12], "target": [2.1,0,3.6], "fov": 45, "cut": true },
     "alta": { "name": "Planta alta", "pos": [8,11,9], "target": [2.1,2.7,2.2], "fov": 45, "cut": true, "level": 1 },
-    "living1": { "name": "Comedor y cocina", "pos": [3.5,1.15,3.9], "target": [0.5,1,1.9], "fov": 88, "photo": "living1" },
-    "living2": { "name": "Estar hacia la entrada", "pos": [2.4,1.25,4.1], "target": [0.2,1.05,0.9], "fov": 80, "photo": "living2" },
-    "living3": { "name": "Estar hacia el patio", "pos": [2.5,1.25,0.3], "target": [2.2,1,4.31], "fov": 88, "photo": "living3" },
-    "living4": { "name": "Desde la cocina", "pos": [0.4,1.35,1], "target": [4.25,1,1.9], "fov": 90, "photo": "living4", "photoAspect": 1.333 },
-    "cocina": { "name": "Cocina", "pos": [1.5,1.2,2.9], "target": [1.5,1.2,0], "fov": 80, "photo": "cocina" },
+    "living1": { "name": "Comedor y cocina", "pos": [3.394, 1.228, 3.78], "target": [1.73, 1.262, 2.671], "fov": 85, "photo": "living1" },
+    "living2": { "name": "Estar hacia la entrada", "pos": [2.64, 1.222, 4.192], "target": [1.708, 1.119, 2.425], "fov": 79, "photo": "living2" },
+    "living3": { "name": "Estar hacia el patio", "pos": [2.38, 1.642, 0.48], "target": [2.231, 1.623, 2.474], "fov": 76, "photo": "living3" },
+    "living4": { "name": "Desde la cocina", "pos": [0.4, 1.47, 0.866], "target": [2.346, 1.398, 1.321], "fov": 85, "photo": "living4", "photoAspect": 1.333 },
+    "cocina": { "name": "Cocina", "pos": [1.454, 1.32, 3.052], "target": [1.559, 1.425, 1.057], "fov": 80, "photo": "cocina" },
     "escalera1": { "name": "Escalera desde abajo", "pos": [2.75,0.85,4.1], "target": [4.25,1.45,3.1], "fov": 88, "photo": "escalera1", "photoAspect": 1.263 },
     "escalera2": { "name": "Escalera y salida al patio", "pos": [2.3,1.45,2.4], "target": [3.4,0.9,4.31], "fov": 72, "photo": "escalera2", "photoAspect": 1.333 },
     "antebano": { "name": "Antebaño", "pos": [2.75,1.25,2.15], "target": [4.25,1.15,2.05], "fov": 88, "photo": "antebano" },

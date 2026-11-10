@@ -1,0 +1,180 @@
+{
+ "fecha": "2026-11-10T01:30:09.283Z",
+ "vistas": [
+  {
+   "vista": "living1",
+   "antes": {
+    "pos": [
+     3.5,
+     1.15,
+     3.9
+    ],
+    "target": [
+     0.5,
+     1,
+     1.9
+    ],
+    "fov": 88,
+    "puntaje": 0.275
+   },
+   "despues": {
+    "pos": [
+     3.394,
+     1.228,
+     3.78
+    ],
+    "target": [
+     1.73,
+     1.262,
+     2.671
+    ],
+    "fov": 85,
+    "puntaje": 0.352
+   },
+   "mueve": 0.178,
+   "gira": 3.35,
+   "dfov": -3,
+   "perturbada": false
+  },
+  {
+   "vista": "living2",
+   "antes": {
+    "pos": [
+     2.4,
+     1.25,
+     4.1
+    ],
+    "target": [
+     0.2,
+     1.05,
+     0.9
+    ],
+    "fov": 80,
+    "puntaje": 0.248
+   },
+   "despues": {
+    "pos": [
+     2.64,
+     1.222,
+     4.192
+    ],
+    "target": [
+     1.708,
+     1.119,
+     2.425
+    ],
+    "fov": 79,
+    "puntaje": 0.38
+   },
+   "mueve": 0.259,
+   "gira": 6.7,
+   "dfov": -1,
+   "perturbada": false
+  },
+  {
+   "vista": "living3",
+   "antes": {
+    "pos": [
+     2.5,
+     1.25,
+     0.3
+    ],
+    "target": [
+     2.2,
+     1,
+     4.31
+    ],
+    "fov": 88,
+    "puntaje": 0.037
+   },
+   "despues": {
+    "pos": [
+     2.38,
+     1.642,
+     0.48
+    ],
+    "target": [
+     2.231,
+     1.623,
+     2.474
+    ],
+    "fov": 76,
+    "puntaje": 0.476
+   },
+   "mueve": 0.448,
+   "gira": 3,
+   "dfov": -12,
+   "perturbada": false
+  },
+  {
+   "vista": "living4",
+   "antes": {
+    "pos": [
+     0.4,
+     1.35,
+     1
+    ],
+    "target": [
+     4.25,
+     1,
+     1.9
+    ],
+    "fov": 90,
+    "puntaje": 0.278
+   },
+   "despues": {
+    "pos": [
+     0.4,
+     1.47,
+     0.866
+    ],
+    "target": [
+     2.346,
+     1.398,
+     1.321
+    ],
+    "fov": 85,
+    "puntaje": 0.336
+   },
+   "mueve": 0.18,
+   "gira": 3,
+   "dfov": -5,
+   "perturbada": false
+  },
+  {
+   "vista": "cocina",
+   "antes": {
+    "pos": [
+     1.5,
+     1.2,
+     2.9
+    ],
+    "target": [
+     1.5,
+     1.2,
+     0
+    ],
+    "fov": 80,
+    "puntaje": 0.253
+   },
+   "despues": {
+    "pos": [
+     1.454,
+     1.32,
+     3.052
+    ],
+    "target": [
+     1.559,
+     1.425,
+     1.057
+    ],
+    "fov": 80,
+    "puntaje": 0.405
+   },
+   "mueve": 0.199,
+   "gira": 4.24,
+   "dfov": 0,
+   "perturbada": false
+  }
+ ]
+}
