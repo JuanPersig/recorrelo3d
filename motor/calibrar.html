@@ -66,6 +66,24 @@ function dist(strong, w, h) {
     if (x < w - 1) m = Math.min(m, d[i + 1] + 1); if (y < h - 1) { m = Math.min(m, d[i + w] + 1); if (x < w - 1) m = Math.min(m, d[i + w + 1] + 1.414); if (x > 0) m = Math.min(m, d[i + w - 1] + 1.414); } d[i] = m; }
   return d;
 }
+// puntaje por color de región ("al"): cada píxel de la foto contra el color base (sin luz) del objeto que el modelo dibuja ahí,
+// después de igualar la exposición y el balance de la foto con la mediana de foto / modelo por canal. Menor ΔE medio = mejor
+// (se devuelve el negativo para que, como los demás, mayor sea mejor).
+const L1 = v => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }, LIN = Float32Array.from({ length: 256 }, (_, i) => L1(i));
+const labOf = (r, g, b) => { const X = (0.4124 * r + 0.3576 * g + 0.1805 * b) / 0.95047, Y = 0.2126 * r + 0.7152 * g + 0.0722 * b, Z = (0.0193 * r + 0.1192 * g + 0.9505 * b) / 1.08883, f = t => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116); return [116 * f(Y) - 16, 500 * (f(X) - f(Y)), 200 * (f(Y) - f(Z))]; };
+function scoreAlbedo(map, P) {
+  const { width: w, height: h, ids, table } = map, col = new Map(), A = [], R = [[], [], []];
+  const albedo = id => { let c = col.get(id); if (c === undefined) { const t = table[id]; c = (!t || t.glass || t.glow || t.kind === 'exterior' || !/^#[0-9a-f]{6}$/i.test(t.color ?? '')) ? null : [1, 3, 5].map(i => LIN[parseInt(t.color.slice(i, i + 2), 16)]); col.set(id, c); } return c; };
+  for (let y = 2; y < h - 2; y += 3) for (let x = 2; x < w - 2; x += 3) {
+    const i = y * w + x, c = albedo(ids[i]); if (!c) continue;
+    const r = P.rgb[i * 4], g = P.rgb[i * 4 + 1], b = P.rgb[i * 4 + 2]; if (Math.max(r, g, b) >= 250 || r + g + b < 24) continue;
+    const p = [LIN[r], LIN[g], LIN[b]]; A.push(c, p); for (let k = 0; k < 3; k++) R[k].push(p[k] / Math.max(0.003, c[k]));
+  }
+  if (A.length < 200) return 0;
+  const k = R.map(a => { a.sort((x, y) => x - y); return a[a.length >> 1]; });
+  let s = 0; for (let n = 0; n < A.length; n += 2) { const c = A[n], p = A[n + 1], a = labOf(c[0] * k[0], c[1] * k[1], c[2] * k[2]), b = labOf(p[0], p[1], p[2]); s += Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]); }
+  return 100 - s / (A.length / 2);
+}
 function photoEdges(img) {
   const { width: w, height: h, data } = img, L = new Float32Array(w * h), E = new Float32Array(w * h);
   for (let i = 0; i < w * h; i++) L[i] = 0.3 * data[i * 4] + 0.59 * data[i * 4 + 1] + 0.11 * data[i * 4 + 2];
@@ -76,7 +94,7 @@ function photoEdges(img) {
   const s = [...E].sort((a, b) => a - b), p95 = s[Math.floor(s.length * 0.95)] || 1;
   for (let i = 0; i < E.length; i++) E[i] = Math.min(1, E[i] / p95);
   const strong = E.map(v => (v > 0.6 ? 1 : 0));
-  return { soft: blur(E, w, h, 2), strong, dt: dist(strong, w, h), w, h };
+  return { soft: blur(E, w, h, 2), strong, dt: dist(strong, w, h), w, h, rgb: img.data };
 }
 // mapa de la cámara actual → bordes del modelo
 function boundaries(map, onlyStruct) {
@@ -97,6 +115,7 @@ let CH_SIGMA = 2.5;   // "cg" = chamfer de grueso a fino: la tolerancia (px) baj
 function score(variant, pose, P, ref) {
   api.setPose(pose);
   const map = api.idMap();
+  if (variant === 'al') return scoreAlbedo(map, P);
   if (variant === 'base') {
     const { B, w, h } = boundaries(map, false);
     let s1 = 0, n1 = 0; for (let i = 0; i < w * h; i++) if (B[i]) { s1 += P.soft[i] * B[i]; n1 += B[i]; }

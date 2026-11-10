@@ -4,9 +4,12 @@
 //       Busca los muros (franjas oscuras horizontales y verticales) del plano y guarda <out>/muros.json con sus
 //       coordenadas en píxeles y <out>/muros.png con cada franja numerada sobre el plano. Necesita ImageMagick (magick),
 //       que el proyecto ya usa. No modifica nada más.
-//   node motor/plano-medido.mjs comparar <depto> <muros.json> <config.json>
-//       Pasa los muros del plano a metros con la escala y las anclas de <config.json> y mide cuánto se aparta de ese
-//       plano cada pared del scene.json del depto (ver el formato en motor/plano-medido.md).
+//   node motor/plano-medido.mjs comparar <depto> [--muros=muros.json] [--fino=muros-finos.json] [--imagen=plano.jpg]
+//                                         [--scene=scene.json] [--s=50 --tx=180 --ty=382] [--out=carpeta]
+//       Superpone las paredes del scene.json del depto sobre las franjas del plano (ajusta escala y posición; la
+//       orientación supuesta es la del depto 6: fachada a la izquierda y x creciendo hacia arriba) y mide cuánto se aparta
+//       cada pared y cada abertura. Guarda comparacion.json y superpuesto.png. Para los tabiques finos correr antes
+//       `detectar --out=<carpeta>-fino --oscuro=185 --grosor=2 --largo=30`. No modifica el scene.
 import { execFileSync } from 'node:child_process';
 import { writeFileSync, readFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -53,7 +56,7 @@ const distEje = (px, py, f) => {
 if (cmd === 'comparar') {
   // Superpone las paredes del scene.json sobre las franjas del plano: ajusta escala y posición (px = tx + s·z, py = ty − s·x:
   // la fachada a la izquierda y x creciendo hacia arriba, como el plano del depto 6) y mide cuánto se aparta cada pared de la
-  // franja más cercana. Con --aplicar escribe el scene corregido en <out>/scene.propuesta.json (no toca el original).
+  // franja más cercana. Solo mide: no escribe ningún scene.
   const [depto] = args, out = flags.out ?? `capturas/plano-medido/${depto}`, path = flags.scene ?? `departamentos/${depto}/scene.json`;
   const scene = JSON.parse(readFileSync(path, 'utf8')), load = f => { try { const j = JSON.parse(readFileSync(f, 'utf8')); return [...j.horizontales, ...j.verticales]; } catch { return []; } };
   const cand = [...load(flags.muros ?? join(out, 'muros.json')), ...load(flags.fino ?? `${out}-fino/muros.json`)].filter(f => Math.max(f.x1 - f.x0, f.y1 - f.y0) >= 30);

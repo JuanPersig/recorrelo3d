@@ -81,6 +81,7 @@ if (q.get('medir')) {
 
 // &capturar=<carpeta>: arma una hoja por vista (día | foto | noche) y la guarda en /capturas/<carpeta>/ con serve.mjs
 if (q.get('capturar')) {
+  await api.ready;   // sin esto las primeras hojas se capturaban durante la precarga del motor (el día salía con luz de noche; 2026-11-10)
   const frame = () => new Promise(r => setTimeout(r, 120));   // con el panel oculto no corre requestAnimationFrame
   const load = src => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = src; });
   for (const k of only?.length ? only : keys) {

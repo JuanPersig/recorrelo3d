@@ -114,6 +114,24 @@ mejor caso); la precisión de marcas hechas por mí sobre recortes ampliados no 
   `&fov=fijo`, `&sintetica=1`, `&opt=es`, `&lamina=1`), `motor/pruebas/calibrar-puntos.mjs` y
   `motor/pruebas/calibrar-pared.mjs` (simulaciones, `node` solo).
 
+## 6b. Trabajo de la noche del 2026-11-10 (rama `precision-nocturna`)
+
+Detalle y datos en `INFORME-NOCTURNO-2026-11-10.md`. Resumen de lo que cambia en este plan:
+- **Pieza 1 (plano medido): hecha como herramienta de línea de comandos** (`motor/plano-medido.mjs`, usa ImageMagick, que ya
+  está). `detectar` encuentra los muros del plano (franjas oscuras) con coordenadas en píxeles; `comparar` superpone las
+  paredes de un `scene.json` y mide cuánto se apartan. **Sobre el depto 6, el modelo coincide con el plano de
+  `DEPARTAMENTO_NUEVO/plano.jpg` a 3,7 cm de promedio** (paredes largas, tabique central y baño a 0–5 cm). O sea: en este
+  departamento el problema **no** está en dónde están las paredes. Las puertas que el plano marca coinciden a ±6 cm; la
+  comparación de ventanas es ruidosa (el plano las dibuja con líneas finas) y no se toma como medida.
+- **Pieza 4 (controles): tres controles de geometría nuevos en `validate.js`** (aberturas que se pisan, ambientes
+  superpuestos, lados hacia afuera sin pared ni columna). Cero falsos positivos en depto 5 y depto 6; detectan las tres
+  roturas provocadas a propósito.
+- **Herramienta de hojas:** `comparar.html` capturaba durante la precarga del motor (el día salía con luz de noche) y con
+  un lienzo del tamaño de la ventana (borroso). Corregido: espera `api.ready` y usa tamaño fijo.
+- **Cámaras (pieza 2): sigue sin solución.** Tampoco funciona el puntaje por color de región (el barrido queda plano y el
+  mejor punto no es la cámara aprobada). El puntaje de parecido del depto 6 (ΔE 13,2; peor `cocina2` 25,1) está dominado
+  por cámaras que no calzan, así que afinar colores sin cámaras buenas no rinde.
+
 ## 7. Si A no alcanza: B (OpenCV) y otras salidas
 
 **Actualización (2026-11-10): A no alcanzó, pero B no es el paso siguiente** (ver sección 6, punto 1: el límite no es el
