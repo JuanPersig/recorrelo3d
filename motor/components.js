@@ -2229,8 +2229,19 @@ function turnStair(p, { M }) {
   st.rotation.x = a;
   // la zanca baja en vertical hasta el piso en la esquina del giro (así apoya el tramo recto)
   blk(g, steel, [open * (w / 2) - (open > 0 ? 0.012 : 0), open * (w / 2) + (open > 0 ? 0 : 0.012)], [0, r0 + 0.25], [zSq - 0.05, zSq + 0.01], 0.002);
-  const fx = [s * (w / 2 + b * goB), -s * w / 2].sort((u, v) => u - v);
-  blk(g, steel, fx, [0, Math.max(rH, r0 - 0.06)], [run / 2 - 0.012, run / 2], 0.002);
+  // "plate": chapa bajo el frente del tramo de abajo y del giro (apagada: lo común es que esos peldaños apoyen en la pared)
+  if (p.plate) {
+    const fx = [s * (w / 2 + b * goB), -s * w / 2].sort((u, v) => u - v);
+    blk(g, steel, fx, [0, Math.max(rH, r0 - 0.06)], [run / 2 - 0.012, run / 2], 0.002);
+  } else if (b > 0) {
+    // zanca inclinada bajo el borde de atrás del tramo de abajo: del piso, antes del primer peldaño, a la esquina del
+    // giro; su canto de arriba toca la punta de cada peldaño 3 mm adentro
+    const yAt = d => rH * (d + 0.02) / goB - th + 0.003, d0 = -0.12, d1 = b * goB, sh = 0.16;
+    const dx = -s * (d1 - d0), dy = yAt(d1) - yAt(d0), L = Math.hypot(dx, dy), a = Math.atan2(dy, dx);
+    const xm = s * (w / 2 + b * goB) - s * (d0 + d1) / 2, ym = (yAt(d0) + yAt(d1)) / 2;
+    const zs = add(g, new THREE.BoxGeometry(L, sh, 0.012), steel, xm + Math.sin(a) * sh / 2, ym - Math.cos(a) * sh / 2, zSq + 0.01);
+    zs.rotation.z = a;
+  }
   if (p.rail) {   // baranda: parantes de planchuela sobre la zanca y pasamanos redondo a 0,9 m de los peldaños
     const x = open * (w / 2 - 0.006), z0 = zSq, z1 = zSq - (run - w), h0 = r0, posts = Math.max(2, Math.round((run - w) / 0.9) + 1);
     for (let i = 0; i < posts; i++) {
@@ -3303,6 +3314,15 @@ function door(o, { len, h, t, M }) {
   // "slide" (2026-11-09, depto 7): puerta corrediza colgada de un riel sobre la cara de la pared del lado del ambiente
   // (la que el motor elige o "side"); corre hacia el lado de "hinge" ("end" = hacia el final de la pared) y el número
   // es cuánto está corrida (0 = cerrada). Hoja lisa con tirador embutido
+  // "pocket": corrediza embutida, la hoja corre por dentro de la pared (sin riel a la vista); abierta solo asoma el canto
+  if (o.slide !== undefined && o.slide !== false && o.pocket) {
+    const lw = len - 2 * jw, toEnd = o.hinge === 'end', off = Math.min(lw - 0.03, +o.slide || 0) * (toEnd ? 1 : -1);
+    const panel = new THREE.Group(); panel.position.set(jw + off, 0, 0); g.add(panel);
+    blk(panel, wood, [0, lw], [0.012, h - jw - 0.004], [-0.018, 0.018], 0.003);
+    const px = toEnd ? 0.03 : lw - 0.03;   // cerradura de gancho en el canto que queda a la vista
+    blk(panel, M.lacquer(o.handle ?? '#b89a4a'), [px - 0.012, px + 0.012], [0.95, 1.08], [-0.02, 0.02], 0.002);
+    return g;
+  }
   if (o.slide !== undefined && o.slide !== false) {
     const pw = len + 0.1, toEnd = o.hinge === 'end', off = Math.min(pw, +o.slide || 0) * (toEnd ? 1 : -1);
     const z0 = t / 2 + 0.03, panel = new THREE.Group(); panel.position.set(-0.05 + off, 0, z0); g.add(panel);

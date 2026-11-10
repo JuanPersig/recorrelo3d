@@ -17,7 +17,7 @@ const KEYS = {
   wall: S('from', 'to', 'thickness', 'openings'),
   opening: S('kind', 'at', 'width', 'height', 'sill', 'side', 'hinge', 'open', 'color', 'material', 'handle', 'lock',
     'frame', 'panels', 'shutter', 'shutterBox', 'shutterColor', 'grille', 'grilleCell', 'counter',
-    'glass', 'glassColor', 'rows', 'from', 'frosted', 'bars', 'slide', 'rail', 'fixed', 'fixedBelow'),   // slide: puerta corrediza (metros corrida)   // glass: puerta vidriada ("half", "slot"); frosted y bars: ventana esmerilada con travesaños   // counter: barra en el antepecho de un arco o pase
+    'glass', 'glassColor', 'rows', 'from', 'frosted', 'bars', 'slide', 'rail', 'fixed', 'fixedBelow', 'pocket'),   // slide: puerta corrediza (metros corrida)   // glass: puerta vidriada ("half", "slot"); frosted y bars: ventana esmerilada con travesaños   // counter: barra en el antepecho de un arco o pase
   item: S('type', 'at', 'y', 'rotation', 'params', 'decor'),
   structure: S('kind', 'x', 'y', 'z', 'color', 'finish'),   // finish: 'concrete' (hormigón a la vista)
   void: S('x', 'z'),
