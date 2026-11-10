@@ -39,7 +39,7 @@ en español. Antes de dar por hecho un cambio de motor, correr la verificación 
 | T-24 | Estampados de telas tomados de las fotos | Media | Medio | Hecho en parte (2026-11-03): motor y herramienta; se elige a ojo |
 | T-25 | Catálogo: piezas que faltan y más variedad por componente | Media | Medio | Hecho (2026-11-03), falta recortar cuadros de la foto con una herramienta |
 | T-26 | Validador de piezas sueltas o flotando dentro de un componente | Alta | Chico | Hecho (2026-11-03) |
-| T-27 | Encuadre automático: ajustar la cámara de cada vista a su foto | Media | Grande | En parte (2026-11-03): herramienta hecha, todavía no vuelve sola a la cámara buena |
+| T-27 | Encuadre automático: ajustar la cámara de cada vista a su foto | Media | Grande | En parte (2026-11-03): herramienta hecha, todavía no vuelve sola a la cámara buena; camino descartado en T-70 (2026-11-10) |
 | T-28 | Luz acogedora como estándar del motor | Alta | Chico | Hecho (2026-11-03), espera aprobación del usuario |
 | T-29 | Registro de tiempo y vueltas por departamento | Media | Chico | Pendiente |
 | T-30 | Vitrina pública y recepción de pedidos | Alta | Medio | Pendiente |
@@ -1725,3 +1725,23 @@ en movimiento contra quieto, y `&antes=1` / `&sol=0`), aporta poco a la diferenc
 en 0,012. Lo que sigue cambiando al frenar es el pulido de bordes, que existía desde T-54 (con `antes=1` la diferencia era
 mayor: 1,63). `verificar`: demo sin cambios.
 **Falta:** que el usuario lo confirme recorriendo (con el panel oculto no corre la animación y no se puede medir acá).
+
+## T-70 · Prueba A del plan de precisión: afinar la cámara con los bordes de la foto (hecho, 2026-11-10; no funciona)
+
+**Pedido del usuario:** mejorar la fidelidad de los departamentos nuevos (en los últimos intentos, ni con plano salieron
+coherentes). Plan completo en `PLAN-PRECISION.md`; esta es su prueba A (solo JavaScript, sin instalar nada).
+**Qué se probó:** `motor/calibrar.html` (laboratorio nuevo; no toca el motor ni ningún `scene.json`) parte de la cámara
+aprobada de las 20 vistas con foto del depto 5, la corre a propósito y mide si la recupera, con cinco puntajes (el de T-27,
+solo estructura por media o por suma, chamfer por media o por suma), tres perturbaciones, fov fijo, foto sintética (el
+render del propio modelo), tres búsquedas y un barrido de sensibilidad por parámetro.
+**Resultado:** 0 de 300 corridas con fotos reales recuperaron la cámara (< 10 cm, < 2°); con el fov fijo, 0 de 80; con
+foto sintética, 0–3 de 20 con las tres búsquedas, aunque la cámara correcta puntúa mejor que la de partida en 20 de 20:
+el pico es angosto y desde 18–30 cm no hay pendiente. Con fotos reales la cámara aprobada ni siquiera puntúa mejor que
+la de partida en la mitad de las vistas. **Corrige T-27:** el fov no es la causa principal, y un mejor detector de líneas
+(OpenCV) no lo arregla. Detalle y tablas en `PLAN-PRECISION.md`, sección 6.
+**Simulaciones** (`motor/pruebas/calibrar-puntos.mjs`, `calibrar-pared.mjs`): resolver la cámara directamente desde 8 o
+más esquinas con el fov conocido da 6–10 cm y ~1° si las marcas tienen 1–2 px de error (en 420 px); rectificar una pared
+con sus 4 esquinas ubica una abertura a 3–6 cm, pero solo 8 de 20 vistas tienen una pared entera a la vista.
+**Pendiente:** medir la precisión real de marcas hechas sobre recortes ampliados (3–4 fotos del depto 5) antes de
+construir la pieza 2 replanteada; piezas 1 (plano medido) y 4 (controles automáticos) del plan.
+**Aclaración:** el 2026-11-10 se había dicho que `encuadre.html` comparaba colores; compara bordes (Sobel), como dice T-27.

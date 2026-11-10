@@ -154,6 +154,16 @@ decisión del usuario, luz horneada al día. Quedan sin decidir el aviso de 60 c
 lavadero al patio (hoy pared lisa); las cámaras de living, baño y balcón no calzan del todo (`encuadre.html`).
 Sigue en `verificar.html?deptos=depto5,depto6` como el depto cargado de referencia.
 
+## Plan de precisión (2026-11-10)
+
+`PLAN-PRECISION.md` (leerlo antes de modelar un depto nuevo): los modelos nuevos no salen fieles aunque haya plano, porque
+la geometría se lee a ojo. Principio: **el modelo lee, el código mide.** Prueba A hecha (T-70, `motor/calibrar.html`):
+**afinar la cámara por bordes NO funciona** (0 de 300; ni con foto sintética), así que no se usa ni se vuelve a intentar
+por ese camino ni con OpenCV. Siguen: pieza 1 (plano medido: escala con 2 cotas, caras interiores, cotas que suman) y
+pieza 4 (controles automáticos); la pieza 2 se replantea como cámara desde esquinas marcadas / pared rectificada, y
+antes hay que medir la precisión real de las marcas. Backup del 2026-11-10 en el commit local; el `git push` lo corre el
+usuario.
+
 ## Próximos pasos (2026-11-08)
 
 **Primero: el departamento nuevo** (pedido del usuario, 2026-11-08). Seguir SKILL.md al pie de la letra: inventario de
