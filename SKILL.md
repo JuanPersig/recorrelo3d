@@ -210,6 +210,15 @@ anteriores: un error de esta lista que vuelve a aparecer es lo peor que puede pa
    usuario, no un ajuste a ojo. Y si dos lecturas de una foto se contradicen (el calefón "encima" del carro), buscar otra
    foto del mismo rincón antes de mover muebles: en `cocina`, mirando al revés, no hay carro junto a la puerta.
    Las líneas del plano se leen rápido con `magick plano.jpg -crop Wx1+X+Y -threshold 55% txt:-`.
+8. **Paredes y puertas leídas de fotos ambiguas en contra del plano** (depto 7, 2026-11-09): inventé un pozo de luz
+   que el plano no tiene, una pared que cerraba el antebaño y una puerta corrediza; el plano mostraba exactamente las
+   paredes del baño (pared oeste hasta el baño, tramo sur corto y el vano entre los dos). Regla: **las paredes salen
+   del plano**; las fotos ubican aberturas y muebles sobre esas paredes. Si una foto parece pedir una pared que el
+   plano no tiene, primero sospechar de la cámara (gran angular, encuadre en diagonal) y de la ambientación virtual,
+   no agregar la pared. Las fotos reales (vacías o con muebles viejos) mandan sobre las decoradas. Cada puerta, como
+   dibuja el plano (lado de las bisagras y hacia dónde abre); corrediza solo si una foto real lo muestra sin duda.
+   Comparar con cámaras ubicadas como en la foto antes de juzgar la estructura: con la cámara mal puesta, una
+   distribución bien hecha parece mal y una mal hecha parece bien.
 Control mínimo por hoja (`comparar.html … &capturar=<id>`):
 - ¿Cada tramo de pared del render se ve en la foto (o en el plano, si la foto no lo muestra)?
 - ¿Cada abertura empieza y termina donde en la foto, respecto de la esquina y de los muebles?
