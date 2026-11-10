@@ -162,7 +162,10 @@ la geometría se lee a ojo. Principio: **el modelo lee, el código mide.** Prueb
 por ese camino ni con OpenCV. Siguen: pieza 1 (plano medido: escala con 2 cotas, caras interiores, cotas que suman) y
 pieza 4 (controles automáticos); la pieza 2 se replantea como cámara desde esquinas marcadas / pared rectificada, y
 antes hay que medir la precisión real de las marcas. Backup del 2026-11-10 en el commit local; el `git push` lo corre el
-usuario.
+usuario. **Datos de la noche del 2026-11-10 en `INFORME-NOCTURNO-2026-11-10.md`**: el depto 6 coincide con su plano a 3,7 cm
+(`node motor/plano-medido.mjs comparar depto6 …`), así que sus diferencias con las fotos son de cámaras, materiales y
+objetos, no de paredes; `validate.js` tiene 3 controles de geometría nuevos; las hojas de `comparar.html` ya no salen
+borrosas ni con luz de noche.
 
 ## Próximos pasos (2026-11-08)
 
