@@ -1,0 +1,8163 @@
+{
+ "fecha": "2026-11-10T04:34:05.343Z",
+ "vistas": {
+  "completo": {
+   "nombre": "Living hacia el balcón",
+   "foto": "completolivingcomedor",
+   "puntaje": 13.6,
+   "puntajeCrudo": 15.6,
+   "exposicion": [
+    1.118,
+    1.045,
+    0.963
+   ],
+   "cubierto": 74,
+   "objetos": [
+    {
+     "id": 1,
+     "kind": "floor",
+     "room": "Living y comedor",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 37532,
+     "quemado": 2423,
+     "render": "#a34f29",
+     "foto": "#ac7666",
+     "mediana": "#ae4c1f",
+     "dE": 26.3,
+     "dEn": 29.3,
+     "renderLin": [
+      0.3644,
+      0.0775,
+      0.0223
+     ],
+     "fotoLin": [
+      0.415,
+      0.1812,
+      0.1333
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 44702,
+     "quemado": 216,
+     "render": "#c9b9ac",
+     "foto": "#ceb196",
+     "mediana": "#ceb094",
+     "dE": 9.9,
+     "dEn": 6.5,
+     "renderLin": [
+      0.5844,
+      0.4835,
+      0.4149
+     ],
+     "fotoLin": [
+      0.6201,
+      0.4409,
+      0.3069
+     ]
+    },
+    {
+     "id": 89,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#262c3e",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 13280,
+     "quemado": 7664,
+     "render": "#352b2f",
+     "foto": "#67514a",
+     "mediana": "#2f1f21",
+     "dE": 19.9,
+     "dEn": 17.9,
+     "renderLin": [
+      0.0359,
+      0.0243,
+      0.0287
+     ],
+     "fotoLin": [
+      0.1368,
+      0.0831,
+      0.0691
+     ]
+    },
+    {
+     "id": 94,
+     "kind": "item",
+     "type": "tv",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 11,
+     "color": "#ffffff",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": true,
+     "px": 8536,
+     "quemado": 10,
+     "render": "#657180",
+     "foto": "#ab8e7b",
+     "mediana": "#b29275",
+     "dE": 29.5,
+     "dEn": 25.5,
+     "renderLin": [
+      0.1309,
+      0.1654,
+      0.2177
+     ],
+     "fotoLin": [
+      0.4099,
+      0.2706,
+      0.1976
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 38730,
+     "quemado": 2069,
+     "render": "#bca999",
+     "foto": "#c9a78b",
+     "mediana": "#cca988",
+     "dE": 9.6,
+     "dEn": 5.5,
+     "renderLin": [
+      0.5011,
+      0.3967,
+      0.3173
+     ],
+     "fotoLin": [
+      0.5869,
+      0.3877,
+      0.2568
+     ]
+    },
+    {
+     "id": 87,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#6e2e1c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 5449,
+     "quemado": 551,
+     "render": "#561a06",
+     "foto": "#c17452",
+     "mediana": "#d05d23",
+     "dE": 37.9,
+     "dEn": 35.9,
+     "renderLin": [
+      0.0941,
+      0.0102,
+      0.0018
+     ],
+     "fotoLin": [
+      0.5313,
+      0.1748,
+      0.0845
+     ]
+    },
+    {
+     "id": 97,
+     "kind": "item",
+     "type": "desk",
+     "at": [
+      0.25,
+      3.69
+     ],
+     "level": 0,
+     "item": 15,
+     "color": "#b5743f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 3661,
+     "quemado": 860,
+     "render": "#8e541f",
+     "foto": "#89776f",
+     "mediana": "#723e28",
+     "dE": 36.9,
+     "dEn": 39.7,
+     "renderLin": [
+      0.2706,
+      0.0894,
+      0.0137
+     ],
+     "fotoLin": [
+      0.2512,
+      0.1856,
+      0.1596
+     ]
+    },
+    {
+     "id": 27,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 0,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 8003,
+     "quemado": 1665,
+     "render": "#d1cac6",
+     "foto": "#d6b99c",
+     "mediana": "#d8b78f",
+     "dE": 16.7,
+     "dEn": 13.4,
+     "renderLin": [
+      0.6397,
+      0.5911,
+      0.5618
+     ],
+     "fotoLin": [
+      0.6748,
+      0.483,
+      0.3332
+     ]
+    },
+    {
+     "id": 64,
+     "kind": "item",
+     "type": "curtains",
+     "at": [
+      1.6,
+      0
+     ],
+     "level": 0,
+     "item": 0,
+     "color": "#efe5cc",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 6285,
+     "quemado": 1252,
+     "render": "#f3c6a1",
+     "foto": "#d9bca0",
+     "mediana": "#e2be99",
+     "dE": 9.8,
+     "dEn": 14.5,
+     "renderLin": [
+      0.8997,
+      0.567,
+      0.3547
+     ],
+     "fotoLin": [
+      0.6929,
+      0.5027,
+      0.3512
+     ]
+    },
+    {
+     "id": 95,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#4a2618",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1478,
+     "quemado": 188,
+     "render": "#301003",
+     "foto": "#c0a298",
+     "mediana": "#bc9c7b",
+     "dE": 60.4,
+     "dEn": 59.3,
+     "renderLin": [
+      0.029,
+      0.0054,
+      0.0008
+     ],
+     "fotoLin": [
+      0.5285,
+      0.3628,
+      0.3161
+     ]
+    },
+    {
+     "id": 100,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      0.64,
+      3.45
+     ],
+     "level": 0,
+     "item": 16,
+     "color": "#c8483f",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1426,
+     "quemado": 9,
+     "render": "#882820",
+     "foto": "#af9a96",
+     "mediana": "#bda29f",
+     "dE": 53.1,
+     "dEn": 54.6,
+     "renderLin": [
+      0.2477,
+      0.0214,
+      0.0142
+     ],
+     "fotoLin": [
+      0.4289,
+      0.3246,
+      0.307
+     ]
+    },
+    {
+     "id": 96,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#b23a2c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1305,
+     "quemado": 104,
+     "render": "#9a2a1b",
+     "foto": "#ad9374",
+     "mediana": "#9f9b6e",
+     "dE": 51.4,
+     "dEn": 53,
+     "renderLin": [
+      0.3223,
+      0.0235,
+      0.0107
+     ],
+     "fotoLin": [
+      0.4159,
+      0.2926,
+      0.1746
+     ]
+    },
+    {
+     "id": 264,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.3,
+      3.54
+     ],
+     "level": 0,
+     "item": 18,
+     "color": "#e8609a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1740,
+     "quemado": 7,
+     "render": "#a82f5d",
+     "foto": "#935659",
+     "mediana": "#8f242b",
+     "dE": 28.3,
+     "dEn": 29.1,
+     "renderLin": [
+      0.3939,
+      0.0281,
+      0.1102
+     ],
+     "fotoLin": [
+      0.2921,
+      0.0928,
+      0.0998
+     ]
+    },
+    {
+     "id": 11,
+     "kind": "wall",
+     "level": 0,
+     "wall": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3654,
+     "quemado": 389,
+     "render": "#d9c9b9",
+     "foto": "#caab8e",
+     "mediana": "#d3b089",
+     "dE": 14,
+     "dEn": 12.9,
+     "renderLin": [
+      0.6907,
+      0.5857,
+      0.486
+     ],
+     "fotoLin": [
+      0.5909,
+      0.4093,
+      0.2723
+     ]
+    },
+    {
+     "id": 262,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.3,
+      3.54
+     ],
+     "level": 0,
+     "item": 18,
+     "color": "#f2f1ee",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 976,
+     "quemado": 5,
+     "render": "#dcd5cf",
+     "foto": "#7f6863",
+     "mediana": "#5e5759",
+     "dE": 40.5,
+     "dEn": 41.4,
+     "renderLin": [
+      0.7135,
+      0.6677,
+      0.6235
+     ],
+     "fotoLin": [
+      0.2105,
+      0.1378,
+      0.1236
+     ]
+    },
+    {
+     "id": 265,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.3,
+      3.54
+     ],
+     "level": 0,
+     "item": 18,
+     "color": "#f16ba3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 768,
+     "quemado": 3,
+     "render": "#c84f7e",
+     "foto": "#a67a6b",
+     "mediana": "#a67a5e",
+     "dE": 41.6,
+     "dEn": 41.8,
+     "renderLin": [
+      0.5776,
+      0.0775,
+      0.2093
+     ],
+     "fotoLin": [
+      0.3814,
+      0.1959,
+      0.1466
+     ]
+    },
+    {
+     "id": 91,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 1445,
+     "quemado": 300,
+     "render": "#653125",
+     "foto": "#5a3c3a",
+     "mediana": "#282026",
+     "dE": 15.4,
+     "dEn": 17.7,
+     "renderLin": [
+      0.1304,
+      0.0302,
+      0.0182
+     ],
+     "fotoLin": [
+      0.1028,
+      0.0459,
+      0.0429
+     ]
+    },
+    {
+     "id": 74,
+     "kind": "item",
+     "type": "dining-table",
+     "at": [
+      1.75,
+      0.95
+     ],
+     "level": 0,
+     "item": 5,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 1635,
+     "quemado": 160,
+     "render": "#c3c2a6",
+     "foto": "#d6b294",
+     "mediana": "#dbb18c",
+     "dE": 14.7,
+     "dEn": 12.5,
+     "renderLin": [
+      0.5477,
+      0.5411,
+      0.3831
+     ],
+     "fotoLin": [
+      0.6712,
+      0.4436,
+      0.297
+     ]
+    },
+    {
+     "id": 93,
+     "kind": "item",
+     "type": "tv",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 11,
+     "color": "#151515",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 326,
+     "quemado": 5,
+     "render": "#040201",
+     "foto": "#a98b7b",
+     "mediana": "#b49c87",
+     "dE": 61.2,
+     "dEn": 59,
+     "renderLin": [
+      0.0012,
+      0.0006,
+      0.0004
+     ],
+     "fotoLin": [
+      0.3942,
+      0.2571,
+      0.1986
+     ]
+    },
+    {
+     "id": 65,
+     "kind": "item",
+     "type": "ac-split",
+     "at": [
+      1.55,
+      0
+     ],
+     "level": 0,
+     "item": 1,
+     "color": "#f4f4f2",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 768,
+     "quemado": 0,
+     "render": "#e3dcd4",
+     "foto": "#d8b38b",
+     "mediana": "#dab58b",
+     "dE": 25.4,
+     "dEn": 22.9,
+     "renderLin": [
+      0.7665,
+      0.7132,
+      0.6611
+     ],
+     "fotoLin": [
+      0.6869,
+      0.4503,
+      0.2588
+     ]
+    },
+    {
+     "id": 266,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.33,
+      3.69
+     ],
+     "level": 0,
+     "item": 19,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 314,
+     "quemado": 211,
+     "render": "#718d66",
+     "foto": "#3f180e",
+     "mediana": "#290303",
+     "dE": 54.8,
+     "dEn": 54.8,
+     "renderLin": [
+      0.1651,
+      0.2675,
+      0.1331
+     ],
+     "fotoLin": [
+      0.0498,
+      0.0094,
+      0.0045
+     ]
+    },
+    {
+     "id": 250,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.14,
+      2.6
+     ],
+     "level": 0,
+     "item": 14,
+     "color": "#454549",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 420,
+     "quemado": 1,
+     "render": "#302f33",
+     "foto": "#8f5e53",
+     "mediana": "#862c1b",
+     "dE": 34.7,
+     "dEn": 31.6,
+     "renderLin": [
+      0.03,
+      0.0288,
+      0.0329
+     ],
+     "fotoLin": [
+      0.2742,
+      0.1111,
+      0.0857
+     ]
+    },
+    {
+     "id": 76,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#1e1e22",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 266,
+     "quemado": 0,
+     "render": "#232021",
+     "foto": "#957244",
+     "mediana": "#8c6e32",
+     "dE": 49.3,
+     "dEn": 46.3,
+     "renderLin": [
+      0.0164,
+      0.0148,
+      0.0154
+     ],
+     "fotoLin": [
+      0.302,
+      0.1689,
+      0.0584
+     ]
+    },
+    {
+     "id": 268,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.33,
+      3.69
+     ],
+     "level": 0,
+     "item": 19,
+     "color": "#c9ccd0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 197,
+     "quemado": 0,
+     "render": "#626467",
+     "foto": "#461e14",
+     "mediana": "#471d16",
+     "dE": 35.9,
+     "dEn": 35.2,
+     "renderLin": [
+      0.1215,
+      0.1274,
+      0.1356
+     ],
+     "fotoLin": [
+      0.0607,
+      0.0128,
+      0.0072
+     ]
+    },
+    {
+     "id": 77,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#ece8de",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 361,
+     "quemado": 34,
+     "render": "#d8cabd",
+     "foto": "#cbb38c",
+     "mediana": "#d6b78c",
+     "dE": 16.8,
+     "dEn": 14.7,
+     "renderLin": [
+      0.6838,
+      0.5886,
+      0.507
+     ],
+     "fotoLin": [
+      0.5944,
+      0.4528,
+      0.2631
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 46259,
+     "quemado": 4,
+     "render": "#b9a897",
+     "foto": "#c2ab94",
+     "mediana": "#c5ad97",
+     "dE": 4.4,
+     "dEn": 0,
+     "renderLin": [
+      0.4836,
+      0.3893,
+      0.3072
+     ],
+     "fotoLin": [
+      0.5408,
+      0.4067,
+      0.2957
+     ]
+    }
+   ]
+  },
+  "comedor": {
+   "nombre": "Comedor y ventanal",
+   "foto": "comedor",
+   "puntaje": 13.4,
+   "puntajeCrudo": 19.4,
+   "exposicion": [
+    0.672,
+    0.77,
+    0.975
+   ],
+   "cubierto": 70.9,
+   "objetos": [
+    {
+     "id": 1,
+     "kind": "floor",
+     "room": "Living y comedor",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 35163,
+     "quemado": 3366,
+     "render": "#ac562f",
+     "foto": "#a57169",
+     "mediana": "#9c4c33",
+     "dE": 29.1,
+     "dEn": 22.1,
+     "renderLin": [
+      0.4108,
+      0.092,
+      0.0287
+     ],
+     "fotoLin": [
+      0.3743,
+      0.1664,
+      0.1425
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 47626,
+     "quemado": 2772,
+     "render": "#cdbaa8",
+     "foto": "#ac958a",
+     "mediana": "#a89282",
+     "dE": 13.5,
+     "dEn": 11,
+     "renderLin": [
+      0.612,
+      0.4885,
+      0.389
+     ],
+     "fotoLin": [
+      0.4111,
+      0.3025,
+      0.2538
+     ]
+    },
+    {
+     "id": 64,
+     "kind": "item",
+     "type": "curtains",
+     "at": [
+      1.6,
+      0
+     ],
+     "level": 0,
+     "item": 0,
+     "color": "#efe5cc",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 14999,
+     "quemado": 1073,
+     "render": "#f4c6a1",
+     "foto": "#aeb0b0",
+     "mediana": "#b4ada1",
+     "dE": 30,
+     "dEn": 17.8,
+     "renderLin": [
+      0.9021,
+      0.567,
+      0.3546
+     ],
+     "fotoLin": [
+      0.4211,
+      0.4331,
+      0.4318
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 25149,
+     "quemado": 0,
+     "render": "#d5c6b8",
+     "foto": "#a7a19b",
+     "mediana": "#a9a49c",
+     "dE": 14.9,
+     "dEn": 8.5,
+     "renderLin": [
+      0.6654,
+      0.5624,
+      0.4795
+     ],
+     "fotoLin": [
+      0.3856,
+      0.3587,
+      0.329
+     ]
+    },
+    {
+     "id": 27,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 0,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 19152,
+     "quemado": 1701,
+     "render": "#d3cecc",
+     "foto": "#b7bab9",
+     "mediana": "#b2b2ac",
+     "dE": 8.3,
+     "dEn": 11,
+     "renderLin": [
+      0.6526,
+      0.6176,
+      0.6041
+     ],
+     "fotoLin": [
+      0.476,
+      0.4937,
+      0.4844
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 50990,
+     "quemado": 3491,
+     "render": "#c5b3a0",
+     "foto": "#9fa29e",
+     "mediana": "#abada8",
+     "dE": 13.7,
+     "dEn": 4.1,
+     "renderLin": [
+      0.5563,
+      0.449,
+      0.3527
+     ],
+     "fotoLin": [
+      0.3491,
+      0.3605,
+      0.3439
+     ]
+    },
+    {
+     "id": 89,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#262c3e",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 7009,
+     "quemado": 537,
+     "render": "#24222d",
+     "foto": "#441a2a",
+     "mediana": "#1d1623",
+     "dE": 19.1,
+     "dEn": 24.9,
+     "renderLin": [
+      0.018,
+      0.0158,
+      0.0262
+     ],
+     "fotoLin": [
+      0.0573,
+      0.0105,
+      0.0227
+     ]
+    },
+    {
+     "id": 74,
+     "kind": "item",
+     "type": "dining-table",
+     "at": [
+      1.75,
+      0.95
+     ],
+     "level": 0,
+     "item": 5,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 6654,
+     "quemado": 347,
+     "render": "#cfc8ac",
+     "foto": "#798878",
+     "mediana": "#688960",
+     "dE": 27.4,
+     "dEn": 19.6,
+     "renderLin": [
+      0.621,
+      0.5796,
+      0.4139
+     ],
+     "fotoLin": [
+      0.1921,
+      0.246,
+      0.1879
+     ]
+    },
+    {
+     "id": 76,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#1e1e22",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1714,
+     "quemado": 70,
+     "render": "#171416",
+     "foto": "#ad7d77",
+     "mediana": "#b77368",
+     "dE": 53.9,
+     "dEn": 65.2,
+     "renderLin": [
+      0.0084,
+      0.0072,
+      0.0081
+     ],
+     "fotoLin": [
+      0.4164,
+      0.2042,
+      0.186
+     ]
+    },
+    {
+     "id": 87,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#6e2e1c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 3904,
+     "quemado": 562,
+     "render": "#612512",
+     "foto": "#3b232f",
+     "mediana": "#1b1828",
+     "dE": 31.6,
+     "dEn": 25.8,
+     "renderLin": [
+      0.1189,
+      0.0184,
+      0.0062
+     ],
+     "fotoLin": [
+      0.0436,
+      0.0169,
+      0.0282
+     ]
+    },
+    {
+     "id": 75,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#5a2015",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1811,
+     "quemado": 57,
+     "render": "#4e1405",
+     "foto": "#8d6e6a",
+     "mediana": "#8b5448",
+     "dE": 39.6,
+     "dEn": 42,
+     "renderLin": [
+      0.0772,
+      0.0068,
+      0.0017
+     ],
+     "fotoLin": [
+      0.2651,
+      0.1557,
+      0.1449
+     ]
+    },
+    {
+     "id": 77,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#ece8de",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1454,
+     "quemado": 501,
+     "render": "#d8cabd",
+     "foto": "#6f614f",
+     "mediana": "#674824",
+     "dE": 40.3,
+     "dEn": 36.3,
+     "renderLin": [
+      0.6867,
+      0.5911,
+      0.5093
+     ],
+     "fotoLin": [
+      0.1593,
+      0.1206,
+      0.0773
+     ]
+    },
+    {
+     "id": 11,
+     "kind": "wall",
+     "level": 0,
+     "wall": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 9734,
+     "quemado": 291,
+     "render": "#d9c9b9",
+     "foto": "#b6b3ad",
+     "mediana": "#afaea8",
+     "dE": 11.4,
+     "dEn": 5.1,
+     "renderLin": [
+      0.6912,
+      0.5853,
+      0.4857
+     ],
+     "fotoLin": [
+      0.4685,
+      0.4505,
+      0.4199
+     ]
+    },
+    {
+     "id": 65,
+     "kind": "item",
+     "type": "ac-split",
+     "at": [
+      1.55,
+      0
+     ],
+     "level": 0,
+     "item": 1,
+     "color": "#f4f4f2",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2145,
+     "quemado": 0,
+     "render": "#e6ded7",
+     "foto": "#acacab",
+     "mediana": "#aaa9a4",
+     "dE": 19.2,
+     "dEn": 12.6,
+     "renderLin": [
+      0.7905,
+      0.7326,
+      0.6778
+     ],
+     "fotoLin": [
+      0.4117,
+      0.4112,
+      0.4069
+     ]
+    },
+    {
+     "id": 82,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      0.88,
+      0.95
+     ],
+     "level": 0,
+     "item": 8,
+     "color": "#1e1e22",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 536,
+     "quemado": 6,
+     "render": "#2f2c2d",
+     "foto": "#447853",
+     "mediana": "#2b7645",
+     "dE": 41.9,
+     "dEn": 50.2,
+     "renderLin": [
+      0.0285,
+      0.0252,
+      0.0259
+     ],
+     "fotoLin": [
+      0.0583,
+      0.1872,
+      0.0856
+     ]
+    },
+    {
+     "id": 95,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#4a2618",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 610,
+     "quemado": 317,
+     "render": "#391605",
+     "foto": "#7b6871",
+     "mediana": "#6f5c66",
+     "dE": 39.3,
+     "dEn": 41.4,
+     "renderLin": [
+      0.0413,
+      0.0081,
+      0.0016
+     ],
+     "fotoLin": [
+      0.1976,
+      0.1375,
+      0.1664
+     ]
+    },
+    {
+     "id": 25,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 0,
+     "color": "#5e4232",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 754,
+     "quemado": 1,
+     "render": "#503323",
+     "foto": "#896259",
+     "mediana": "#895348",
+     "dE": 21.7,
+     "dEn": 28.8,
+     "renderLin": [
+      0.0797,
+      0.0337,
+      0.0167
+     ],
+     "fotoLin": [
+      0.2484,
+      0.122,
+      0.1008
+     ]
+    },
+    {
+     "id": 242,
+     "kind": "item",
+     "type": "floor-fan",
+     "at": [
+      2.98,
+      0.17
+     ],
+     "level": 0,
+     "item": 3,
+     "color": "#1d1e20",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 185,
+     "quemado": 0,
+     "render": "#120e0d",
+     "foto": "#b6b5b0",
+     "mediana": "#b6b5b1",
+     "dE": 69.3,
+     "dEn": 79.2,
+     "renderLin": [
+      0.0059,
+      0.0045,
+      0.0041
+     ],
+     "fotoLin": [
+      0.4693,
+      0.4605,
+      0.4347
+     ]
+    },
+    {
+     "id": 62,
+     "kind": "baseboard",
+     "level": 0,
+     "color": "#a9653a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 350,
+     "quemado": 51,
+     "render": "#67340c",
+     "foto": "#ad523f",
+     "mediana": "#b64011",
+     "dE": 24.5,
+     "dEn": 34.9,
+     "renderLin": [
+      0.1355,
+      0.0338,
+      0.0035
+     ],
+     "fotoLin": [
+      0.4178,
+      0.0844,
+      0.0491
+     ]
+    },
+    {
+     "id": 73,
+     "kind": "item",
+     "type": "dining-table",
+     "at": [
+      1.75,
+      0.95
+     ],
+     "level": 0,
+     "item": 5,
+     "color": "#c49a6c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 240,
+     "quemado": 0,
+     "render": "#a97c50",
+     "foto": "#a32e2a",
+     "mediana": "#a51b12",
+     "dE": 39.9,
+     "dEn": 45.7,
+     "renderLin": [
+      0.3988,
+      0.2031,
+      0.0803
+     ],
+     "fotoLin": [
+      0.3682,
+      0.027,
+      0.023
+     ]
+    },
+    {
+     "id": 81,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      0.88,
+      0.95
+     ],
+     "level": 0,
+     "item": 8,
+     "color": "#5a2015",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 174,
+     "quemado": 2,
+     "render": "#501507",
+     "foto": "#917569",
+     "mediana": "#7e604d",
+     "dE": 40.8,
+     "dEn": 44.1,
+     "renderLin": [
+      0.0806,
+      0.0077,
+      0.0021
+     ],
+     "fotoLin": [
+      0.2822,
+      0.1777,
+      0.1419
+     ]
+    },
+    {
+     "id": 85,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      2.62,
+      0.95
+     ],
+     "level": 0,
+     "item": 9,
+     "color": "#1e1e22",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 300,
+     "quemado": 5,
+     "render": "#413733",
+     "foto": "#0a1225",
+     "mediana": "#050f23",
+     "dE": 25,
+     "dEn": 22.6,
+     "renderLin": [
+      0.0521,
+      0.038,
+      0.0334
+     ],
+     "fotoLin": [
+      0.0032,
+      0.0062,
+      0.0182
+     ]
+    },
+    {
+     "id": 80,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.9,
+      0.3
+     ],
+     "level": 0,
+     "item": 7,
+     "color": "#ece8de",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 270,
+     "quemado": 0,
+     "render": "#ccbdac",
+     "foto": "#b9c7c2",
+     "mediana": "#bac9c4",
+     "dE": 12.9,
+     "dEn": 14,
+     "renderLin": [
+      0.6016,
+      0.5068,
+      0.412
+     ],
+     "fotoLin": [
+      0.4852,
+      0.574,
+      0.542
+     ]
+    },
+    {
+     "id": 86,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      2.62,
+      0.95
+     ],
+     "level": 0,
+     "item": 9,
+     "color": "#ece8de",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 242,
+     "quemado": 0,
+     "render": "#dfcab7",
+     "foto": "#a4a2a1",
+     "mediana": "#a3a3a1",
+     "dE": 19.9,
+     "dEn": 8.3,
+     "renderLin": [
+      0.7356,
+      0.5931,
+      0.4738
+     ],
+     "fotoLin": [
+      0.369,
+      0.3628,
+      0.3567
+     ]
+    }
+   ]
+  },
+  "comedor2": {
+   "nombre": "Tele y comedor",
+   "foto": "comedor2",
+   "puntaje": 13.8,
+   "puntajeCrudo": 17,
+   "exposicion": [
+    0.928,
+    0.815,
+    0.715
+   ],
+   "cubierto": 71.8,
+   "objetos": [
+    {
+     "id": 1,
+     "kind": "floor",
+     "room": "Living y comedor",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 30912,
+     "quemado": 4966,
+     "render": "#a8522a",
+     "foto": "#c27b53",
+     "mediana": "#bf6332",
+     "dE": 16.7,
+     "dEn": 22.1,
+     "renderLin": [
+      0.3895,
+      0.0843,
+      0.0235
+     ],
+     "fotoLin": [
+      0.5423,
+      0.1974,
+      0.086
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 40762,
+     "quemado": 138,
+     "render": "#d1c1b4",
+     "foto": "#ca9f79",
+     "mediana": "#cc9d75",
+     "dE": 21.6,
+     "dEn": 14.9,
+     "renderLin": [
+      0.6352,
+      0.533,
+      0.4562
+     ],
+     "fotoLin": [
+      0.5894,
+      0.3465,
+      0.1914
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 44345,
+     "quemado": 871,
+     "render": "#c2b09e",
+     "foto": "#b08f6f",
+     "mediana": "#bb926c",
+     "dE": 15.9,
+     "dEn": 9.3,
+     "renderLin": [
+      0.5389,
+      0.4355,
+      0.3433
+     ],
+     "fotoLin": [
+      0.4317,
+      0.2735,
+      0.1588
+     ]
+    },
+    {
+     "id": 94,
+     "kind": "item",
+     "type": "tv",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 11,
+     "color": "#ffffff",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": true,
+     "px": 6841,
+     "quemado": 350,
+     "render": "#436079",
+     "foto": "#a6c6d4",
+     "mediana": "#95cfd4",
+     "dE": 39.5,
+     "dEn": 45.3,
+     "renderLin": [
+      0.0565,
+      0.117,
+      0.1913
+     ],
+     "fotoLin": [
+      0.3837,
+      0.5656,
+      0.6562
+     ]
+    },
+    {
+     "id": 64,
+     "kind": "item",
+     "type": "curtains",
+     "at": [
+      1.6,
+      0
+     ],
+     "level": 0,
+     "item": 0,
+     "color": "#efe5cc",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 12299,
+     "quemado": 481,
+     "render": "#f4c6a0",
+     "foto": "#d1b59e",
+     "mediana": "#d4a97d",
+     "dE": 13.4,
+     "dEn": 17.6,
+     "renderLin": [
+      0.9044,
+      0.5658,
+      0.3524
+     ],
+     "fotoLin": [
+      0.635,
+      0.461,
+      0.343
+     ]
+    },
+    {
+     "id": 27,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 0,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 14211,
+     "quemado": 538,
+     "render": "#cac2bc",
+     "foto": "#d9cdc2",
+     "mediana": "#ecd9c8",
+     "dE": 5,
+     "dEn": 11.3,
+     "renderLin": [
+      0.5903,
+      0.5399,
+      0.5033
+     ],
+     "fotoLin": [
+      0.6938,
+      0.6076,
+      0.5385
+     ]
+    },
+    {
+     "id": 89,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#262c3e",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 5157,
+     "quemado": 2920,
+     "render": "#1f202e",
+     "foto": "#493229",
+     "mediana": "#1e1310",
+     "dE": 22.9,
+     "dEn": 21.8,
+     "renderLin": [
+      0.0138,
+      0.0143,
+      0.0271
+     ],
+     "fotoLin": [
+      0.0672,
+      0.0317,
+      0.0217
+     ]
+    },
+    {
+     "id": 91,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 3198,
+     "quemado": 525,
+     "render": "#743127",
+     "foto": "#4b4145",
+     "mediana": "#373035",
+     "dE": 31.8,
+     "dEn": 35,
+     "renderLin": [
+      0.176,
+      0.0312,
+      0.0207
+     ],
+     "fotoLin": [
+      0.0711,
+      0.053,
+      0.0598
+     ]
+    },
+    {
+     "id": 11,
+     "kind": "wall",
+     "level": 0,
+     "wall": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 7150,
+     "quemado": 1,
+     "render": "#d6c7b7",
+     "foto": "#c8a17d",
+     "mediana": "#c89c75",
+     "dE": 19.5,
+     "dEn": 12.3,
+     "renderLin": [
+      0.6735,
+      0.57,
+      0.4707
+     ],
+     "fotoLin": [
+      0.5752,
+      0.3571,
+      0.2068
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 49329,
+     "quemado": 956,
+     "render": "#cdbba9",
+     "foto": "#caac91",
+     "mediana": "#cca888",
+     "dE": 8.4,
+     "dEn": 1.4,
+     "renderLin": [
+      0.6138,
+      0.4941,
+      0.3957
+     ],
+     "fotoLin": [
+      0.5886,
+      0.4126,
+      0.2831
+     ]
+    },
+    {
+     "id": 95,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#4a2618",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 2185,
+     "quemado": 1361,
+     "render": "#371607",
+     "foto": "#7d4f36",
+     "mediana": "#442313",
+     "dE": 27.6,
+     "dEn": 29.9,
+     "renderLin": [
+      0.0376,
+      0.008,
+      0.0022
+     ],
+     "fotoLin": [
+      0.2059,
+      0.0789,
+      0.0373
+     ]
+    },
+    {
+     "id": 74,
+     "kind": "item",
+     "type": "dining-table",
+     "at": [
+      1.75,
+      0.95
+     ],
+     "level": 0,
+     "item": 5,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 5106,
+     "quemado": 202,
+     "render": "#d8cbb1",
+     "foto": "#c2b4a5",
+     "mediana": "#b79571",
+     "dE": 9.8,
+     "dEn": 11.6,
+     "renderLin": [
+      0.6877,
+      0.5971,
+      0.4398
+     ],
+     "fotoLin": [
+      0.5426,
+      0.4543,
+      0.3744
+     ]
+    },
+    {
+     "id": 87,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#6e2e1c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1618,
+     "quemado": 863,
+     "render": "#6b2f1d",
+     "foto": "#6c5948",
+     "mediana": "#3a2418",
+     "dE": 25.4,
+     "dEn": 29.9,
+     "renderLin": [
+      0.1462,
+      0.0289,
+      0.0125
+     ],
+     "fotoLin": [
+      0.1506,
+      0.0992,
+      0.064
+     ]
+    },
+    {
+     "id": 76,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#1e1e22",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 583,
+     "quemado": 120,
+     "render": "#181618",
+     "foto": "#c28d6c",
+     "mediana": "#cb6c3e",
+     "dE": 62.8,
+     "dEn": 64.8,
+     "renderLin": [
+      0.0094,
+      0.0081,
+      0.0089
+     ],
+     "fotoLin": [
+      0.5374,
+      0.2664,
+      0.1514
+     ]
+    },
+    {
+     "id": 77,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#ece8de",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 846,
+     "quemado": 0,
+     "render": "#d8cabd",
+     "foto": "#8f7b48",
+     "mediana": "#857837",
+     "dE": 37.4,
+     "dEn": 33.5,
+     "renderLin": [
+      0.6861,
+      0.5905,
+      0.5088
+     ],
+     "fotoLin": [
+      0.2739,
+      0.1995,
+      0.0644
+     ]
+    },
+    {
+     "id": 85,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      2.62,
+      0.95
+     ],
+     "level": 0,
+     "item": 9,
+     "color": "#1e1e22",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 596,
+     "quemado": 0,
+     "render": "#403632",
+     "foto": "#6b6b3b",
+     "mediana": "#606429",
+     "dE": 33.3,
+     "dEn": 36.1,
+     "renderLin": [
+      0.0516,
+      0.0363,
+      0.0315
+     ],
+     "fotoLin": [
+      0.1472,
+      0.1481,
+      0.0432
+     ]
+    },
+    {
+     "id": 65,
+     "kind": "item",
+     "type": "ac-split",
+     "at": [
+      1.55,
+      0
+     ],
+     "level": 0,
+     "item": 1,
+     "color": "#f4f4f2",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1272,
+     "quemado": 0,
+     "render": "#e4ddd6",
+     "foto": "#caaa90",
+     "mediana": "#cbaa91",
+     "dE": 22.5,
+     "dEn": 14.6,
+     "renderLin": [
+      0.7784,
+      0.7263,
+      0.6752
+     ],
+     "fotoLin": [
+      0.5929,
+      0.4017,
+      0.2808
+     ]
+    },
+    {
+     "id": 25,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 0,
+     "color": "#5e4232",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 371,
+     "quemado": 0,
+     "render": "#4e301e",
+     "foto": "#c5926d",
+     "mediana": "#d5a379",
+     "dE": 43,
+     "dEn": 46.6,
+     "renderLin": [
+      0.0752,
+      0.0294,
+      0.0132
+     ],
+     "fotoLin": [
+      0.5554,
+      0.2881,
+      0.1524
+     ]
+    },
+    {
+     "id": 75,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.6,
+      1.62
+     ],
+     "level": 0,
+     "item": 6,
+     "color": "#5a2015",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 298,
+     "quemado": 33,
+     "render": "#4f1304",
+     "foto": "#ba8c67",
+     "mediana": "#b17c4a",
+     "dE": 48.2,
+     "dEn": 53.2,
+     "renderLin": [
+      0.0772,
+      0.0064,
+      0.0013
+     ],
+     "fotoLin": [
+      0.4936,
+      0.2627,
+      0.1343
+     ]
+    },
+    {
+     "id": 62,
+     "kind": "baseboard",
+     "level": 0,
+     "color": "#a9653a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 255,
+     "quemado": 57,
+     "render": "#5e2e08",
+     "foto": "#e8b78e",
+     "mediana": "#eab487",
+     "dE": 53.7,
+     "dEn": 60.1,
+     "renderLin": [
+      0.1107,
+      0.0278,
+      0.0024
+     ],
+     "fotoLin": [
+      0.8057,
+      0.4758,
+      0.2707
+     ]
+    },
+    {
+     "id": 245,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.15,
+      2.55
+     ],
+     "level": 0,
+     "item": 13,
+     "color": "#1f1f22",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 467,
+     "quemado": 106,
+     "render": "#0d0607",
+     "foto": "#321d16",
+     "mediana": "#321d15",
+     "dE": 16,
+     "dEn": 16,
+     "renderLin": [
+      0.004,
+      0.002,
+      0.0022
+     ],
+     "fotoLin": [
+      0.0317,
+      0.0122,
+      0.0079
+     ]
+    },
+    {
+     "id": 246,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.15,
+      2.55
+     ],
+     "level": 0,
+     "item": 13,
+     "color": "#45454b",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 204,
+     "quemado": 9,
+     "render": "#333237",
+     "foto": "#827366",
+     "mediana": "#827367",
+     "dE": 31.1,
+     "dEn": 33.5,
+     "renderLin": [
+      0.0328,
+      0.0314,
+      0.0379
+     ],
+     "fotoLin": [
+      0.225,
+      0.1709,
+      0.1339
+     ]
+    },
+    {
+     "id": 80,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      1.9,
+      0.3
+     ],
+     "level": 0,
+     "item": 7,
+     "color": "#ece8de",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 196,
+     "quemado": 25,
+     "render": "#cdbead",
+     "foto": "#ad8967",
+     "mediana": "#966647",
+     "dE": 23.2,
+     "dEn": 16.9,
+     "renderLin": [
+      0.6095,
+      0.5141,
+      0.4183
+     ],
+     "fotoLin": [
+      0.4202,
+      0.2492,
+      0.1367
+     ]
+    },
+    {
+     "id": 96,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#b23a2c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 581,
+     "quemado": 156,
+     "render": "#a33020",
+     "foto": "#ae3024",
+     "mediana": "#c3281d",
+     "dE": 4.3,
+     "dEn": 5.7,
+     "renderLin": [
+      0.3678,
+      0.0294,
+      0.0147
+     ],
+     "fotoLin": [
+      0.4247,
+      0.0297,
+      0.0177
+     ]
+    }
+   ]
+  },
+  "living": {
+   "nombre": "Sillón y biblioteca",
+   "foto": "living",
+   "puntaje": 14.6,
+   "puntajeCrudo": 22,
+   "exposicion": [
+    1.212,
+    1.786,
+    2.19
+   ],
+   "cubierto": 80,
+   "objetos": [
+    {
+     "id": 1,
+     "kind": "floor",
+     "room": "Living y comedor",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 35927,
+     "quemado": 1832,
+     "render": "#a35c46",
+     "foto": "#b45341",
+     "mediana": "#b4320b",
+     "dE": 12.4,
+     "dEn": 18.2,
+     "renderLin": [
+      0.3654,
+      0.1077,
+      0.0621
+     ],
+     "fotoLin": [
+      0.4567,
+      0.0855,
+      0.0531
+     ]
+    },
+    {
+     "id": 89,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#262c3e",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 30262,
+     "quemado": 1806,
+     "render": "#3f3234",
+     "foto": "#787f8d",
+     "mediana": "#3a4b66",
+     "dE": 32.9,
+     "dEn": 20.1,
+     "renderLin": [
+      0.0499,
+      0.0317,
+      0.034
+     ],
+     "fotoLin": [
+      0.1882,
+      0.2129,
+      0.2671
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 26759,
+     "quemado": 1153,
+     "render": "#ab9a8b",
+     "foto": "#938477",
+     "mediana": "#846b53",
+     "dE": 8.6,
+     "dEn": 21.2,
+     "renderLin": [
+      0.4063,
+      0.322,
+      0.2602
+     ],
+     "fotoLin": [
+      0.291,
+      0.2303,
+      0.1857
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 61207,
+     "quemado": 0,
+     "render": "#a69383",
+     "foto": "#b5c2ca",
+     "mediana": "#b5c4cc",
+     "dE": 23.8,
+     "dEn": 4.9,
+     "renderLin": [
+      0.3795,
+      0.2934,
+      0.2276
+     ],
+     "fotoLin": [
+      0.46,
+      0.542,
+      0.5918
+     ]
+    },
+    {
+     "id": 101,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      1.88,
+      5.08
+     ],
+     "level": 0,
+     "item": 20,
+     "color": "#c27a3a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 5754,
+     "quemado": 19,
+     "render": "#8d4a12",
+     "foto": "#9b898d",
+     "mediana": "#9c6c68",
+     "dE": 50.2,
+     "dEn": 36.2,
+     "renderLin": [
+      0.268,
+      0.0682,
+      0.006
+     ],
+     "fotoLin": [
+      0.3257,
+      0.2491,
+      0.2679
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 29737,
+     "quemado": 1765,
+     "render": "#b09e93",
+     "foto": "#acb9c4",
+     "mediana": "#abb6bf",
+     "dE": 18.8,
+     "dEn": 6.9,
+     "renderLin": [
+      0.4362,
+      0.3413,
+      0.2903
+     ],
+     "fotoLin": [
+      0.4105,
+      0.4875,
+      0.5492
+     ]
+    },
+    {
+     "id": 19,
+     "kind": "wall",
+     "level": 0,
+     "wall": 8,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 17601,
+     "quemado": 180,
+     "render": "#aa9583",
+     "foto": "#aca0a2",
+     "mediana": "#aeacb5",
+     "dE": 12.1,
+     "dEn": 11.3,
+     "renderLin": [
+      0.4027,
+      0.2994,
+      0.2284
+     ],
+     "fotoLin": [
+      0.4142,
+      0.3499,
+      0.3598
+     ]
+    },
+    {
+     "id": 91,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 7089,
+     "quemado": 192,
+     "render": "#673426",
+     "foto": "#8a898f",
+     "mediana": "#906e71",
+     "dE": 41.7,
+     "dEn": 26.1,
+     "renderLin": [
+      0.1354,
+      0.034,
+      0.0197
+     ],
+     "fotoLin": [
+      0.2556,
+      0.2521,
+      0.2758
+     ]
+    },
+    {
+     "id": 87,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#6e2e1c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 4399,
+     "quemado": 122,
+     "render": "#5b1c09",
+     "foto": "#514e67",
+     "mediana": "#3f4a64",
+     "dE": 48,
+     "dEn": 37.4,
+     "renderLin": [
+      0.1051,
+      0.0115,
+      0.0027
+     ],
+     "fotoLin": [
+      0.0816,
+      0.0754,
+      0.1366
+     ]
+    },
+    {
+     "id": 102,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      1.88,
+      5.08
+     ],
+     "level": 0,
+     "item": 20,
+     "color": "#a1642e",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2668,
+     "quemado": 8,
+     "render": "#6c3807",
+     "foto": "#b6aab0",
+     "mediana": "#c9c7c9",
+     "dE": 58.1,
+     "dEn": 40,
+     "renderLin": [
+      0.1505,
+      0.0397,
+      0.0023
+     ],
+     "fotoLin": [
+      0.4659,
+      0.4029,
+      0.4326
+     ]
+    },
+    {
+     "id": 37,
+     "kind": "door",
+     "level": 0,
+     "wall": 3,
+     "opening": 0,
+     "color": "#5b2e22",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1509,
+     "quemado": 12,
+     "render": "#3f1504",
+     "foto": "#a7877e",
+     "mediana": "#a1785d",
+     "dE": 47.5,
+     "dEn": 35.3,
+     "renderLin": [
+      0.0493,
+      0.0073,
+      0.0012
+     ],
+     "fotoLin": [
+      0.3848,
+      0.2411,
+      0.2069
+     ]
+    },
+    {
+     "id": 2,
+     "kind": "floor",
+     "room": "Pasillo de entrada",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 3518,
+     "quemado": 32,
+     "render": "#bc8e83",
+     "foto": "#b38e89",
+     "mediana": "#b67958",
+     "dE": 5.8,
+     "dEn": 13.2,
+     "renderLin": [
+      0.5037,
+      0.2697,
+      0.2266
+     ],
+     "fotoLin": [
+      0.4482,
+      0.2691,
+      0.2512
+     ]
+    },
+    {
+     "id": 100,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      0.64,
+      3.45
+     ],
+     "level": 0,
+     "item": 16,
+     "color": "#c8483f",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1195,
+     "quemado": 216,
+     "render": "#852c25",
+     "foto": "#c27c33",
+     "mediana": "#d1732a",
+     "dE": 39.7,
+     "dEn": 29.7,
+     "renderLin": [
+      0.2354,
+      0.0254,
+      0.0186
+     ],
+     "fotoLin": [
+      0.5419,
+      0.2021,
+      0.0328
+     ]
+    },
+    {
+     "id": 92,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 1872,
+     "quemado": 0,
+     "render": "#56566c",
+     "foto": "#7e8d9d",
+     "mediana": "#384865",
+     "dE": 22.1,
+     "dEn": 16.2,
+     "renderLin": [
+      0.0925,
+      0.0924,
+      0.1514
+     ],
+     "fotoLin": [
+      0.2096,
+      0.2659,
+      0.3355
+     ]
+    },
+    {
+     "id": 61,
+     "kind": "structure",
+     "level": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 5676,
+     "quemado": 0,
+     "render": "#a08f80",
+     "foto": "#babab7",
+     "mediana": "#bfc0bb",
+     "dE": 17.9,
+     "dEn": 4.3,
+     "renderLin": [
+      0.3529,
+      0.2762,
+      0.2171
+     ],
+     "fotoLin": [
+      0.4887,
+      0.4934,
+      0.4753
+     ]
+    },
+    {
+     "id": 111,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      2.79,
+      5.115
+     ],
+     "level": 0,
+     "item": 21,
+     "color": "#b8743a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 783,
+     "quemado": 0,
+     "render": "#7b4216",
+     "foto": "#a99697",
+     "mediana": "#a38f8e",
+     "dE": 46.9,
+     "dEn": 30.8,
+     "renderLin": [
+      0.1984,
+      0.0542,
+      0.0082
+     ],
+     "fotoLin": [
+      0.3968,
+      0.3038,
+      0.3099
+     ]
+    },
+    {
+     "id": 99,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      0.64,
+      3.45
+     ],
+     "level": 0,
+     "item": 16,
+     "color": "#6b3d24",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 587,
+     "quemado": 0,
+     "render": "#471e05",
+     "foto": "#88270c",
+     "mediana": "#852204",
+     "dE": 31.1,
+     "dEn": 28.9,
+     "renderLin": [
+      0.0623,
+      0.0132,
+      0.0015
+     ],
+     "fotoLin": [
+      0.2479,
+      0.0202,
+      0.0036
+     ]
+    },
+    {
+     "id": 97,
+     "kind": "item",
+     "type": "desk",
+     "at": [
+      0.25,
+      3.69
+     ],
+     "level": 0,
+     "item": 15,
+     "color": "#b5743f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 496,
+     "quemado": 8,
+     "render": "#a1765d",
+     "foto": "#6c3736",
+     "mediana": "#6c3330",
+     "dE": 27.2,
+     "dEn": 31.8,
+     "renderLin": [
+      0.3584,
+      0.1818,
+      0.1084
+     ],
+     "fotoLin": [
+      0.1487,
+      0.0379,
+      0.0363
+     ]
+    },
+    {
+     "id": 112,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      2.79,
+      5.115
+     ],
+     "level": 0,
+     "item": 21,
+     "color": "#945c2d",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 408,
+     "quemado": 10,
+     "render": "#663306",
+     "foto": "#a26b68",
+     "mediana": "#9f2806",
+     "dE": 34,
+     "dEn": 23.6,
+     "renderLin": [
+      0.1324,
+      0.0326,
+      0.0019
+     ],
+     "fotoLin": [
+      0.3609,
+      0.1467,
+      0.1382
+     ]
+    },
+    {
+     "id": 225,
+     "kind": "item",
+     "type": "bed",
+     "at": [
+      5.27,
+      7.38
+     ],
+     "level": 0,
+     "item": 72,
+     "color": "#8d9aa6",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 330,
+     "quemado": 0,
+     "render": "#66696d",
+     "foto": "#c5c7d2",
+     "mediana": "#c5c7d2",
+     "dE": 36.3,
+     "dEn": 25.3,
+     "renderLin": [
+      0.1326,
+      0.1408,
+      0.154
+     ],
+     "fotoLin": [
+      0.5582,
+      0.5705,
+      0.6432
+     ]
+    },
+    {
+     "id": 251,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.19,
+      3.96
+     ],
+     "level": 0,
+     "item": 17,
+     "color": "#e0c9a0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 184,
+     "quemado": 0,
+     "render": "#81694b",
+     "foto": "#6b261a",
+     "mediana": "#6b2519",
+     "dE": 32.3,
+     "dEn": 36.1,
+     "renderLin": [
+      0.2195,
+      0.1401,
+      0.0699
+     ],
+     "fotoLin": [
+      0.1473,
+      0.0191,
+      0.0104
+     ]
+    },
+    {
+     "id": 14,
+     "kind": "wall",
+     "level": 0,
+     "wall": 3,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 655,
+     "quemado": 0,
+     "render": "#b3a696",
+     "foto": "#b7b9be",
+     "mediana": "#c7c7cf",
+     "dE": 14.1,
+     "dEn": 9.7,
+     "renderLin": [
+      0.4518,
+      0.3793,
+      0.3059
+     ],
+     "fotoLin": [
+      0.4763,
+      0.4844,
+      0.5136
+     ]
+    },
+    {
+     "id": 234,
+     "kind": "item",
+     "type": "curtains",
+     "at": [
+      4.6,
+      8.75
+     ],
+     "level": 0,
+     "item": 75,
+     "color": "#f6f3ec",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": false,
+     "px": 213,
+     "quemado": 0,
+     "render": "#b0a497",
+     "foto": "#c7c7cf",
+     "mediana": "#c8c8d1",
+     "dE": 17.4,
+     "dEn": 7.7,
+     "renderLin": [
+      0.4324,
+      0.37,
+      0.3111
+     ],
+     "fotoLin": [
+      0.5725,
+      0.5739,
+      0.6252
+     ]
+    },
+    {
+     "id": 22,
+     "kind": "wall",
+     "level": 0,
+     "wall": 11,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 184,
+     "quemado": 0,
+     "render": "#b5a190",
+     "foto": "#c5c7d2",
+     "mediana": "#c6c7d2",
+     "dE": 21.4,
+     "dEn": 6.5,
+     "renderLin": [
+      0.4601,
+      0.3552,
+      0.2798
+     ],
+     "fotoLin": [
+      0.5596,
+      0.5732,
+      0.6415
+     ]
+    }
+   ]
+  },
+  "living2": {
+   "nombre": "Tele y biblioteca",
+   "foto": "living2",
+   "puntaje": 10.5,
+   "puntajeCrudo": 16.1,
+   "exposicion": [
+    1.436,
+    1.387,
+    1.399
+   ],
+   "cubierto": 75.9,
+   "objetos": [
+    {
+     "id": 1,
+     "kind": "floor",
+     "room": "Living y comedor",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 36976,
+     "quemado": 2312,
+     "render": "#a15a44",
+     "foto": "#bd8267",
+     "mediana": "#bc4a18",
+     "dE": 15.6,
+     "dEn": 12.6,
+     "renderLin": [
+      0.3554,
+      0.1024,
+      0.0573
+     ],
+     "fotoLin": [
+      0.5102,
+      0.2242,
+      0.1364
+     ]
+    },
+    {
+     "id": 89,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#262c3e",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 22078,
+     "quemado": 910,
+     "render": "#453637",
+     "foto": "#8a7975",
+     "mediana": "#6b555a",
+     "dE": 28.1,
+     "dEn": 20.9,
+     "renderLin": [
+      0.0587,
+      0.0375,
+      0.0382
+     ],
+     "fotoLin": [
+      0.2559,
+      0.1917,
+      0.1775
+     ]
+    },
+    {
+     "id": 94,
+     "kind": "item",
+     "type": "tv",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 11,
+     "color": "#ffffff",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": true,
+     "px": 6760,
+     "quemado": 137,
+     "render": "#34526a",
+     "foto": "#95b48f",
+     "mediana": "#9fb69a",
+     "dE": 51,
+     "dEn": 43.6,
+     "renderLin": [
+      0.034,
+      0.0836,
+      0.1441
+     ],
+     "fotoLin": [
+      0.2986,
+      0.4546,
+      0.2761
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 55955,
+     "quemado": 1786,
+     "render": "#b19e8e",
+     "foto": "#c4b5a1",
+     "mediana": "#cab8a5",
+     "dE": 8.5,
+     "dEn": 3.8,
+     "renderLin": [
+      0.4388,
+      0.3399,
+      0.272
+     ],
+     "fotoLin": [
+      0.553,
+      0.4593,
+      0.3585
+     ]
+    },
+    {
+     "id": 95,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#4a2618",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 3693,
+     "quemado": 1323,
+     "render": "#301307",
+     "foto": "#939071",
+     "mediana": "#956f40",
+     "dE": 53,
+     "dEn": 45.6,
+     "renderLin": [
+      0.0291,
+      0.0064,
+      0.0021
+     ],
+     "fotoLin": [
+      0.2936,
+      0.2805,
+      0.1639
+     ]
+    },
+    {
+     "id": 101,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      1.88,
+      5.08
+     ],
+     "level": 0,
+     "item": 20,
+     "color": "#c27a3a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 4368,
+     "quemado": 393,
+     "render": "#8e4a11",
+     "foto": "#c38d70",
+     "mediana": "#c68560",
+     "dE": 32.4,
+     "dEn": 29.6,
+     "renderLin": [
+      0.2686,
+      0.0679,
+      0.0055
+     ],
+     "fotoLin": [
+      0.5442,
+      0.2667,
+      0.1631
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 38007,
+     "quemado": 1178,
+     "render": "#b3a094",
+     "foto": "#cab9ad",
+     "mediana": "#cab3a5",
+     "dE": 9.2,
+     "dEn": 2.9,
+     "renderLin": [
+      0.4503,
+      0.3509,
+      0.298
+     ],
+     "fotoLin": [
+      0.5922,
+      0.4866,
+      0.4169
+     ]
+    },
+    {
+     "id": 87,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#6e2e1c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 2641,
+     "quemado": 104,
+     "render": "#592012",
+     "foto": "#927169",
+     "mediana": "#565256",
+     "dE": 35.3,
+     "dEn": 31,
+     "renderLin": [
+      0.1002,
+      0.0143,
+      0.0061
+     ],
+     "fotoLin": [
+      0.2882,
+      0.1642,
+      0.1427
+     ]
+    },
+    {
+     "id": 102,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      1.88,
+      5.08
+     ],
+     "level": 0,
+     "item": 20,
+     "color": "#a1642e",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2015,
+     "quemado": 51,
+     "render": "#6c3807",
+     "foto": "#c49b7a",
+     "mediana": "#d29d75",
+     "dE": 40.7,
+     "dEn": 34.6,
+     "renderLin": [
+      0.1503,
+      0.0398,
+      0.0023
+     ],
+     "fotoLin": [
+      0.5521,
+      0.3263,
+      0.193
+     ]
+    },
+    {
+     "id": 19,
+     "kind": "wall",
+     "level": 0,
+     "wall": 8,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 14640,
+     "quemado": 13,
+     "render": "#ab9584",
+     "foto": "#d0aa93",
+     "mediana": "#d6ac93",
+     "dE": 11.5,
+     "dEn": 4.1,
+     "renderLin": [
+      0.4076,
+      0.3021,
+      0.2293
+     ],
+     "fotoLin": [
+      0.6288,
+      0.4021,
+      0.2911
+     ]
+    },
+    {
+     "id": 92,
+     "kind": "item",
+     "type": "sofa",
+     "at": [
+      2.76,
+      3.1
+     ],
+     "level": 0,
+     "item": 10,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 2383,
+     "quemado": 103,
+     "render": "#59576a",
+     "foto": "#785b52",
+     "mediana": "#633b32",
+     "dE": 21,
+     "dEn": 19.4,
+     "renderLin": [
+      0.0991,
+      0.095,
+      0.143
+     ],
+     "fotoLin": [
+      0.1867,
+      0.1035,
+      0.0846
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 25922,
+     "quemado": 0,
+     "render": "#a3907f",
+     "foto": "#c3a794",
+     "mediana": "#c5a893",
+     "dE": 10.2,
+     "dEn": 1.4,
+     "renderLin": [
+      0.3675,
+      0.2797,
+      0.2138
+     ],
+     "fotoLin": [
+      0.5487,
+      0.388,
+      0.2941
+     ]
+    },
+    {
+     "id": 245,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.15,
+      2.55
+     ],
+     "level": 0,
+     "item": 13,
+     "color": "#1f1f22",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 686,
+     "quemado": 69,
+     "render": "#0b0607",
+     "foto": "#7e402a",
+     "mediana": "#71260f",
+     "dE": 47.5,
+     "dEn": 40.5,
+     "renderLin": [
+      0.0033,
+      0.0017,
+      0.0021
+     ],
+     "fotoLin": [
+      0.2088,
+      0.0507,
+      0.0228
+     ]
+    },
+    {
+     "id": 264,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.3,
+      3.54
+     ],
+     "level": 0,
+     "item": 18,
+     "color": "#e8609a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 265,
+     "quemado": 17,
+     "render": "#a92959",
+     "foto": "#5a8d27",
+     "mediana": "#2e8612",
+     "dE": 99.6,
+     "dEn": 94.1,
+     "renderLin": [
+      0.3958,
+      0.0218,
+      0.0997
+     ],
+     "fotoLin": [
+      0.1026,
+      0.2651,
+      0.0202
+     ]
+    },
+    {
+     "id": 2,
+     "kind": "floor",
+     "room": "Pasillo de entrada",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1495,
+     "quemado": 8,
+     "render": "#be8f84",
+     "foto": "#ce8a68",
+     "mediana": "#dd8855",
+     "dE": 17.1,
+     "dEn": 15.5,
+     "renderLin": [
+      0.5175,
+      0.2756,
+      0.231
+     ],
+     "fotoLin": [
+      0.6186,
+      0.2561,
+      0.1382
+     ]
+    },
+    {
+     "id": 112,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      2.79,
+      5.115
+     ],
+     "level": 0,
+     "item": 21,
+     "color": "#945c2d",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 809,
+     "quemado": 1,
+     "render": "#673307",
+     "foto": "#ac6f5d",
+     "mediana": "#ad5d46",
+     "dE": 29.7,
+     "dEn": 25.2,
+     "renderLin": [
+      0.1359,
+      0.0336,
+      0.002
+     ],
+     "fotoLin": [
+      0.4127,
+      0.1602,
+      0.1099
+     ]
+    },
+    {
+     "id": 61,
+     "kind": "structure",
+     "level": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2251,
+     "quemado": 0,
+     "render": "#a79686",
+     "foto": "#d6ac91",
+     "mediana": "#d6ab90",
+     "dE": 15.9,
+     "dEn": 8.8,
+     "renderLin": [
+      0.3889,
+      0.3032,
+      0.2378
+     ],
+     "fotoLin": [
+      0.6755,
+      0.411,
+      0.2813
+     ]
+    },
+    {
+     "id": 62,
+     "kind": "baseboard",
+     "level": 0,
+     "color": "#a9653a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 344,
+     "quemado": 22,
+     "render": "#5f2f0a",
+     "foto": "#d2d4b0",
+     "mediana": "#d2e2af",
+     "dE": 65.6,
+     "dEn": 57,
+     "renderLin": [
+      0.1145,
+      0.029,
+      0.0029
+     ],
+     "fotoLin": [
+      0.6412,
+      0.661,
+      0.4366
+     ]
+    },
+    {
+     "id": 111,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      2.79,
+      5.115
+     ],
+     "level": 0,
+     "item": 21,
+     "color": "#b8743a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 709,
+     "quemado": 6,
+     "render": "#7c431a",
+     "foto": "#976f5f",
+     "mediana": "#8c5842",
+     "dE": 26.5,
+     "dEn": 25.3,
+     "renderLin": [
+      0.203,
+      0.0556,
+      0.01
+     ],
+     "fotoLin": [
+      0.3079,
+      0.1598,
+      0.1154
+     ]
+    },
+    {
+     "id": 121,
+     "kind": "item",
+     "type": "ceiling-light",
+     "at": [
+      1.6,
+      3.6
+     ],
+     "level": 0,
+     "item": 25,
+     "color": "#f4f2ec",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": null,
+     "px": 642,
+     "quemado": 525,
+     "render": "#c4a997",
+     "foto": "#dbeeee",
+     "mediana": "#d8eeef",
+     "dE": 29.5,
+     "dEn": 22.6,
+     "renderLin": [
+      0.5533,
+      0.3973,
+      0.3115
+     ],
+     "fotoLin": [
+      0.7075,
+      0.8555,
+      0.8582
+     ]
+    },
+    {
+     "id": 250,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.14,
+      2.6
+     ],
+     "level": 0,
+     "item": 14,
+     "color": "#454549",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 268,
+     "quemado": 0,
+     "render": "#39383a",
+     "foto": "#a24927",
+     "mediana": "#a8451f",
+     "dE": 54.3,
+     "dEn": 46.5,
+     "renderLin": [
+      0.0408,
+      0.0395,
+      0.0426
+     ],
+     "fotoLin": [
+      0.3624,
+      0.067,
+      0.0205
+     ]
+    },
+    {
+     "id": 97,
+     "kind": "item",
+     "type": "desk",
+     "at": [
+      0.25,
+      3.69
+     ],
+     "level": 0,
+     "item": 15,
+     "color": "#b5743f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 738,
+     "quemado": 66,
+     "render": "#9f6d4b",
+     "foto": "#a16354",
+     "mediana": "#4e3f2d",
+     "dE": 10.8,
+     "dEn": 13.9,
+     "renderLin": [
+      0.347,
+      0.1522,
+      0.0709
+     ],
+     "fotoLin": [
+      0.3567,
+      0.1237,
+      0.0878
+     ]
+    },
+    {
+     "id": 37,
+     "kind": "door",
+     "level": 0,
+     "wall": 3,
+     "opening": 0,
+     "color": "#5b2e22",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 162,
+     "quemado": 0,
+     "render": "#3c1303",
+     "foto": "#e0ab8b",
+     "mediana": "#e0aa8a",
+     "dE": 62.4,
+     "dEn": 52.9,
+     "renderLin": [
+      0.0446,
+      0.0064,
+      0.0009
+     ],
+     "fotoLin": [
+      0.7465,
+      0.4054,
+      0.2563
+     ]
+    },
+    {
+     "id": 225,
+     "kind": "item",
+     "type": "bed",
+     "at": [
+      5.27,
+      7.38
+     ],
+     "level": 0,
+     "item": 72,
+     "color": "#8d9aa6",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 493,
+     "quemado": 0,
+     "render": "#696e73",
+     "foto": "#a98e81",
+     "mediana": "#9f8c7d",
+     "dE": 22.1,
+     "dEn": 15.9,
+     "renderLin": [
+      0.1427,
+      0.1556,
+      0.172
+     ],
+     "fotoLin": [
+      0.3949,
+      0.2697,
+      0.2206
+     ]
+    },
+    {
+     "id": 100,
+     "kind": "item",
+     "type": "chair",
+     "at": [
+      0.64,
+      3.45
+     ],
+     "level": 0,
+     "item": 16,
+     "color": "#c8483f",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 404,
+     "quemado": 0,
+     "render": "#93342d",
+     "foto": "#be693c",
+     "mediana": "#ce6f37",
+     "dE": 24.3,
+     "dEn": 19.4,
+     "renderLin": [
+      0.2931,
+      0.0342,
+      0.026
+     ],
+     "fotoLin": [
+      0.5172,
+      0.142,
+      0.0459
+     ]
+    },
+    {
+     "id": 246,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.15,
+      2.55
+     ],
+     "level": 0,
+     "item": 13,
+     "color": "#45454b",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 159,
+     "quemado": 354,
+     "render": "#323136",
+     "foto": "#6d1504",
+     "mediana": "#6b1002",
+     "dE": 50.2,
+     "dEn": 43.3,
+     "renderLin": [
+      0.0324,
+      0.031,
+      0.0367
+     ],
+     "fotoLin": [
+      0.152,
+      0.0073,
+      0.0012
+     ]
+    },
+    {
+     "id": 48,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 3,
+     "opening": 3,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 248,
+     "quemado": 0,
+     "render": "#c5c1be",
+     "foto": "#9ea1ab",
+     "mediana": "#ccb5a6",
+     "dE": 14.1,
+     "dEn": 21.8,
+     "renderLin": [
+      0.56,
+      0.5319,
+      0.5158
+     ],
+     "fotoLin": [
+      0.3436,
+      0.3557,
+      0.4069
+     ]
+    },
+    {
+     "id": 251,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      0.19,
+      3.96
+     ],
+     "level": 0,
+     "item": 17,
+     "color": "#e0c9a0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 207,
+     "quemado": 27,
+     "render": "#897050",
+     "foto": "#aabaaa",
+     "mediana": "#c4c5a8",
+     "dE": 32.3,
+     "dEn": 26.1,
+     "renderLin": [
+      0.2516,
+      0.1618,
+      0.0809
+     ],
+     "fotoLin": [
+      0.401,
+      0.49,
+      0.3994
+     ]
+    },
+    {
+     "id": 96,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      0,
+      2.55
+     ],
+     "level": 0,
+     "item": 12,
+     "color": "#b23a2c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 806,
+     "quemado": 262,
+     "render": "#953227",
+     "foto": "#9f3c28",
+     "mediana": "#813a22",
+     "dE": 5.3,
+     "dEn": 6.2,
+     "renderLin": [
+      0.2995,
+      0.0319,
+      0.0201
+     ],
+     "fotoLin": [
+      0.3469,
+      0.0445,
+      0.0209
+     ]
+    },
+    {
+     "id": 234,
+     "kind": "item",
+     "type": "curtains",
+     "at": [
+      4.6,
+      8.75
+     ],
+     "level": 0,
+     "item": 75,
+     "color": "#f6f3ec",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": false,
+     "px": 645,
+     "quemado": 0,
+     "render": "#a69a8d",
+     "foto": "#ccb5a3",
+     "mediana": "#cfb5a1",
+     "dE": 12.1,
+     "dEn": 3.3,
+     "renderLin": [
+      0.3802,
+      0.3217,
+      0.2678
+     ],
+     "fotoLin": [
+      0.6011,
+      0.4629,
+      0.3663
+     ]
+    },
+    {
+     "id": 14,
+     "kind": "wall",
+     "level": 0,
+     "wall": 3,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 240,
+     "quemado": 0,
+     "render": "#aea091",
+     "foto": "#c8ad9a",
+     "mediana": "#cfb5a1",
+     "dE": 8.3,
+     "dEn": 5,
+     "renderLin": [
+      0.4226,
+      0.3521,
+      0.2852
+     ],
+     "fotoLin": [
+      0.5765,
+      0.4175,
+      0.3209
+     ]
+    }
+   ]
+  },
+  "habitacion": {
+   "nombre": "Dormitorio",
+   "foto": "habitacion",
+   "puntaje": 15.5,
+   "puntajeCrudo": 14.6,
+   "exposicion": [
+    0.821,
+    1.058,
+    1.263
+   ],
+   "cubierto": 84.3,
+   "objetos": [
+    {
+     "id": 13,
+     "kind": "wall",
+     "level": 0,
+     "wall": 2,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 69680,
+     "quemado": 652,
+     "render": "#c0ae9a",
+     "foto": "#b09688",
+     "mediana": "#ac9180",
+     "dE": 9,
+     "dEn": 14.9,
+     "renderLin": [
+      0.5278,
+      0.423,
+      0.3234
+     ],
+     "fotoLin": [
+      0.4332,
+      0.3064,
+      0.2446
+     ]
+    },
+    {
+     "id": 214,
+     "kind": "item",
+     "type": "curtains",
+     "at": [
+      4.52,
+      0
+     ],
+     "level": 0,
+     "item": 69,
+     "color": "#f3dc6c",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": true,
+     "printed": false,
+     "px": 54204,
+     "quemado": 9835,
+     "render": "#edc077",
+     "foto": "#cfc59c",
+     "mediana": "#d5c88f",
+     "dE": 23.5,
+     "dEn": 12.6,
+     "renderLin": [
+      0.8509,
+      0.5266,
+      0.1834
+     ],
+     "fotoLin": [
+      0.626,
+      0.5571,
+      0.3338
+     ]
+    },
+    {
+     "id": 202,
+     "kind": "item",
+     "type": "bed",
+     "at": [
+      5.22,
+      1.4
+     ],
+     "level": 0,
+     "item": 65,
+     "color": "#a8957a",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 54273,
+     "quemado": 2477,
+     "render": "#988165",
+     "foto": "#a78a71",
+     "mediana": "#a8856c",
+     "dE": 4.9,
+     "dEn": 12.5,
+     "renderLin": [
+      0.3147,
+      0.2202,
+      0.131
+     ],
+     "fotoLin": [
+      0.386,
+      0.2551,
+      0.1655
+     ]
+    },
+    {
+     "id": 7,
+     "kind": "floor",
+     "room": "Dormitorio",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 18951,
+     "quemado": 1659,
+     "render": "#a6512b",
+     "foto": "#81695e",
+     "mediana": "#724628",
+     "dE": 37.3,
+     "dEn": 28.7,
+     "renderLin": [
+      0.3819,
+      0.0818,
+      0.0237
+     ],
+     "fotoLin": [
+      0.2208,
+      0.1408,
+      0.1118
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 22741,
+     "quemado": 1263,
+     "render": "#d0c1b1",
+     "foto": "#b29b91",
+     "mediana": "#b1968b",
+     "dE": 14.3,
+     "dEn": 18.6,
+     "renderLin": [
+      0.6336,
+      0.5351,
+      0.4385
+     ],
+     "fotoLin": [
+      0.4476,
+      0.3255,
+      0.2816
+     ]
+    },
+    {
+     "id": 11,
+     "kind": "wall",
+     "level": 0,
+     "wall": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 19172,
+     "quemado": 162,
+     "render": "#d3c3b2",
+     "foto": "#b9a99b",
+     "mediana": "#b99f94",
+     "dE": 9.6,
+     "dEn": 14.1,
+     "renderLin": [
+      0.6508,
+      0.5455,
+      0.4465
+     ],
+     "fotoLin": [
+      0.4843,
+      0.3963,
+      0.3294
+     ]
+    },
+    {
+     "id": 208,
+     "kind": "item",
+     "type": "nightstand",
+     "at": [
+      6.03,
+      2.48
+     ],
+     "level": 0,
+     "item": 67,
+     "color": "#4b3324",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 5426,
+     "quemado": 911,
+     "render": "#402f26",
+     "foto": "#956c56",
+     "mediana": "#906249",
+     "dE": 30.8,
+     "dEn": 36.2,
+     "renderLin": [
+      0.0517,
+      0.0283,
+      0.0196
+     ],
+     "fotoLin": [
+      0.3017,
+      0.1502,
+      0.0933
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 6137,
+     "quemado": 366,
+     "render": "#d0b9a2",
+     "foto": "#cdd5c8",
+     "mediana": "#d2dcc9",
+     "dE": 15.1,
+     "dEn": 8.2,
+     "renderLin": [
+      0.6295,
+      0.4863,
+      0.3628
+     ],
+     "fotoLin": [
+      0.6124,
+      0.664,
+      0.5753
+     ]
+    },
+    {
+     "id": 203,
+     "kind": "item",
+     "type": "bed",
+     "at": [
+      5.22,
+      1.4
+     ],
+     "level": 0,
+     "item": 65,
+     "color": "#ffffff",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 1145,
+     "quemado": 0,
+     "render": "#be9452",
+     "foto": "#b9a188",
+     "mediana": "#bba288",
+     "dE": 24.9,
+     "dEn": 17.1,
+     "renderLin": [
+      0.515,
+      0.2982,
+      0.0843
+     ],
+     "fotoLin": [
+      0.4869,
+      0.3568,
+      0.247
+     ]
+    },
+    {
+     "id": 207,
+     "kind": "item",
+     "type": "nightstand",
+     "at": [
+      6.03,
+      2.48
+     ],
+     "level": 0,
+     "item": 67,
+     "color": "#000000",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 292,
+     "quemado": 17,
+     "render": "#010100",
+     "foto": "#7e5541",
+     "mediana": "#6f422d",
+     "dE": 46.4,
+     "dEn": 51.7,
+     "renderLin": [
+      0.0003,
+      0.0002,
+      0.0001
+     ],
+     "fotoLin": [
+      0.2093,
+      0.0916,
+      0.0529
+     ]
+    }
+   ]
+  },
+  "cocina": {
+   "nombre": "Cocina",
+   "foto": "cocina",
+   "puntaje": 10.1,
+   "puntajeCrudo": 33.5,
+   "exposicion": [
+    1.069,
+    1.755,
+    3.409
+   ],
+   "cubierto": 87,
+   "objetos": [
+    {
+     "id": 143,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      3.2,
+      7.435
+     ],
+     "level": 0,
+     "item": 36,
+     "color": "#ece4cf",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 39380,
+     "quemado": 851,
+     "render": "#e4b47b",
+     "foto": "#c2c2ba",
+     "mediana": "#c4c3b8",
+     "dE": 33.8,
+     "dEn": 13.5,
+     "renderLin": [
+      0.7773,
+      0.4555,
+      0.1992
+     ],
+     "fotoLin": [
+      0.5408,
+      0.5414,
+      0.4935
+     ]
+    },
+    {
+     "id": 137,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#cdd0d3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 15758,
+     "quemado": 13,
+     "render": "#e3bd93",
+     "foto": "#8b8887",
+     "mediana": "#8d8d8d",
+     "dE": 34.2,
+     "dEn": 32.8,
+     "renderLin": [
+      0.7658,
+      0.508,
+      0.2932
+     ],
+     "fotoLin": [
+      0.2589,
+      0.2453,
+      0.243
+     ]
+    },
+    {
+     "id": 145,
+     "kind": "item",
+     "type": "kitchen-wall",
+     "at": [
+      3.035,
+      7.475
+     ],
+     "level": 0,
+     "item": 38,
+     "color": "#c8924f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 26398,
+     "quemado": 157,
+     "render": "#de873f",
+     "foto": "#ceb49b",
+     "mediana": "#cea164",
+     "dE": 42.8,
+     "dEn": 17.7,
+     "renderLin": [
+      0.7275,
+      0.242,
+      0.0495
+     ],
+     "fotoLin": [
+      0.6146,
+      0.4579,
+      0.3279
+     ]
+    },
+    {
+     "id": 3,
+     "kind": "floor",
+     "room": "Cocina",
+     "level": 0,
+     "color": "#b9bab6",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 12224,
+     "quemado": 713,
+     "render": "#ddb688",
+     "foto": "#7f8086",
+     "mediana": "#8b8d92",
+     "dE": 39.7,
+     "dEn": 34.7,
+     "renderLin": [
+      0.7208,
+      0.4668,
+      0.2466
+     ],
+     "fotoLin": [
+      0.2126,
+      0.2159,
+      0.2383
+     ]
+    },
+    {
+     "id": 18,
+     "kind": "wall",
+     "level": 0,
+     "wall": 7,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 6169,
+     "quemado": 59,
+     "render": "#8d7153",
+     "foto": "#e2e5e9",
+     "mediana": "#e7eaee",
+     "dE": 47.8,
+     "dEn": 26.8,
+     "renderLin": [
+      0.268,
+      0.1651,
+      0.087
+     ],
+     "fotoLin": [
+      0.7614,
+      0.7846,
+      0.8156
+     ]
+    },
+    {
+     "id": 130,
+     "kind": "item",
+     "type": "range",
+     "at": [
+      2.91,
+      6.84
+     ],
+     "level": 0,
+     "item": 32,
+     "color": "#1d1d1f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 4418,
+     "quemado": 764,
+     "render": "#32230f",
+     "foto": "#8d6a55",
+     "mediana": "#996235",
+     "dE": 33.7,
+     "dEn": 33.2,
+     "renderLin": [
+      0.0317,
+      0.0164,
+      0.0046
+     ],
+     "fotoLin": [
+      0.2684,
+      0.1435,
+      0.0916
+     ]
+    },
+    {
+     "id": 125,
+     "kind": "item",
+     "type": "fridge",
+     "at": [
+      2.87,
+      5.8
+     ],
+     "level": 0,
+     "item": 27,
+     "color": "#b8bcc0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 25969,
+     "quemado": 1216,
+     "render": "#967c60",
+     "foto": "#9d9d9d",
+     "mediana": "#8d8b8b",
+     "dE": 22.5,
+     "dEn": 4.1,
+     "renderLin": [
+      0.3066,
+      0.2012,
+      0.1182
+     ],
+     "fotoLin": [
+      0.3387,
+      0.3372,
+      0.3368
+     ]
+    },
+    {
+     "id": 135,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#c8924f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 2348,
+     "quemado": 0,
+     "render": "#c47115",
+     "foto": "#894d1d",
+     "mediana": "#8d4f1c",
+     "dE": 26.9,
+     "dEn": 28.2,
+     "renderLin": [
+      0.5528,
+      0.1652,
+      0.0077
+     ],
+     "fotoLin": [
+      0.2493,
+      0.0743,
+      0.012
+     ]
+    },
+    {
+     "id": 62,
+     "kind": "baseboard",
+     "level": 0,
+     "color": "#a9653a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1307,
+     "quemado": 27,
+     "render": "#723303",
+     "foto": "#595a60",
+     "mediana": "#5c5d63",
+     "dE": 50,
+     "dEn": 33.2,
+     "renderLin": [
+      0.1692,
+      0.0334,
+      0.0008
+     ],
+     "fotoLin": [
+      0.1006,
+      0.1029,
+      0.1176
+     ]
+    },
+    {
+     "id": 283,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      2.99,
+      6.33
+     ],
+     "level": 0,
+     "item": 29,
+     "color": "#2a2a2c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 917,
+     "quemado": 0,
+     "render": "#44321c",
+     "foto": "#c6c6bf",
+     "mediana": "#cecdc7",
+     "dE": 59.2,
+     "dEn": 45.3,
+     "renderLin": [
+      0.0583,
+      0.0319,
+      0.0119
+     ],
+     "fotoLin": [
+      0.5621,
+      0.562,
+      0.5222
+     ]
+    },
+    {
+     "id": 131,
+     "kind": "item",
+     "type": "range",
+     "at": [
+      2.91,
+      6.84
+     ],
+     "level": 0,
+     "item": 32,
+     "color": "#0b0d10",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1082,
+     "quemado": 62,
+     "render": "#040201",
+     "foto": "#483327",
+     "mediana": "#151519",
+     "dE": 25.9,
+     "dEn": 28.9,
+     "renderLin": [
+      0.0013,
+      0.0008,
+      0.0003
+     ],
+     "fotoLin": [
+      0.065,
+      0.0325,
+      0.0201
+     ]
+    },
+    {
+     "id": 24,
+     "kind": "wall",
+     "level": 0,
+     "wall": 13,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2219,
+     "quemado": 0,
+     "render": "#c59b70",
+     "foto": "#a8a8a7",
+     "mediana": "#aeaeac",
+     "dE": 29.7,
+     "dEn": 11.4,
+     "renderLin": [
+      0.5567,
+      0.3281,
+      0.1627
+     ],
+     "fotoLin": [
+      0.3912,
+      0.3903,
+      0.3865
+     ]
+    },
+    {
+     "id": 142,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#2a2a2b",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 445,
+     "quemado": 0,
+     "render": "#231603",
+     "foto": "#8c5624",
+     "mediana": "#8a511b",
+     "dE": 44.1,
+     "dEn": 46.1,
+     "renderLin": [
+      0.0172,
+      0.008,
+      0.001
+     ],
+     "fotoLin": [
+      0.2602,
+      0.0934,
+      0.0177
+     ]
+    },
+    {
+     "id": 290,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      2.82,
+      6.93
+     ],
+     "level": 0,
+     "item": 33,
+     "color": "#232325",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1611,
+     "quemado": 998,
+     "render": "#49351e",
+     "foto": "#56575a",
+     "mediana": "#3e3f42",
+     "dE": 24.5,
+     "dEn": 7.2,
+     "renderLin": [
+      0.066,
+      0.036,
+      0.0126
+     ],
+     "fotoLin": [
+      0.0924,
+      0.0951,
+      0.1019
+     ]
+    },
+    {
+     "id": 133,
+     "kind": "item",
+     "type": "range",
+     "at": [
+      2.91,
+      6.84
+     ],
+     "level": 0,
+     "item": 32,
+     "color": "#1c1c1d",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 356,
+     "quemado": 27,
+     "render": "#2b1f0a",
+     "foto": "#7c7f85",
+     "mediana": "#767982",
+     "dE": 44.6,
+     "dEn": 30.4,
+     "renderLin": [
+      0.0243,
+      0.0137,
+      0.0029
+     ],
+     "fotoLin": [
+      0.2012,
+      0.2127,
+      0.2346
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 413,
+     "quemado": 0,
+     "render": "#866b54",
+     "foto": "#d7d7da",
+     "mediana": "#dad9de",
+     "dE": 43.5,
+     "dEn": 26,
+     "renderLin": [
+      0.2388,
+      0.1483,
+      0.0886
+     ],
+     "fotoLin": [
+      0.6763,
+      0.6783,
+      0.7046
+     ]
+    },
+    {
+     "id": 19,
+     "kind": "wall",
+     "level": 0,
+     "wall": 8,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 119014,
+     "quemado": 288,
+     "render": "#c09b75",
+     "foto": "#c6c8cc",
+     "mediana": "#d1d3d6",
+     "dE": 32.1,
+     "dEn": 0,
+     "renderLin": [
+      0.529,
+      0.3281,
+      0.1776
+     ],
+     "fotoLin": [
+      0.5656,
+      0.5759,
+      0.6054
+     ]
+    }
+   ]
+  },
+  "cocina2": {
+   "nombre": "Cocina hacia el lavadero",
+   "foto": "cocina2",
+   "puntaje": 25.1,
+   "puntajeCrudo": 39.5,
+   "exposicion": [
+    0.875,
+    1.615,
+    5.169
+   ],
+   "cubierto": 71.9,
+   "objetos": [
+    {
+     "id": 59,
+     "kind": "door",
+     "level": 0,
+     "wall": 13,
+     "opening": 0,
+     "color": "#5b3424",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 21684,
+     "quemado": 22,
+     "render": "#54290e",
+     "foto": "#b1a7a1",
+     "mediana": "#c3bfb8",
+     "dE": 54.1,
+     "dEn": 40.9,
+     "renderLin": [
+      0.0883,
+      0.0222,
+      0.0042
+     ],
+     "fotoLin": [
+      0.4389,
+      0.3877,
+      0.3564
+     ]
+    },
+    {
+     "id": 24,
+     "kind": "wall",
+     "level": 0,
+     "wall": 13,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 39167,
+     "quemado": 2225,
+     "render": "#d8ab7d",
+     "foto": "#c1b1a7",
+     "mediana": "#c5c3bd",
+     "dE": 23.7,
+     "dEn": 17.4,
+     "renderLin": [
+      0.6855,
+      0.4065,
+      0.2049
+     ],
+     "fotoLin": [
+      0.5306,
+      0.4409,
+      0.3872
+     ]
+    },
+    {
+     "id": 39,
+     "kind": "door",
+     "level": 0,
+     "wall": 3,
+     "opening": 1,
+     "color": "#5a2626",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 17778,
+     "quemado": 644,
+     "render": "#4b1002",
+     "foto": "#7b787a",
+     "mediana": "#3c1f1e",
+     "dE": 49.4,
+     "dEn": 34.3,
+     "renderLin": [
+      0.0697,
+      0.0051,
+      0.0006
+     ],
+     "fotoLin": [
+      0.1987,
+      0.1871,
+      0.1958
+     ]
+    },
+    {
+     "id": 10,
+     "kind": "ceiling",
+     "level": 0,
+     "color": "#f7f6f3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 19459,
+     "quemado": 0,
+     "render": "#8a6e54",
+     "foto": "#b7bec7",
+     "mediana": "#bcc2c8",
+     "dE": 38,
+     "dEn": 25.4,
+     "renderLin": [
+      0.2541,
+      0.1548,
+      0.0876
+     ],
+     "fotoLin": [
+      0.474,
+      0.5167,
+      0.5693
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 10578,
+     "quemado": 10225,
+     "render": "#b68c63",
+     "foto": "#3e3233",
+     "mediana": "#221515",
+     "dE": 47.5,
+     "dEn": 43.8,
+     "renderLin": [
+      0.4674,
+      0.2619,
+      0.1257
+     ],
+     "fotoLin": [
+      0.0477,
+      0.0322,
+      0.0331
+     ]
+    },
+    {
+     "id": 135,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#c8924f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 13994,
+     "quemado": 2696,
+     "render": "#af6512",
+     "foto": "#785e56",
+     "mediana": "#814e31",
+     "dE": 48.4,
+     "dEn": 26.1,
+     "renderLin": [
+      0.4277,
+      0.1289,
+      0.0061
+     ],
+     "fotoLin": [
+      0.1873,
+      0.1127,
+      0.0941
+     ]
+    },
+    {
+     "id": 3,
+     "kind": "floor",
+     "room": "Cocina",
+     "level": 0,
+     "color": "#b9bab6",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 11059,
+     "quemado": 619,
+     "render": "#c7a682",
+     "foto": "#888a93",
+     "mediana": "#8c8f99",
+     "dE": 31.7,
+     "dEn": 22,
+     "renderLin": [
+      0.5723,
+      0.383,
+      0.2233
+     ],
+     "fotoLin": [
+      0.2463,
+      0.2548,
+      0.2934
+     ]
+    },
+    {
+     "id": 14,
+     "kind": "wall",
+     "level": 0,
+     "wall": 3,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 7240,
+     "quemado": 309,
+     "render": "#7b6147",
+     "foto": "#bbc4ce",
+     "mediana": "#c0cad6",
+     "dE": 44.2,
+     "dEn": 30.4,
+     "renderLin": [
+      0.1986,
+      0.1196,
+      0.0625
+     ],
+     "fotoLin": [
+      0.4944,
+      0.5494,
+      0.6154
+     ]
+    },
+    {
+     "id": 145,
+     "kind": "item",
+     "type": "kitchen-wall",
+     "at": [
+      3.035,
+      7.475
+     ],
+     "level": 0,
+     "item": 38,
+     "color": "#c8924f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 15533,
+     "quemado": 517,
+     "render": "#b0661b",
+     "foto": "#c4a998",
+     "mediana": "#c8a089",
+     "dE": 47.2,
+     "dEn": 13.6,
+     "renderLin": [
+      0.4356,
+      0.134,
+      0.0112
+     ],
+     "fotoLin": [
+      0.5495,
+      0.3963,
+      0.314
+     ]
+    },
+    {
+     "id": 157,
+     "kind": "item",
+     "type": "kitchen-cart",
+     "at": [
+      1.297,
+      7.635
+     ],
+     "level": 0,
+     "item": 44,
+     "color": "#f1ede4",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 8276,
+     "quemado": 518,
+     "render": "#d6ad82",
+     "foto": "#959390",
+     "mediana": "#907f75",
+     "dE": 29.9,
+     "dEn": 22,
+     "renderLin": [
+      0.6713,
+      0.4175,
+      0.2244
+     ],
+     "fotoLin": [
+      0.3027,
+      0.2919,
+      0.2799
+     ]
+    },
+    {
+     "id": 61,
+     "kind": "structure",
+     "level": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 12233,
+     "quemado": 919,
+     "render": "#c3986c",
+     "foto": "#c0bdba",
+     "mediana": "#c6c9bf",
+     "dE": 31.2,
+     "dEn": 12.2,
+     "renderLin": [
+      0.5468,
+      0.3139,
+      0.1494
+     ],
+     "fotoLin": [
+      0.5258,
+      0.5069,
+      0.4899
+     ]
+    },
+    {
+     "id": 158,
+     "kind": "item",
+     "type": "kitchen-cart",
+     "at": [
+      1.297,
+      7.635
+     ],
+     "level": 0,
+     "item": 44,
+     "color": "#b8693a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 4503,
+     "quemado": 0,
+     "render": "#e87643",
+     "foto": "#aca8a2",
+     "mediana": "#b8bab1",
+     "dE": 59.6,
+     "dEn": 30.3,
+     "renderLin": [
+      0.8086,
+      0.1817,
+      0.0567
+     ],
+     "fotoLin": [
+      0.4129,
+      0.3927,
+      0.3597
+     ]
+    },
+    {
+     "id": 144,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      2.8175,
+      8.75
+     ],
+     "level": 0,
+     "item": 37,
+     "color": "#ece4cf",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 4174,
+     "quemado": 163,
+     "render": "#c39865",
+     "foto": "#75736c",
+     "mediana": "#3c2422",
+     "dE": 35.2,
+     "dEn": 24.5,
+     "renderLin": [
+      0.5469,
+      0.3135,
+      0.1294
+     ],
+     "fotoLin": [
+      0.1793,
+      0.1709,
+      0.15
+     ]
+    },
+    {
+     "id": 137,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#cdd0d3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3678,
+     "quemado": 131,
+     "render": "#dbb68f",
+     "foto": "#8e96a0",
+     "mediana": "#919ca3",
+     "dE": 35.7,
+     "dEn": 24.6,
+     "renderLin": [
+      0.7058,
+      0.4698,
+      0.2733
+     ],
+     "fotoLin": [
+      0.2686,
+      0.3043,
+      0.3518
+     ]
+    },
+    {
+     "id": 42,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 3,
+     "opening": 2,
+     "color": "#5a2626",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1324,
+     "quemado": 453,
+     "render": "#370c01",
+     "foto": "#cad1d9",
+     "mediana": "#d4dce5",
+     "dE": 79.2,
+     "dEn": 68.3,
+     "renderLin": [
+      0.0388,
+      0.0038,
+      0.0004
+     ],
+     "fotoLin": [
+      0.59,
+      0.6364,
+      0.6903
+     ]
+    },
+    {
+     "id": 40,
+     "kind": "door",
+     "level": 0,
+     "wall": 3,
+     "opening": 1,
+     "color": "#e3e8e8",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3014,
+     "quemado": 1251,
+     "render": "#9e8466",
+     "foto": "#cfd4d9",
+     "mediana": "#e2e6ee",
+     "dE": 36.5,
+     "dEn": 27.8,
+     "renderLin": [
+      0.3438,
+      0.2307,
+      0.134
+     ],
+     "fotoLin": [
+      0.6257,
+      0.6579,
+      0.6928
+     ]
+    },
+    {
+     "id": 44,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 3,
+     "opening": 2,
+     "color": "#e6ebec",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3318,
+     "quemado": 1033,
+     "render": "#927a60",
+     "foto": "#b7bdc4",
+     "mediana": "#b6bec6",
+     "dE": 32.5,
+     "dEn": 24,
+     "renderLin": [
+      0.2859,
+      0.1954,
+      0.1182
+     ],
+     "fotoLin": [
+      0.4719,
+      0.5099,
+      0.5505
+     ]
+    },
+    {
+     "id": 148,
+     "kind": "item",
+     "type": "water-heater",
+     "at": [
+      1.31,
+      8.45
+     ],
+     "level": 0,
+     "item": 40,
+     "color": "#f4f4f2",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3241,
+     "quemado": 7,
+     "render": "#d4ab82",
+     "foto": "#cdc8c6",
+     "mediana": "#d5d7d6",
+     "dE": 28,
+     "dEn": 16.9,
+     "renderLin": [
+      0.6587,
+      0.4061,
+      0.2223
+     ],
+     "fotoLin": [
+      0.6079,
+      0.5769,
+      0.5674
+     ]
+    },
+    {
+     "id": 161,
+     "kind": "item",
+     "type": "appliance",
+     "at": [
+      1.31,
+      7.855
+     ],
+     "level": 0,
+     "item": 45,
+     "color": "#1c1c1d",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 916,
+     "quemado": 171,
+     "render": "#120800",
+     "foto": "#838587",
+     "mediana": "#747779",
+     "dE": 53.1,
+     "dEn": 52,
+     "renderLin": [
+      0.0059,
+      0.0025,
+      0.0002
+     ],
+     "fotoLin": [
+      0.2262,
+      0.2362,
+      0.242
+     ]
+    },
+    {
+     "id": 143,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      3.2,
+      7.435
+     ],
+     "level": 0,
+     "item": 36,
+     "color": "#ece4cf",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 7883,
+     "quemado": 901,
+     "render": "#b48c5d",
+     "foto": "#a9afb3",
+     "mediana": "#abaeaf",
+     "dE": 36.4,
+     "dEn": 5.5,
+     "renderLin": [
+      0.4565,
+      0.264,
+      0.1106
+     ],
+     "fotoLin": [
+      0.3993,
+      0.4291,
+      0.4513
+     ]
+    },
+    {
+     "id": 138,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#c9ccd0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 697,
+     "quemado": 44,
+     "render": "#151213",
+     "foto": "#7e848f",
+     "mediana": "#777f89",
+     "dE": 49.6,
+     "dEn": 49.2,
+     "renderLin": [
+      0.0074,
+      0.0059,
+      0.0065
+     ],
+     "fotoLin": [
+      0.2075,
+      0.2297,
+      0.273
+     ]
+    },
+    {
+     "id": 153,
+     "kind": "item",
+     "type": "water-heater",
+     "at": [
+      1.31,
+      8.45
+     ],
+     "level": 0,
+     "item": 40,
+     "color": "#b5b8bb",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 475,
+     "quemado": 0,
+     "render": "#1e2024",
+     "foto": "#bac6d1",
+     "mediana": "#c3cfdb",
+     "dE": 67.2,
+     "dEn": 68.6,
+     "renderLin": [
+      0.013,
+      0.0147,
+      0.0173
+     ],
+     "fotoLin": [
+      0.4914,
+      0.5654,
+      0.6375
+     ]
+    },
+    {
+     "id": 160,
+     "kind": "item",
+     "type": "kitchen-cart",
+     "at": [
+      1.297,
+      7.635
+     ],
+     "level": 0,
+     "item": 44,
+     "color": "#f4f4f2",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2932,
+     "quemado": 1,
+     "render": "#bb9771",
+     "foto": "#adb3bc",
+     "mediana": "#acb3be",
+     "dE": 32.4,
+     "dEn": 10.7,
+     "renderLin": [
+      0.4961,
+      0.3089,
+      0.1655
+     ],
+     "fotoLin": [
+      0.4186,
+      0.4506,
+      0.5031
+     ]
+    },
+    {
+     "id": 162,
+     "kind": "item",
+     "type": "appliance",
+     "at": [
+      1.31,
+      7.855
+     ],
+     "level": 0,
+     "item": 45,
+     "color": "#0b0d10",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 383,
+     "quemado": 0,
+     "render": "#050301",
+     "foto": "#b6b7b2",
+     "mediana": "#b3b3ae",
+     "dE": 73.3,
+     "dEn": 75.2,
+     "renderLin": [
+      0.0015,
+      0.0009,
+      0.0004
+     ],
+     "fotoLin": [
+      0.4662,
+      0.4733,
+      0.4445
+     ]
+    },
+    {
+     "id": 155,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      1.07,
+      7.965
+     ],
+     "level": 0,
+     "item": 41,
+     "color": "#c9934f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1098,
+     "quemado": 38,
+     "render": "#d87f27",
+     "foto": "#c6bdaf",
+     "mediana": "#cbc8c2",
+     "dE": 58.9,
+     "dEn": 19.5,
+     "renderLin": [
+      0.6857,
+      0.2139,
+      0.0207
+     ],
+     "fotoLin": [
+      0.5679,
+      0.5063,
+      0.4261
+     ]
+    },
+    {
+     "id": 304,
+     "kind": "item",
+     "type": "appliance",
+     "at": [
+      1.3,
+      7.425
+     ],
+     "level": 0,
+     "item": 46,
+     "color": "#f2f2f0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 330,
+     "quemado": 4,
+     "render": "#d3aa80",
+     "foto": "#a7afb5",
+     "mediana": "#adb8bc",
+     "dE": 33.3,
+     "dEn": 14.1,
+     "renderLin": [
+      0.6521,
+      0.4016,
+      0.2156
+     ],
+     "fotoLin": [
+      0.3877,
+      0.4302,
+      0.4635
+     ]
+    }
+   ]
+  },
+  "cocina3": {
+   "nombre": "Mesada",
+   "foto": "cocina3",
+   "puntaje": 19.7,
+   "puntajeCrudo": 38.9,
+   "exposicion": [
+    0.809,
+    1.996,
+    5.401
+   ],
+   "cubierto": 78.6,
+   "objetos": [
+    {
+     "id": 39,
+     "kind": "door",
+     "level": 0,
+     "wall": 3,
+     "opening": 1,
+     "color": "#5a2626",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 38900,
+     "quemado": 18,
+     "render": "#470e02",
+     "foto": "#817b80",
+     "mediana": "#57393d",
+     "dE": 50.1,
+     "dEn": 31.5,
+     "renderLin": [
+      0.0625,
+      0.0043,
+      0.0005
+     ],
+     "fotoLin": [
+      0.2211,
+      0.1982,
+      0.2154
+     ]
+    },
+    {
+     "id": 143,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      3.2,
+      7.435
+     ],
+     "level": 0,
+     "item": 36,
+     "color": "#ece4cf",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 59673,
+     "quemado": 4588,
+     "render": "#e5b57c",
+     "foto": "#c4c4be",
+     "mediana": "#c9c9c4",
+     "dE": 34.6,
+     "dEn": 16.6,
+     "renderLin": [
+      0.7838,
+      0.4598,
+      0.202
+     ],
+     "fotoLin": [
+      0.5526,
+      0.55,
+      0.516
+     ]
+    },
+    {
+     "id": 3,
+     "kind": "floor",
+     "room": "Cocina",
+     "level": 0,
+     "color": "#b9bab6",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 14544,
+     "quemado": 8,
+     "render": "#ba9974",
+     "foto": "#806e6a",
+     "mediana": "#856d4c",
+     "dE": 25.9,
+     "dEn": 30.6,
+     "renderLin": [
+      0.4919,
+      0.32,
+      0.1762
+     ],
+     "fotoLin": [
+      0.2167,
+      0.1555,
+      0.1436
+     ]
+    },
+    {
+     "id": 145,
+     "kind": "item",
+     "type": "kitchen-wall",
+     "at": [
+      3.035,
+      7.475
+     ],
+     "level": 0,
+     "item": 38,
+     "color": "#c8924f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 44378,
+     "quemado": 0,
+     "render": "#d8833b",
+     "foto": "#c5b4a7",
+     "mediana": "#c4babc",
+     "dE": 49.6,
+     "dEn": 7.9,
+     "renderLin": [
+      0.6879,
+      0.2278,
+      0.0439
+     ],
+     "fotoLin": [
+      0.5567,
+      0.4547,
+      0.3854
+     ]
+    },
+    {
+     "id": 137,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#cdd0d3",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 10781,
+     "quemado": 34,
+     "render": "#edc59c",
+     "foto": "#babbbc",
+     "mediana": "#c4c5c6",
+     "dE": 29,
+     "dEn": 25.6,
+     "renderLin": [
+      0.8429,
+      0.5608,
+      0.3312
+     ],
+     "fotoLin": [
+      0.4887,
+      0.4959,
+      0.5053
+     ]
+    },
+    {
+     "id": 40,
+     "kind": "door",
+     "level": 0,
+     "wall": 3,
+     "opening": 1,
+     "color": "#e3e8e8",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 14625,
+     "quemado": 66,
+     "render": "#927a5f",
+     "foto": "#9b9ea4",
+     "mediana": "#9397a0",
+     "dE": 25.5,
+     "dEn": 18,
+     "renderLin": [
+      0.2893,
+      0.1952,
+      0.1151
+     ],
+     "fotoLin": [
+      0.3291,
+      0.3403,
+      0.3721
+     ]
+    },
+    {
+     "id": 135,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#c8924f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 14724,
+     "quemado": 14,
+     "render": "#b76912",
+     "foto": "#c29a73",
+     "mediana": "#cb9f71",
+     "dE": 36.3,
+     "dEn": 12.7,
+     "renderLin": [
+      0.471,
+      0.1412,
+      0.0062
+     ],
+     "fotoLin": [
+      0.5398,
+      0.3231,
+      0.1706
+     ]
+    },
+    {
+     "id": 14,
+     "kind": "wall",
+     "level": 0,
+     "wall": 3,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 4853,
+     "quemado": 0,
+     "render": "#7a6046",
+     "foto": "#cdd0d9",
+     "mediana": "#cdd0d9",
+     "dE": 47.6,
+     "dEn": 36.1,
+     "renderLin": [
+      0.1947,
+      0.1166,
+      0.0606
+     ],
+     "fotoLin": [
+      0.6103,
+      0.6305,
+      0.6917
+     ]
+    },
+    {
+     "id": 44,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 3,
+     "opening": 2,
+     "color": "#e6ebec",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 5583,
+     "quemado": 587,
+     "render": "#8d765d",
+     "foto": "#bec3ca",
+     "mediana": "#bfc6d5",
+     "dE": 35.2,
+     "dEn": 27.8,
+     "renderLin": [
+      0.2648,
+      0.1809,
+      0.1098
+     ],
+     "fotoLin": [
+      0.5127,
+      0.5476,
+      0.5931
+     ]
+    },
+    {
+     "id": 42,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 3,
+     "opening": 2,
+     "color": "#5a2626",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 2128,
+     "quemado": 44,
+     "render": "#330701",
+     "foto": "#c4c1c6",
+     "mediana": "#d1d3db",
+     "dE": 74.6,
+     "dEn": 63.4,
+     "renderLin": [
+      0.0329,
+      0.0021,
+      0.0002
+     ],
+     "fotoLin": [
+      0.5518,
+      0.5337,
+      0.5615
+     ]
+    },
+    {
+     "id": 138,
+     "kind": "item",
+     "type": "kitchen-base",
+     "at": [
+      2.9,
+      7.925
+     ],
+     "level": 0,
+     "item": 34,
+     "color": "#c9ccd0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 1765,
+     "quemado": 3,
+     "render": "#1b1b1c",
+     "foto": "#a8a8a4",
+     "mediana": "#a5a6a4",
+     "dE": 59.1,
+     "dEn": 62.5,
+     "renderLin": [
+      0.0111,
+      0.0108,
+      0.0115
+     ],
+     "fotoLin": [
+      0.3895,
+      0.3921,
+      0.3723
+     ]
+    },
+    {
+     "id": 130,
+     "kind": "item",
+     "type": "range",
+     "at": [
+      2.91,
+      6.84
+     ],
+     "level": 0,
+     "item": 32,
+     "color": "#1d1d1f",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 7439,
+     "quemado": 3194,
+     "render": "#5d472c",
+     "foto": "#43454c",
+     "mediana": "#2a2c37",
+     "dE": 25.1,
+     "dEn": 10.7,
+     "renderLin": [
+      0.1103,
+      0.0624,
+      0.0248
+     ],
+     "fotoLin": [
+      0.0568,
+      0.0593,
+      0.0726
+     ]
+    },
+    {
+     "id": 290,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      2.82,
+      6.93
+     ],
+     "level": 0,
+     "item": 33,
+     "color": "#232325",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 5724,
+     "quemado": 606,
+     "render": "#48341c",
+     "foto": "#5e5f63",
+     "mediana": "#44454b",
+     "dE": 27.3,
+     "dEn": 11.9,
+     "renderLin": [
+      0.0645,
+      0.0344,
+      0.0116
+     ],
+     "fotoLin": [
+      0.1121,
+      0.1139,
+      0.1241
+     ]
+    },
+    {
+     "id": 144,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      2.8175,
+      8.75
+     ],
+     "level": 0,
+     "item": 37,
+     "color": "#ece4cf",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 4304,
+     "quemado": 79,
+     "render": "#c79a66",
+     "foto": "#c1bcb4",
+     "mediana": "#cbc8c2",
+     "dE": 31.9,
+     "dEn": 15.6,
+     "renderLin": [
+      0.5693,
+      0.3248,
+      0.1329
+     ],
+     "fotoLin": [
+      0.5362,
+      0.5005,
+      0.4543
+     ]
+    },
+    {
+     "id": 61,
+     "kind": "structure",
+     "level": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3891,
+     "quemado": 18,
+     "render": "#be956a",
+     "foto": "#b6b4af",
+     "mediana": "#c2c0bb",
+     "dE": 29.2,
+     "dEn": 15.4,
+     "renderLin": [
+      0.5168,
+      0.3002,
+      0.1452
+     ],
+     "fotoLin": [
+      0.466,
+      0.4541,
+      0.4309
+     ]
+    },
+    {
+     "id": 4,
+     "kind": "floor",
+     "room": "Lavadero",
+     "level": 0,
+     "color": "#bdb6aa",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 465,
+     "quemado": 0,
+     "render": "#a18161",
+     "foto": "#3f1f25",
+     "mediana": "#401f26",
+     "dE": 45.2,
+     "dEn": 44.9,
+     "renderLin": [
+      0.3545,
+      0.2187,
+      0.1187
+     ],
+     "fotoLin": [
+      0.0498,
+      0.0134,
+      0.0184
+     ]
+    },
+    {
+     "id": 133,
+     "kind": "item",
+     "type": "range",
+     "at": [
+      2.91,
+      6.84
+     ],
+     "level": 0,
+     "item": 32,
+     "color": "#1c1c1d",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1158,
+     "quemado": 663,
+     "render": "#4d3a20",
+     "foto": "#55575b",
+     "mediana": "#3f4148",
+     "dE": 24.9,
+     "dEn": 8,
+     "renderLin": [
+      0.0735,
+      0.0424,
+      0.0147
+     ],
+     "fotoLin": [
+      0.0917,
+      0.0948,
+      0.1057
+     ]
+    }
+   ]
+  },
+  "bano": {
+   "nombre": "Baño",
+   "foto": "bano",
+   "puntaje": 11.5,
+   "puntajeCrudo": 29,
+   "exposicion": [
+    0.474,
+    0.567,
+    0.897
+   ],
+   "cubierto": 84.8,
+   "objetos": [
+    {
+     "id": 189,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      5.28,
+      3.77
+     ],
+     "level": 0,
+     "item": 57,
+     "color": "#f1eee8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 64683,
+     "quemado": 170,
+     "render": "#eac197",
+     "foto": "#b0afb3",
+     "mediana": "#b9bbc1",
+     "dE": 30.7,
+     "dEn": 13.8,
+     "renderLin": [
+      0.8248,
+      0.5326,
+      0.3106
+     ],
+     "fotoLin": [
+      0.434,
+      0.4294,
+      0.4486
+     ]
+    },
+    {
+     "id": 190,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      5.28,
+      5.25
+     ],
+     "level": 0,
+     "item": 58,
+     "color": "#f1eee8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 75334,
+     "quemado": 98,
+     "render": "#eac197",
+     "foto": "#9f958d",
+     "mediana": "#9e998f",
+     "dE": 28.8,
+     "dEn": 5.4,
+     "renderLin": [
+      0.8256,
+      0.5329,
+      0.3078
+     ],
+     "fotoLin": [
+      0.3446,
+      0.3014,
+      0.2643
+     ]
+    },
+    {
+     "id": 171,
+     "kind": "item",
+     "type": "shower-curtain",
+     "at": [
+      5.52,
+      4.51
+     ],
+     "level": 0,
+     "item": 49,
+     "color": "#f3f3f1",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 9240,
+     "quemado": 13,
+     "render": "#a6896b",
+     "foto": "#b7b9be",
+     "mediana": "#bdbfc4",
+     "dE": 28.9,
+     "dEn": 36.2,
+     "renderLin": [
+      0.3835,
+      0.2514,
+      0.1465
+     ],
+     "fotoLin": [
+      0.475,
+      0.4867,
+      0.5149
+     ]
+    },
+    {
+     "id": 166,
+     "kind": "item",
+     "type": "bathtub",
+     "at": [
+      5.856,
+      4.51
+     ],
+     "level": 0,
+     "item": 48,
+     "color": "#f7f7f5",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 28884,
+     "quemado": 5,
+     "render": "#f1cba3",
+     "foto": "#95928c",
+     "mediana": "#928e86",
+     "dE": 32.8,
+     "dEn": 10.3,
+     "renderLin": [
+      0.8824,
+      0.5945,
+      0.3641
+     ],
+     "fotoLin": [
+      0.2991,
+      0.2881,
+      0.2626
+     ]
+    },
+    {
+     "id": 56,
+     "kind": "door",
+     "level": 0,
+     "wall": 11,
+     "opening": 0,
+     "color": "#b06a2e",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 8986,
+     "quemado": 131,
+     "render": "#d87133",
+     "foto": "#ab520f",
+     "mediana": "#b35102",
+     "dE": 13.7,
+     "dEn": 18.9,
+     "renderLin": [
+      0.6859,
+      0.1653,
+      0.0335
+     ],
+     "fotoLin": [
+      0.4072,
+      0.0854,
+      0.0046
+     ]
+    },
+    {
+     "id": 187,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      4.62,
+      3.784
+     ],
+     "level": 0,
+     "item": 55,
+     "color": "#f3f2ee",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 5782,
+     "quemado": 49,
+     "render": "#e6be94",
+     "foto": "#c7cbd2",
+     "mediana": "#c6c7cc",
+     "dE": 31.9,
+     "dEn": 25.2,
+     "renderLin": [
+      0.7949,
+      0.5163,
+      0.2944
+     ],
+     "fotoLin": [
+      0.5738,
+      0.5964,
+      0.6425
+     ]
+    },
+    {
+     "id": 192,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      4.34,
+      4.117
+     ],
+     "level": 0,
+     "item": 60,
+     "color": "#f1eee8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 17714,
+     "quemado": 191,
+     "render": "#f3c89d",
+     "foto": "#b8aaae",
+     "mediana": "#c3c5cd",
+     "dE": 30.4,
+     "dEn": 8.1,
+     "renderLin": [
+      0.8998,
+      0.5779,
+      0.3355
+     ],
+     "fotoLin": [
+      0.4811,
+      0.4032,
+      0.4224
+     ]
+    },
+    {
+     "id": 170,
+     "kind": "item",
+     "type": "shower-curtain",
+     "at": [
+      5.52,
+      4.51
+     ],
+     "level": 0,
+     "item": 49,
+     "color": "#f4f4f2",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 9651,
+     "quemado": 69,
+     "render": "#caac8d",
+     "foto": "#aca5a5",
+     "mediana": "#b4bab8",
+     "dE": 20.2,
+     "dEn": 14.8,
+     "renderLin": [
+      0.5905,
+      0.412,
+      0.2649
+     ],
+     "fotoLin": [
+      0.4102,
+      0.376,
+      0.3778
+     ]
+    },
+    {
+     "id": 111,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      2.79,
+      5.115
+     ],
+     "level": 0,
+     "item": 21,
+     "color": "#b8743a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 3325,
+     "quemado": 181,
+     "render": "#cd6618",
+     "foto": "#b86017",
+     "mediana": "#b24f03",
+     "dE": 8,
+     "dEn": 19.3,
+     "renderLin": [
+      0.608,
+      0.134,
+      0.0094
+     ],
+     "fotoLin": [
+      0.4787,
+      0.1162,
+      0.0086
+     ]
+    },
+    {
+     "id": 6,
+     "kind": "floor",
+     "room": "Baño",
+     "level": 0,
+     "color": "#d6cebf",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 8148,
+     "quemado": 2,
+     "render": "#f6c694",
+     "foto": "#a59a91",
+     "mediana": "#a7998c",
+     "dE": 32.6,
+     "dEn": 7,
+     "renderLin": [
+      0.9213,
+      0.5667,
+      0.2981
+     ],
+     "fotoLin": [
+      0.3781,
+      0.3214,
+      0.2847
+     ]
+    },
+    {
+     "id": 5,
+     "kind": "floor",
+     "room": "Pasillo",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 1490,
+     "quemado": 0,
+     "render": "#ec6526",
+     "foto": "#662302",
+     "mediana": "#642202",
+     "dE": 47.6,
+     "dEn": 29.9,
+     "renderLin": [
+      0.8355,
+      0.1305,
+      0.0193
+     ],
+     "fotoLin": [
+      0.1327,
+      0.017,
+      0.0007
+     ]
+    },
+    {
+     "id": 52,
+     "kind": "door",
+     "level": 0,
+     "wall": 9,
+     "opening": 0,
+     "color": "#6b3a26",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 2072,
+     "quemado": 0,
+     "render": "#793508",
+     "foto": "#834836",
+     "mediana": "#7f3e04",
+     "dE": 18.5,
+     "dEn": 20.1,
+     "renderLin": [
+      0.191,
+      0.0352,
+      0.0024
+     ],
+     "fotoLin": [
+      0.2261,
+      0.0644,
+      0.0365
+     ]
+    },
+    {
+     "id": 177,
+     "kind": "item",
+     "type": "medicine-cabinet",
+     "at": [
+      5,
+      5.236
+     ],
+     "level": 0,
+     "item": 51,
+     "color": "#f3f2ee",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 5477,
+     "quemado": 16,
+     "render": "#f1cba3",
+     "foto": "#a49d94",
+     "mediana": "#aea99d",
+     "dE": 27.4,
+     "dEn": 6.1,
+     "renderLin": [
+      0.8771,
+      0.596,
+      0.3687
+     ],
+     "fotoLin": [
+      0.3733,
+      0.3379,
+      0.294
+     ]
+    },
+    {
+     "id": 188,
+     "kind": "item",
+     "type": "wall-shelf",
+     "at": [
+      4.62,
+      3.784
+     ],
+     "level": 0,
+     "item": 55,
+     "color": "#c9a172",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 579,
+     "quemado": 0,
+     "render": "#e5954f",
+     "foto": "#c1c3c9",
+     "mediana": "#bbbdc3",
+     "dE": 57.7,
+     "dEn": 47.5,
+     "renderLin": [
+      0.7824,
+      0.3001,
+      0.079
+     ],
+     "fotoLin": [
+      0.5316,
+      0.5473,
+      0.5867
+     ]
+    },
+    {
+     "id": 179,
+     "kind": "item",
+     "type": "medicine-cabinet",
+     "at": [
+      5,
+      5.236
+     ],
+     "level": 0,
+     "item": 51,
+     "color": "#ffffff",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 3567,
+     "quemado": 5,
+     "render": "#fad5ad",
+     "foto": "#b3ada4",
+     "mediana": "#b4aea5",
+     "dE": 26.2,
+     "dEn": 6.5,
+     "renderLin": [
+      0.9532,
+      0.6646,
+      0.4166
+     ],
+     "fotoLin": [
+      0.4521,
+      0.4162,
+      0.3718
+     ]
+    },
+    {
+     "id": 173,
+     "kind": "item",
+     "type": "vanity",
+     "at": [
+      5,
+      5.026
+     ],
+     "level": 0,
+     "item": 50,
+     "color": "#f7f7f5",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3916,
+     "quemado": 14,
+     "render": "#f9d4b0",
+     "foto": "#aba8a8",
+     "mediana": "#b6b6b7",
+     "dE": 29.3,
+     "dEn": 5.7,
+     "renderLin": [
+      0.9438,
+      0.6604,
+      0.4333
+     ],
+     "fotoLin": [
+      0.4099,
+      0.3913,
+      0.3904
+     ]
+    },
+    {
+     "id": 12,
+     "kind": "wall",
+     "level": 0,
+     "wall": 1,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 326,
+     "quemado": 0,
+     "render": "#d79567",
+     "foto": "#ad5003",
+     "mediana": "#ac4f02",
+     "dE": 33,
+     "dEn": 45.3,
+     "renderLin": [
+      0.683,
+      0.302,
+      0.1348
+     ],
+     "fotoLin": [
+      0.4191,
+      0.0807,
+      0.0009
+     ]
+    },
+    {
+     "id": 183,
+     "kind": "item",
+     "type": "toilet",
+     "at": [
+      5.1,
+      4.054
+     ],
+     "level": 0,
+     "item": 53,
+     "color": "#f7f7f5",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1790,
+     "quemado": 0,
+     "render": "#f9d5b0",
+     "foto": "#b0aca8",
+     "mediana": "#b0aaa5",
+     "dE": 27.2,
+     "dEn": 6.8,
+     "renderLin": [
+      0.9472,
+      0.6633,
+      0.4351
+     ],
+     "fotoLin": [
+      0.4316,
+      0.4116,
+      0.3904
+     ]
+    },
+    {
+     "id": 19,
+     "kind": "wall",
+     "level": 0,
+     "wall": 8,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 438,
+     "quemado": 0,
+     "render": "#e9b483",
+     "foto": "#776a74",
+     "mediana": "#6f6b7c",
+     "dE": 48,
+     "dEn": 26.8,
+     "renderLin": [
+      0.8158,
+      0.4587,
+      0.2281
+     ],
+     "fotoLin": [
+      0.1831,
+      0.1435,
+      0.1748
+     ]
+    },
+    {
+     "id": 193,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      4.34,
+      5.193
+     ],
+     "level": 0,
+     "item": 61,
+     "color": "#f1eee8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 284,
+     "quemado": 154,
+     "render": "#ecbd8a",
+     "foto": "#d4d9e4",
+     "mediana": "#dadfec",
+     "dE": 40,
+     "dEn": 33,
+     "renderLin": [
+      0.839,
+      0.5063,
+      0.2556
+     ],
+     "fotoLin": [
+      0.6604,
+      0.6918,
+      0.779
+     ]
+    },
+    {
+     "id": 185,
+     "kind": "item",
+     "type": "bidet",
+     "at": [
+      4.62,
+      3.98
+     ],
+     "level": 0,
+     "item": 54,
+     "color": "#f7f7f5",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 898,
+     "quemado": 0,
+     "render": "#edc8a1",
+     "foto": "#afaeae",
+     "mediana": "#adaba8",
+     "dE": 28,
+     "dEn": 10.1,
+     "renderLin": [
+      0.8489,
+      0.5745,
+      0.3553
+     ],
+     "fotoLin": [
+      0.4293,
+      0.4214,
+      0.4236
+     ]
+    },
+    {
+     "id": 101,
+     "kind": "item",
+     "type": "bookshelf",
+     "at": [
+      1.88,
+      5.08
+     ],
+     "level": 0,
+     "item": 20,
+     "color": "#c27a3a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 258,
+     "quemado": 36,
+     "render": "#b6590b",
+     "foto": "#c56e19",
+     "mediana": "#b35404",
+     "dE": 8.5,
+     "dEn": 32.8,
+     "renderLin": [
+      0.467,
+      0.0998,
+      0.0034
+     ],
+     "fotoLin": [
+      0.5607,
+      0.156,
+      0.0099
+     ]
+    },
+    {
+     "id": 306,
+     "kind": "item",
+     "type": "tabletop-decor",
+     "at": [
+      4.62,
+      3.86
+     ],
+     "level": 0,
+     "item": 56,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 358,
+     "quemado": 0,
+     "render": "#decea7",
+     "foto": "#bbbcc0",
+     "mediana": "#babbbf",
+     "dE": 24.9,
+     "dEn": 12.7,
+     "renderLin": [
+      0.7309,
+      0.6168,
+      0.386
+     ],
+     "fotoLin": [
+      0.4944,
+      0.5004,
+      0.5275
+     ]
+    },
+    {
+     "id": 1,
+     "kind": "floor",
+     "room": "Living y comedor",
+     "level": 0,
+     "color": "#b5582c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 361,
+     "quemado": 5,
+     "render": "#dc6022",
+     "foto": "#a74a08",
+     "mediana": "#9f3f01",
+     "dE": 17.2,
+     "dEn": 10.6,
+     "renderLin": [
+      0.7181,
+      0.1172,
+      0.0159
+     ],
+     "fotoLin": [
+      0.3868,
+      0.0684,
+      0.0024
+     ]
+    },
+    {
+     "id": 181,
+     "kind": "item",
+     "type": "towel-bar",
+     "at": [
+      4.52,
+      5.236
+     ],
+     "level": 0,
+     "item": 52,
+     "color": "#d8d2c8",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 291,
+     "quemado": 0,
+     "render": "#f0be8c",
+     "foto": "#9c8e80",
+     "mediana": "#9c8e80",
+     "dE": 32.1,
+     "dEn": 7.7,
+     "renderLin": [
+      0.8736,
+      0.5165,
+      0.2615
+     ],
+     "fotoLin": [
+      0.3321,
+      0.2705,
+      0.2174
+     ]
+    }
+   ]
+  },
+  "bano2": {
+   "nombre": "Lavatorio",
+   "foto": "bano2",
+   "puntaje": 7.1,
+   "puntajeCrudo": 28.8,
+   "exposicion": [
+    0.719,
+    1.108,
+    1.857
+   ],
+   "cubierto": 89.3,
+   "objetos": [
+    {
+     "id": 56,
+     "kind": "door",
+     "level": 0,
+     "wall": 11,
+     "opening": 0,
+     "color": "#b06a2e",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 27056,
+     "quemado": 12,
+     "render": "#974804",
+     "foto": "#968b7f",
+     "mediana": "#95887a",
+     "dE": 52.7,
+     "dEn": 34.4,
+     "renderLin": [
+      0.3106,
+      0.0645,
+      0.0014
+     ],
+     "fotoLin": [
+      0.3053,
+      0.2576,
+      0.2127
+     ]
+    },
+    {
+     "id": 173,
+     "kind": "item",
+     "type": "vanity",
+     "at": [
+      5,
+      5.026
+     ],
+     "level": 0,
+     "item": 50,
+     "color": "#f7f7f5",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 51469,
+     "quemado": 141,
+     "render": "#f3cfab",
+     "foto": "#bab5b0",
+     "mediana": "#b9b4ac",
+     "dE": 23.6,
+     "dEn": 12.7,
+     "renderLin": [
+      0.8995,
+      0.6227,
+      0.4068
+     ],
+     "fotoLin": [
+      0.4912,
+      0.4594,
+      0.4329
+     ]
+    },
+    {
+     "id": 166,
+     "kind": "item",
+     "type": "bathtub",
+     "at": [
+      5.856,
+      4.51
+     ],
+     "level": 0,
+     "item": 48,
+     "color": "#f7f7f5",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 15798,
+     "quemado": 2,
+     "render": "#dcb78f",
+     "foto": "#aea898",
+     "mediana": "#b3ac9b",
+     "dE": 19.8,
+     "dEn": 9.3,
+     "renderLin": [
+      0.7154,
+      0.4712,
+      0.2763
+     ],
+     "fotoLin": [
+      0.4219,
+      0.3899,
+      0.3136
+     ]
+    },
+    {
+     "id": 181,
+     "kind": "item",
+     "type": "towel-bar",
+     "at": [
+      4.52,
+      5.236
+     ],
+     "level": 0,
+     "item": 52,
+     "color": "#d8d2c8",
+     "material": "MeshPhysicalMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 11474,
+     "quemado": 17,
+     "render": "#e2b07e",
+     "foto": "#c1b9b3",
+     "mediana": "#c4bbb4",
+     "dE": 30.4,
+     "dEn": 5,
+     "renderLin": [
+      0.761,
+      0.434,
+      0.2069
+     ],
+     "fotoLin": [
+      0.5346,
+      0.4857,
+      0.4507
+     ]
+    },
+    {
+     "id": 179,
+     "kind": "item",
+     "type": "medicine-cabinet",
+     "at": [
+      5,
+      5.236
+     ],
+     "level": 0,
+     "item": 51,
+     "color": "#ffffff",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 7074,
+     "quemado": 525,
+     "render": "#f1cca5",
+     "foto": "#e1e5e4",
+     "mediana": "#e6eaeb",
+     "dE": 26.9,
+     "dEn": 6.5,
+     "renderLin": [
+      0.8788,
+      0.6029,
+      0.3752
+     ],
+     "fotoLin": [
+      0.7534,
+      0.7807,
+      0.7791
+     ]
+    },
+    {
+     "id": 177,
+     "kind": "item",
+     "type": "medicine-cabinet",
+     "at": [
+      5,
+      5.236
+     ],
+     "level": 0,
+     "item": 51,
+     "color": "#f3f2ee",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 23265,
+     "quemado": 7144,
+     "render": "#f1c79b",
+     "foto": "#d3d3d0",
+     "mediana": "#d7d8d4",
+     "dE": 27.7,
+     "dEn": 1.1,
+     "renderLin": [
+      0.8808,
+      0.5719,
+      0.3276
+     ],
+     "fotoLin": [
+      0.6534,
+      0.6543,
+      0.6296
+     ]
+    },
+    {
+     "id": 178,
+     "kind": "item",
+     "type": "medicine-cabinet",
+     "at": [
+      5,
+      5.236
+     ],
+     "level": 0,
+     "item": 51,
+     "color": "#c9a172",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 590,
+     "quemado": 723,
+     "render": "#e39249",
+     "foto": "#dbdcdc",
+     "mediana": "#d3d2d2",
+     "dE": 59.8,
+     "dEn": 33.9,
+     "renderLin": [
+      0.7655,
+      0.2862,
+      0.0659
+     ],
+     "fotoLin": [
+      0.7063,
+      0.7183,
+      0.7182
+     ]
+    },
+    {
+     "id": 168,
+     "kind": "item",
+     "type": "bathtub",
+     "at": [
+      5.856,
+      4.51
+     ],
+     "level": 0,
+     "item": 48,
+     "color": "#cfd2d6",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 258,
+     "quemado": 0,
+     "render": "#544a3f",
+     "foto": "#b9b4a4",
+     "mediana": "#b4ae9e",
+     "dE": 41.4,
+     "dEn": 47.4,
+     "renderLin": [
+      0.0877,
+      0.0678,
+      0.05
+     ],
+     "fotoLin": [
+      0.4839,
+      0.4544,
+      0.3737
+     ]
+    },
+    {
+     "id": 193,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      4.34,
+      5.193
+     ],
+     "level": 0,
+     "item": 61,
+     "color": "#f1eee8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 2791,
+     "quemado": 0,
+     "render": "#caa074",
+     "foto": "#b5ada5",
+     "mediana": "#b6aea3",
+     "dE": 25.2,
+     "dEn": 2.7,
+     "renderLin": [
+      0.5923,
+      0.3515,
+      0.175
+     ],
+     "fotoLin": [
+      0.4608,
+      0.4201,
+      0.375
+     ]
+    },
+    {
+     "id": 174,
+     "kind": "item",
+     "type": "vanity",
+     "at": [
+      5,
+      5.026
+     ],
+     "level": 0,
+     "item": 50,
+     "color": "#cfd2d6",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 189,
+     "quemado": 0,
+     "render": "#cdc5bd",
+     "foto": "#dbd9d7",
+     "mediana": "#dcdad8",
+     "dE": 7.9,
+     "dEn": 25.6,
+     "renderLin": [
+      0.6128,
+      0.5573,
+      0.5084
+     ],
+     "fotoLin": [
+      0.7089,
+      0.6952,
+      0.6788
+     ]
+    },
+    {
+     "id": 176,
+     "kind": "item",
+     "type": "vanity",
+     "at": [
+      5,
+      5.026
+     ],
+     "level": 0,
+     "item": 50,
+     "color": "#c9ccd0",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 159,
+     "quemado": 0,
+     "render": "#d7ba9d",
+     "foto": "#dad9d7",
+     "mediana": "#dcdbd9",
+     "dE": 20.6,
+     "dEn": 13.4,
+     "renderLin": [
+      0.6824,
+      0.4935,
+      0.3389
+     ],
+     "fotoLin": [
+      0.6993,
+      0.6939,
+      0.677
+     ]
+    },
+    {
+     "id": 190,
+     "kind": "item",
+     "type": "wall-tiles",
+     "at": [
+      5.28,
+      5.25
+     ],
+     "level": 0,
+     "item": 58,
+     "color": "#f1eee8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 126885,
+     "quemado": 0,
+     "render": "#edc194",
+     "foto": "#cdcac3",
+     "mediana": "#ceccc6",
+     "dE": 27,
+     "dEn": 0,
+     "renderLin": [
+      0.845,
+      0.532,
+      0.2952
+     ],
+     "fotoLin": [
+      0.6073,
+      0.5893,
+      0.5482
+     ]
+    }
+   ]
+  },
+  "balcon": {
+   "nombre": "Balcón",
+   "foto": "balcon",
+   "puntaje": 3.7,
+   "puntajeCrudo": 26.4,
+   "exposicion": [
+    2.012,
+    2.989,
+    4.407
+   ],
+   "cubierto": 15.8,
+   "objetos": [
+    {
+     "id": 33,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 1,
+     "color": "#e6f0f4",
+     "material": "MeshPhysicalMaterial",
+     "glass": true,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 54224,
+     "quemado": 1983,
+     "render": "#ce993b",
+     "foto": "#bea58d",
+     "mediana": "#c7ae90",
+     "dE": 39.9,
+     "dEn": 38.6,
+     "renderLin": [
+      0.6187,
+      0.3195,
+      0.0436
+     ],
+     "fotoLin": [
+      0.5149,
+      0.3748,
+      0.2669
+     ]
+    },
+    {
+     "id": 319,
+     "kind": "exterior",
+     "color": "#2a2b2d",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": true,
+     "px": 101017,
+     "quemado": 1833,
+     "render": "#494353",
+     "foto": "#909cb9",
+     "mediana": "#8295c3",
+     "dE": 35.8,
+     "dEn": 15.3,
+     "renderLin": [
+      0.0675,
+      0.0568,
+      0.0873
+     ],
+     "fotoLin": [
+      0.2793,
+      0.3331,
+      0.4868
+     ]
+    },
+    {
+     "id": 317,
+     "kind": "exterior",
+     "color": "#d2c09c",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 12863,
+     "quemado": 33,
+     "render": "#a07641",
+     "foto": "#986f55",
+     "mediana": "#86573b",
+     "dE": 15.1,
+     "dEn": 24.3,
+     "renderLin": [
+      0.3535,
+      0.1816,
+      0.0521
+     ],
+     "fotoLin": [
+      0.3133,
+      0.1605,
+      0.0913
+     ]
+    },
+    {
+     "id": 314,
+     "kind": "exterior",
+     "color": "#c99a6e",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 14969,
+     "quemado": 0,
+     "render": "#643708",
+     "foto": "#803f0a",
+     "mediana": "#844108",
+     "dE": 12.2,
+     "dEn": 11,
+     "renderLin": [
+      0.1267,
+      0.0382,
+      0.0025
+     ],
+     "fotoLin": [
+      0.2154,
+      0.0493,
+      0.0031
+     ]
+    },
+    {
+     "id": 313,
+     "kind": "exterior",
+     "color": "#c27a4e",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 16417,
+     "quemado": 662,
+     "render": "#8f450d",
+     "foto": "#bc7541",
+     "mediana": "#c06f2b",
+     "dE": 19.2,
+     "dEn": 8.4,
+     "renderLin": [
+      0.2745,
+      0.0592,
+      0.0039
+     ],
+     "fotoLin": [
+      0.5005,
+      0.1792,
+      0.0533
+     ]
+    },
+    {
+     "id": 31,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 1,
+     "color": "#5e4232",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 3631,
+     "quemado": 235,
+     "render": "#2d1201",
+     "foto": "#ae9a86",
+     "mediana": "#bda888",
+     "dE": 56.4,
+     "dEn": 34,
+     "renderLin": [
+      0.0262,
+      0.0061,
+      0.0003
+     ],
+     "fotoLin": [
+      0.4223,
+      0.3225,
+      0.2389
+     ]
+    },
+    {
+     "id": 312,
+     "kind": "exterior",
+     "color": "#c9a07a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 4001,
+     "quemado": 3,
+     "render": "#5e360f",
+     "foto": "#b7865e",
+     "mediana": "#b9814d",
+     "dE": 33.1,
+     "dEn": 13.4,
+     "renderLin": [
+      0.1115,
+      0.0371,
+      0.0047
+     ],
+     "fotoLin": [
+      0.4739,
+      0.24,
+      0.1109
+     ]
+    },
+    {
+     "id": 35,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 1,
+     "color": "#9da2a8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 1179,
+     "quemado": 0,
+     "render": "#3f2e24",
+     "foto": "#aa7440",
+     "mediana": "#aa733f",
+     "dE": 43.9,
+     "dEn": 31.7,
+     "renderLin": [
+      0.0491,
+      0.0272,
+      0.0178
+     ],
+     "fotoLin": [
+      0.4015,
+      0.1734,
+      0.0514
+     ]
+    },
+    {
+     "id": 316,
+     "kind": "exterior",
+     "color": "#3a3330",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": true,
+     "glow": false,
+     "printed": null,
+     "px": 919,
+     "quemado": 0,
+     "render": "#0a0401",
+     "foto": "#7a4e33",
+     "mediana": "#794b2d",
+     "dE": 44.6,
+     "dEn": 35.1,
+     "renderLin": [
+      0.003,
+      0.0011,
+      0.0002
+     ],
+     "fotoLin": [
+      0.1939,
+      0.0761,
+      0.0329
+     ]
+    },
+    {
+     "id": 315,
+     "kind": "exterior",
+     "color": "#dcc9a8",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 880,
+     "quemado": 43,
+     "render": "#7f603b",
+     "foto": "#682e10",
+     "mediana": "#682604",
+     "dE": 23.4,
+     "dEn": 30.9,
+     "renderLin": [
+      0.2127,
+      0.1173,
+      0.0444
+     ],
+     "fotoLin": [
+      0.1385,
+      0.0277,
+      0.0051
+     ]
+    },
+    {
+     "id": 318,
+     "kind": "exterior",
+     "color": "#8a5a3a",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": false,
+     "px": 727,
+     "quemado": 3,
+     "render": "#703605",
+     "foto": "#e7ccb2",
+     "mediana": "#eaceb1",
+     "dE": 60.7,
+     "dEn": 30.5,
+     "renderLin": [
+      0.1621,
+      0.0367,
+      0.0015
+     ],
+     "fotoLin": [
+      0.801,
+      0.6053,
+      0.4434
+     ]
+    },
+    {
+     "id": 34,
+     "kind": "sliding-window",
+     "level": 0,
+     "wall": 0,
+     "opening": 1,
+     "color": "#dcd6cc",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 469,
+     "quemado": 26,
+     "render": "#b4916a",
+     "foto": "#a36639",
+     "mediana": "#6b4b35",
+     "dE": 20.8,
+     "dEn": 34.6,
+     "renderLin": [
+      0.4555,
+      0.282,
+      0.145
+     ],
+     "fotoLin": [
+      0.3651,
+      0.1318,
+      0.0404
+     ]
+    },
+    {
+     "id": 11,
+     "kind": "wall",
+     "level": 0,
+     "wall": 0,
+     "color": "#f0e9dd",
+     "material": "MeshStandardMaterial",
+     "glass": false,
+     "metal": false,
+     "glow": false,
+     "printed": null,
+     "px": 41956,
+     "quemado": 3606,
+     "render": "#6e523f",
+     "foto": "#988981",
+     "mediana": "#867b6f",
+     "dE": 23.4,
+     "dEn": 0,
+     "renderLin": [
+      0.1565,
+      0.0843,
+      0.0498
+     ],
+     "fotoLin": [
+      0.3148,
+      0.2521,
+      0.2196
+     ]
+    }
+   ]
+  }
+ },
+ "puntaje": 13.2,
+ "scene": "/departamentos/depto6/scene.json"
+}

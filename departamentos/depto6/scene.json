@@ -33,9 +33,9 @@
       },
       "floor": {
         "kind": "planks",
-        "color": "#b5582c",
+        "color": "#a55530",
         "size": 0.6,
-        "gloss": 0.3
+        "gloss": 0.75
       }
     },
     {
@@ -53,17 +53,19 @@
       },
       "floor": {
         "kind": "planks",
-        "color": "#b5582c",
+        "color": "#a55530",
         "size": 0.6,
-        "gloss": 0.3
+        "gloss": 0.75
       }
     },
     {
       "id": "cocina",
+      "wallColor": "#f4f1ec",
+      "baseboard": "#8d9094",
       "name": "Cocina",
       "floor": {
         "kind": "tile",
-        "color": "#b9bab6",
+        "color": "#9a9a99",
         "tile": 0.3,
         "gloss": 0.1
       },
@@ -124,9 +126,9 @@
       },
       "floor": {
         "kind": "planks",
-        "color": "#b5582c",
+        "color": "#a55530",
         "size": 0.6,
-        "gloss": 0.3
+        "gloss": 0.75
       }
     },
     {
@@ -151,6 +153,7 @@
     },
     {
       "id": "dormitorio",
+      "wallColor": "#dccac4",
       "name": "Dormitorio",
       "rects": [
         {
@@ -186,9 +189,9 @@
       ],
       "floor": {
         "kind": "planks",
-        "color": "#b5582c",
+        "color": "#a55530",
         "size": 0.6,
-        "gloss": 0.3
+        "gloss": 0.75
       }
     },
     {
@@ -228,9 +231,9 @@
       ],
       "floor": {
         "kind": "planks",
-        "color": "#b5582c",
+        "color": "#a55530",
         "size": 0.6,
-        "gloss": 0.3
+        "gloss": 0.75
       }
     }
   ],
@@ -1946,7 +1949,8 @@
       4,
       -9
     ],
-    "bake": "gi.json"
+    "bake": "gi.json",
+    "curtainLight": 0.2
   },
   "views": {
     "general": {

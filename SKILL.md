@@ -165,6 +165,9 @@ Cada paso termina cuando se cumple su criterio; no pasar al siguiente antes.
   cada cama (arrugas del acolchado en metros, 0,016; 0 = liso).
 - Entorno: `exterior.balcony`, `exterior.city` (calle y edificios) o `exterior.landscape: "lake"` con `nature`.
   Casa en planta baja: "exterior": { "floorsBelow": 0 } (el suelo al nivel de la casa, sin edificio debajo).
+- Color por ambiente (2026-11-10): `rooms[].wallColor` (pintura de las caras de pared que dan a ese ambiente) y `rooms[].baseboard`
+  (zócalo). Sin ellos vale el `wallColor` / `baseboard` general. Mesada de acero: `kitchen-base` `topStyle: "steel"` (material
+  `M.inox`, también la bacha); lavatorio con pie: `vanity` `style: "pedestal"` (cuenco ovalado).
 - Techo de cada ambiente ("ceiling"): "open" (patio a cielo abierto), { "kind": "boards", "color", "height" }
   (machimbre) o { "kind": "sheet", "color", "beams", "spacing", "height", "over" } (chapa con tirantes; "over" son los
   rectángulos que techa, para el alero). Postes y vigas de madera: `structure` con "color".
@@ -379,3 +382,51 @@ Lo que permitió corregir la cocina del depto 6 y cambiar la madera sin romper n
 ### Tiempos medidos (PC, panel oculto)
 `comparar` ~8 s por vista con `&view=`; `encuadre` ~15 s por vista; `hornear` ~40 s; `verificar` con dos deptos
 ~80 s; `maderas.html` con seis vetas ~30 s; `generar-texturas` ~20 s; `lente.html` ~2 min; `telas-luz.html` ~3 min.
+
+## Fidelidad de superficies: lo que enseñó la auditoría del depto 6 (2026-11-10)
+
+Documento de trabajo completo: `AUDITORIA-DEPTO6-2026-11-10.md`. Resumen para el próximo departamento:
+
+### Dónde está el error (y por qué importa)
+En el depto 6 las paredes y las aberturas coincidían con el plano a 3,7 cm (`node motor/plano-medido.mjs comparar …`). Las 66
+diferencias contra las fotos eran sobre todo de **color (41 %) y material (16 %)**; la estructura, 0 %. Y el 55 % del peso
+estaba en 12 defectos que se repetían en varias vistas (el piso del living en 5, las cortinas en 4, el piso de la cocina
+en 3…). **Conclusión de proceso: después de la estructura, revisar primero las superficies que aparecen en muchas vistas**
+(pisos, cortinas, mesada, revestimientos, color de pared) y recién después los detalles sueltos.
+
+### Cómo se trabaja (método que funcionó)
+1. **Auditar:** hoja por hoja (`comparar.html?scene=…&capturar=<carpeta>`), anotar cada diferencia con tipo y gravedad
+   (3 se nota a primera vista, 2 comparando, 1 detalle) y agrupar las que se repiten. Las hojas salen nítidas y con luz de
+   día solo desde que `comparar.html` usa tamaño fijo y espera `api.ready` (antes, con la ventana angosta salían borrosas y
+   las primeras con luz de noche).
+2. **Medir con un número:** `comparar.html?scene=…&medir=<carpeta>` y `node motor/pruebas/resumen-parecido.mjs <carpeta>
+   floor wall room:cocina item:curtains … [--base=<medición anterior>]`. Es el ΔE por superficie, normalizado por la
+   exposición y el balance de blancos de cada foto. **Sirve para comparar variantes del mismo depto**; con las cámaras
+   desalineadas no es una medida absoluta.
+3. **Probar en copias:** variantes en `departamentos/<id>/scene.<nombre>.json` (temporales: borrarlas al terminar), cada una
+   medida con `&medir=<id>-<nombre>`. Se acepta un cambio solo si baja el puntaje **y** se ve mejor en la hoja.
+4. **Si es del motor, que sea general y que no cambie lo que ya está aprobado:** opciones nuevas con un valor por defecto
+   que no cambia nada, y `verificar.html?deptos=depto5,<en curso>` (el demo debe dar «sin cambios», ≤ 0,2 %).
+
+### Cada defecto: síntoma → causa → arreglo → qué mirar en el próximo
+| Síntoma | Causa | Arreglo | Para el próximo |
+|---|---|---|---|
+| Piso de madera naranja y mate; en la foto, rojizo y brillante | El promedio de color del piso en las fotos es un salmón desaturado por los reflejos; el `gloss` 0,3 no los daba | `gloss` 0,3 → 0,75 y color `#b5582c` → `#a55530` (piso 22,2 → 18,3 de ΔE) | Subir primero el `gloss`; no juzgar el color por las manchas de sol. Con `colores.html` el color propuesto era más pálido que el que se ve mejor: decidir con la medición **y** la hoja, y anotar la diferencia |
+| Piso de cocina casi blanco aunque el `scene` ya decía gris | El render aclara los pisos claros (luz rebotada + exposición): hay que poner un albedo más oscuro que el color que se ve | `#b9bab6` → `#9a9a99`, el que propone `colores.html` (ambiente cocina 29,4 → 16,5) | En cada piso claro correr `colores.html` y aplicar el color propuesto antes de comparar a ojo |
+| Mesada «de acero» blanca; bacha negra | `M.brushed('#cdd0d3')` es casi blanco (poco metal) y los metales puros (`metalness` 1) reflejan el interior oscuro de la bacha | Material nuevo `M.inox` (gris medio, `metalness` 0,22) para la mesada `topStyle: "steel"` y su bacha | No usar `M.metal` para superficies grandes ni cóncavas. Pedir `topStyle: "steel"` y no tocar `top` salvo que se mida |
+| Pileta con pie con forma de bloque | `vanity` `style: "pedestal"` dibujaba un rectángulo de esquinas muy redondeadas | Cuenco ovalado y chato torneado (costados en pendiente) sobre la columna | Si la foto tiene lavatorio con pie, usar `style: "pedestal"`; mirar la forma de la pileta en la hoja |
+| Pared del dormitorio rosada en la foto y beige en el render; zócalo cerámico gris en la cocina | Un solo `wallColor` y un solo `baseboard` por departamento | `rooms[].wallColor` y `rooms[].baseboard`: cada cara de pared toma el color de su ambiente (los tramos se parten donde cambia el ambiente; sin colores por ambiente la geometría es la de siempre) | Mirar el color de pared de **cada** ambiente en las fotos. Medir con `colores.html`; si las fotos tienen otro balance de blancos, no copiar el tinte de la foto entero |
+| Cortinas durazno; en las fotos, crema | Efecto «contraluz» (T-68) con sol cálido | `lighting.curtainLight` 0,6 → 0,2 en el depto 6 (la medición no mostró mejora clara: **sin cerrar**) | Si en las fotos las cortinas no son cálidas, bajar `curtainLight` y comparar con la hoja |
+
+### Lo que NO se arregló (queda como pendiente, con su causa)
+- **Cámaras que no calzan** (16 % del error, 11 de 12 vistas): no hay forma automática que funcione (T-70). Mientras no calcen,
+  el puntaje de parecido no sirve para ajustar detalles finos.
+- **Puertas** (color bordó contra marrón oscuro metálico, marco rojo contra acero gris) y **azulejos** con relieve de puntos y
+  motivos; **ventana con malla** (se ve una grilla y el exterior gris): son cambios de motor o de textura, no parámetros.
+- Detalles decorativos (peluche, gato, portero eléctrico, tubo fluorescente bajo la alacena): menores, de a uno.
+
+### Reglas para no repetir
+1. Antes de modelar detalles, **medir la estructura contra el plano** y **auditar las superficies** del primer pase.
+2. Un defecto que se repite en varias vistas es un parámetro o una pieza del motor, no varios errores: arreglar la causa.
+3. Todo cambio de motor es general, con `verificar.html` en el depto 5 y el depto en curso, y la lección anotada acá.
+4. La medición y el ojo pueden no coincidir (el piso): decidir con las dos y escribir por qué.

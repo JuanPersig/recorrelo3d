@@ -124,15 +124,18 @@ function rrect(path, x, y, w, h, r) {
 }
 // anillo extruido hacia +Y (bañera, mesada con bacha): rectángulo exterior con un hueco redondeado.
 // La rotación espeja Y de la forma en -Z, por eso el hueco se define con y invertida.
-function ringGeo(outer, hole, depth) {
-  const sh = rrect(new THREE.Shape(), ...outer);
-  sh.holes.push(rrect(new THREE.Path(), ...hole));
-  const geo = new THREE.ExtrudeGeometry(sh, { depth, bevelEnabled: false, curveSegments: 10 });
+// elipse inscripta en el rectángulo [x, y, w, h] (lavatorio de pie: las piletas de las fotos son ovaladas; con esquinas
+// redondeadas de un rectángulo salía un bloque)
+function oval(path, x, y, w, h) { path.absellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, Math.PI * 2, false, 0); return path; }
+function ringGeo(outer, hole, depth, round = false) {
+  const sh = (round ? oval : rrect)(new THREE.Shape(), ...outer);
+  sh.holes.push((round ? oval : rrect)(new THREE.Path(), ...hole));
+  const geo = new THREE.ExtrudeGeometry(sh, { depth, bevelEnabled: false, curveSegments: round ? 32 : 10 });
   geo.rotateX(-Math.PI / 2);
   return geo;
 }
-function flatGeo(rect) {
-  const geo = new THREE.ShapeGeometry(rrect(new THREE.Shape(), ...rect), 10);
+function flatGeo(rect, round = false) {
+  const geo = new THREE.ShapeGeometry((round ? oval : rrect)(new THREE.Shape(), ...rect), round ? 32 : 10);
   geo.rotateX(-Math.PI / 2);
   return geo;
 }
@@ -597,6 +600,10 @@ export function makeMaterials(preset) {
     ceramicDS: c => once('cerds' + c, () => { const m = clay ? matte(c, 0.85) : new THREE.MeshStandardMaterial({ color: col(c), roughness: 0.22 }); m.side = THREE.DoubleSide; return m; }),
     // acero inoxidable cepillado (mesadas, heladeras): medio metálico, conserva el gris claro aunque refleje poco
     brushed: c => once('brushed' + c, () => clay ? matte(c, 0.7) : new THREE.MeshStandardMaterial({ color: col(c), roughness: 0.34, metalness: 0.32 })),
+    // acero inoxidable de mesada y bacha (2026-11-10, auditoría del depto 6): más oscuro y más metálico que "brushed", que
+    // sale casi blanco; los metales puros (metalness 1) reflejan el interior oscuro de una bacha y salen negros. Gris medio
+    // con reflejo: así se ve en las fotos de cocinas con mesada de acero
+    inox: c => once('inox' + c, () => clay ? matte(c, 0.7) : new THREE.MeshStandardMaterial({ color: col(c), roughness: 0.38, metalness: 0.22 })),
     metal: (c, r = 0.3) => once('met' + c + r, () => clay ? matte(c, 0.7) : new THREE.MeshStandardMaterial({ color: col(c), roughness: r, metalness: 1 })),
     screen: () => once('screen', () => new THREE.MeshStandardMaterial({ color: clay ? col('#3a3d42') : 0x0b0d10, roughness: 0.12, metalness: clay ? 0 : 0.3 })),
     mirror: () => once('mirror', () => {
@@ -1759,7 +1766,7 @@ function kitchenBase(p, { M }) {
   // "material": "wood" = cuerpo y frentes de madera; "topStyle": "steel" = mesada de acero inoxidable (con "edge": canto
   // de otro color al frente); "handles": "knob" = perillas de madera; "sink": { x, w, d, "double", "faucet": "wall" }
   const back = -d / 2, face = d / 2 - 0.022, body = p.material === 'wood' ? M.wood(p.color ?? '#c8924f') : M.lacquer(p.color ?? '#f4f4f2');
-  const top = p.topStyle === 'granite' ? M.granite(p.top ?? '#2b2c2e') : p.topStyle === 'steel' ? M.brushed(p.top ?? '#cdd0d3') : M.ceramic(p.top ?? '#f1efea');
+  const top = p.topStyle === 'granite' ? M.granite(p.top ?? '#2b2c2e') : p.topStyle === 'steel' ? M.inox(p.top ?? '#aeb2b6') : M.ceramic(p.top ?? '#f1efea');
   const knob = p.handles === 'knob', knobM = M.wood(shade(p.color ?? '#c8924f', -0.12)), knobAt = (x, y) => { add(g, new THREE.SphereGeometry(0.016, 14, 10), knobM, x, y, d / 2 + 0.01).scale.z = 0.75; };
   const alu = M.metal('#b9bcc0', 0.35), steel = M.metal('#c9ccd0', 0.28);
   const s = p.sink, sx0 = s ? s.x - s.w / 2 : 0, sx1 = s ? s.x + s.w / 2 : 0, scz = s?.z ?? 0, sz0 = scz - (s?.d ?? 0) / 2, sz1 = scz + (s?.d ?? 0) / 2;
@@ -1823,10 +1830,11 @@ function kitchenBase(p, { M }) {
     blk(g, top, [-w / 2, sx0], ty, [back, cz1]); blk(g, top, [sx1, w / 2], ty, [back, cz1]);
     blk(g, top, [sx0, sx1], ty, [back, sz0]); blk(g, top, [sx0, sx1], ty, [sz1, cz1]);
     const yb = h - tt - sdep, t = 0.008, bowls = s.double ? [[sx0, s.x - 0.012], [s.x + 0.012, sx1]] : [[sx0, sx1]];
+    const bowlM = p.topStyle === 'steel' ? top : steel;   // bacha del mismo acero que la mesada (el metal puro sale negro por dentro)
     for (const [b0, b1] of bowls) {
-      blk(g, steel, [b0, b1], [yb, yb + t], [sz0, sz1]);
-      blk(g, steel, [b0, b0 + t], [yb + t, h - 0.002], [sz0, sz1]); blk(g, steel, [b1 - t, b1], [yb + t, h - 0.002], [sz0, sz1]);
-      blk(g, steel, [b0 + t, b1 - t], [yb + t, h - 0.002], [sz0, sz0 + t]); blk(g, steel, [b0 + t, b1 - t], [yb + t, h - 0.002], [sz1 - t, sz1]);
+      blk(g, bowlM, [b0, b1], [yb, yb + t], [sz0, sz1]);
+      blk(g, bowlM, [b0, b0 + t], [yb + t, h - 0.002], [sz0, sz1]); blk(g, bowlM, [b1 - t, b1], [yb + t, h - 0.002], [sz0, sz1]);
+      blk(g, bowlM, [b0 + t, b1 - t], [yb + t, h - 0.002], [sz0, sz0 + t]); blk(g, bowlM, [b0 + t, b1 - t], [yb + t, h - 0.002], [sz1 - t, sz1]);
       cyl(g, M.lacquer('#55585c'), (b0 + b1) / 2, yb + t, yb + t + 0.002, scz, 0.03, 20);
     }
     if (s.double) blk(g, top, [s.x - 0.012, s.x + 0.012], ty, [sz0, sz1]);   // puente entre las dos bachas
@@ -2063,8 +2071,13 @@ function vanity(p, { M }) {
     if (p.handles) { const hx = nd > 1 ? x0 + dw / 2 + (i ? -1 : 1) * (dw / 2 - 0.05) : 0; blk(g, alu, [hx - 0.022, hx + 0.022], [y0 + ch - 0.05, y0 + ch - 0.035], [d / 2, d / 2 + 0.014], 0.003); }
   }
   const hole = [-w / 2 + 0.05, -d / 2 + 0.06, w - 0.1, d - 0.16, ped ? 0.09 : 0.05];   // y invertida: margen de atrás más ancho para la grifería
-  add(g, ringGeo([-w / 2 - 0.01, -d / 2 - 0.01, w + 0.02, d + 0.01, ped ? 0.11 : 0.01], hole, bh), cer, 0, y0 + ch, 0);
-  add(g, flatGeo(hole), cer, 0, y0 + ch + 0.035, 0).castShadow = false;
+  if (ped) {   // cubeta ovalada, chata y con los costados en pendiente (2026-11-10): se tornea de radio 1 y se estira a w × d
+    const bowl = add(g, new THREE.LatheGeometry(v2([[0.001, 0], [0.3, 0], [0.55, 0.03], [0.8, 0.072], [0.96, 0.104], [1, 0.116], [0.97, 0.124], [0.92, 0.124], [0.9, 0.116], [0.72, 0.078], [0.4, 0.052], [0.001, 0.048]]), 48), M.ceramicDS('#f7f7f5'), 0, y0, -0.005);
+    bowl.scale.set((w + 0.02) / 2, 1, (d + 0.01) / 2);
+  } else {
+    add(g, ringGeo([-w / 2 - 0.01, -d / 2 - 0.01, w + 0.02, d + 0.01, 0.01], hole, bh), cer, 0, y0 + ch, 0);
+    add(g, flatGeo(hole), cer, 0, y0 + ch + 0.035, 0).castShadow = false;
+  }
   const fz = -d / 2 + 0.05, ty = y0 + ch + bh;
   if (p.taps === 'cross') {   // dos llaves de cruz mirando hacia arriba y un pico corto al centro
     for (const sx of [-0.085, 0.085]) { const t = crossTap(M); t.position.set(sx, ty, fz); t.rotation.x = -Math.PI / 2; g.add(t); }

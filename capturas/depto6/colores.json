@@ -1,0 +1,765 @@
+{
+ "fecha": "2026-11-10T12:38:55.362Z",
+ "depto": "depto6",
+ "puntaje": 12.9,
+ "umbral": 8,
+ "propuestas": [
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 38,
+   "type": "kitchen-wall",
+   "at": [
+    3.035,
+    7.475
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 38,
+     "at": [
+      3.035,
+      7.475
+     ]
+    }
+   ],
+   "de": "#c8924f",
+   "a": "#dab769",
+   "dE": 15.2,
+   "px": 86309,
+   "vistas": [
+    "cocina",
+    "cocina2",
+    "cocina3"
+   ],
+   "dispersion": 5,
+   "confiable": true
+  },
+  {
+   "kind": "floor",
+   "level": 0,
+   "room": "Living y comedor",
+   "items": [],
+   "de": "#b5582c",
+   "a": "#b16836",
+   "dE": 10.5,
+   "px": 176871,
+   "vistas": [
+    "completo",
+    "comedor",
+    "comedor2",
+    "living",
+    "living2",
+    "bano"
+   ],
+   "dispersion": 20.5,
+   "confiable": false
+  },
+  {
+   "kind": "door",
+   "level": 0,
+   "wall": 3,
+   "opening": 1,
+   "items": [],
+   "de": "#5a2626",
+   "a": "#7c3132",
+   "dE": 13.1,
+   "px": 56678,
+   "vistas": [
+    "cocina2",
+    "cocina3"
+   ],
+   "dispersion": 0.2,
+   "confiable": true
+  },
+  {
+   "kind": "door",
+   "level": 0,
+   "wall": 11,
+   "opening": 0,
+   "items": [],
+   "de": "#b06a2e",
+   "a": "#d38734",
+   "dE": 15.1,
+   "px": 36042,
+   "vistas": [
+    "bano",
+    "bano2"
+   ],
+   "dispersion": 6.6,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 50,
+   "type": "vanity",
+   "at": [
+    5,
+    5.026
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 50,
+     "at": [
+      5,
+      5.026
+     ]
+    }
+   ],
+   "de": "#f7f7f5",
+   "a": "#f7ead8",
+   "dE": 10.5,
+   "px": 55385,
+   "vistas": [
+    "bano",
+    "bano2"
+   ],
+   "dispersion": 4.8,
+   "confiable": true
+  },
+  {
+   "kind": "floor",
+   "level": 0,
+   "room": "Cocina",
+   "items": [],
+   "de": "#b9bab6",
+   "a": "#9a9a99",
+   "dE": 11.7,
+   "px": 37827,
+   "vistas": [
+    "cocina",
+    "cocina2",
+    "cocina3"
+   ],
+   "dispersion": 5.8,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 48,
+   "type": "bathtub",
+   "at": [
+    5.856,
+    4.51
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 48,
+     "at": [
+      5.856,
+      4.51
+     ]
+    }
+   ],
+   "de": "#f7f7f5",
+   "a": "#f2ebd7",
+   "dE": 10.5,
+   "px": 44682,
+   "vistas": [
+    "bano",
+    "bano2"
+   ],
+   "dispersion": 1.8,
+   "confiable": true
+  },
+  {
+   "kind": "door",
+   "level": 0,
+   "wall": 13,
+   "opening": 0,
+   "items": [],
+   "de": "#5b3424",
+   "a": "#7e442d",
+   "dE": 13.7,
+   "px": 21684,
+   "vistas": [
+    "cocina2"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 34,
+   "type": "kitchen-base",
+   "at": [
+    2.9,
+    7.925
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 34,
+     "at": [
+      2.9,
+      7.925
+     ]
+    }
+   ],
+   "de": "#cdd0d3",
+   "a": "#c6bfb2",
+   "dE": 10.9,
+   "px": 30217,
+   "vistas": [
+    "cocina",
+    "cocina2",
+    "cocina3"
+   ],
+   "dispersion": 15,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 0,
+   "type": "curtains",
+   "at": [
+    1.6,
+    0
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 0,
+     "at": [
+      1.6,
+      0
+     ]
+    }
+   ],
+   "de": "#efe5cc",
+   "a": "#dce3d9",
+   "dE": 10.2,
+   "px": 33583,
+   "vistas": [
+    "completo",
+    "comedor",
+    "comedor2"
+   ],
+   "dispersion": 1.8,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 27,
+   "type": "fridge",
+   "at": [
+    2.87,
+    5.8
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 27,
+     "at": [
+      2.87,
+      5.8
+     ]
+    }
+   ],
+   "de": "#b8bcc0",
+   "a": "#cfcabd",
+   "dE": 11.4,
+   "px": 25969,
+   "vistas": [
+    "cocina"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 34,
+   "type": "kitchen-base",
+   "at": [
+    2.9,
+    7.925
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 34,
+     "at": [
+      2.9,
+      7.925
+     ]
+    }
+   ],
+   "de": "#c8924f",
+   "a": "#c89665",
+   "dE": 10.1,
+   "px": 31066,
+   "vistas": [
+    "cocina",
+    "cocina2",
+    "cocina3"
+   ],
+   "dispersion": 15.6,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 10,
+   "type": "sofa",
+   "at": [
+    2.76,
+    3.1
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 10,
+     "at": [
+      2.76,
+      3.1
+     ]
+    }
+   ],
+   "de": "#6e2e1c",
+   "a": "#6e3f2b",
+   "dE": 10.7,
+   "px": 18011,
+   "vistas": [
+    "completo",
+    "comedor",
+    "comedor2",
+    "living",
+    "living2"
+   ],
+   "dispersion": 20.3,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 20,
+   "type": "bookshelf",
+   "at": [
+    1.88,
+    5.08
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 20,
+     "at": [
+      1.88,
+      5.08
+     ]
+    }
+   ],
+   "de": "#c27a3a",
+   "a": "#d29b4f",
+   "dE": 14.2,
+   "px": 10122,
+   "vistas": [
+    "living",
+    "living2"
+   ],
+   "dispersion": 2.3,
+   "confiable": true
+  },
+  {
+   "kind": "floor",
+   "level": 0,
+   "room": "Dormitorio",
+   "items": [],
+   "de": "#b5582c",
+   "a": "#b06638",
+   "dE": 10.3,
+   "px": 18951,
+   "vistas": [
+    "habitacion"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 20,
+   "type": "bookshelf",
+   "at": [
+    1.88,
+    5.08
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 20,
+     "at": [
+      1.88,
+      5.08
+     ]
+    }
+   ],
+   "de": "#a1642e",
+   "a": "#cd843b",
+   "dE": 16.7,
+   "px": 4683,
+   "vistas": [
+    "living",
+    "living2"
+   ],
+   "dispersion": 0,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 12,
+   "type": "wall-shelf",
+   "at": [
+    0,
+    2.55
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 12,
+     "at": [
+      0,
+      2.55
+     ]
+    }
+   ],
+   "de": "#4a2618",
+   "a": "#68321d",
+   "dE": 12.7,
+   "px": 7966,
+   "vistas": [
+    "completo",
+    "comedor",
+    "comedor2",
+    "living2"
+   ],
+   "dispersion": 0,
+   "confiable": true
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 21,
+   "type": "bookshelf",
+   "at": [
+    2.79,
+    5.115
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 21,
+     "at": [
+      2.79,
+      5.115
+     ]
+    }
+   ],
+   "de": "#b8743a",
+   "a": "#d48b3b",
+   "dE": 13.4,
+   "px": 4817,
+   "vistas": [
+    "living",
+    "living2",
+    "bano"
+   ],
+   "dispersion": 15.5,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 67,
+   "type": "nightstand",
+   "at": [
+    6.03,
+    2.48
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 67,
+     "at": [
+      6.03,
+      2.48
+     ]
+    }
+   ],
+   "de": "#4b3324",
+   "a": "#68442d",
+   "dE": 11.4,
+   "px": 5426,
+   "vistas": [
+    "habitacion"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 44,
+   "type": "kitchen-cart",
+   "at": [
+    1.297,
+    7.635
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 44,
+     "at": [
+      1.297,
+      7.635
+     ]
+    }
+   ],
+   "de": "#b8693a",
+   "a": "#b77b4b",
+   "dE": 10.8,
+   "px": 4503,
+   "vistas": [
+    "cocina2"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 15,
+   "type": "desk",
+   "at": [
+    0.25,
+    3.69
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 15,
+     "at": [
+      0.25,
+      3.69
+     ]
+    }
+   ],
+   "de": "#b5743f",
+   "a": "#a97b4a",
+   "dE": 10,
+   "px": 4895,
+   "vistas": [
+    "completo",
+    "living",
+    "living2"
+   ],
+   "dispersion": 12.3,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 16,
+   "type": "chair",
+   "at": [
+    0.64,
+    3.45
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 16,
+     "at": [
+      0.64,
+      3.45
+     ]
+    }
+   ],
+   "de": "#c8483f",
+   "a": "#d46446",
+   "dE": 12.3,
+   "px": 3025,
+   "vistas": [
+    "completo",
+    "living",
+    "living2"
+   ],
+   "dispersion": 10.3,
+   "confiable": true
+  },
+  {
+   "kind": "door",
+   "level": 0,
+   "wall": 9,
+   "opening": 0,
+   "items": [],
+   "de": "#6b3a26",
+   "a": "#914c30",
+   "dE": 14.3,
+   "px": 2072,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 6,
+   "type": "chair",
+   "at": [
+    1.6,
+    1.62
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 6,
+     "at": [
+      1.6,
+      1.62
+     ]
+    }
+   ],
+   "de": "#5a2015",
+   "a": "#7a2b1c",
+   "dE": 12.9,
+   "px": 1811,
+   "vistas": [
+    "comedor"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 12,
+   "type": "wall-shelf",
+   "at": [
+    0,
+    2.55
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 12,
+     "at": [
+      0,
+      2.55
+     ]
+    }
+   ],
+   "de": "#b23a2c",
+   "a": "#ab4838",
+   "dE": 10.1,
+   "px": 2692,
+   "vistas": [
+    "completo",
+    "comedor2",
+    "living2"
+   ],
+   "dispersion": 8.7,
+   "confiable": true
+  },
+  {
+   "kind": "baseboard",
+   "level": 0,
+   "items": [],
+   "de": "#a9653a",
+   "a": "#ac7b4d",
+   "dE": 11.7,
+   "px": 2001,
+   "vistas": [
+    "comedor",
+    "living2",
+    "cocina"
+   ],
+   "dispersion": 19.6,
+   "confiable": false
+  },
+  {
+   "kind": "door",
+   "level": 0,
+   "wall": 3,
+   "opening": 0,
+   "items": [],
+   "de": "#5b2e22",
+   "a": "#7d3c2b",
+   "dE": 13.4,
+   "px": 1509,
+   "vistas": [
+    "living"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 18,
+   "type": "tabletop-decor",
+   "at": [
+    0.3,
+    3.54
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 18,
+     "at": [
+      0.3,
+      3.54
+     ]
+    }
+   ],
+   "de": "#e8609a",
+   "a": "#e775a0",
+   "dE": 10.7,
+   "px": 1740,
+   "vistas": [
+    "completo"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  },
+  {
+   "kind": "item",
+   "level": 0,
+   "item": 53,
+   "type": "toilet",
+   "at": [
+    5.1,
+    4.054
+   ],
+   "items": [
+    {
+     "level": 0,
+     "item": 53,
+     "at": [
+      5.1,
+      4.054
+     ]
+    }
+   ],
+   "de": "#f7f7f5",
+   "a": "#f1ebdc",
+   "dE": 8.2,
+   "px": 1790,
+   "vistas": [
+    "bano"
+   ],
+   "dispersion": 0,
+   "confiable": false
+  }
+ ]
+}

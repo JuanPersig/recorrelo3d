@@ -11,7 +11,7 @@ const KEYS = {
   root: S('version', 'name', 'photos', 'note', 'about', 'disclaimer', 'brand', 'estimated', 'orientation', 'units', 'height', 'viewAspect',
     'wallColor', 'baseboard', 'ceiling', 'rooms', 'walls', 'structure', 'items', 'levels', 'exterior', 'lighting', 'views'),
   level: S('name', 'y', 'height', 'rooms', 'walls', 'structure', 'items', 'voids', 'roof', 'wallColor', 'baseboard', 'ceiling'),
-  room: S('id', 'name', 'rect', 'rects', 'floor', 'walls', 'ceiling', 'closed'),   // "closed": espacio sin acceso a propósito; "rects": ambiente en L o en U
+  room: S('id', 'name', 'rect', 'rects', 'floor', 'walls', 'ceiling', 'closed', 'wallColor', 'baseboard'),   // "closed": espacio sin acceso a propósito; "rects": ambiente en L o en U; "wallColor" y "baseboard": color de pared y de zócalo de ese ambiente
   rect: S('x', 'z'),
   floor: S('kind', 'color', 'tile', 'size', 'gloss', 'texture', 'textureSize'),
   wall: S('from', 'to', 'thickness', 'openings'),

@@ -523,6 +523,11 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     info.caps = wallCaps; wallGroups.push(wallGroup);
     let wallMat = M.wall(wallColor);   // pintura sobre revoque fino (2026-11-08)
     if (clip) { wallMat = wallMat.clone(); wallMat.clippingPlanes = clip; wallMat.clipShadows = true; }   // paredes del altillo cortadas por el techo
+    // Color de pared por ambiente (2026-11-10, auditoría del depto 6): un ambiente puede traer "wallColor" y cada cara de
+    // pared toma el de su ambiente. Solo si los dos lados difieren del color general se parte el segmento en dos mitades
+    // (una por lado); sin "wallColor" en ningún ambiente la geometría es la de siempre.
+    const wallMats = new Map(), wallMatFor = c => { let m = wallMats.get(c); if (!m) { m = M.wall(c); if (clip) { m = m.clone(); m.clippingPlanes = clip; m.clipShadows = true; } wallMats.set(c, m); } return m; };
+    const faceMat = (x, z) => { const c = roomAt(x, z)?.wallColor; return c && c !== wallColor ? wallMatFor(c) : null; };
     buildFns.push(() => {
       for (const [wi, w] of Lv.walls.entries()) {
         const L = wallLine(w);
@@ -530,6 +535,25 @@ export async function start(container, { scene: spec, state, preset = 'premium',
           if (b - a < 0.005 || s1 - s0 < 0.005) return;
           const across = [L.c - L.t / 2, L.c + L.t / 2];
           const xs = L.alongX ? [s0, s1] : across, zs = L.alongX ? across : [s0, s1];
+          if (rooms.some(r => r.wallColor)) {
+            // se recorre el tramo de a 2 cm y se parte donde cambia el ambiente de alguno de los dos lados
+            const e = L.t / 2 + 0.06, sides = s => (L.alongX ? [faceMat(s, L.c + e), faceMat(s, L.c - e)] : [faceMat(L.c + e, s), faceMat(L.c - e, s)]), parts = [];
+            for (let s = s0; s < s1 - 1e-9; s += 0.02) {
+              const t1 = Math.min(s + 0.02, s1), [hi, lo] = sides((s + t1) / 2), last = parts[parts.length - 1];
+              if (last && last.hi === hi && last.lo === lo) last.e = t1; else parts.push({ s, e: t1, hi, lo });
+            }
+            if (parts.some(p => p.hi || p.lo)) {
+              for (const p of parts) {
+                const px = L.alongX ? [p.s, p.e] : across, pz = L.alongX ? across : [p.s, p.e];
+                if (!p.hi && !p.lo) { tagO(blk(wallGroup, wallMat, px, [a, b], pz), { kind: 'wall', level: li, wall: wi }); continue; }
+                const lo = [L.c - L.t / 2, L.c], hi = [L.c, L.c + L.t / 2];   // una mitad por lado: la de coordenada menor y la mayor
+                tagO(blk(wallGroup, p.lo ?? wallMat, ...(L.alongX ? [[p.s, p.e], [a, b], lo] : [lo, [a, b], [p.s, p.e]])), { kind: 'wall', level: li, wall: wi });
+                tagO(blk(wallGroup, p.hi ?? wallMat, ...(L.alongX ? [[p.s, p.e], [a, b], hi] : [hi, [a, b], [p.s, p.e]])), { kind: 'wall', level: li, wall: wi });
+              }
+              if (b === Hl && !clip) blk(wallCaps, capMat, xs, [Hl, Hl + 0.006], zs);
+              return;
+            }
+          }
           tagO(blk(wallGroup, wallMat, xs, [a, b], zs), { kind: 'wall', level: li, wall: wi });
           if (b === Hl && !clip) blk(wallCaps, capMat, xs, [Hl, Hl + 0.006], zs);   // se muestra solo sin techo (con techo quedaría adentro de la losa)
         };
@@ -590,7 +614,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     /* ---------- zócalos: siguen cada borde de ambiente apoyado en una pared, salvo vanos a ras del piso ---------- */
     const skirt = M.lacquer(Lv.baseboard ?? spec.baseboard ?? '#ece9e3');
     for (const r of rooms) {
-      const [x0, x1] = r.rect.x, [z0, z1] = r.rect.z;
+      const [x0, x1] = r.rect.x, [z0, z1] = r.rect.z, skirtR = r.baseboard ? M.lacquer(r.baseboard) : skirt;   // "baseboard" del ambiente: otro color de zócalo
       const edges = [
         { alongX: true, c: z0, n: 1, a: [x0, x1] }, { alongX: true, c: z1, n: -1, a: [x0, x1] },
         { alongX: false, c: x0, n: 1, a: [z0, z1] }, { alongX: false, c: x1, n: -1, a: [z0, z1] },
@@ -605,7 +629,7 @@ export async function start(container, { scene: spec, state, preset = 'premium',
         for (const [s, f] of cuts) { if (f <= cur || s >= hi) continue; if (s > cur) pieces.push([cur, s]); cur = Math.max(cur, f); }
         if (hi > cur) pieces.push([cur, hi]);
         const cs = [ed.c, ed.c + ed.n * 0.012].sort((p, q) => p - q);
-        for (const [p0, p1] of pieces) tagO(L.alongX ? blk(root, skirt, [p0, p1], [0, 0.07], cs, 0.002) : blk(root, skirt, cs, [0, 0.07], [p0, p1], 0.002), { kind: 'baseboard', level: li });
+        for (const [p0, p1] of pieces) tagO(L.alongX ? blk(root, skirtR, [p0, p1], [0, 0.07], cs, 0.002) : blk(root, skirtR, cs, [0, 0.07], [p0, p1], 0.002), { kind: 'baseboard', level: li });
       }
     }
     // pilares que llegan al piso: zócalo en cada cara que da a un ambiente (las caras metidas en una pared no llevan)
