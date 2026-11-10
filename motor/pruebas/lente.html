@@ -37,7 +37,8 @@ const OPCIONES = {
   medio: { name: 'Lente marcado (lo que propone el documento)', note: 'grano 0,03, esquinas 15 % más oscuras, un píxel de aberración y más resplandor',
     lens: { grain: 0.03, vignette: 0.15, aberration: 1, nightBloom: 0.5, threshold: 2, radius: 0.6 } },
 };
-const ACTUAL = { name: 'Actual del motor (de referencia)', note: 'la imagen limpia de hoy', lens: {} };
+// la fila 1 es la imagen limpia de antes de T-67; el motor usa "sutil" desde el 2026-11-09 (elegido por el usuario)
+const ACTUAL = { name: 'Sin lente (antes de T-67)', note: 'la imagen limpia', lens: {} };
 const COLS = (q.get('vistas') ?? 'depto5:living1:dia,depto5:comedor:dia,depto5:dormitorio1:noche,depto6:habitacion:noche').split(',')
   .map(s => { const [id, view, n] = s.split(':'); return { id, view, night: n === 'noche' }; });
 

@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-09T23:57:30.833Z",
+  "fecha": "2026-11-10T00:02:05.790Z",
   "deptos": {
     "depto5": {
       "estado": "ok",
@@ -15,25 +15,25 @@
           "nombre": "Living y ventanal",
           "dibujos": 261,
           "triangulos": 685815,
-          "cambio": 0.8
+          "cambio": 0.2
         },
         "living2": {
           "nombre": "Sillón y barra",
           "dibujos": 275,
           "triangulos": 685701,
-          "cambio": 1.1
+          "cambio": 0.2
         },
         "living3": {
           "nombre": "Comedor y balcón",
           "dibujos": 319,
           "triangulos": 682584,
-          "cambio": 0.6
+          "cambio": 0.2
         },
         "living4": {
           "nombre": "Sillón",
           "dibujos": 413,
           "triangulos": 680274,
-          "cambio": 0.5
+          "cambio": 0.2
         },
         "living5": {
           "nombre": "Desde la barra",
@@ -51,19 +51,19 @@
           "nombre": "Barra y ventanal",
           "dibujos": 353,
           "triangulos": 683156,
-          "cambio": 0.7
+          "cambio": 0.2
         },
         "comedor": {
           "nombre": "Mesa para dos",
           "dibujos": 307,
           "triangulos": 806227,
-          "cambio": 0.1
+          "cambio": 0.2
         },
         "cocina1": {
           "nombre": "Cocina",
           "dibujos": 271,
           "triangulos": 666371,
-          "cambio": 0.1
+          "cambio": 0.2
         },
         "cocina2": {
           "nombre": "Cocina por el arco",
@@ -81,19 +81,19 @@
           "nombre": "Desde la entrada",
           "dibujos": 313,
           "triangulos": 912486,
-          "cambio": 0.4
+          "cambio": 0.2
         },
         "dormitorio3": {
           "nombre": "Cama",
           "dibujos": 276,
           "triangulos": 759858,
-          "cambio": 0.2
+          "cambio": 0.1
         },
         "dormitorio4": {
           "nombre": "Zona de dormir",
           "dibujos": 282,
           "triangulos": 760558,
-          "cambio": 0.2
+          "cambio": 0.1
         },
         "bano1": {
           "nombre": "Baño",
@@ -111,19 +111,19 @@
           "nombre": "Recibidor",
           "dibujos": 428,
           "triangulos": 912142,
-          "cambio": 0.3
+          "cambio": 0.2
         },
         "consola": {
           "nombre": "Consola y espejo",
           "dibujos": 457,
           "triangulos": 747586,
-          "cambio": 0.1
+          "cambio": 0.2
         },
         "pasillo": {
           "nombre": "Pasillo de entrada",
           "dibujos": 293,
           "triangulos": 917493,
-          "cambio": 0.4
+          "cambio": 0.2
         },
         "balcon": {
           "nombre": "Vista al balcón",
@@ -138,7 +138,7 @@
           "cambio": 0.2
         }
       },
-      "armadoMs": 3125,
+      "armadoMs": 3206,
       "mapas": [
         "/capturas/verificacion/actual/depto5/circulacion-0.png"
       ],
@@ -163,19 +163,19 @@
           "nombre": "Living hacia el balcón",
           "dibujos": 443,
           "triangulos": 1832548,
-          "cambio": 0.6
+          "cambio": 0.2
         },
         "comedor": {
           "nombre": "Comedor y ventanal",
           "dibujos": 394,
           "triangulos": 1787084,
-          "cambio": 1.1
+          "cambio": 0.2
         },
         "comedor2": {
           "nombre": "Tele y comedor",
           "dibujos": 409,
           "triangulos": 1785252,
-          "cambio": 0.9
+          "cambio": 0.2
         },
         "living": {
           "nombre": "Sillón y biblioteca",
@@ -193,7 +193,7 @@
           "nombre": "Dormitorio",
           "dibujos": 477,
           "triangulos": 1748064,
-          "cambio": 1.9
+          "cambio": 0.2
         },
         "cocina": {
           "nombre": "Cocina",
@@ -229,16 +229,16 @@
           "nombre": "Balcón",
           "dibujos": 579,
           "triangulos": 1839188,
-          "cambio": 0.7
+          "cambio": 0.1
         },
         "planta": {
           "nombre": "Planta",
           "dibujos": 569,
           "triangulos": 1589790,
-          "cambio": 0.4
+          "cambio": 0.2
         }
       },
-      "armadoMs": 4663,
+      "armadoMs": 4726,
       "mapas": [
         "/capturas/verificacion/actual/depto6/circulacion-0.png"
       ],

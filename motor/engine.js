@@ -399,7 +399,9 @@ const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
 // cortinas a contraluz (MEJORAS-MOTOR-RENDER #13): 0,6 elegido por el usuario ("medio" de motor/pruebas/telas-luz.html,
 // 2026-11-09); 0 = sin contraluz
 const CURTAIN_LIGHT_DEFAULT = 0.6;
-const LENS = { grain: 0, vignette: 0, aberration: 0, bloom: 0, nightBloom: 0, threshold: 1, radius: 0.5 };
+// Valores: "lente sutil", elegido por el usuario el 2026-11-09 (el resplandor solo de noche: de día las paredes al sol
+// pasan el umbral y se vela toda la imagen)
+const LENS = { grain: 0.012, vignette: 0.1, aberration: 0.5, bloom: 0, nightBloom: 0.3, threshold: 2, radius: 0.5 };
 
 // "device": 'auto' (el visor), 'desktop' o 'mobile'. Las herramientas (verificar, comparar, exportar) piden
 // 'desktop': con el panel del navegador oculto la ventana mide 0 de ancho y el motor se creía en un celular
@@ -897,7 +899,9 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     const U = acc.copy.uniforms;
     U.t.value = acc.rts[0].texture; U.uRes.value.set(src.width, src.height);
     U.uGrain.value = lens.grain; U.uVig.value = lens.vignette; U.uCA.value = lens.aberration;
-    if (!keep) U.uSeed.value = (U.uSeed.value + 0.618034) % 1;
+    // la semilla sale de la pose de la cámara: al moverse el grano cambia en cada cuadro, y la misma vista da siempre la
+    // misma imagen (si no, verificar.html veía diferencias de ruido en cada corrida)
+    if (!keep) { const e = camera.matrixWorld.elements, h = Math.sin(e[12] * 12.9898 + e[13] * 78.233 + e[14] * 37.719 + e[8] * 4.1 + e[10] * 9.7 + camera.fov * 0.13) * 43758.5453; U.uSeed.value = h - Math.floor(h); }
     renderer.setRenderTarget(null); acc.quad.material = acc.copy; acc.quad.render(renderer);
   }
   // un cuadro normal (descarta el pulido) o, con refine, uno más del pulido

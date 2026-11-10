@@ -141,10 +141,9 @@ fotos ya no alcanzan" parpadean (sospecha: `transition-all` de Tailwind peleando
 **El usuario:** `git push` cuando haya commits locales y subir `sitio/` a Cloudflare cuando haya cambios.
 
 ### Motor
-0. **Lente (T-67, 2026-11-09):** el motor ya tiene grano, viñeteado, aberración y resplandor de las luces
-   (`lighting.lens`), todo en 0. Falta que el usuario elija una fila de `capturas/lente/muestras.jpg`
-   (`motor/pruebas/lente.html`) para fijar `LENS` en engine.js. El cruce completo con `MEJORAS-MOTOR-RENDER.md` (qué
-   ya estaba, qué no va) está en T-67.
+0. **Lente (T-67, 2026-11-09):** hecho, "lente sutil" elegido por el usuario (grano fino, esquinas apenas más oscuras,
+   medio píxel de aberración y resplandor de las luces de noche); `lighting.lens` lo cambia por depto y
+   `visor.html?…&lente=no` lo saca para comparar. El cruce completo con `MEJORAS-MOTOR-RENDER.md` está en T-67.
    Cortinas a contraluz y arrugas del acolchado (T-68): hechas, con la fila "medio" que eligió el usuario
    (`motor/pruebas/telas-luz.html` para comparar). Los reflejos (#11) ya estaban: el piso pulido refleja en vivo.
 1. **Depto 6 (T-61):** decidir el aviso de 60 cm del baño (medidas reales o artefactos más chicos); colores con

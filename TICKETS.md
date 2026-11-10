@@ -1660,7 +1660,7 @@ repetición) para que la textura cierre sin costura. Texturas regeneradas con `g
 actualizada (`&base=1`) con la cocina y la madera aprobadas. La página de muestras queda para comparar futuras
 vetas (su fila 1 es siempre la del motor). Opcional más adelante, con permiso de descarga: texturas escaneadas CC0.
 
-## T-67 · Mejoras de render del documento externo: lente y resplandor (en curso, 2026-11-09)
+## T-67 · Mejoras de render del documento externo: lente y resplandor (hecho, 2026-11-09)
 
 **Pedido del usuario:** analizar `MEJORAS-MOTOR-RENDER.md` (18 mejoras para pasar a "fotorrealismo", escrito sobre
 capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la mayoría ya estaba.
@@ -1682,7 +1682,10 @@ capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la may
 - **Muestras:** `motor/pruebas/lente.html` → `capturas/lente/muestras.jpg` (~2 min): actual, solo resplandor, lente
   sutil y lente marcado (lo del documento), en el demo de día y de noche y el velador del depto 6 de noche, a tamaño
   real (achicado, el grano no se ve). El demo no tiene lámparas a la vista de noche: el resplandor casi no se nota ahí.
-- **Falta:** que el usuario elija la fila y pasar esos valores a `LENS`; después `verificar` con `&base=1`. Quedan
+- **Elegido por el usuario: "lente sutil"** → `LENS` = grano 0,012, viñeteado 0,1, aberración 0,5 px, resplandor solo de
+  noche (0,3, umbral 2). Cambian todas las vistas 2–3 % (grano y esquinas). La semilla del grano sale de la pose de la
+  cámara (con un contador, cada corrida de `verificar` daba ruido distinto); línea base actualizada. El visor acepta
+  `?lente=no|brillo|sutil|marcado` para comparar recorriendo. Quedan
   para otra tanda #13 (cortinas a contraluz: el voile ya es traslúcido; faltaría que la tela opaca brille con el sol
   detrás) y #14 (arrugas en sábanas; los almohadones ya son asimétricos y se apoyan con `restPillow`).
 
@@ -1707,4 +1710,4 @@ capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la may
 - `verificar.html?deptos=depto5,depto6` con todo en 0: demo sin cambios (≤ 0,2 %), depto 6 solo los avisos del baño.
 - **Elegido por el usuario: "medio"** → `CURTAIN_LIGHT_DEFAULT` 0,6 y `BEDDING.wrinkles` 0,016. `verificar`: cambian
   solo las vistas con cortinas al sol y con camas (demo ≤ 1,1 %, dormitorio del depto 6 1,9 %); +34 k triángulos en el
-  demo, armado igual. Línea base actualizada (`&base=1`). Sigue pendiente elegir el lente (T-67).
+  demo, armado igual. Línea base actualizada (`&base=1`). El lente quedó en "sutil" (T-67).
