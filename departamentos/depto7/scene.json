@@ -41,17 +41,20 @@
     { "kind": "column", "x": [2.38, 2.92], "z": [0, 0.62] }
   ],
   "items": [
-    { "type": "stair", "at": [3.85, 3.01], "params": { "width": 0.8, "rise": 2.7, "run": 2.6, "steps": 15, "turn": -1, "before": 2, "winders": 3, "beforeGo": 0.25, "open": -1, "rail": true, "tread": "#8a4422", "stringer": "#f1f1ee" } }
+    { "type": "stair", "at": [3.85, 2.94], "params": { "width": 0.8, "rise": 2.7, "run": 2.72, "steps": 15, "turn": -1, "before": 2, "winders": 3, "beforeGo": 0.25, "open": -1, "rail": true, "tread": "#8a4422", "stringer": "#f1f1ee" } }
   ],
   "levels": [
     {
       "name": "Planta alta",
       "y": 2.7,
       "height": 2.5,
-      "voids": [{ "x": [3.42, 4.25], "z": [1.7, 4.31] }],
+      "voids": [{ "x": [3.04, 4.25], "z": [1.58, 4.31] }],
+      "items": [
+        { "type": "railing", "at": [3.245, 1.55], "params": { "length": 0.41, "height": 0.9, "color": "#f1f1ee" } }
+      ],
       "rooms": [
         { "id": "dorm", "name": "Dormitorio", "rect": { "x": [0, 2.92], "z": [0, 4.31] }, "floor": { "kind": "planks", "color": "#c0662c" } },
-        { "id": "pasillo", "name": "Palier de la escalera", "rects": [{ "x": [3.04, 4.25], "z": [0, 1.7] }, { "x": [3.04, 3.42], "z": [1.7, 4.31] }], "floor": { "kind": "planks", "color": "#c0662c" } }
+        { "id": "pasillo", "name": "Palier de la escalera", "rect": { "x": [3.04, 4.25], "z": [0, 1.58] }, "floor": { "kind": "planks", "color": "#c0662c" } }
       ],
       "walls": [
         { "from": [-0.2, -0.1], "to": [4.45, -0.1], "thickness": 0.2 },
