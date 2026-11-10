@@ -2174,7 +2174,13 @@ function bathMat(p, { M }) {
 /* ---------- escaleras, barandas y revestimientos ---------- */
 // escalera recta abierta: arranca en +Z (frente) y sube hacia -Z; peldaños de madera sin alzada y una zanca de chapa
 // del lado libre ("open": -1 = lado -X, 1 = lado +X; el otro lado va contra la pared)
+// "turn" (2026-11-09, depto 7): escalera en L con peldaños compensados al pie. "turn": -1 o 1 = de qué lado (X local)
+// arranca el tramo de abajo; "before" peldaños de ese tramo (suben hacia el cuadrado del giro), "winders" peldaños en
+// abanico que giran 90° en un cuadrado de "width" × "width" en el frente (+Z) y el resto sube recto hacia -Z. "run" es el
+// largo total sobre Z (tramo recto + cuadrado); el tramo de abajo sobresale "before" × "beforeGo" hacia el lado del giro.
+// "rail": baranda de planchuela del lado libre del tramo recto (color de la zanca)
 function stair(p, { M }) {
+  if (p.turn) return turnStair(p, { M });
   const g = new THREE.Group(), w = p.width ?? 0.85, rise = p.rise ?? 2.85, run = p.run ?? 3.6, n = (p.steps ?? 16) - 1;
   const rH = rise / (n + 1), go = run / n, wood = M.wood(p.tread ?? '#c9a172'), steel = M.lacquer(p.stringer ?? '#1f2023'), side = p.open ?? 1;
   const xs = side > 0 ? [-w / 2, w / 2 - 0.014] : [-w / 2 + 0.014, w / 2];
@@ -2182,6 +2188,58 @@ function stair(p, { M }) {
   const a = Math.atan2(rise, run), L = Math.hypot(rise, run), sh = 0.2;
   const s = add(g, new THREE.BoxGeometry(0.012, sh, L), steel, side * (w / 2 - 0.006), rise / 2 - sh / 2 / Math.cos(a) + 0.1, 0);
   s.rotation.x = a;
+  g.userData.h = rise;
+  return g;
+}
+function turnStair(p, { M }) {
+  const g = new THREE.Group(), w = p.width ?? 0.85, rise = p.rise ?? 2.85, run = p.run ?? 3.6, N = p.steps ?? 16;
+  const s = p.turn > 0 ? 1 : -1, b = p.before ?? 2, k = p.winders ?? 3, m = Math.max(1, N - 1 - b - k);
+  const rH = rise / N, go = (run - w) / m, goB = p.beforeGo ?? 0.25, th = 0.04;
+  const wood = M.wood(p.tread ?? '#c9a172'), steel = M.lacquer(p.stringer ?? '#1f2023'), open = p.open ?? -s;
+  const zSq = run / 2 - w;                      // borde de atrás del cuadrado del giro (donde arranca el tramo recto)
+  // tramo de abajo: del lado "s", sube hacia el cuadrado
+  for (let i = 0; i < b; i++) {
+    const x0 = s * (w / 2 + (b - i) * goB), x1 = s * (w / 2 + (b - i - 1) * goB - 0.02);
+    blk(g, wood, [Math.min(x0, x1), Math.max(x0, x1)], [(i + 1) * rH - th, (i + 1) * rH], [zSq + 0.01, run / 2], 0.004);
+  }
+  // peldaños en abanico: cuñas desde la esquina de adentro (lado del arranque, atrás) que reparten los 90°
+  // esquina de adentro P: donde se tocan el borde de entrada (x = s·w/2, del lado del tramo de abajo) y el de salida
+  // (z = zSq, hacia el tramo recto). Ángulo 0 = rayo a lo largo del borde de entrada (+Z); 90° = a lo largo del de salida
+  const P = { x: s * w / 2, z: zSq };
+  const hit = ang => {   // dónde corta el borde del cuadrado un rayo desde la esquina
+    const dx = -s * Math.sin(ang), dz = Math.cos(ang), t = Math.min(Math.abs(dx) > 1e-6 ? w / Math.abs(dx) : Infinity, Math.abs(dz) > 1e-6 ? w / Math.abs(dz) : Infinity);
+    return [P.x + dx * t, P.z + dz * t];
+  };
+  for (let j = 0; j < k; j++) {   // el primero junto al tramo de abajo, el último junto al tramo recto
+    const a0 = Math.PI / 2 * j / k, a1 = Math.PI / 2 * (j + 1) / k;
+    const pts = [[P.x, P.z], hit(a0)];
+    if (a0 < Math.PI / 4 - 1e-6 && a1 > Math.PI / 4 + 1e-6) pts.push([P.x - s * w, P.z + w]);   // la esquina de afuera
+    pts.push(hit(a1));
+    const shape = new THREE.Shape(pts.map(([x, z]) => new THREE.Vector2(x, -z)));
+    const geo = new THREE.ExtrudeGeometry(shape, { depth: th, bevelEnabled: false });
+    geo.rotateX(-Math.PI / 2); geo.translate(0, (b + j + 1) * rH - th, 0);
+    add(g, geo, wood);
+  }
+  // tramo recto hacia -Z: los peldaños se meten 8 mm en la zanca (apoyan en ella, sin caras compartidas)
+  const xs = open > 0 ? [-w / 2, w / 2 - 0.004] : [-w / 2 + 0.004, w / 2];
+  for (let t = 0; t < m; t++) blk(g, wood, xs, [(b + k + t + 1) * rH - th, (b + k + t + 1) * rH], [zSq - (t + 1) * go - 0.02, zSq - t * go], 0.004);
+  // zanca del lado libre del tramo recto, y otra bajo el frente del tramo de abajo y del giro
+  const r0 = (b + k) * rH, L = Math.hypot(rise - r0, run - w), a = Math.atan2(rise - r0, run - w), sh = 0.2;
+  const st = add(g, new THREE.BoxGeometry(0.012, sh, L), steel, open * (w / 2 - 0.006), r0 + (rise - r0) / 2 - sh / 2 / Math.cos(a) + 0.1, zSq - (run - w) / 2);
+  st.rotation.x = a;
+  // la zanca baja en vertical hasta el piso en la esquina del giro (así apoya el tramo recto)
+  blk(g, steel, [open * (w / 2) - (open > 0 ? 0.012 : 0), open * (w / 2) + (open > 0 ? 0 : 0.012)], [0, r0 + 0.25], [zSq - 0.05, zSq + 0.01], 0.002);
+  const fx = [s * (w / 2 + b * goB), -s * w / 2].sort((u, v) => u - v);
+  blk(g, steel, fx, [0, Math.max(rH, r0 - 0.06)], [run / 2 - 0.012, run / 2], 0.002);
+  if (p.rail) {   // baranda: parantes de planchuela sobre la zanca y pasamanos redondo a 0,9 m de los peldaños
+    const x = open * (w / 2 - 0.006), z0 = zSq, z1 = zSq - (run - w), h0 = r0, posts = Math.max(2, Math.round((run - w) / 0.9) + 1);
+    for (let i = 0; i < posts; i++) {
+      const f = i / (posts - 1), z = z0 + (z1 - z0) * f, y = h0 + (rise - h0) * f;
+      blk(g, steel, [x - 0.006, x + 0.006], [y - 0.05, y + 0.92], [z - 0.02, z + 0.02], 0.002);
+    }
+    const hr = add(g, new THREE.CylinderGeometry(0.02, 0.02, Math.hypot(rise - h0, run - w), 12), steel, x, (h0 + rise) / 2 + 0.9, (z0 + z1) / 2);
+    hr.rotation.x = a - Math.PI / 2;   // el eje del cilindro (Y) apunta hacia arriba y hacia -Z, como la escalera
+  }
   g.userData.h = rise;
   return g;
 }
@@ -3230,6 +3288,19 @@ function door(o, { len, h, t, M }) {
     blk(g, wood, [jw - cw, jw], [0, h - jw + cw], zs, 0.004);
     blk(g, wood, [len - jw, len - jw + cw], [0, h - jw + cw], zs, 0.004);
     blk(g, wood, [jw, len - jw], [h - jw, h - jw + cw], zs.map(z => z - s * 0.002), 0.004);
+  }
+  // "slide" (2026-11-09, depto 7): puerta corrediza colgada de un riel sobre la cara de la pared del lado del ambiente
+  // (la que el motor elige o "side"); corre hacia el lado de "hinge" ("end" = hacia el final de la pared) y el número
+  // es cuánto está corrida (0 = cerrada). Hoja lisa con tirador embutido
+  if (o.slide !== undefined && o.slide !== false) {
+    const pw = len + 0.1, toEnd = o.hinge === 'end', off = Math.min(pw, +o.slide || 0) * (toEnd ? 1 : -1);
+    const z0 = t / 2 + 0.03, panel = new THREE.Group(); panel.position.set(-0.05 + off, 0, z0); g.add(panel);
+    blk(panel, wood, [0, pw], [0.012, h + 0.03], [0, 0.035], 0.004);
+    const px = toEnd ? 0.07 : pw - 0.07;   // tirador del lado que tira para abrir
+    blk(panel, M.lacquer(o.handle ?? '#a07a3c'), [px - 0.015, px + 0.015], [0.95, 1.1], [0.031, 0.037], 0.002);
+    const r0 = Math.min(-0.05, -0.05 + off) - 0.02, r1 = Math.max(pw - 0.05, pw - 0.05 + off) + 0.02;
+    blk(g, M.metal(o.rail ?? '#c8ccd1', 0.3), [r0, r1], [h + 0.035, h + 0.07], [t / 2 + 0.004, t / 2 + 0.05], 0.004);
+    return g;
   }
   const atEnd = o.hinge === 'end', dir = atEnd ? -1 : 1, a = THREE.MathUtils.degToRad(o.open ?? 0), lw = len - 2 * jw;
   const leaf = new THREE.Group(); leaf.position.set(atEnd ? len - jw : jw, 0, t / 2); g.add(leaf);

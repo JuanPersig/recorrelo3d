@@ -1,15 +1,13 @@
 {
- "fecha": "2026-11-10T00:37:00.621Z",
+ "fecha": "2026-11-10T00:59:03.529Z",
  "dudas": [
-  "Pozo de luz al oeste del patio, frente al ventanal grande del estar: se ve una pared blanca y plantas, pero no su tamaño (1,5 m de fondo, estimado).",
-  "Alto de los techos: 2,5 m en las dos plantas (no hay medida; por las fotos).",
-  "La escalera con giro al pie se dibuja recta hasta tener la pieza con peldaños compensados."
+  "Alto de los techos: 2,5 m en las dos plantas (no hay medida; por las fotos)."
  ],
  "ambientes": [
   "Estar comedor y cocina",
+  "Antebaño",
   "Baño",
   "Patio",
-  "Pozo de luz",
   "Dormitorio",
   "Palier de la escalera"
  ]

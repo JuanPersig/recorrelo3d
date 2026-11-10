@@ -72,7 +72,20 @@ plan.levels.forEach((L, li) => {
     if (it.mount === 'ceiling' || it.mount === 'wall' || it.mount === 'window' || it.type === 'table-setting' || it.type === 'tabletop-decor') continue;
     const pts = it.poly.map(([x, z]) => P(b, x, z)), rug = it.type === 'rug' || it.type === 'bath-mat';
     out.push(`<path d="${rectPath(pts)}" fill="${rug ? 'none' : '#dfe3e7'}" stroke="#8b949c" stroke-width="${rug ? 1 : 1.2}"${rug ? ' stroke-dasharray="3 3"' : ''}/>`);
-    if (it.type === 'stair') { // peldaños
+    if (it.type === 'stair' && it.stair?.turn) {   // escalera en L: tramo de abajo, abanico en el cuadrado del giro y tramo recto
+      const q = it.stair, w = q.width ?? 0.85, run = q.run ?? 3.6, s = q.turn > 0 ? 1 : -1, nb = q.before ?? 2, k = q.winders ?? 3, gb = q.beforeGo ?? 0.25;
+      const m = Math.max(1, (q.steps ?? 16) - 1 - nb - k), go = (run - w) / m, zSq = run / 2 - w, r = (q.rot ?? 0) * Math.PI / 180;
+      const W = (lx, lz) => P(b, q.at[0] + lx * Math.cos(r) + lz * Math.sin(r), q.at[1] - lx * Math.sin(r) + lz * Math.cos(r));
+      const line = (a, c) => out.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${c[0].toFixed(1)}" y2="${c[1].toFixed(1)}" stroke="#8b949c" stroke-width="0.8"/>`);
+      out.pop();   // la caja de la escalera no: va su forma
+      const sh = [[-w / 2, -run / 2], [w / 2, -run / 2], [w / 2, run / 2], [-w / 2 - nb * gb, run / 2], [-w / 2 - nb * gb, zSq], [-w / 2, zSq]].map(([x, z]) => [s < 0 ? x : -x, z]);
+      out.push(`<path d="${rectPath(sh.map(([x, z]) => W(x, z)))}" fill="#dfe3e7" stroke="#8b949c" stroke-width="1.2"/>`);
+      for (let t = 1; t <= m; t++) line(W(-w / 2, zSq - t * go), W(w / 2, zSq - t * go));
+      line(W(-w / 2, zSq), W(w / 2, zSq));
+      for (let i = 0; i < nb; i++) { const x = s * (w / 2 + i * gb); line(W(x, zSq), W(x, run / 2)); }
+      const Px = s * w / 2;
+      for (let j = 1; j < k; j++) { const a = Math.PI / 2 * j / k, dx = -s * Math.sin(a), dz = Math.cos(a), tt = Math.min(Math.abs(dx) > 1e-6 ? w / Math.abs(dx) : 9, Math.abs(dz) > 1e-6 ? w / Math.abs(dz) : 9); line(W(Px, zSq), W(Px + dx * tt, zSq + dz * tt)); }
+    } else if (it.type === 'stair') { // peldaños
       const [p0, p1, p2, p3] = pts; for (let k = 1; k < 12; k++) { const t = k / 12, a = [p0[0] + (p3[0] - p0[0]) * t, p0[1] + (p3[1] - p0[1]) * t], c = [p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]; out.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${c[0].toFixed(1)}" y2="${c[1].toFixed(1)}" stroke="#8b949c" stroke-width="0.8"/>`); }
     }
   }
@@ -95,6 +108,11 @@ plan.levels.forEach((L, li) => {
         out.push(`<rect x="${Math.min(a[0], c[0]).toFixed(1)}" y="${Math.min(a[1], c[1]).toFixed(1)}" width="${Math.abs(c[0] - a[0]).toFixed(1)}" height="${Math.abs(c[1] - a[1]).toFixed(1)}" fill="#ffffff" stroke="#2b3038" stroke-width="1.2"/>`);
         const m0 = Lw.alongX ? P(b, s, Lw.c) : P(b, Lw.c, s), m1 = Lw.alongX ? P(b, s + o.width, Lw.c) : P(b, Lw.c, s + o.width);
         out.push(`<line x1="${m0[0].toFixed(1)}" y1="${m0[1].toFixed(1)}" x2="${m1[0].toFixed(1)}" y2="${m1[1].toFixed(1)}" stroke="#4d8fbf" stroke-width="2"/>`);
+      } else if (o.kind === 'door' && o.slide !== undefined && o.slide !== false) {   // corrediza: la hoja sobre la cara de la pared, corrida "slide"
+        const room = s + o.width / 2, probe = sg => L.rooms.some(r => { const x = Lw.alongX ? room : Lw.c + sg * (Lw.t / 2 + 0.3), z = Lw.alongX ? Lw.c + sg * (Lw.t / 2 + 0.3) : room; return x > r.rect.x[0] && x < r.rect.x[1] && z > r.rect.z[0] && z < r.rect.z[1]; });
+        const n = o.side ?? (probe(1) ? 1 : -1), face = Lw.c + n * (Lw.t / 2 + 0.03), off = (+o.slide || 0) * (o.hinge === 'end' ? 1 : -1), a0 = s - 0.05 + off, a1 = s + o.width + 0.05 + off;
+        const A = Lw.alongX ? P(b, a0, face) : P(b, face, a0), C = Lw.alongX ? P(b, a1, face) : P(b, face, a1);
+        out.push(`<line x1="${A[0].toFixed(1)}" y1="${A[1].toFixed(1)}" x2="${C[0].toFixed(1)}" y2="${C[1].toFixed(1)}" stroke="#2b3038" stroke-width="3"/>`);
       } else if (o.kind === 'door') {   // puerta: hoja abierta a 90° y el arco del barrido, del lado del ambiente
         const room = s + o.width / 2, probe = sg => L.rooms.some(r => { const x = Lw.alongX ? room : Lw.c + sg * (Lw.t / 2 + 0.3), z = Lw.alongX ? Lw.c + sg * (Lw.t / 2 + 0.3) : room; return x > r.rect.x[0] && x < r.rect.x[1] && z > r.rect.z[0] && z < r.rect.z[1]; });
         const n = o.side ?? (probe(1) ? 1 : -1), atEnd = o.hinge === 'end', hingeA = atEnd ? s + o.width : s, freeA = atEnd ? s : s + o.width, face = Lw.c + n * Lw.t / 2;
@@ -118,8 +136,9 @@ plan.levels.forEach((L, li) => {
       `<text x="${cx.toFixed(1)}" y="${(cy + fs * 1.15).toFixed(1)}" text-anchor="middle" font-size="${(fs * 0.8).toFixed(1)}" fill="#5b6573" stroke="#ffffff" stroke-width="3" paint-order="stroke">${dims}</text>`);
   }
 });
-// del lado de la fachada: hacia la calle, el lago o el balcón
-{
+// del lado de la fachada: hacia la calle, el lago o el balcón. Solo si se sabe (fachada indicada, balcón o paisaje): un
+// depto interno sin ventanas a la calle no la marca
+if (scene.exterior?.facing || plan.balconies.length || scene.exterior?.landscape) {
   const b = boxes[0], f = plan.facing, label = scene.exterior?.landscape === 'lake' ? 'Vista al lago' : scene.exterior?.city ? 'Calle' : plan.balconies.length ? 'Balcón' : 'Frente';
   const mid = { '-z': [(b.x0 + b.x1) / 2, b.z0 - 0.45], '+z': [(b.x0 + b.x1) / 2, b.z1 + 0.6], '-x': [b.x0 - 0.6, (b.z0 + b.z1) / 2], '+x': [b.x1 + 0.6, (b.z0 + b.z1) / 2] }[f] ?? [(b.x0 + b.x1) / 2, b.z0 - 0.45];
   const [x, y] = P(b, ...mid);

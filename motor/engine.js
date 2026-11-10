@@ -950,6 +950,11 @@ export async function start(container, { scene: spec, state, preset = 'premium',
       if (sgn > 0) { b.min[ax] = b.max[ax] - len * f; b.max[ax] -= 0.5; } else { b.max[ax] = b.min[ax] + len * f; b.min[ax] += 0.5; }
       const o = ax === 'x' ? 'z' : 'x', sides = [b.clone(), b.clone()];
       sides[0].max[o] = b.min[o] + 0.04; sides[1].min[o] = b.max[o] - 0.04;
+      // escalera en L ("turn"): del lado del tramo de abajo se entra caminando; esa caja no va
+      if (q.turn) {
+        const r = THREE.MathUtils.degToRad(it.rotation ?? 0), lx = new THREE.Vector3(Math.cos(r), 0, -Math.sin(r)).multiplyScalar(q.turn > 0 ? 1 : -1);
+        return [sides[lx[o] > 0 ? 0 : 1]];
+      }
       return sides;
     }));
   // ubicación, puertas y circulación: con las cajas reales, antes de unir las piezas (después ya no se separan)
@@ -968,7 +973,8 @@ export async function start(container, { scene: spec, state, preset = 'premium',
     const b = new THREE.Box3().setFromObject(g, true); g.rotation.y = rot; g.updateMatrixWorld(true);
     const c = Math.cos(rot), s = Math.sin(rot), [ax, az] = it.at;
     const poly = [[b.min.x, b.min.z], [b.max.x, b.min.z], [b.max.x, b.max.z], [b.min.x, b.max.z]].map(([x, z]) => { const dx = x - ax, dz = z - az; return [+(ax + dx * c + dz * s).toFixed(3), +(az - dx * s + dz * c).toFixed(3)]; });
-    return { type: it.type, level: li, decor: !!it.decor, mount: META[it.type]?.mount, poly, height: +(b.max.y - b.min.y).toFixed(2) };
+    return { type: it.type, level: li, decor: !!it.decor, mount: META[it.type]?.mount, poly, height: +(b.max.y - b.min.y).toFixed(2),
+      stair: it.type === 'stair' ? { at: it.at, rot: it.rotation ?? 0, ...(it.params ?? {}) } : undefined };   // la forma en L del plano (plano.html)
   });
   const idTable = assignIds(scene);   // antes de unir las piezas: cada vértice lleva el id de su objeto y material
   levelInfo.forEach(l => mergeStatic(l.root, keep));
