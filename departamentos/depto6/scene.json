@@ -638,8 +638,9 @@
       "params": {
         "style": "panel",
         "wood": "#5a2015",
-        "color": "#1e1e22",
-        "panel": "#ece8de"
+        "color": "#ebe6da",
+        "panel": "#ebe6da",
+        "backCushion": true
       }
     },
     {
@@ -651,8 +652,9 @@
       "params": {
         "style": "panel",
         "wood": "#5a2015",
-        "color": "#1e1e22",
-        "panel": "#ece8de"
+        "color": "#ebe6da",
+        "panel": "#ebe6da",
+        "backCushion": true
       }
     },
     {
@@ -665,8 +667,9 @@
       "params": {
         "style": "panel",
         "wood": "#5a2015",
-        "color": "#1e1e22",
-        "panel": "#ece8de"
+        "color": "#ebe6da",
+        "panel": "#ebe6da",
+        "backCushion": true
       }
     },
     {
@@ -679,8 +682,9 @@
       "params": {
         "style": "panel",
         "wood": "#5a2015",
-        "color": "#1e1e22",
-        "panel": "#ece8de"
+        "color": "#ebe6da",
+        "panel": "#ebe6da",
+        "backCushion": true
       }
     },
     {

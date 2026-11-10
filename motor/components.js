@@ -253,6 +253,15 @@ function oakAt(x, y) {
   const ray = smooth(0.66, 0.74, vnoise(x / 32, y / 4, 16, 128)) * (0.5 + 0.5 * vnoise(x / 64, y / 64, 8, 8));
   return { tono: 1 - 0.13 * late - 0.06 * pore + 0.1 * ray, alto: 1 - 0.4 * late - 0.9 * pore + 0.15 * ray, poro: Math.max(0, pore - 0.6 * ray) };
 }
+// Tweed jaspeado para el tapizado de las sillas (2026-11-10, elegido por el usuario en motor/pruebas/telas-sillas.html).
+// 512 px = 25 cm: hilos de 8 px (≈ 4 mm) en sarga diagonal, cada hilo de uno de cuatro tonos (el jaspeado) y motas finas.
+// Devuelve tono (0–1) y alto (relieve del hilo, de donde sale el mapa de normales).
+function tweedAt(x, y) {
+  const p = 8, u = x / p, v = y / p, iu = Math.floor(u), iv = Math.floor(v), fu = u - iu, fv = v - iv, warp = (((iu + iv) % 4) + 4) % 4 < 2;
+  const h = Math.pow(Math.max(0, Math.sin(Math.PI * (warp ? fu : fv))), 0.65), shade = [0.86, 1, 0.93, 0.8][Math.floor(hash(warp ? iu : iv, 17) * 4)];
+  // el promedio del tono es ~0,95 (como la tela lisa): con el de la muestra (0,65) un tapizado blanco salía gris y cuadriculado
+  return { tono: Math.min(1, 1.12 * (0.78 + 0.22 * h) * shade * (0.94 + 0.12 * vnoise(x / 2, y / 2, 256, 256))), alto: h * (0.85 + 0.3 * hash(iu, iv)) };
+}
 const grassBlade = (x, y) => vnoise(x / 2 + 3 * vnoise(x / 8, y / 8, 64, 64), y / 4, 256, 128);
 const lazy = (k, f) => { GEN[k] = f; return () => T[k] || (T[k] = fileTex(k) ?? f()); };
 const TEX = {
@@ -281,6 +290,9 @@ const TEX = {
     const weave = (((x >> 1) & 1) ^ ((y >> 1) & 1)) ? 1 : 0.9;
     return gray(255 * weave * (0.94 + 0.06 * vnoise(x / 8, y / 8, 32, 32)));
   }), true)),
+  // tweed jaspeado de las sillas (ver tweedAt): color y relieve
+  tweed: lazy('tweed', () => toTex(canvasFrom(512, (x, y) => gray(255 * Math.max(0, Math.min(1, tweedAt(x, y).tono)))), true)),
+  tweedN: lazy('tweedN', () => normalTex(512, (x, y) => tweedAt(x, y).alto, 2.2)),
   // capitoné en rombos: 4 rombos por repetición
   quilt: lazy('quilt', () => toTex(canvasFrom(256, (x, y) => {
     const u = x / 256, v = y / 256, a = ((u + v) * 4) % 1, b = (((u - v) * 4) % 1 + 1) % 1;
@@ -616,6 +628,8 @@ export function makeMaterials(preset) {
     // pared: pintura sobre revoque fino, con la variación de tono a escala de habitación
     wall: c => once('wall' + c, () => clay ? matte(c, 1) : macroTone(new THREE.MeshStandardMaterial({ color: col(c), roughness: 0.92, normalMap: TEX.plasterN(), normalScale: new THREE.Vector2(0.18, 0.18) }), 0.025, 0.35)),
     fabric: c => once('fab' + c, () => clay ? matte(c, 1) : jitter(new THREE.MeshPhysicalMaterial(fabricOpts(c)))),
+    // tapizado de silla: tweed jaspeado (hilos de ~4 mm en sarga, de cuatro tonos), elegido por el usuario el 2026-11-10
+    tweed: c => once('tweed' + c, () => clay ? matte(c, 1) : jitter(new THREE.MeshPhysicalMaterial({ ...fabricOpts(c), map: TEX.tweed(), normalMap: TEX.tweedN(), normalScale: new THREE.Vector2(0.9, 0.9), roughness: 0.95, sheen: 0.4, sheenRoughness: 0.9 }))),
     cloth: c => once('cloth' + c, () => { const m = clay ? matte(c, 1) : new THREE.MeshPhysicalMaterial(fabricOpts(c)); m.side = THREE.DoubleSide; return m; }),
     // voile: tela fina traslúcida; brilla un poco con la luz de la ventana y no tapa la vista (no escribe profundidad)
     // "o": opacidad (0,58 voile; 0,85 tela liviana a contraluz, como una cortina de algodón que brilla con el sol)
@@ -1428,7 +1442,8 @@ function tablecloth(g, M, tc, L, W, h) {
 
 // silla con casco tapizado en capitoné (o liso) y patas metálicas abiertas; "style": "wood" (madera y asiento de cuero) o "tube"
 // (caño cromado, asiento redondo tapizado y respaldo de varillas)
-// "panel": madera recta con respaldo de tabla ("panel" su color) y almohadón; "spindle": torneada con respaldo de husillos;
+// "panel": madera recta con respaldo de tabla ("panel" su color) y almohadón; "backCushion": true = el respaldo también es un
+// almohadón tapizado; los tapizados de "panel" y "tube" son de tweed jaspeado ("fabric": "plain" = la tela lisa de antes); "spindle": torneada con respaldo de husillos;
 // "stool": banqueta baja sin respaldo, asiento redondo tejido ("color") en un aro de madera
 function chair(p, { M }) {
   if (p.style === 'wishbone') return wishboneChair(p, { M });
@@ -1455,8 +1470,11 @@ function chair(p, { M }) {
       blk(g, wood, [x[0] + 0.008, x[1] - 0.008], [0.14, 0.17], [-d / 2 + s - 0.004, d / 2 - s + 0.004], 0.003);     // travesaño bajo
     }
     blk(g, wood, [-w / 2 + 0.004, w / 2 - 0.004], [sh - 0.07, sh - 0.02], [-d / 2 + 0.004, d / 2 - 0.004], 0.004);   // bastidor del asiento
-    add(g, uvScale(new RoundedBoxGeometry(w - 0.012, 0.035, d - 0.035, 3, 0.012), 3), M.fabric(p.color ?? '#202022'), 0, sh - 0.004, 0.012);
-    blk(g, M.lacquer(p.panel ?? '#ece7dc'), [-w / 2 + s - 0.004, w / 2 - s + 0.004], [sh + 0.2, top - 0.07], [-d / 2 + 0.008, -d / 2 + 0.024], 0.004);
+    add(g, uvScale(new RoundedBoxGeometry(w - 0.012, 0.035, d - 0.035, 3, 0.012), 3), (p.fabric === 'plain' ? M.fabric : M.tweed)(p.color ?? '#202022'), 0, sh - 0.004, 0.012);
+    if (p.backCushion) {   // respaldo almohadonado ("backCushion": true): mismo tapizado que el asiento, en el color de "panel"
+      const bw = w - 2 * s + 0.008, y0 = sh + 0.2, y1 = top - 0.07;
+      add(g, uvScale(new RoundedBoxGeometry(bw, y1 - y0, 0.03, 3, 0.012), 3), (p.fabric === 'plain' ? M.fabric : M.tweed)(p.panel ?? '#ece7dc'), 0, (y0 + y1) / 2, -d / 2 + 0.019);
+    } else blk(g, M.lacquer(p.panel ?? '#ece7dc'), [-w / 2 + s - 0.004, w / 2 - s + 0.004], [sh + 0.2, top - 0.07], [-d / 2 + 0.008, -d / 2 + 0.024], 0.004);
     for (const y of [[sh + 0.16, sh + 0.2], [top - 0.07, top - 0.025]]) blk(g, wood, [-w / 2 + s - 0.004, w / 2 - s + 0.004], y, [-d / 2 + 0.004, -d / 2 + s - 0.004], 0.003);
     return g;
   }
@@ -1471,7 +1489,7 @@ function chair(p, { M }) {
   if (p.style === 'tube') {   // silla de caño cromado: asiento redondo tapizado y respaldo de tres varillas curvas
     // Todo el caño se toca: un aro bajo el asiento recibe las cuatro patas; las de atrás siguen hacia arriba como
     // parantes del respaldo (quebradas en el aro, inclinadas hacia atrás) y las varillas terminan justo en los parantes
-    const g = new THREE.Group(), chrome = M.metal(p.legs ?? '#c3c6ca', 0.22), seat = M.fabric(p.color ?? '#d9d3c7'), sh = p.seatHeight ?? 0.46, r = 0.0105;
+    const g = new THREE.Group(), chrome = M.metal(p.legs ?? '#c3c6ca', 0.22), seat = (p.fabric === 'plain' ? M.fabric : M.tweed)(p.color ?? '#d9d3c7'), sh = p.seatHeight ?? 0.46, r = 0.0105;
     const up = new THREE.Vector3(0, 1, 0), V = (x, y, z) => new THREE.Vector3(x, y, z);
     const tube = (a, b) => {   // caño recto de a a b, con una bocha en cada punta para que las uniones queden redondas
       const d = b.clone().sub(a), m = add(g, new THREE.CylinderGeometry(r, r, d.length(), 12), chrome);

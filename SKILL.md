@@ -430,3 +430,19 @@ en 3…). **Conclusión de proceso: después de la estructura, revisar primero l
 2. Un defecto que se repite en varias vistas es un parámetro o una pieza del motor, no varios errores: arreglar la causa.
 3. Todo cambio de motor es general, con `verificar.html` en el depto 5 y el depto en curso, y la lección anotada acá.
 4. La medición y el ojo pueden no coincidir (el piso): decidir con las dos y escribir por qué.
+
+### Tapizado de sillas: tweed jaspeado (elegido por el usuario el 2026-11-10)
+- **Qué cambió:** las sillas `panel` y `tube` usan `M.tweed` (sarga de hilos de ~4 mm en cuatro tonos, con motas; texturas
+  `tweed` y `tweedN`, 512 px = 25 cm) en lugar de `M.fabric` (damero de 2 px, que de cerca salía como plástico liso). El resto
+  de las telas del motor (sillones, almohadones, ropa de cama) siguen con `M.fabric`: por eso el depto 5 no cambia.
+- **Opciones de la silla:** `"fabric": "plain"` vuelve a la tela lisa de antes; `"backCushion": true` hace que el respaldo
+  de la silla `panel` también sea un almohadón tapizado, del color de `panel` (en el depto 6 las fotos muestran el asiento
+  y el respaldo blancos: `color` y `panel` `#ebe6da`, `backCushion: true`).
+- **Cómo se eligió:** `motor/pruebas/telas-sillas.html` (muestras lado a lado: lino, tweed, pana, chenille y ecocuero contra la
+  actual; hoja en `capturas/telas-sillas/muestras.jpg`). La página conserva el contraste de la muestra elegida; en el motor se
+  suavizó (el promedio del tono pasó de 0,65 a ~0,95) porque **un tapizado blanco salía gris y cuadriculado**.
+- **Para el próximo:** mirar el color del asiento y del respaldo en las fotos *antes* de dejar el negro por defecto (en el
+  depto 6 se había modelado negro y en las fotos es blanco); una tela nueva que se calcule píxel por píxel se pre-genera con
+  `generar-texturas.html` (el `.webp` solo se descarga si el departamento usa esa tela); el tejido se nota de cerca y en
+  colores medios y claros, y casi nada sobre negro.
+
