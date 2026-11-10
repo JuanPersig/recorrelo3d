@@ -1,0 +1,166 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muestras de tela para sillas</title>
+<style>
+/* Herramienta de desarrollo (2026-11-10): alternativas de tejido para el tapizado de las sillas, lado a lado sobre las
+   mismas sillas, a tres distancias, de día y de noche. Nada de esto cambia el motor: el usuario elige y recién ahí la
+   tela elegida pasa a components.js (material nuevo para tapizados de sillas). */
+body{ margin:0; background:#eceef0; font-family:system-ui,"Segoe UI",sans-serif; color:#1d2430; padding:10px }
+#stage{ width:640px; height:480px } p{ font-size:13px }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/telas-sillas.html[?solo=lino,pana][&capturar=telas-sillas/muestras]
+// Una fila por alternativa (la actual primero) y cuatro columnas: lejos, media y cerca de día, y cerca de noche.
+// Las texturas se calculan acá en gris, como las del motor, y se multiplican por el color de cada silla. Cada una devuelve
+// { tono, alto }: el tono (0–1) es el dibujo del tejido; el alto, el relieve del hilo (de ahí sale el mapa de normales).
+// 512 px = 25 cm: un hilo de 8 px mide ~4 mm.
+import { start } from '../engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+
+/* ---------- ruido (igual que en components.js) ---------- */
+function hash(x, y) {
+  let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function vnoise(x, y, px, py) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), m = (a, p) => ((a % p) + p) % p;
+  const a = hash(m(xi, px), m(yi, py)), b = hash(m(xi + 1, px), m(yi, py));
+  const c = hash(m(xi, px), m(yi + 1, py)), d = hash(m(xi + 1, px), m(yi + 1, py));
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+const S = 512;
+
+/* ---------- tejidos ---------- */
+// hilo que pasa por arriba: semicilindro (0 en los bordes, 1 al centro)
+const thread = f => Math.pow(Math.max(0, Math.sin(Math.PI * f)), 0.65);
+const TELAS = {
+  lino: { name: 'Tejido plano grueso (lino, algodón)', note: 'hilos de ~4 mm que pasan por arriba y por abajo; hilos más gruesos al azar (nudos del lino)',
+    normal: 2.4, rough: 0.9, sheen: 0.3, sheenRough: 0.8,
+    at(x, y) {
+      const p = 8, u = x / p, v = y / p, iu = Math.floor(u), iv = Math.floor(v), fu = u - iu, fv = v - iv, warp = ((iu + iv) & 1) === 0;
+      const id = warp ? iu : iv, along = warp ? y : x, h = thread(warp ? fu : fv);
+      const slub = vnoise(along / 32, id, 16, 64), tt = 0.9 + 0.14 * hash(id, warp ? 1 : 2);
+      return { tono: (0.72 + 0.28 * h) * tt * (0.93 + 0.14 * slub), alto: h * (0.8 + 0.4 * slub) };
+    } },
+  tweed: { name: 'Tweed jaspeado (sarga con motas)', note: 'sarga diagonal de hilos de dos o tres tonos mezclados: se lee como un tejido de lana',
+    normal: 2.2, rough: 0.95, sheen: 0.4, sheenRough: 0.9,
+    at(x, y) {
+      const p = 8, u = x / p, v = y / p, iu = Math.floor(u), iv = Math.floor(v), fu = u - iu, fv = v - iv, warp = (((iu + iv) % 4) + 4) % 4 < 2;
+      const h = thread(warp ? fu : fv), shade = [0.74, 1, 0.88, 0.62][Math.floor(hash(warp ? iu : iv, 17) * 4)], fleck = 0.9 + 0.2 * vnoise(x / 2, y / 2, 256, 256);
+      return { tono: (0.62 + 0.38 * h) * shade * fleck, alto: h * (0.85 + 0.3 * hash(iu, iv)) };
+    } },
+  pana: { name: 'Pana fina (corderoy)', note: 'costillas paralelas de ~8 mm con el pelo corto: la tela de las sillas tapizadas de los 70',
+    normal: 2.6, rough: 0.85, sheen: 0.8, sheenRough: 0.5,
+    at(x, y) {
+      const p = 16, u = x / p, iu = Math.floor(u), fu = u - iu, rib = thread(fu), pile = 0.9 + 0.1 * hash(x, y) + 0.04 * vnoise(x / 4, y / 4, 128, 128);
+      return { tono: (0.45 + 0.55 * rib) * pile, alto: rib * (0.9 + 0.2 * hash(x >> 1, y >> 1)) };
+    } },
+  chenille: { name: 'Chenille / felpa', note: 'tela blanda y pelosa: motas grandes y brillo suave en los bordes, casi sin trama visible',
+    normal: 1.3, rough: 0.8, sheen: 1, sheenRough: 0.35,
+    at(x, y) {
+      const big = vnoise(x / 8, y / 8, 64, 64), mid = vnoise(x / 4, y / 4, 128, 128), fuzz = hash(x, y);
+      return { tono: 0.8 + 0.12 * big + 0.06 * mid + 0.04 * fuzz, alto: 0.45 * big + 0.35 * mid + 0.2 * fuzz };
+    } },
+  ecocuero: { name: 'Ecocuero mate (vinilo con grano)', note: 'superficie lisa con grano fino de ~2 mm y algo de brillo; el tapizado que más se ve en sillas de comedor',
+    normal: 1.8, rough: 0.5, sheen: 0, sheenRough: 0.5,
+    at(x, y) {
+      const cell = smooth(0.42, 0.6, vnoise(x / 4, y / 4, 128, 128)), grain = smooth(0.5, 0.75, vnoise(x / 2, y / 2, 256, 256));
+      return { tono: 1 - 0.1 * cell - 0.05 * grain, alto: 1 - 0.55 * cell - 0.15 * grain };
+    } },
+};
+const ACTUAL = { name: 'Actual del motor (de referencia)', note: 'trama en damero de 2 px con ondas finas: la que usan hoy las sillas' };
+
+/* ---------- del tejido a las texturas del material ---------- */
+let THREE;
+function texFrom(px, srgb) {
+  const c = document.createElement('canvas'); c.width = c.height = S;
+  const g = c.getContext('2d'), img = g.createImageData(S, S);
+  for (let i = 0; i < S * S; i++) { const [r, gg, b] = px(i); img.data.set([r, gg, b, 255], i * 4); }
+  g.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8;
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+function build(v) {
+  const tono = new Float32Array(S * S), alto = new Float32Array(S * S);
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) { const o = v.at(x, y), i = y * S + x; tono[i] = o.tono; alto[i] = o.alto; }
+  const at = (x, y) => alto[((y + S) % S) * S + ((x + S) % S)], k = v.normal;
+  return {
+    map: texFrom(i => { const g = 255 * Math.max(0, Math.min(1, tono[i])); return [g, g, g]; }, true),
+    normalMap: texFrom(i => {
+      const x = i % S, y = (i / S) | 0, dx = (at(x + 1, y) - at(x - 1, y)) * k, dy = (at(x, y + 1) - at(x, y - 1)) * k, l = Math.hypot(dx, dy, 1);
+      return [(-dx / l * 0.5 + 0.5) * 255, (dy / l * 0.5 + 0.5) * 255, (1 / l * 0.5 + 0.5) * 255];
+    }, false),
+    roughness: v.rough, sheen: v.sheen, sheenRoughness: v.sheenRough,
+  };
+}
+
+/* ---------- escena de laboratorio: solo sillas tapizadas, piso y paredes neutros ---------- */
+const scene = {
+  name: 'Telas de silla', height: 2.6, wallColor: '#efebe4',
+  rooms: [{ name: 'Comedor', rect: { x: [-1.8, 1.8], z: [-1.2, 1.7] }, floor: { kind: 'tile', color: '#cfcac2' } }],
+  walls: [{ from: [-1.8, -1.2], to: [1.8, -1.2] }, { from: [-1.8, 1.7], to: [1.8, 1.7] },
+    { from: [-1.8, -1.2], to: [-1.8, 1.7] }, { from: [1.8, -1.2], to: [1.8, 1.7], openings: [{ kind: 'sliding-window', at: 0.7, width: 1.4, sill: 0.9, height: 1.3, panels: 2 }] }],
+  items: [
+    { type: 'chair', at: [-1.2, 0], params: { style: 'panel', wood: '#5a2015', color: '#1e1e22', panel: '#ece8de' } },
+    { type: 'chair', at: [-0.4, 0], params: { style: 'panel', wood: '#6b3d24', color: '#7b4a3a', panel: '#ece8de' } },
+    { type: 'chair', at: [0.4, 0], params: { style: 'tube', color: '#d9d3c7' } },
+    { type: 'chair', at: [1.2, 0], params: { style: 'panel', wood: '#c8925e', color: '#8e9aa6', panel: '#ece8de' } },
+    { type: 'ceiling-light', at: [0, 0.3] },
+  ],
+  exterior: {},
+  lighting: { sunFrom: [10, 6, -2] },
+  views: {
+    lejos: { name: 'Lejos', pos: [0, 1.4, 1.5], target: [0, 0.6, 0], fov: 62 },
+    media: { name: 'Media', pos: [-0.8, 1.15, 0.7], target: [-0.8, 0.5, 0], fov: 50 },
+    cerca: { name: 'Cerca', pos: [-1.15, 0.85, 0.5], target: [-1.15, 0.45, 0.02], fov: 42 },
+  },
+};
+const COLS = [['lejos', false], ['media', false], ['cerca', false], ['cerca', true]];
+const api = window.__viewer = await start($('stage'), { scene, state: { view: 'lejos', cut: false, night: false, decor: true }, device: 'desktop' });
+await api.ready;
+THREE = api._debug.THREE;
+
+// los materiales de tela del motor: los de la escena con relieve de trama y brillo de felpa (solo hay sillas tapizadas)
+const fabMats = new Set();
+api._debug.scene.traverse(o => { if (o.isMesh) for (const m of [o.material].flat()) if (m?.isMeshPhysicalMaterial && m.sheen > 0 && m.normalMap) fabMats.add(m); });
+const original = [...fabMats].map(m => [m, { map: m.map, normalMap: m.normalMap, roughness: m.roughness, sheen: m.sheen, sheenRoughness: m.sheenRoughness, ns: m.normalScale.clone() }]);
+const apply = t => { for (const [m, o] of original) { Object.assign(m, t ?? { map: o.map, normalMap: o.normalMap, roughness: o.roughness, sheen: o.sheen, sheenRoughness: o.sheenRoughness }); m.normalScale.copy(t ? new THREE.Vector2(0.9, 0.9) : o.ns); m.needsUpdate = true; } };
+
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.src = src; });
+const pick = q.get('solo')?.split(',') ?? Object.keys(TELAS);
+const rows = [['actual', ACTUAL, null], ...pick.filter(k => TELAS[k]).map(k => [k, TELAS[k], build(TELAS[k])])];
+const W = 400, H = 300, LBL = 46, c = Object.assign(document.createElement('canvas'), { width: COLS.length * (W + 6), height: rows.length * (H + LBL) }), g = c.getContext('2d');
+g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+for (const [ri, [key, v, tex]] of rows.entries()) {
+  $('estado').textContent = `Capturando ${v.name}…`;
+  apply(tex);
+  const y = ri * (H + LBL);
+  g.fillStyle = '#1d2430'; g.font = '700 18px system-ui'; g.fillText(`${ri + 1}. ${v.name}`, 4, y + 20);
+  g.fillStyle = '#5b6573'; g.font = '14px system-ui'; g.fillText(v.note, 4, y + 39);
+  for (const [ci, [view, night]] of COLS.entries()) {
+    api.setNight(night); api.go(view, true);
+    const im = await load(api.capture()), x = ci * (W + 6);
+    g.drawImage(im, x, y + LBL, W, H);
+    g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(x, y + LBL, 112, 20); g.fillStyle = '#1d2430'; g.font = '600 13px system-ui';
+    g.fillText(`${scene.views[view].name} · ${night ? 'noche' : 'día'}`, x + 5, y + LBL + 15);
+  }
+}
+api.setNight(false); apply(null);
+$('estado').textContent = `${rows.length} telas · ${fabMats.size} materiales de tela reemplazados en cada fila${api.warnings.length ? ' · avisos: ' + api.warnings.join(' | ') : ''}`;
+$('stage').hidden = true; c.style.cssText = 'display:block;max-width:100%;height:auto'; document.body.append(c);
+if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.9); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
+document.title = 'telas: listo';
+</script>
