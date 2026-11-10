@@ -1711,3 +1711,17 @@ capturas viejas del demo) y empezar a aplicarlas. **Cruce con el motor:** la may
 - **Elegido por el usuario: "medio"** → `CURTAIN_LIGHT_DEFAULT` 0,6 y `BEDDING.wrinkles` 0,016. `verificar`: cambian
   solo las vistas con cortinas al sol y con camas (demo ≤ 1,1 %, dormitorio del depto 6 1,9 %); +34 k triángulos en el
   demo, armado igual. Línea base actualizada (`&base=1`). El lente quedó en "sutil" (T-67).
+
+## T-69 · Las sombras "se vuelven a dibujar" al moverse o cambiar el zoom (hecho, 2026-11-09)
+
+**Reporte del usuario:** cada vez que se mueve o ajusta el fov, las sombras parecen renderizarse de nuevo o moverse.
+**Causa:** en la PC, si los cuadros pasaban de 28 ms mientras la cámara se movía, la calidad adaptativa bajaba al
+escalón "sin oclusión ambiental" y al frenar la oclusión volvía a fundirse (se iban y volvían las sombras de rincones
+y pies de muebles). El lente y las arrugas (T-67/T-68) sumaron ~1 ms por cuadro (14,6 → 15,5 ms a 1280 × 720 en esta
+PC), lo que en una pantalla más grande lo hace más probable. El celular ya no la apagaba desde T-41.
+**Hecho:** en la PC la oclusión tampoco se apaga: los escalones son 100 / 80 / 65 / 50 % de resolución. El disco del
+sol del pulido pasó a `SUN_DISC` (y `lighting.sunDisc` por depto); medido con `motor/pruebas/quieto-movil.html` (cuadro
+en movimiento contra quieto, y `&antes=1` / `&sol=0`), aporta poco a la diferencia (living 1,22 → 1,17), así que queda
+en 0,012. Lo que sigue cambiando al frenar es el pulido de bordes, que existía desde T-54 (con `antes=1` la diferencia era
+mayor: 1,63). `verificar`: demo sin cambios.
+**Falta:** que el usuario lo confirme recorriendo (con el panel oculto no corre la animación y no se puede medir acá).

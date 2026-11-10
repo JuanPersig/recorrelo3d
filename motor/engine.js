@@ -399,6 +399,9 @@ const WARMTH = 0.58, AMBIENT = 0.82, NIGHT_AMBIENT = 0.5, NIGHT_EXPOSURE = 1.35;
 // cortinas a contraluz (MEJORAS-MOTOR-RENDER #13): 0,6 elegido por el usuario ("medio" de motor/pruebas/telas-luz.html,
 // 2026-11-09); 0 = sin contraluz
 const CURTAIN_LIGHT_DEFAULT = 0.6;
+// radio del disco del sol en radianes (~0,7°): con la cámara quieta el pulido reparte el sol dentro de él y las sombras
+// ganan penumbra
+const SUN_DISC = 0.012;
 // Valores: "lente sutil", elegido por el usuario el 2026-11-09 (el resplandor solo de noche: de día las paredes al sol
 // pasan el umbral y se vela toda la imagen)
 const LENS = { grain: 0.012, vignette: 0.1, aberration: 0.5, bloom: 0, nightBloom: 0.3, threshold: 2, radius: 0.5 };
@@ -843,7 +846,8 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   // Al detenerse suma REFINE cuadros más, cada uno con la cámara corrida una fracción de píxel (bordes sin dientes y el
   // ruido de la oclusión promediado) y el sol corrido apenas dentro de su disco (sombras con penumbra de verdad). El
   // promedio se ve al cabo de unos 0,3 s y se descarta apenas la cámara se mueve. Mientras se camina no cambia nada.
-  const REFINE = !refine ? 0 : mobile ? 12 : 24, SUN_R = 0.012;   // SUN_R: radio del disco del sol (en radianes, ~0,7°)
+  // SUN_R: radio del disco del sol (en radianes; "lighting.sunDisc")
+  const REFINE = !refine ? 0 : mobile ? 12 : 24, SUN_R = lit.sunDisc ?? SUN_DISC;
   let acc = null, accN = 0;
   if (composer) {
     composer.renderToScreen = false;
@@ -1142,14 +1146,16 @@ export async function start(container, { scene: spec, state, preset = 'premium',
   walk.onZoom = k => { baseFov = THREE.MathUtils.clamp(baseFov * k, FOV_MIN, FOV_MAX); applyFov(); };
 
   // Calidad adaptativa por escalones, que se recuerdan de un movimiento al siguiente: 0 = igual que quieta, 1 = 80 % de
-  // resolución, 2 = además sin oclusión ambiental, 3 = 60 % de resolución. Mientras la cámara se mueve se baja un escalón
+  // resolución, 2 = 65 % (en celular 60 %), 3 = 50 % (solo PC). Mientras la cámara se mueve se baja un escalón
   // si los cuadros tardan y se sube si sobra tiempo; quieta vuelve a la calidad completa. Así, en un equipo que da
   // abasto, moverse o cambiar el zoom no hace aparecer ni desaparecer sombras; y si la oclusión estaba apagada,
   // vuelve de a poco en lugar de golpe. El reflejo del piso no entra en los escalones: apagarlo al moverse se notaba
   // en el celular (aparecía y desaparecía al caminar).
   // En celular la oclusión no se apaga nunca (es liviana y que apareciera al detenerse se notaba): solo baja la resolución
+  // En la PC tampoco se apaga desde el 2026-11-09: el usuario vio que al moverse o cambiar el zoom "las sombras se
+  // renderizan de nuevo" (la oclusión se iba y volvía al frenar); un escalón más de resolución la reemplaza
   const STEPS = mobile ? [{ s: 1, ao: true }, { s: 0.8, ao: true }, { s: 0.6, ao: true }]
-    : [{ s: 1, ao: true }, { s: 0.8, ao: true }, { s: 0.8, ao: false }, { s: 0.6, ao: false }], AO = 0.85;
+    : [{ s: 1, ao: true }, { s: 0.8, ao: true }, { s: 0.65, ao: true }, { s: 0.5, ao: true }], AO = 0.85;
   const basePR = renderer.getPixelRatio();
   let moving = false, settleAt = 0, step = 0, scale = 1, slow = 0, quick = 0, aoFrom = null;
   function setAO(on, now) {

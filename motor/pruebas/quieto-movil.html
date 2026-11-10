@@ -1,0 +1,54 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Quieto contra en movimiento</title>
+<style>body{margin:0;background:#eceef0;font-family:system-ui;padding:10px} #stage{width:640px;height:480px}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<p id="estado">Armando…</p>
+<div id="stage"></div>
+<script type="module">
+// pruebas/quieto-movil.html?id=depto5&vistas=living1,dormitorio3[&antes=1][&capturar=sombras/x]
+// Herramienta de desarrollo (2026-11-09): lo que cambia entre la cámara en movimiento (un cuadro, sin pulido) y quieta
+// (el pulido de 24 cuadros con el sol corrido dentro de su disco). Por vista: en movimiento, quieta y la diferencia ×6.
+// "antes=1": sin lente, sin cortinas a contraluz y sin arrugas (como antes de T-67/T-68), para ver si el salto es nuevo
+import { start } from '../engine.js';
+const q = new URLSearchParams(location.search), $ = id => document.getElementById(id);
+const id = q.get('id') ?? 'depto5', path = `/departamentos/${id}/`, vistas = (q.get('vistas') ?? 'living1,dormitorio3').split(',');
+const base = await (await fetch(path + 'scene.json')).json();
+const antes = q.has('antes');
+const scene = structuredClone(base);
+if (q.has('sol')) scene.lighting = { ...(scene.lighting ?? {}), sunDisc: +q.get('sol') };   // radio del disco del sol (0 = sin penumbra al quedarse quieta)
+if (antes) {
+  scene.lighting = { ...(scene.lighting ?? {}), curtainLight: 0, lens: { grain: 0, vignette: 0, aberration: 0, nightBloom: 0 } };
+  for (const L of [scene, ...(scene.levels ?? [])]) for (const it of L.items ?? []) if (it.type === 'bed') it.params = { ...(it.params ?? {}), wrinkles: 0 };
+}
+const load = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.src = src; });
+const shots = {};
+for (const refine of [false, true]) {
+  const api = await start($('stage'), { scene, state: { view: vistas[0], cut: false, night: q.has('noche'), decor: true }, device: 'desktop', base: path, refine });
+  await api.ready;
+  for (const v of vistas) { api.go(v, true); shots[v + refine] = await load(api.capture('image/png')); }
+  api.destroy();
+}
+const W = shots[vistas[0] + false].width, H = shots[vistas[0] + false].height;
+const c = Object.assign(document.createElement('canvas'), { width: 3 * W + 12, height: vistas.length * (H + 24) }), g = c.getContext('2d');
+g.fillStyle = '#eceef0'; g.fillRect(0, 0, c.width, c.height);
+const px = im => { const k = Object.assign(document.createElement('canvas'), { width: W, height: H }).getContext('2d'); k.drawImage(im, 0, 0); return k.getImageData(0, 0, W, H); };
+const out = [];
+vistas.forEach((v, i) => {
+  const y = i * (H + 24), a = px(shots[v + false]), b = px(shots[v + true]), d = g.createImageData(W, H);
+  let sum = 0;
+  for (let k = 0; k < a.data.length; k += 4) { const e = Math.abs(a.data[k] - b.data[k]) + Math.abs(a.data[k + 1] - b.data[k + 1]) + Math.abs(a.data[k + 2] - b.data[k + 2]); sum += e; const x = Math.min(255, e * 2); d.data.set([x, x, x, 255], k); }
+  g.drawImage(shots[v + false], 0, y + 24); g.drawImage(shots[v + true], W + 6, y + 24); g.putImageData(d, 2 * W + 12, y + 24);
+  g.fillStyle = '#1d2430'; g.font = '600 14px system-ui';
+  g.fillText(`${base.views[v]?.name ?? v}: en movimiento · quieta · diferencia ×6 (media ${(sum / (W * H * 3)).toFixed(2)})${antes ? ' · ANTES' : ''}${q.has('sol') ? ' · sol ' + q.get('sol') : ''}`, 4, y + 17);
+  out.push(`${v} ${(sum / (W * H * 3)).toFixed(2)}`);
+});
+$('stage').hidden = true; document.body.append(c); $('estado').textContent = out.join(' · ');
+if (q.get('capturar')) { const url = c.toDataURL('image/jpeg', 0.92); await fetch(`/capturas/${q.get('capturar')}.jpg`, { method: 'POST', body: Uint8Array.from(atob(url.split(',')[1]), ch => ch.charCodeAt(0)) }); }
+document.title = 'quieto: listo';
+</script>
