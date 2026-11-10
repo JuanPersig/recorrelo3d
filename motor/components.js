@@ -3217,7 +3217,9 @@ export const COMPONENTS = {
 };
 
 /* ---------- aberturas: X a lo largo de la pared desde el inicio del vano, Z hacia el interior ---------- */
-// "frosted": vidrio esmerilado (ventanas a un patio o a un lavadero); "bars": travesaños horizontales en cada hoja
+// "frosted": vidrio esmerilado (ventanas a un patio o a un lavadero); "bars": travesaños horizontales en cada hoja.
+// "fixed": paño fijo, un solo vidrio sin hojas ni manijas (ventanales que no abren). "fixedBelow": alto en metros de un
+// paño fijo abajo, con travesaño, y las hojas corredizas arriba (vidrio repartido de las ventanas de aluminio)
 function slidingWindow(o, { len, h, t, H, M, wallColor }) {
   const g = new THREE.Group(), alu = M.lacquer(o.frame ?? '#f2f2f2'), glass = o.frosted ? M.frosted('#e6ebec', 0.82) : M.glass(), dark = M.lacquer('#6d7177');
   const fw = 0.05, fd = 0.08;
@@ -3226,10 +3228,18 @@ function slidingWindow(o, { len, h, t, H, M, wallColor }) {
   blk(g, alu, [fw, len - fw], [h - fw, h], [-fd / 2 + 0.002, fd / 2 - 0.002], 0.004);
   blk(g, alu, [0, fw], [0, h], [-fd / 2, fd / 2], 0.004);
   blk(g, alu, [len - fw, len], [0, h], [-fd / 2, fd / 2], 0.004);
-  const n = o.panels ?? 2, pw = (len - 2 * fw) / n;
+  const fb = o.fixed ? 0 : Math.max(0, Math.min(h - 0.3, o.fixedBelow ?? 0));
+  if (o.fixed) {   // paño fijo: el vidrio tomado directo por el marco
+    blk(g, glass, [fw - 0.005, len - fw + 0.005], [0.035, h - fw + 0.005], [-0.003, 0.003]).castShadow = false;
+  }
+  if (fb) {   // paño fijo de abajo y travesaño sobre el que corren las hojas
+    blk(g, alu, [fw, len - fw], [fb - 0.02, fb + 0.025], [-fd / 2 + 0.002, fd / 2 - 0.002], 0.004);
+    blk(g, glass, [fw - 0.005, len - fw + 0.005], [0.035, fb - 0.015], [-0.003, 0.003]).castShadow = false;
+  }
+  const n = o.fixed ? 0 : o.panels ?? 2, pw = (len - 2 * fw) / Math.max(1, n);
   for (let i = 0; i < n; i++) {
     const x0 = fw + i * pw - (i ? 0.02 : 0), x1 = fw + (i + 1) * pw + (i < n - 1 ? 0.02 : 0), zz = i % 2 ? -0.017 : 0.017;
-    const y0 = 0.045, y1 = h - fw - 0.003, s = 0.04;
+    const y0 = fb ? fb + 0.03 : 0.045, y1 = h - fw - 0.003, s = 0.04;
     blk(g, alu, [x0, x0 + s], [y0, y1], [zz - 0.013, zz + 0.013], 0.003);
     blk(g, alu, [x1 - s, x1], [y0, y1], [zz - 0.013, zz + 0.013], 0.003);
     blk(g, alu, [x0 + s, x1 - s], [y0, y0 + 0.07], [zz - 0.012, zz + 0.012], 0.003);
@@ -3237,7 +3247,8 @@ function slidingWindow(o, { len, h, t, H, M, wallColor }) {
     blk(g, glass, [x0 + s - 0.005, x1 - s + 0.005], [y0 + 0.065, y1 - s + 0.005], [zz - 0.003, zz + 0.003]).castShadow = false;
     for (let k = 1; k <= (o.bars ?? 0); k++) { const yb = y0 + 0.07 + k * (y1 - s - y0 - 0.07) / ((o.bars ?? 0) + 1); blk(g, alu, [x0 + s - 0.003, x1 - s + 0.003], [yb - 0.012, yb + 0.012], [zz - 0.011, zz + 0.011], 0.002); }
     const hx = i === 0 ? x1 - 0.02 : x0 + 0.02;
-    blk(g, dark, [hx - 0.008, hx + 0.008], [0.95, 1.15], [zz + (zz > 0 ? 0.013 : -0.023), zz + (zz > 0 ? 0.023 : -0.013)], 0.004);
+    const hy = fb ? Math.min(h - 0.2, (y0 + y1) / 2) : 1.05;
+    blk(g, dark, [hx - 0.008, hx + 0.008], [hy - 0.1, hy + 0.1], [zz + (zz > 0 ? 0.013 : -0.023), zz + (zz > 0 ? 0.023 : -0.013)], 0.004);
   }
   blk(g, M.ceramic('#dcd6cc'), [-0.03, len + 0.03], [-0.02, 0.005], [-t / 2 - 0.04, -fd / 2]);  // umbral exterior
   // "grille": reja de seguridad por fuera, de barras en rombo (color o true = blanca). Las dos direcciones van en planos

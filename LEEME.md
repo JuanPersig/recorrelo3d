@@ -106,6 +106,16 @@ con el cruce completo de sus 18 puntos en T-67; todo general para cualquier dept
 - **Páginas de muestras** para elegir aspecto: `motor/pruebas/lente.html`, `telas-luz.html`; y
   `quieto-movil.html` (qué cambia entre la cámara en movimiento y quieta).
 
+Hecho en el intento del dúplex (2026-11-09; el depto se borró a pedido del usuario, quedan solo sus fotos en
+`departamento_dos_plantas/`; piezas generales del motor):
+- **Escalera en L** con peldaños compensados al pie (`stair` con `turn`, `before`, `winders`, `beforeGo`, `rail`); el
+  plano 2D la dibuja en L.
+- **Puerta corrediza** colgada de riel (`"slide"` en una puerta; el plano la dibuja sobre la cara de la pared).
+- **Ventanas:** `"fixed"` (paño fijo sin hojas) y `"fixedBelow"` (paño fijo abajo con hojas corredizas arriba).
+- **Plano 2D:** marca "Calle" solo si se sabe dónde está (fachada indicada, balcón o paisaje).
+- Lección en SKILL.md, "Errores que no se repiten" n.º 8: las paredes salen del plano; las fotos ubican aberturas y
+  muebles; antes de juzgar la estructura, ubicar la cámara como en la foto.
+
 ## Servidores (`.claude/launch.json`)
 
 `visor` :5180 (raíz del proyecto) · `sitio` :5183 (`sitio/` como Cloudflare) · `landing` :5184 (`npm run dev`).
