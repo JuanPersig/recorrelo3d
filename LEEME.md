@@ -154,6 +154,9 @@ decisión del usuario, luz horneada al día. Quedan sin decidir el aviso de 60 c
 lavadero al patio (hoy pared lisa); las cámaras de living, baño y balcón no calzan del todo (`encuadre.html`).
 Sigue en `verificar.html?deptos=depto5,depto6` como el depto cargado de referencia.
 
+**Para modelar un departamento nuevo: pegar `prompt-depto-nuevo.md` en una sesión nueva** (flujo completo con plano medido, controles,
+auditoría de superficies y reglas de eficiencia).
+
 ## Plan de precisión (2026-11-10)
 
 `PLAN-PRECISION.md` (leerlo antes de modelar un depto nuevo): los modelos nuevos no salen fieles aunque haya plano, porque
